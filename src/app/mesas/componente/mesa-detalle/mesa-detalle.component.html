@@ -1,0 +1,28 @@
+<div class="card" *ngIf="mesa_examen">
+  <div class="card-header">
+    <u>Mesa de examen:</u> <b>{{mesa_examen.numero}}</b> <u>Fecha inicio:</u><b>{{mesa_examen.fecha_inicio | date:'dd/MM/yy'}}</b>
+    <div class="card-header-actions">
+      <a  (click)="isCollapsed = !isCollapsed"
+        href="javascript:void(0);"
+        [attr.aria-expanded]="!isCollapsed" 
+        aria-controls="collapseBody">
+        <i class="icons cui-chevron-bottom"></i>
+      </a>
+    </div>
+  </div>
+  <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <u>Nombre:</u> {{mesa_examen.nombre}}
+      </div>
+      <div class="form-group col-sm-6">
+        <u>Numero:</u> {{mesa_examen.numero}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <u>Responsable:</u> {{mesa_examen.usuario.apellido}} {{mesa_examen.usuario.nombre}}
+      </div>
+    </div>
+  </div>
+</div>

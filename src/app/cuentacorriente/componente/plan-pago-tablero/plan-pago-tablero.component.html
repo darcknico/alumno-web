@@ -1,0 +1,48 @@
+<div class="animated fadeIn" *ngIf="plan_pago">
+  <div class="row">
+    <div class="col-sm-6 col-lg-4">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <div class="text-value">${{plan_pago.saldo_total|number:'1.2-2':'ES_ar'}}</div>
+          <div>Saldo total</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <div class="text-value">
+            ${{plan_pago.saldo_hoy|number:'1.2-2':'ES_ar'}}
+            <ng-container *ngIf="plan_pago.interes_saldo>0">
+              (${{plan_pago.interes_saldo|number:'1.2-2':'ES_ar'}})
+            </ng-container>
+          </div>
+          <div>
+            Saldo a hoy
+            <ng-container *ngIf="plan_pago.interes_saldo>0">
+              (interes)
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <div class="text-value">
+            ${{plan_pago.pagado|number:'1.2-2':'ES_ar'}}
+            <ng-container *ngIf="plan_pago.bonificado>0">
+              (${{plan_pago.bonificado|number:'1.2-2':'ES_ar'}})
+            </ng-container>
+          </div>
+          <div>
+            Pagado
+            <ng-container *ngIf="plan_pago.bonificado>0">
+              (bonificado)
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

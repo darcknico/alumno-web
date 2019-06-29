@@ -1,0 +1,130 @@
+<div class="animated fadeIn" *ngIf="plan_pago">
+  <div class="row">
+    <div class="col-sm-6 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Inscripcion</h5>
+          <div class="row">
+            <div class="col">
+              <u>Apellido y Nombre: </u>
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.alumno.apellido}} {{plan_pago.inscripcion.alumno.nombre}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Telefono/Celular: </u>
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.alumno.telefono}} / {{plan_pago.inscripcion.alumno.celular}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Correo: </u> 
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.alumno.email}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">            
+              <u>Carrera: </u> 
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.carrera.nombre}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">            
+              <u>Modalidad: </u> 
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.modalidad.nombre}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Año de inscripcion: </u> 
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.anio | number:'1.0-0':'ES_ar'}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Beca: </u> 
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.inscripcion.beca_nombre}} ({{plan_pago.inscripcion.beca_porcentaje | number:'1.2-2':'ES_ar'}}%)</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Plan de pago</h5>
+          <div class="row">
+            <div class="col">
+              <u>Responsable: </u>
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.usuario.apellido}} {{plan_pago.usuario.nombre}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Año del plan de pago: </u>
+            </div>
+            <div class="col text-right">
+              <b>{{plan_pago.anio | number:'1.0-0':'ES_ar'}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Monto de la cuota: </u>
+            </div>
+            <div class="col text-right">
+              <b>${{plan_pago.cuota_monto|number:'1.2-2':'ES_ar'}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Interes por mora: </u> 
+            </div>
+            <div class="col text-right">
+              <b>${{plan_pago.interes_monto|number:'1.2-2':'ES_ar'}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Matricula: </u>
+            </div>
+            <div class="col text-right">
+              <b>${{plan_pago.matricula_monto|number:'1.2-2':'ES_ar'}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Matricula pagado: </u>
+            </div>
+            <div class="col text-right">
+              <b>${{plan_pago.matricula_pagado|number:'1.2-2':'ES_ar'}}</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <u>Matricula saldo: </u>
+            </div>
+            <div class="col text-right">
+              <b>${{plan_pago.matricula_saldo|number:'1.2-2':'ES_ar'}}</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

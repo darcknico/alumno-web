@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Todos los Examenes</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-center">
+  <div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+            <thead>
+              <tr>
+                <th >Fecha</th>
+                <th class="no-sort">Materia</th>
+                <th class="no-sort">Comision</th>
+                <th class="no-sort">Asistencia</th>
+                <th class="no-sort">Nota</th>
+                <th class="no-sort">Observaciones</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="dataSource?.length != 0">
+              <tr *ngFor="let item of dataSource" >
+                <td>{{ item.examen.fecha | date:'dd/MM/yyyy'}}</td>
+                <td>{{ item.examen.comision.materia.nombre }}</td>
+                <td>{{ item.examen.comision.nombre }}</td>
+                <td>{{ item.tipo.nombre }}</td>
+                <td>{{ item.nota }}</td>
+                <td>{{ item.observaciones }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+</div>

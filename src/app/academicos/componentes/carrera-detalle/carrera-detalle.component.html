@@ -1,0 +1,45 @@
+<div class="card animated fadeIn" *ngIf="plan_estudio && carrera">
+  <div class="card-header">
+    Carrera: <b>{{carrera.nombre}}</b> ({{carrera.nombre_corto}})
+    <div class="card-header-actions">
+      <a  (click)="isCollapsed = !isCollapsed"
+        href="javascript:void(0);"
+        [attr.aria-expanded]="!isCollapsed" 
+        aria-controls="collapseBody">
+        <i class="icons cui-chevron-bottom"></i>
+    </a>
+    </div>
+  </div>
+  <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <u>Titulo:</u> {{carrera.titulo}}
+      </div>
+      <div class="form-group col-sm-8">
+        <u>Descripcion:</u> {{carrera.descripcion}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <u>Departamento:</u> {{carrera.departamento.nombre}}
+      </div>
+      <div class="form-group col-sm-8">
+        <u>Modalidades:</u>
+        <ng-container *ngFor="let item of carrera.modalidades; first as isFirst">
+          <b *ngIf="isFirst">{{item.modalidad.nombre}}</b> <b *ngIf="!isFirst"> | {{item.modalidad.nombre}}  </b>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <u>Plan de Estudio:</u> {{plan_estudio.nombre}} ({{plan_estudio.codigo}})
+      </div>
+      <div class="form-group col-sm-3">
+        <u>Año:</u> {{plan_estudio.anio}}
+      </div>
+      <div class="form-group col-sm-3">
+        <u>Horas:</u> {{plan_estudio.cantidad_horas}}
+      </div>
+    </div>
+  </div>
+</div>

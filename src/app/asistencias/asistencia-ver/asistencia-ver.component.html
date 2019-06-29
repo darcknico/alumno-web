@@ -1,0 +1,150 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <app-asistencia-detalle-component
+        [asistencia]="asistencia"
+        [collapsed]="true"
+        *ngIf="asistencia">
+      </app-asistencia-detalle-component>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Alumnos
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-success" type="button" (click)="exportar()">Exportar en excel</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover compact" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th>Apellido</th>
+                  <th>Nombre</th>
+                  <th>Documento</th>
+                  <th>Asistencia</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource">
+                  <td>{{ item.alumno.apellido }}</td>
+                  <td>{{ item.alumno.nombre }}</td>
+                  <td>{{ item.alumno.documento }}</td>
+                  <td>
+                    <select class="form-control"
+                      (change)="cambiar_asistencia($event,item)"
+                      [(ngModel)]="item.id_tipo_asistencia_alumno">
+                      <option value="1" disabled>Seleccionar...</option>
+                      <option *ngFor="let tipo of tipos_asistencia" [value]="tipo.id">{{tipo.nombre}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSource?.length == 0">
+                <tr>
+                <td colspan="3" class="no-data-available">No hay alumnos en la comision</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button 
+          class="btn btn-info btn-block-xs-only m-1"
+          (click)="volver()">Todas las asistencias</button>
+          <button 
+          class="btn btn-info btn-block-xs-only m-1"
+          (click)="comision()">Ir a la Comision</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Archivo para la importacion
+        </div>
+        <div class="card-body">
+          <div class="row" *ngIf="!file">
+            <div class="form-group col-sm-12">
+              <label class="control-label">Seleccionar archivo excel para preparar la importacion</label>
+              <input 
+                class="form-control"
+                (change)="onFileChange($event)"
+                type="file"
+                placeholder="Archivo"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+                #fileInput>
+            </div>
+          </div>
+          <div class="table-responsive" *ngIf="file">
+            <div class="col-sm-12 text-center">
+              <label class="control-label ">Asistencias</label>
+            </div>
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="importacionDataSource">
+              <thead>
+                <tr>
+                  <th>Apellido</th>
+                  <th>Nombre</th>
+                  <th>Documento</th>
+                  <th>Asistencia</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="importacionDataSource?.length != 0">
+                <tr *ngFor="let item of importacionDataSource">
+                  <td>{{ item.apellido }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.documento }}</td>
+                  <td>
+                      {{ item.asistencia }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row" *ngIf="file">
+            <div class="col">
+              <hr>
+            </div>
+          </div>
+          <div class="table-responsive" *ngIf="file">
+            <div class="col-sm-12 text-center">
+              <label class="control-label ">Errores</label>
+            </div>
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="erroresDataSource">
+              <thead>
+                <tr>
+                  <th>Apellido</th>
+                  <th>Nombre</th>
+                  <th>Documento</th>
+                  <th>Error</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="erroresDataSource?.length != 0">
+                <tr *ngFor="let item of erroresDataSource">
+                  <td>{{ item.apellido }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.documento }}</td>
+                  <td>
+                      {{ item.asistencia }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer" *ngIf="file">
+          <button 
+          class="btn btn-info btn-block-xs-only m-1"
+          [disabled]="importacionDataSource?.length == 0"
+          (click)="continuar()">Finalizar importacion</button>
+          <button class="btn btn-block-xs-only btn-danger" type="button" (click)="cancelar()">Cancelar importacion</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

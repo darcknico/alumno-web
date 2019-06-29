@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Diarias
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Saldo Anterior</th>
+                  <th>Ingresos</th>
+                  <th>Egresos</th>
+                  <th>Saldo Final</th>
+                  <th class="no-sort"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" >
+                  <td>
+                    <div *ngIf="item.fecha_fin">
+                      {{ item.fecha_fin | date:'dd/MM/yyyy' }}
+                    </div>
+                    <div *ngIf="!item.fecha_fin">
+                      <span class="badge badge-primary">EN CURSO</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="item.saldo_anterior<0" class="text-danger">
+                        ${{item.saldo_anterior | number:'1.2-2':'es-AR'}}
+                    </div>
+                    <div *ngIf="item.saldo_anterior>=0">
+                        ${{item.saldo_anterior | number:'1.2-2':'es-AR'}}
+                    </div>
+                    <div *ngIf="item.saldo_otros_anterior" class="{{item.saldo_otros_anterior<0?'text-danger':''}}">
+                      <i>${{item.saldo_otros_anterior | number:'1.2-2':'es-AR'}}</i>
+                    </div>
+                  </td>
+                  <td>
+                    ${{item.total_ingreso | number:'1.2-2':'es-AR'}}
+                    <div *ngIf="item.total_otros_ingreso>0">
+                      <i>${{item.total_otros_ingreso | number:'1.2-2':'es-AR'}}</i>
+                    </div>
+                  </td>
+                  <td>
+                    ${{item.total_egreso | number:'1.2-2':'es-AR'}}
+                    <div *ngIf="item.total_otros_egreso>0">
+                      <i>${{item.total_otros_egreso | number:'1.2-2':'es-AR'}}</i>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="item.saldo<0" class="text-danger">
+                        $({{item.saldo | number:'1.2-2':'es-AR'}})
+                    </div>
+                    <div *ngIf="item.saldo>=0">
+                        ${{item.saldo | number:'1.2-2':'es-AR'}}
+                    </div>
+                    <div *ngIf="item.saldo_otros" class="{{item.saldo_otros<0?'text-danger':''}}">
+                      <i>${{item.saldo_otros | number:'1.2-2':'es-AR'}}</i>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown placement="bottom right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="exportar(item)" href="javascript:void(0);">Descargar</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas informacion</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSource?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">No data!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

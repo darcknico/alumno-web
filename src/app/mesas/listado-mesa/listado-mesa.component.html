@@ -1,0 +1,59 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Mesas de examenes
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Mesa de examen</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+            <thead>
+                <tr>
+                  <th>Mes</th>
+                  <th>Dia</th>
+                  <th>Nombre</th>
+                  <th>Numero</th>
+                  <th></th>
+                </tr>
+            </thead>
+            <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" >
+                <td>{{ item.fecha_inicio | date:'MMMM yyyy' }}</td>
+                <td>{{ item.fecha_inicio | date:'dd/MM'}} - {{item.fecha_fin | date:'dd/MM'}} </td>
+                <td>{{ item.nombre }} </td>
+                <td>{{ item.numero }}</td>
+                <td>
+                  <div class="btn-group" dropdown placement="bottom right" container="body">
+                    <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <span class="caret"></span>
+                    </button>
+                    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                      <li role="menuitem">
+                        <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                        <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas Información</a>
+                        <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="dataSource?.length == 0">
+                <tr>
+                <td colspan="3" class="no-data-available">No data!</td>
+                </tr>
+            </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

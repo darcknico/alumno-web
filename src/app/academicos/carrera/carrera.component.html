@@ -1,0 +1,86 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Carreras
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Carrera</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label class="control-label">Departamento</label>
+              <select 
+                class="form-control" 
+                (change)="refrescar()"
+                [(ngModel)]="request.id_departamento"
+                >
+                <option value="0">TODOS</option>
+                <option *ngFor="let item of departamentos" [value]="item.id" >{{item.nombre}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th>Agregado</th>
+                  <th>Nombre</th>
+                  <th>Nombre Corto</th>
+                  <th>Departamento</th>
+                  <th>Plan de estudio</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource">
+                  
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.nombre }} </td>
+                  <td>{{ item.nombre_corto }} </td>
+                  <td>{{ item.departamento?.nombre }}</td>
+                  <td>
+                    <span *ngIf="item.plan_estudio">
+                      {{item.plan_estudio.codigo}} {{item.plan_estudio.anio}}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown placement="bottom right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Ver</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);" *ngIf="item.plan_estudio">Comisiones</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSource?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">No data!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

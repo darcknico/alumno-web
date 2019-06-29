@@ -1,0 +1,67 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Materias
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Materia</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th>Cod.</th>
+                  <th>Nombre</th>
+                  <th>Horas</th>
+                  <th>Regimen</th>
+                  <th>Lectivo</th>
+                  <th>Correlativas</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource">
+                  <td>{{ item.codigo }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.horas }}</td>
+                  <td>{{ item.tipo_lectivo.nombre }}</td>
+                  <td>{{ item.tipo_regimen.nombre }}</td>
+                  <td>
+                    <span class="badge badge-secondary" *ngFor="let mat of item.correlatividades">{{mat.correlatividad.codigo}}</span>
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown placement="top right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);">Comisiones</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="correlatividades(item)" href="javascript:void(0);">Correlatividades</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

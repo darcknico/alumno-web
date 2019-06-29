@@ -1,0 +1,252 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>{{titulo}}</strong>
+          <small> Formulario</small>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formulario" >
+            <div class="row">
+              <div class="form-group col-sm-4">
+                <label class="control-label">Nombre (*)</label>
+                <input 
+                  formControlName="nombre"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Nombre">
+                <span *ngIf="formulario.get('nombre').hasError('')" class="help-block">
+                  El nombre es requerido
+                </span>
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">Apellido</label>
+                <input 
+                  formControlName="apellido"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Apellido">
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">Fecha Nacimiento</label>
+                <input bsDatepicker [maxDate]="hoy"
+                  required
+                  formControlName="fecha_nacimiento"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Nacimiento">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-2">
+                <label class="control-label">Tipo</label>
+                <select 
+                  class="form-control"
+                  id="id_tipo_documento"
+                  formControlName="id_tipo_documento">
+                  <option *ngFor="let item of tipo_documentos" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Documento</label>
+                <input 
+                  formControlName="documento"
+                  type="number" 
+                  class="form-control"
+                  placeholder="Documento"
+                  min="0">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Telefono</label>
+                <input 
+                  formControlName="telefono"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Telefono">
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">Celular</label>
+                <input 
+                  formControlName="celular"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Celular">
+              </div>
+            </div>
+            <div class="row" >
+              <div class="form-group col-sm-6">
+                <label class="control-label">Direccion</label>
+                <input 
+                  formControlName="direccion"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Direccion">
+              </div>
+              <div class="form-group col-sm-1">
+                <label class="control-label">Numero</label>
+                <input 
+                  formControlName="direccion_numero"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Numero">
+              </div>
+              <div class="form-group col-sm-1">
+                <label class="control-label">Depto</label>
+                <input 
+                  formControlName="direccion_dpto"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Depto">
+              </div>
+              <div class="form-group col-sm-1">
+                <label class="control-label">Piso</label>
+                <input 
+                  formControlName="direccion_piso"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Piso">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <hr>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label class="control-label">Tipo Contrato </label>
+                <ng-select [searchable]="false"
+                  id="id_tipo_contrato"
+                  formControlName="id_tipo_contrato"
+                  >
+                  <ng-option *ngFor="let item of tipos" [value]="item.id" >{{item.nombre}}</ng-option>
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">CUIT</label>
+                <input 
+                  formControlName="cuit"
+                  type="text" 
+                  class="form-control"
+                  placeholder="XXYYYYYYYYZ">
+              </div>
+              <div class="form-group col-sm-6">
+                <label class="control-label">Titulo</label>
+                <input 
+                  formControlName="titulo"
+                  type="text" 
+                  class="form-control"
+                  placeholder="...">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label class="control-label">Observaciones</label>
+                <input 
+                  formControlName="observaciones"
+                  type="text" 
+                  class="form-control"
+                  placeholder="...">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <hr>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label class="control-label">Correo Electronico (*)</label>
+                <input 
+                  formControlName="email"
+                  type="text" 
+                  [readonly]="id>0"
+                  [class]="'form-control '+correo_valido()"
+                  placeholder="Correo Electronico">
+                <div class="invalid-feedback" *ngIf="formulario.get('email').hasError('coincidencia')" >
+                    El email ya esta registrado
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Sedes</label>
+              <div class="col-md-8 col-form-label">
+                <div class="form-check" *ngFor="let item of sedes">
+                  <input class="form-check-input" type="checkbox"
+                  name="id_sede[]"
+                  [value]="item.id"
+                  [checked]="sede_asociada(item)"
+                  (change)="asociacion($event,item)">
+                  <label class="form-check-label" >
+                    {{ item.nombre }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="row" >
+            <div class="col-sm-12">
+              <hr>
+              <div class="row">
+                <div class="col-sm-6 {{archivo.subido?'bg-success':''}}" *ngFor="let archivo of archivos">
+                  <div class="form-group col-sm-6">
+                    <!--
+                    <label class="control-label">{{archivo.tipo_documentacion.nombre}}</label>
+                    -->
+                    <div class="row form-inline">
+                      <input 
+                        class="form-control p-1"
+                          readonly="readonly"
+                          type="text"
+                          placeholder="Nombre"
+                          [value]="archivo.nombre">
+                      <button 
+                        class="btn btn-danger m-2 btn-sm" 
+                        (click)="eliminar(archivo)" >
+                        Eliminar
+                      </button> 
+                      <button *ngIf="id>0"
+                        class="btn btn-primary m-2 btn-sm"  
+                        (click)="descargar(archivo)" >
+                        Descargar
+                      </button> 
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-6" *ngIf="archivo.url && [1,2].indexOf(archivo.id_tipo_alumno_documentacion) >= 0 ">
+                    <img [src]="archivo.url" class="img-thumbnail" [alt]="archivo.nombre" width="200">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <label class="control-label">Archivo Nuevo</label>
+              <input 
+                class="form-control"
+                (change)="onFileChange($event)"
+                type="file"
+                placeholder="Archivo"
+                #fileInput>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-block-xs-only m-1 btn-success"
+            type="submit"
+            color="accent"
+            (click)="continuar()"
+            [disabled]="!formulario.valid">
+            Guardar Cambios
+            </button>
+          <button class="btn btn-block-xs-only m-1 btn-secondary"
+            (click)="volver()">
+            Volver
+            </button>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+  

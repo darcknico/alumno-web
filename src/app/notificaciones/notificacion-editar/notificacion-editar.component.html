@@ -1,0 +1,243 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>{{titulo}}</strong>
+            <small> Formulario</small>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="formulario" >
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label class="control-label">Nombre (*)</label>
+                  <input 
+                    required
+                    formControlName="nombre"
+                    type="text" 
+                    class="form-control"
+                    placeholder="Nombre">
+                  <span *ngIf="formulario.get('nombre').hasError('required')" class="help-block">
+                    El nombre es requerido
+                  </span>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label class="control-label">Descripción</label>
+                  <input 
+                    formControlName="descripcion"
+                    type="text" 
+                    class="form-control"
+                    placeholder="Descripción">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label class="control-label">Asunto del Correo (*)</label>
+                  <input 
+                    required
+                    formControlName="asunto"
+                    type="text" 
+                    class="form-control"
+                    placeholder="Titulo">
+                </div>
+                <div class="form-group col-sm-3">
+                  <label class="control-label">Responder a (*)</label>
+                  <input 
+                    required
+                    formControlName="responder_email"
+                    type="email" 
+                    class="form-control"
+                    placeholder="reply-to@prueba.com">
+                </div>
+                <div class="form-group col-sm-3">
+                  <label class="control-label">Nombre del correo (*)</label>
+                  <input 
+                    required
+                    formControlName="responder_nombre"
+                    type="text" 
+                    class="form-control"
+                    placeholder="Usuario">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-sm-3">
+                  <label class="control-label">Fecha de preparacion (*)</label>
+                  <input bsDatepicker
+                    required
+                    formControlName="fecha"
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Fecha Nacimiento">
+                </div>
+                <div class="form-group col-sm-3">
+                  <timepicker [formControl]="formulario.get('hora')" [showMeridian]="false" required></timepicker>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-sm-5 ">
+                  <label class="control-label">Plantilla:&nbsp;(*)</label>
+                  <ng-select [items]="plantillas"
+                    [selectOnTab]="true"
+                    required
+                    bindLabel="titulo"
+                    bindValue="id"
+                    placeholder="Selecciona la Plantilla"
+                    formControlName="id_plantilla">
+                  </ng-select>
+                </div>
+                <div class="col-sm-5" *ngIf="formulario.get('id_plantilla').value>0">
+                  <button 
+                    class="btn btn-danger m-2" 
+                    (click)="enviar()" >
+                    Enviar prueba
+                    </button> 
+                  <button 
+                    class="btn btn-primary m-2"  
+                    (click)="previa()" >
+                    Vista previa
+                  </button>
+                </div>
+                  
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <hr>
+                </div>
+              </div>
+            </form>
+            <div class="row">
+              <div class="form-group col-sm-4 ">
+                <label class="control-label">Departamentos</label>
+                <ng-select [items]="departamentos"
+                  [selectOnTab]="true"
+                  required
+                  bindLabel="nombre"
+                  bindValue="id"
+                  placeholder="Selecciona un departamento"
+                  [(ngModel)]="filtro.id_departamento">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-4 ">
+                <label class="control-label">Carreras</label>
+                <ng-select [items]="carreras"
+                  [selectOnTab]="true"
+                  required
+                  bindLabel="nombre"
+                  bindValue="id"
+                  placeholder="Selecciona una carrera"
+                  [(ngModel)]="filtro.id_carrera">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-4 ">
+                  <label class="control-label">Estado Alumno</label>
+                  <ng-select [items]="tipos_estado"
+                    [selectOnTab]="true"
+                    required
+                    bindLabel="nombre"
+                    bindValue="id"
+                    placeholder="Selecciona un estado"
+                    [(ngModel)]="filtro.id_tipo_alumno_estado">
+                  </ng-select>
+                </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label class="control-label">Edad minima</label>
+                <input 
+                  required
+                  [(ngModel)]="filtro.minimo_edad"
+                  type="number" 
+                  class="form-control"
+                  placeholder="Edad">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Edad maxima</label>
+                <input 
+                  required
+                  [(ngModel)]="filtro.maximo_edad"
+                  type="number" 
+                  class="form-control"
+                  placeholder="Edad">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Sexo</label>
+                <select 
+                  class="form-control"
+                  [(ngModel)]="filtro.sexo">
+                  <option value="" >TODOS</option>
+                  <option value="M" >Masculino</option>
+                  <option value="F" >Femenino</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <button 
+                  class="btn btn-danger m-2" 
+                  (click)="buscar()" >
+                  FILTRAR
+                  </button> 
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+                  <thead>
+                    <tr>
+                      <th class="no-sort">
+                        <div class="form-check m-0">
+                          <input 
+                            class="form-check-input " 
+                            type="checkbox"
+                            [checked]="seleccionadoTodo()"
+                            (change)="seleccionarTodo($event)">
+                          <label class="form-check-label">TODO</label>
+                        </div>
+                      </th>
+                      <th>Apellido</th>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="dataSource?.length != 0">
+                    <tr *ngFor="let item of dataSource">
+                      <td>
+                        <div class="form-check">
+                          <input 
+                            class="form-check-input " 
+                            type="checkbox"
+                            [checked]="seleccionado(item)"
+                            (change)="seleccionar($event,item)">
+                        </div>
+                      </td>
+                      <td>{{ item.apellido }}</td>
+                      <td>{{ item.nombre }}</td>
+                      <td>{{ item.email }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-block btn-success"
+              type="submit"
+              color="accent"
+              (click)="continuar()"
+              [disabled]="valido()">
+              Guardar cambios
+              </button>
+            <button class="btn btn-block"
+              type="button" 
+              (click)="volver()">
+              Volver
+              </button>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+    

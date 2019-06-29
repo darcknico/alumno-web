@@ -1,0 +1,77 @@
+<div class="card" *ngIf="alumno">
+  <div class="card-header">
+    Alumno: <b>{{alumno.apellido}} {{alumno.nombre}}</b> <div *ngIf="alumno.codigo">({{alumno.codigo}})</div>
+    <div class="card-header-actions">
+      <a  (click)="isCollapsed = !isCollapsed"
+        href="javascript:void(0);"
+        [attr.aria-expanded]="!isCollapsed" 
+        aria-controls="collapseBody">
+        <i class="icons cui-chevron-bottom"></i>
+    </a>
+    </div>
+  </div>
+  <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <u>{{alumno.tipo_documento.nombre}}:</u> {{alumno.documento}}
+      </div>
+      <div class="form-group col-sm-4" *ngIf="alumno.sexo">
+        <u>Sexo:</u> {{alumno.sexo=='M'?'Masculino':'Femenino'}}
+      </div>
+      <div class="form-group col-sm-4" *ngIf="alumno.tipo_civil">
+        <u>Estado Civil:</u> {{alumno.tipo_civil.nombre}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-4" *ngIf="alumno.provincia">
+        <u>Provincia:</u> {{alumno.provincia.nombre}}
+      </div>
+      <div class="form-group col-sm-4">
+        <u>Localidad:</u> {{alumno.localidad}}
+      </div>
+      <div class="form-group col-sm-4">
+        <u>Codigo Postal:</u> {{alumno.codigo_postal}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <u>Fecha nacimiento:</u> {{alumno.fecha_nacimiento | date:'dd/MM/yyyy'}}
+      </div>
+      <div class="form-group col-sm-4">
+        <u>Lugar nacimiento:</u> {{alumno.ciudad_nacimiento}}
+      </div>
+      <div class="form-group col-sm-4">
+        <u>Nacionalidad:</u> {{alumno.nacionalidad}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-3">
+        <u>Domicilio:</u> {{alumno.domicilio}}
+      </div>
+      <div class="form-group col-sm-3">
+        <u>Calle:</u> {{alumno.calle}}
+      </div>
+      <div class="form-group col-sm-2">
+        <u>Nro:</u> {{alumno.numero}}
+      </div>
+      <div class="form-group col-sm-2">
+        <u>Piso:</u> {{alumno.piso}}
+      </div>
+      <div class="form-group col-sm-2">
+        <u>Depto:</u> {{alumno.depto}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <u>Correo Electronico:</u> {{alumno.email}}
+      </div>
+      <div class="form-group col-sm-4">
+        <u>Telefono:</u> {{alumno.telefono}}
+      </div>
+      <div class="form-group col-sm-4">
+        <u>Celular</u>: {{alumno.celular}}
+      </div>
+    </div>
+    <p class="card-text">{{alumno.observaciones}}</p>
+  </div>
+</div>

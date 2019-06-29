@@ -1,0 +1,280 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>{{titulo}}</strong>
+          <small> Formulario</small>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formulario" >
+            <div class="row">
+              <div class="form-group col-sm-4 {{ f.nombre.touched && f.nombre.invalid?'was-validated':''}}">
+                <label class="control-label">Nombre (*)</label>
+                <input 
+                  required
+                  formControlName="nombre"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Nombre">
+                <div *ngIf= "f.nombre.touched && f.nombre.invalid" class="invalid-feedback">
+                  <span *ngIf="f.nombre.hasError('required')" class="help-block">
+                    El nombre es requerido
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-sm-4 {{ f.apellido.touched && f.apellido.invalid?'was-validated':''}}">
+                <label class="control-label">Apellido (*)</label>
+                <input 
+                  required
+                  formControlName="apellido"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Apellido">
+                  <div *ngIf= "f.apellido.touched && f.apellido.invalid" class="invalid-feedback">
+                    <span *ngIf="f.apellido.hasError('required')" class="help-block">
+                      El nombre es requerido
+                    </span>
+                  </div>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Fecha Nacimiento</label>
+                <input bsDatepicker
+                  formControlName="fecha_nacimiento"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Fecha Nacimiento">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-6">
+                <label class="control-label">Lugar de nacimiento</label>
+                <input 
+                  formControlName="ciudad_nacimiento"
+                  type="text" 
+                  class="form-control">
+              </div>
+              <div class="form-group col-6">
+                <label class="control-label">Nacionalidad</label>
+                <input 
+                  formControlName="nacionalidad"
+                  type="text" 
+                  class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-2 col-4">
+                <label class="control-label">Tipo</label>
+                <select 
+                  class="form-control"
+                  formControlName="id_tipo_documento">
+                  <option *ngFor="let item of tipo_documentos" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-3 col-8 {{ f.documento.touched && f.documento.invalid?'was-validated':''}}">
+                <label class="control-label">Documento (*)</label>
+                <input 
+                  formControlName="documento"
+                  required
+                  type="number" 
+                  class="form-control"
+                  placeholder="Documento"
+                  min="0">
+                <div *ngIf= "f.documento.touched && f.documento.invalid" class="invalid-feedback">
+                  <span *ngIf="f.documento.hasError('required')" class="help-block">
+                    El documento es requerido
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Sexo</label>
+                <select 
+                  class="form-control"
+                  formControlName="sexo">
+                  <option value="M" >Masculino</option>
+                  <option value="F" >Femenino</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Estado Civil</label>
+                <select 
+                  class="form-control"
+                  formControlName="id_tipo_alumno_civil">
+                  <option *ngFor="let item of tipos_civil" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-5">
+                <label class="control-label">Correo Electronico</label>
+                <input 
+                  formControlName="email"
+                  type="email" 
+                  class="form-control"
+                  placeholder="prueba@prueba.com">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Telefono</label>
+                <input 
+                  formControlName="telefono"
+                  type="text" 
+                  class="form-control">
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">Celular</label>
+                <input 
+                  formControlName="celular"
+                  type="text" 
+                  class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label class="control-label">Provincia</label>
+                <select 
+                  class="form-control"
+                  formControlName="id_provincia"
+                  >
+                  <option *ngFor="let item of provincias" [value]="item.id" >{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">Localidad</label>
+                <input formControlName="localidad"
+                  [typeahead]="dataSource"
+                  (typeaheadLoading)="changeTypeaheadLoading($event)"
+                  (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                  [typeaheadOptionsLimit]="7"
+                  typeaheadOptionField="nombre"
+                  placeholder="Localidades"
+                  class="form-control">
+                 <div *ngIf="typeaheadLoading">Loading</div>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Codigo Postal</label>
+                <input 
+                  formControlName="codigo_postal"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Codigo Postal">
+              </div>
+            </div>
+            <div class="row" >
+              <div class="form-group col-sm-6">
+                <label class="control-label">Domicilio</label>
+                <input 
+                  formControlName="domicilio"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Domicilio">
+              </div>
+              <div class="form-group col-sm-2 col-4">
+                <label class="control-label">Numero</label>
+                <input 
+                  formControlName="numero"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Numero">
+              </div>
+              <div class="form-group col-sm-2 col-4">
+                <label class="control-label">Depto</label>
+                <input 
+                  formControlName="depto"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Depto">
+              </div>
+              <div class="form-group col-sm-2 col-4">
+                <label class="control-label">Piso</label>
+                <input 
+                  formControlName="piso"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Piso">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-12">
+                <label class="control-label">Observaciones</label>
+                <input 
+                  formControlName="observaciones"
+                  type="text" 
+                  class="form-control">
+              </div>
+            </div>
+          </form>
+          <div class="row" >
+            <div class="col-sm-12">
+              <hr>
+              <div class="row">
+                <div class="col-sm-6 {{archivo.subido?'bg-success':''}}" *ngFor="let archivo of archivos">
+                  <div class="form-group col-sm-6">
+                    <label class="control-label">{{archivo.tipo_documentacion.nombre}}</label>
+                    <div class="row form-inline">
+                      <input 
+                        class="form-control p-1"
+                          readonly="readonly"
+                          type="text"
+                          placeholder="Nombre"
+                          [value]="archivo.nombre">
+                      <button 
+                        class="btn btn-danger m-2" 
+                        (click)="eliminar(archivo)" >
+                        Eliminar
+                      </button> 
+                      <button *ngIf="id>0"
+                        class="btn btn-primary m-2"  
+                        (click)="descargar(archivo)" >
+                        Descargar
+                      </button> 
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-6" *ngIf="archivo.url && [1,2].indexOf(archivo.id_tipo_alumno_documentacion) >= 0 ">
+                    <img [src]="archivo.url" class="img-thumbnail" [alt]="archivo.nombre" width="200">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label class="control-label">Archivo Nuevo</label>
+              <input 
+                class="form-control"
+                (change)="onFileChange($event)"
+                type="file"
+                placeholder="Archivo"
+                #fileInput>
+            </div>
+            <div class="form-group col-sm-6">
+              <label class="control-label">Tipo de Documentacion</label>
+              <select 
+                [(ngModel)]="id_tipo_documentacion"
+                class="form-control" 
+                >
+                <option *ngFor="let item of tipo_documentacion" [value]="item.id" >{{item.nombre}}</option>
+              </select>
+            </div>
+          </div>
+          
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-block-xs-only m-1 btn-success"
+            type="submit"
+            color="accent"
+            (click)="continuar()"
+            [disabled]="consultando"
+            [disabled]="!formulario.valid">
+            Guardar Cambios
+            </button>
+          <button class="btn btn-block-xs-only m-1 btn-secondary"
+            [disabled]="consultando"
+            (click)="volver()">
+            Volver
+            </button>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+  

@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="materia">{{materia.nombre}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+    <thead>
+        <tr>
+          <th>Año</th>
+          <th>Numero</th>
+          <th>Alumnos</th>
+          <th></th>
+        </tr>
+    </thead>
+    <tbody *ngIf="dataSource?.length != 0">
+        <tr *ngFor="let item of dataSource" >
+        <td>{{ item.anio }}</td>
+        <td>{{item.numero}}</td>
+        <td>{{item.alumnos_cantidad}}</td>
+        <td>
+          <button 
+            class="btn btn-sm btn-primary"
+            tooltip="Mas informacion"
+            (click)="ver(item)">
+              <span class="fa fa-eye"></span>
+          </button>
+        </td>
+        </tr>
+    </tbody>
+    <tbody *ngIf="dataSource?.length == 0">
+        <tr>
+        <td colspan="3" class="no-data-available">No data!</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    type="button" 
+    class="btn btn-primary" 
+    (click)="nuevo()">Nuevo</button>
+</div>

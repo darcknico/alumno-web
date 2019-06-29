@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Sedes disponibles</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Sede</label>
+        <select 
+          class="form-control"
+          formControlName="id_sede">
+          <option *ngFor="let item of sedes" [value]="item.id" [disabled]="item.id == id_sede">{{item.nombre}} {{(item.id == id_sede)?'(Actual)':''}}</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    [disabled]="!formulario.valid"
+    type="button" 
+    class="btn btn-primary" 
+    (click)="confirmar()">Seleccionar</button>
+</div>

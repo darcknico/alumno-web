@@ -1,0 +1,102 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <app-comision-detalle-component
+        [comision]="comision"
+        [collapsed]="true"
+        *ngIf="comision">
+      </app-comision-detalle-component>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <button 
+        class="btn btn-info btn-block-xs-only m-1"
+        (click)="volver()">Todas las comisiones</button>
+      <button 
+        class="btn btn-info btn-block-xs-only m-1"
+        (click)="asistencias()">Asistencias</button>
+      <button 
+        class="btn btn-info btn-block-xs-only m-1"
+        (click)="examenes()">Examenes</button>
+      <button
+        class="btn btn-primary btn-block-xs-only m-1"
+        (click)="reporte()">Listado de asistencia</button>
+      <button
+        class="btn btn-danger btn-block-xs-only m-1"
+        (click)="asistencia_nuevo()">Generar asistencia</button>
+      <button
+        class="btn btn-danger btn-block-xs-only m-1"
+        (click)="examen_nuevo()">Generar examen</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Alumnos
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-success" type="button" (click)="asociar_alumno()">Asociar alumno</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th>Apellido</th>
+                  <th>Nombre</th>
+                  <th>Documento</th>
+                  <th class="no-sort">A/E Presentes</th>
+                  <th class="option">Nota</th>
+                  <th class="no-sort">Observaciones</th>
+                  <th class="option"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource">
+                  <td>{{ item.alumno.apellido }}</td>
+                  <td>{{ item.alumno.nombre }}</td>
+                  <td>{{ item.alumno.documento }}</td>
+                  <td>{{ item.asistencia_presente_promedio| number:'1.2-2':'es-AR' }}% / {{ item.examen_presente_promedio| number:'1.2-2':'es-AR' }}%</td>
+                  <td>{{item.tipo?.nombre}} <b *ngIf="item.nota">{{ item.nota }}</b></td>
+                  <td>{{ item.observaciones }}</td>
+                  <td>
+                    <div class="btn-group" dropdown placement="top right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="ver_alumno(item)" href="javascript:void(0);">Ver Asistencias/Examenes</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="editar_alumno(item)" href="javascript:void(0);">Editar</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="desasociar_alumno(item)" href="javascript:void(0);">Desasociar</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <p>
+                A/E Presente = Promedio de asistencias y examenes presentes 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

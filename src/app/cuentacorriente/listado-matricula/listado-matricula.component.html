@@ -1,0 +1,78 @@
+<div class="animated fadeIn" >
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="matricula">
+              <thead>
+                <tr>
+                  <th> Concepto</th>
+                  <th >Fecha</th>
+                  <th >Monto</th>
+                  <th >Pagado</th>
+                  <th >Saldo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{matricula.descripcion}}</td>
+                  <td>{{ matricula.fecha | date:'dd/MM/yyyy'}}</td>
+                  <td>${{ matricula.monto | number:'1.2-2':'es-AR' }}</td>
+                  <td>${{ (matricula.monto - matricula.saldo) | number:'1.2-2':'es-AR' }}</td>
+                  <td>${{ matricula.saldo | number:'1.2-2':'es-AR' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button 
+            class="btn btn-danger btn-block-xs-only m-1"
+            (click)="generar_pago_matricula()">GENERAR PAGO MATRICULA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" >
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Pagos a matricula imputados
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th >Agregado</th>
+                  <th >Fecha</th>
+                  <th >Descripcion</th>
+                  <th >Importe</th>
+                  <th >Responsable</th>
+                  <th ></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" class="{{!item.estado?'bg-danger':''}}">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy'}}</td>
+                  <td>{{ item.fecha | date:'dd/MM/yyyy'}}</td>
+                  <td>{{ item.descripcion}}</td>
+                  <td>${{ item.monto | number:'1.2-2':'es-AR' }}</td>
+                  <td>{{ item.usuario.apellido}} {{ item.usuario.nombre}}</td>
+                  <td>
+                    <button class="btn btn-danger" type="button" (click)="eliminar(item)" *ngIf="item.estado">
+                        <i class="fa fa-remove"></i>&nbsp;Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-info" type="button" (click)="volver()">VOLVER</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card" *ngIf="carrera">
+        <div class="card-header">
+          <u>Carrera:</u> <b>{{carrera.nombre_corto}}</b> ({{carrera.plan_estudio.anio}}
+          <div class="card-header-actions">
+            <a  (click)="isCollapsed = !isCollapsed"
+              href="javascript:void(0);"
+              [attr.aria-expanded]="!isCollapsed" 
+              aria-controls="collapseBody">
+              <i class="icons cui-chevron-bottom"></i>
+            </a>
+          </div>
+        </div>
+        <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <u>Nombre:</u> {{carrera.nombre}}
+            </div>
+            <div class="form-group col-sm-6">
+              <u>Plan de estudio:</u> {{carrera.plan_estudio.nombre}}<b> ({{carrera.plan_estudio.anio}})</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card" *ngIf="inscripcion">
+        <div class="card-header">
+          {{inscripcion.alumno.apellido}} {{inscripcion.alumno.nombre}} {{inscripcion.alumno.tipo_documento?.nombre}}:{{inscripcion.alumno.documento}}
+          <div class="card-header-actions">
+            <a  (click)="isCollapsed = !isCollapsed"
+              href="javascript:void(0);"
+              [attr.aria-expanded]="!isCollapsed" 
+              aria-controls="collapseBody">
+              <i class="icons cui-chevron-bottom"></i>
+            </a>
+          </div>
+        </div>
+        <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <u>Email:</u> {{inscripcion.alumno.email}}
+            </div>
+            <div class="form-group col-sm-6">
+              <u>Contacto:</u> {{inscripcion.alumno.telefono}} - {{inscripcion.alumno.celular}}
+            </div>
+          </div>
+          <div class="row">
+            <u>Año de la inscripcion:</u> {{inscripcion.anio}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Listado de Comisiones
+            <div class="card-header-actions">
+              <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Comision</button>
+            </div>
+          </div>
+          <div class="card-body p-1">
+            <div class="table-responsive">
+              <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+                <thead>
+                    <tr>
+                      <th>Año</th>
+                      <th>Materia</th>
+                      <th>Numero</th>
+                      <th>Inscriptos</th>
+                      <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="dataSource?.length != 0">
+                  <tr *ngFor="let item of dataSource" >
+                    <td>{{ item.anio }}</td>
+                    <td>{{ item.materia.nombre }} ({{ item.materia.codigo }})</td>
+                    <td>{{item.numero}}</td>
+                    <td>{{item.alumnos_cantidad}}</td>
+                    <td>
+                      <div class="btn-group" dropdown placement="bottom right" container="body">
+                        <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                          <span class="caret"></span>
+                        </button>
+                        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                          <li role="menuitem">
+                            <a class="dropdown-item" (click)="asociar_alumno(item)" href="javascript:void(0);" *ngIf="inscripcion">Asociar alumno</a>
+                            <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas Información</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="dataSource?.length == 0">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

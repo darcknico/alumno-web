@@ -1,0 +1,121 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Editar movimiento</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formulario" >
+      <div class="row">
+          <div class="form-group col-sm-3">
+            <label class="control-label">Importe (*)</label>
+            <input currencyMask
+              required
+              formControlName="monto"
+              type="text" 
+              class="form-control">
+          </div>
+          <div class="form-group col-sm-3" >
+            <label class="control-label">Fecha</label>
+            <input bsDatepicker
+              required
+              formControlName="fecha"
+              type="text" 
+              class="form-control" 
+              placeholder="Fecha">
+          </div>
+      </div>
+      <div class="row">
+          <div class="form-group col-sm-5">
+            <label class="control-label">Tipo de Movimiento (*)</label>
+            <ng-select [items]="tipos"
+              [selectOnTab]="true"
+              [clearable]="false"
+              bindValue="id"
+              bindLabel="nombre"
+              placeholder="Tipo de Movimiento"
+              formControlName="id_tipo_movimiento">
+            </ng-select>
+          </div>
+        <div class="form-group col-sm-7">
+          <label class="control-label">Descripcion</label>
+          <input 
+            formControlName="descripcion"
+            type="text" 
+            class="form-control"
+            placeholder="Descripcion">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-3">
+          <label class="control-label">Forma de Pago (*)</label>
+          <select 
+            class="form-control"
+            formControlName="id_forma_pago">
+            <option *ngFor="let item of formas" [value]="item.id">{{item.nombre}}</option>
+          </select>
+        </div>
+        <div class="form-group col-sm-4">
+          <label class="control-label">Tipo de Comprobante</label>
+          <ng-select [items]="comprobantes"
+            [selectOnTab]="true"
+            bindValue="id"
+            bindLabel="nombre"
+            placeholder="Factura..."
+            formControlName="id_tipo_comprobante">
+          </ng-select>
+        </div>
+        <div class="form-group col-sm-9">
+          <label class="control-label">Numero de recibo</label>
+          <input 
+            formControlName="numero"
+            type="text" 
+            class="form-control">
+        </div>
+      </div>
+      <div class="row" *ngIf="formulario.get('id_forma_pago').value==2">
+          <div class="form-group col-sm-3">
+            <label class="control-label">Numero (*)</label>
+            <input 
+              formControlName="cheque_numero"
+              type="text" 
+              class="form-control"
+              placeholder="Numero del cheque">
+          </div>
+          <div class="form-group col-sm-3">
+            <label class="control-label">Origen</label>
+            <input 
+              formControlName="cheque_origen"
+              type="text" 
+              class="form-control"
+              placeholder="Origen del cheque">
+          </div>
+          <div class="form-group col-sm-3">
+            <label class="control-label">Banco</label>
+            <input 
+              formControlName="cheque_banco"
+              type="text" 
+              class="form-control"
+              placeholder="Banco del cheque">
+          </div>
+          <div class="form-group col-sm-3">
+            <label class="control-label">Fecha vencimiento</label>
+            <input bsDatepicker
+              formControlName="cheque_vencimiento"
+              type="text" 
+              class="form-control" 
+              placeholder="Fecha del vencimiento del cheque">
+          </div>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+    <button 
+      [disabled]="!formulario.valid"
+      type="button" 
+      class="btn btn-success" 
+      (click)="confirmar()">MODIFICAR</button>
+  </div>
+</div>

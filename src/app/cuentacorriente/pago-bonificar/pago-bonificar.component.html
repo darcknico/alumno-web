@@ -1,0 +1,110 @@
+<div class="animated fadeIn" >
+  <app-obligacion-siguiente-component
+    [id_plan_pago]="id"
+    [id_sede]="id_sede"
+    [id_tipo_obligacion]="1">
+    </app-obligacion-siguiente-component>
+  <app-obligacion-siguiente-component
+  [id_plan_pago]="id"
+  [id_sede]="id_sede"
+  [id_tipo_obligacion]="2">
+  </app-obligacion-siguiente-component>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Generar Bonificación
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formulario" >
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label class="control-label">Importe (*)</label>
+                <input currencyMask
+                  required
+                  (input)="onEditar()"
+                  formControlName="monto"
+                  type="text" 
+                  class="form-control">
+                <span *ngIf="formulario.get('monto').hasError('required')" class="help-block">
+                  El importe es requerido
+                </span>
+              </div>
+              <div class="form-group col-sm-3" >
+                <label class="control-label">Fecha</label>
+                <input bsDatepicker
+                  required
+                  (bsValueChange)="onEditar()"
+                  formControlName="fecha"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Fecha">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Tipo de Pago (*)</label>
+                <select 
+                  class="form-control"
+                  formControlName="id_tipo_pago">
+                  <option value="2">Bonificar Cuotas</option>
+                  <option value="3">Bonificar Intereses</option>
+                </select>
+              </div>
+              <button 
+                [disabled]="!formulario.valid"
+                class="btn btn-danger d-inline m-3 mt-4" 
+                (click)="preparar()" >
+                VISTA PREVIA
+              </button>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-9">
+                <label class="control-label">Descripcion</label>
+                <input 
+                  formControlName="descripcion"
+                  type="text" 
+                  class="form-control"
+                  placeholder="Descripcion">
+              </div>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+                  <thead>
+                    <tr>
+                      <th class="no-sort">Fecha</th>
+                      <th class="no-sort">Concepto</th>
+                      <th class="no-sort">Debe</th>
+                      <th class="no-sort">Haber</th>
+                      <th class="no-sort">Pago</th>
+                      <th class="no-sort">Saldo</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="dataSource?.length != 0">
+                    <tr *ngFor="let item of dataSource">
+                      <td>{{ item.obligacion.fecha_vencimiento | date:'dd/MM/yyyy'}}</td>
+                      <td>{{ item.obligacion.descripcion }}</td>
+                      <td>${{ item.monto | number:'1.2-2':'es-AR' }}</td>
+                      <td>${{ item.haber | number:'1.2-2':'es-AR' }}</td>
+                      <td>${{ item.pagado | number:'1.2-2':'es-AR' }}</td>
+                      <td>${{ item.saldo | number:'1.2-2':'es-AR' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary btn-block-xs-only m-1" (click)="volver()">Cancelar</button>
+            <button 
+              [disabled]="disablePagar()"
+              type="button" 
+              class="btn btn-success btn-block-xs-only m-1" 
+              (click)="confirmar()">REALIZAR PAGO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

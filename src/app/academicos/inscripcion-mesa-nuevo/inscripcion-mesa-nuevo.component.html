@@ -1,0 +1,177 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-alumno-detalle 
+        [alumno]="inscripcion.alumno"
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-alumno-detalle>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-carrera-detalle 
+        [plan_estudio]="inscripcion.plan_estudio" 
+        [carrera]="inscripcion.carrera" 
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-carrera-detalle>
+    </div>
+  </div>
+  <div class="row" *ngIf="!mesa_examen">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Mesas de examenes disponibles
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSourceMesaExamen">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Mesa</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSourceMesaExamen?.length != 0">
+                <tr *ngFor="let item of dataSourceMesaExamen">
+                  <td>{{ item.fecha_inicio | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>
+                    <button class="btn btn-primary btn-block" (click)="seleccionar_mesa_examen(item)">
+                      SELECCIONAR
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button 
+            class="btn btn-secondary btn-block-xs-only m-1"
+            (click)="volver()">Volver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="mesa_examen">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          Mesa de examen
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-danger" type="button" (click)="cambiar_mesa_examen()">CAMBIAR</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              Nombre: {{mesa_examen.nombre}}
+            </div>
+            <div class="col-md-4">
+              Fecha inicio: {{mesa_examen.fecha_inicio | date:'dd/MM/yyyy'}}
+            </div>
+            <div class="col-md-4">
+              Fecha finalizacion: {{mesa_examen.fecha_fin | date:'dd/MM/yyyy'}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="mesa_examen && !mesa_examen_materia">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Materias disponibles
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSourceMesaExamenMateria">
+              <thead>
+                <tr>
+                  <th>Fecha y Hora</th>
+                  <th>Materia</th>
+                  <th>Inscriptos</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSourceMesaExamenMateria?.length != 0">
+                <tr *ngFor="let item of dataSourceMesaExamenMateria">
+                  <td>{{ item.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.materia.nombre }}</td>
+                  <td>{{ item.alumnos_cantidad }}</td>
+                  <td>
+                    <button class="btn btn-primary btn-block" (click)="seleccionar_mesa_examen_materia(item)">
+                      SELECCIONAR
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button 
+            class="btn btn-secondary btn-block-xs-only m-1"
+            (click)="volver()">Volver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="mesa_examen_materia">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          Materia a inscribirse
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-danger" type="button" (click)="cambiar_mesa_examen_materia()">CAMBIAR</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              Nombre: {{ mesa_examen_materia.materia.nombre}}
+            </div>
+            <div class="col-md-4">
+              Horario : {{ mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm'}}
+            </div>
+            <div class="col-md-4">
+              Ubicacion: {{ mesa_examen_materia.Ubicacion }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-inline col-sm-6">
+              <label class="control-label">Condicion del alumno: </label>
+              <select
+                [(ngModel)]="id_tipo_condicion_alumno"
+                class="form-control">
+                <option *ngFor="let item of condicionalidades" [value]="item.id">{{item.nombre}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              Observaciones: {{ mesa_examen_materia.observaciones }}
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button 
+            class="btn btn-success btn-block-xs-only m-1"
+            (click)="continuar()">Confirmar inscripcion
+          </button>
+          <button 
+            class="btn btn-secondary btn-block-xs-only m-1"
+            (click)="volver()">Volver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  

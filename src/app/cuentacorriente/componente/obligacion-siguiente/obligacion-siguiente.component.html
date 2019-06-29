@@ -1,0 +1,43 @@
+<div class="animated fadeIn" *ngIf="obligacion">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Obligacion siguiente a pagar
+        </div>
+        <div class="card-body p-1">
+          <h5 class="card-title" *ngIf="id_tipo_obligacion == 1">Cuota</h5>
+          <h5 class="card-title" *ngIf="id_tipo_obligacion == 2">Interes</h5>
+          <h5 class="card-title" *ngIf="id_tipo_obligacion == 10">Matricula</h5>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+                  <thead>
+                    <tr>
+                      <th class="no-sort">Fecha</th>
+                      <th class="no-sort">Concepto</th>
+                      <th class="no-sort">Monto</th>
+                      <th class="no-sort">Pagado</th>
+                      <th class="no-sort">Saldo</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="obligacion.fecha_vencimiento">
+                    <tr >
+                      <td>{{ obligacion.fecha_vencimiento | date:'dd/MM/yyyy'}}</td>
+                      <td>{{ obligacion.descripcion }}</td>
+                      <td>${{ obligacion.monto | number:'1.2-2':'es-AR' }}</td>
+                      <td>${{ obligacion.acumulado | number:'1.2-2':'es-AR' }}</td>
+                      <td>${{ obligacion.saldo | number:'1.2-2':'es-AR' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div *ngIf="diaria">
+  <app-diaria-detalle-component 
+    [diaria]="diaria"></app-diaria-detalle-component>
+  <div class="row">
+    <div class="col-lg-4" *ngIf="anterior">
+      <ng-container *ngIf="anterior.last">
+        <button class="btn btn-warning m-1" 
+          *ngIf="anterior.last.id != anterior.next.id" 
+          (click)="cambiar(anterior.last)">
+          HACE UNA SEMANA
+        </button>
+      </ng-container>
+      <button class="btn btn-warning m-1" 
+        *ngIf="anterior.next" 
+        (click)="cambiar(anterior.next)">
+        ANTERIOR
+      </button>
+    </div>
+    <div class="col-lg-4 " *ngIf="diaria">
+      <div class="card">
+        <p class="text-center"> Fecha desde {{diaria.fecha_inicio | date:'dd/MM/yyyy'}} 
+          <ng-container *ngIf="diaria.fecha_fin">hasta {{diaria.fecha_fin | date:'dd/MM/yyyy'}}</ng-container>
+          <ng-container *ngIf="!diaria.fecha_fin"> y en curso</ng-container>
+        </p>
+      </div>
+    </div>
+    <div class="col-lg-4 " *ngIf="siguiente">
+      <ng-container *ngIf="siguiente.last">
+        <button class="btn btn-warning m-1 float-right" 
+          *ngIf="siguiente.last.id != siguiente.next.id "
+          (click)="cambiar(siguiente.last)">
+          ULTIMO
+        </button>
+      </ng-container>
+      <button class="btn btn-warning m-1 float-right" 
+        *ngIf="siguiente.next"
+        (click)="cambiar(siguiente.next)">
+        SIGUIENTE
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <app-ingreso-component
+        [ingresos]="diaria.ingresos"></app-ingreso-component>
+    </div>
+    <div class="col-lg-6">
+      <app-egreso-component
+        [egresos]="diaria.egresos"></app-egreso-component>
+    </div>
+  </div>
+</div>

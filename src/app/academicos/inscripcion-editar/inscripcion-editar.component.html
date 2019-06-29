@@ -1,0 +1,112 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-alumno-detalle 
+        [alumno]="inscripcion.alumno"
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-alumno-detalle>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-carrera-detalle 
+        [plan_estudio]="inscripcion.plan_estudio" 
+        [carrera]="inscripcion.carrera" 
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-carrera-detalle>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Informacion editable
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formulario" >
+            <div class="row">
+              <div class="form-group col-sm-4">
+                <label class="control-label">Año de inscripcion (*)</label>
+                <input 
+                  required
+                  formControlName="anio"
+                  type="number" 
+                  class="form-control"
+                  placeholder="">
+              </div>
+              <div class="form-group col-lg-6">
+                <label class="control-label">Modalidad de cursada (*)</label>
+                <select 
+                  required
+                  class="form-control"
+                  formControlName="id_modalidad">
+                  <option *ngFor="let item of modalidades" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-lg-12">
+                <label class="control-label">Plan de estudio (*)</label>
+                <select 
+                  required
+                  class="form-control"
+                  formControlName="id_plan_estudio">
+                  <option *ngFor="let item of planes_estudio" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="form-group col-lg-6">
+                <label class="control-label">Beca (*)</label>
+                <select 
+                  required
+                  class="form-control"
+                  formControlName="id_beca">
+                  <option *ngFor="let item of becas" [value]="item.id">{{item.nombre}} <b>({{ item.porcentaje }}%)</b></option>
+                </select>
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Fecha de Egreso</label>
+                <input bsDatepicker
+                  formControlName="fecha_egreso"
+                  type="text" 
+                  class="form-control" >
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label class="control-label">Observaciones</label>
+                <input
+                  formControlName="observaciones"
+                  type="text" 
+                  class="form-control"
+                  placeholder="">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-block-xs-only btn-success m-1"
+            type="submit"
+            color="accent"
+            (click)="continuar()"
+            [disabled]="!formulario.valid">
+            Guardar cambios
+            </button>
+          <button class="btn btn-block-xs-only btn-secondary m-1"
+            type="submit"
+            color="accent"
+            (click)="volver()">
+            Listado de Inscripciones
+            </button>
+          <button class="btn btn-block-xs-only btn-primary m-1"
+            type="submit"
+            color="accent"
+            (click)="ver()">
+            Mas informacion
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

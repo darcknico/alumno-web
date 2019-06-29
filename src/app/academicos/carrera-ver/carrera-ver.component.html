@@ -1,0 +1,45 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-6">
+      <div class="card" *ngIf="carrera">
+        <div class="card-header">
+          Carrera
+        </div>
+        <div class="card-body text-center">
+          <h5 class="card-title">{{carrera.nombre}} ({{carrera.nombre_corto}})</h5>
+          <p class="card-text">Departamento: {{carrera.departamento.nombre}}</p>
+          <p class="card-text">Titulo: {{carrera.titulo}}</p>
+          <p class="card-text">{{carrera.descripcion}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6" *ngIf="planEstudio">
+      <div class="card" >
+        <div class="card-header">
+          Plan de Estudio
+          <div class="card-header-actions">
+            <button class="btn btn-sm btn-primary m-1" type="button" (click)="planCambiar()">Cambiar</button>
+            <button type="button" class="btn btn-sm btn-primary m-1" (click)="reporte()">DESCARGAR</button>
+            <button type="button" class="btn btn-sm btn-secondary m-1" (click)="imprimir()">IMPRIMIR</button>
+          </div>
+        </div>
+        <div class="card-body text-center">
+          <h5 class="card-title">{{planEstudio.nombre}} ({{planEstudio.codigo}})</h5>
+          <p class="card-text">Año: {{planEstudio.anio}}</p>
+          <p class="card-text">Horas {{planEstudio.cantidad_horas}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="animated fadeIn" *ngIf="!planEstudio">
+        <app-carrera-plan [carrera]="carrera" (planSeleccionado)="planSeleccionado($event)" *ngIf="carrera"></app-carrera-plan>
+      </div>
+      <div class="animated fadeIn" *ngIf="planEstudio">
+        <app-carrera-materia [planEstudio]="planEstudio" (planEstudioModificado)="planEstudioModificado($event)"></app-carrera-materia>
+      </div>
+    </div>
+  </div>
+</div>
+    

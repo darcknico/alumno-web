@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{titulo}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formulario" >
+      <div class="row">
+        <div class="form-group col-sm-8">
+          <label class="control-label">Nombre (*)</label>
+          <input 
+            required
+            formControlName="nombre"
+            type="text" 
+            class="form-control"
+            placeholder="Nombre">
+          <span *ngIf="formulario.get('nombre').hasError('required')" class="help-block">
+            El nombre del Plan
+          </span>
+        </div>
+        <div class="form-group col-sm-4">
+          <label class="control-label">Codigo (*)</label>
+          <input 
+            required
+            formControlName="codigo"
+            type="text" 
+            class="form-control"
+            placeholder="Codigo">
+          <span *ngIf="formulario.get('codigo').hasError('required')" class="help-block">
+            El Codigo es requerido
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-4">
+          <label class="control-label">Año (*)</label>
+          <input 
+            required
+            formControlName="anio"
+            type="number" 
+            class="form-control"
+            placeholder="2018">
+          <span *ngIf="formulario.get('anio').hasError('required')" class="help-block">
+            Año del Plan
+          </span>
+        </div>
+        <div class="form-group col-sm-4">
+          <label class="control-label">Horas</label>
+          <input
+            formControlName="horas"
+            type="number" 
+            class="form-control"
+            placeholder="Horas">
+        </div>
+        <div class="form-group col-sm-4">
+          <label class="control-label">Nro Resolucion</label>
+          <input 
+            required
+            formControlName="resolucion"
+            type="text" 
+            class="form-control"
+            placeholder="Nro">
+        </div>
+      </div>
+      <div class="row">
+        
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+    <button 
+      [disabled]="!formulario.valid"
+      type="button" 
+      class="btn btn-primary" 
+      (click)="confirmar()">Guardar</button>
+  </div>

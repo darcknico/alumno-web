@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="alumno">Detalle nota {{alumno.alumno.apellido}} {{alumno.alumno.nombre}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <label class="control-label">Asistencia (*)</label>
+        <input
+          formControlName="asistencia"
+          type="checkbox" 
+          class="form-control"
+          placeholder="1">
+      </div>
+      <div class="form-group col-sm-4">
+        <label class="control-label">Nota (*)</label>
+        <input 
+          required
+          formControlName="nota"
+          type="number" 
+          class="form-control"
+          placeholder="1">
+      </div>
+      <div class="form-group col-sm-4">
+        <label class="control-label">Nota texto (*)</label>
+        <input 
+          required
+          formControlName="nota_nombre"
+          type="text" 
+          class="form-control"
+          placeholder="Uno">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Condicion del alumno</label>
+        <select
+          class="form-control"
+          formControlName="id_tipo_condicion_alumno">
+          <option *ngFor="let item of condicionalidades" [value]="item.id">{{item.nombre}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Observaciones</label>
+        <input
+          formControlName="observaciones"
+          type="number" 
+          class="form-control"
+          placeholder=" - ">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    [disabled]="!formulario.valid"
+    type="button" 
+    class="btn btn-primary" 
+    (click)="confirmar()">Guardar</button>
+</div>

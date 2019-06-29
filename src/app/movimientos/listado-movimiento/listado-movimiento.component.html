@@ -1,0 +1,120 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Movimientos
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-info" type="button" (click)="exportar()">Exportar</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="row">
+            <div class="form-group col-sm-3">
+              <label class="control-label">Tipo</label>
+              <select 
+                class="form-control" 
+                (change)="refrescar()"
+                [(ngModel)]="request.id_tipo_egreso_ingreso"
+                >
+                <option value="-1">TODOS</option>
+                <option value="1">Ingreso</option>
+                <option value="0">Egreso</option>
+              </select>
+            </div>
+            <div class="form-group col-sm-3">
+              <label class="control-label">Forma de Pago</label>
+              <select 
+                class="form-control"
+                (change)="refrescar()"
+                [(ngModel)]="request.id_forma_pago"
+                >
+                <option value="0">TODOS</option>
+                <option *ngFor="let item of formas" [value]="item.id" >{{item.nombre}}</option>
+              </select>
+            </div>
+            <div class="form-group col-sm-3" >
+              <label class="control-label">Fecha Inicio</label>
+              <input bsDatepicker
+                (bsValueChange)="fecha_inicio($event)"
+                type="text" 
+                class="form-control" 
+                placeholder="Inicio">
+            </div>
+            <div class="form-group col-sm-3" >
+              <label class="control-label">Fecha Fin</label>
+              <input bsDatepicker
+                (bsValueChange)="fecha_fin($event)"
+                type="text" 
+                class="form-control" 
+                placeholder="Fin">
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th class="no-sort">Forma de pago</th>
+                  <th class="no-sort">Tipo</th>
+                  <th class="no-sort">Detalle</th>
+                  <th>Monto</th>
+                  <th class="no-sort"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0" class="table-filas">
+                <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
+                  <td>{{ item.fecha | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    {{ item.forma.nombre }}
+                    <span *ngIf="item.id_tipo_egreso_ingreso==1 && request.id_tipo_egreso_ingreso == -1">
+                      (INGRESO) 
+                    </span>
+                    <span *ngIf="item.id_tipo_egreso_ingreso==0 && request.id_tipo_egreso_ingreso == -1">
+                      (EGRESO)
+                    </span>
+                  </td>
+                  <td>
+                    {{item.tipo?.nombre}}
+                  </td>
+                  <td>
+                    <span *ngIf="item.descripcion">Descripcion:{{ item.descripcion}}</span>
+                    <span *ngIf="item.tipo_comprobante">({{item.tipo_comprobante.nombre}} {{item.numero}})</span>
+                  </td>
+                  <td>${{ item.monto | number:'1.2-2':'es-AR'}}</td>
+                  <td class="m-0">
+                    <div class="btn-group" dropdown placement="bottom right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Descartar</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSource?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">No data!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-block-xs-only btn-success m-1" type="button" (click)="agregar_ingreso()">AGREGAR INGRESO</button>
+          <button class="btn btn-block-xs-only btn-success m-1" type="button" (click)="agregar_egreso()">AGREGAR EGRESO</button>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

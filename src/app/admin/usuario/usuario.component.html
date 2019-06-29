@@ -1,0 +1,93 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de usuarios
+          <div class="card-header-actions">
+            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nuevo Usuario</button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label class="control-label">Tipo Usuario</label>
+              <select 
+                class="form-control" 
+                required
+                id="id_tipo_usuario"
+                (change)="refrescar()"
+                [(ngModel)]="request.id_tipo_usuario"
+                >
+                <option value="0">TODOS</option>
+                <option *ngFor="let item of tipo_usuarios" [value]="item.id" >{{item.nombre}}</option>
+              </select>
+            </div>
+            <div class="form-group col-sm-4">
+              <label class="control-label">Sede</label>
+              <select 
+                class="form-control" 
+                required
+                id="id_sede"
+                (change)="refrescar()"
+                [(ngModel)]="request.id_sede"
+                >
+                <option value="0">TODOS</option>
+                <option *ngFor="let item of sedes" [value]="item.id" >{{item.nombre}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th>Agregado</th>
+                  <th>Nombre y Apellido</th>
+                  <th>Correo</th>
+                  <th>Contacto</th>
+                  <th>Tipo Usuario</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="usuarios?.length != 0">
+                <tr *ngFor="let item of usuarios" class="{{item.estado==0?'bg-danger':''}}">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.nombre }} {{ item.apellido }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>
+                    <p *ngIf="item.telefono">Tel:{{ item.telefono }}</p>
+                    <p *ngIf="item.celular">Cel:{{ item.celular }}</p>
+                  </td>
+                  <td>{{item.tipo?.nombre}}</td>
+                  <td>
+                    <div class="btn-group" dropdown placement="bottom right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                          <a class="dropdown-item" (click)="contrasenia(item)" href="javascript:void(0);">Cambiar Contraseña</a>
+                          <a class="dropdown-item" (click)="bloquear(item)" href="javascript:void(0);" *ngIf="item.estado == 1" >Bloquear</a>
+                          <a class="dropdown-item" (click)="desbloquear(item)" href="javascript:void(0);" *ngIf="item.estado == 0">Desbloquear</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="usuarios?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">No data!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

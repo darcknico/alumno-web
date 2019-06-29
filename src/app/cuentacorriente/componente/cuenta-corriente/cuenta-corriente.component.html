@@ -1,0 +1,56 @@
+<div class="animated fadeIn" *ngIf="plan_pago">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" >
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Cuenta Corriente {{plan_pago.anio}}
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Concepto</th>
+                  <th>Debe</th>
+                  <th>Haber</th>
+                  <th>Saldo</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" class="{{id_ultimo==item.id?'ultimo':''}}">
+                  <td>{{ item.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.descripcion}}</td>
+                  <td>
+                    <div *ngIf="[1,2,10].indexOf(item.id_tipo_obligacion) >= 0">
+                      ${{ item.monto | number:'1.2-2':'es-AR' }}
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="[3,4].indexOf(item.id_tipo_obligacion) >= 0">
+                      ${{ item.monto | number:'1.2-2':'es-AR' }}                      
+                    </div>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.acumulado>=0">
+                      ${{ item.acumulado | number:'1.2-2':'es-AR' }}
+                    </ng-container>
+                    <ng-container *ngIf="item.acumulado<0">
+                      $({{ item.acumulado | number:'1.2-2':'es-AR' }})
+                    </ng-container>
+                    </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-danger" type="button" (click)="rearmar()">REARMAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

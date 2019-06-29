@@ -1,0 +1,206 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <app-mesa-detalle-component
+        [mesa_examen]="mesa_examen"
+        [collapsed]="true"
+        *ngIf="mesa_examen">
+      </app-mesa-detalle-component>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Mesa de examen - Materia - Edicion</strong>
+          <small> Formulario</small>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formulario" >
+            <div class="row" *ngIf="mesa_examen_materia">
+              <div class="form-group col-sm-6">
+                <u>Materia:</u> {{mesa_examen_materia.materia.nombre}}
+              </div>
+              <div class="form-group col-sm-6">
+                <u>Carrera:</u> {{mesa_examen_materia.carrera.nombre}}
+              </div>
+              <div class="form-group col-sm-6">
+                <u>Plan de estudio:</u> {{mesa_examen_materia.materia.plan_estudio.nombre}} ({{mesa_examen_materia.materia.plan_estudio.anio}})
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <hr>                
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-4" *ngIf="mesa_examen">
+                <label class="control-label">Fecha provista (*)</label>
+                <input bsDatepicker
+                  required
+                  [minDate]="fecha_inicio"
+                  formControlName="fecha"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Fecha">
+                <span *ngIf="formulario.get('fecha').hasError('required')" class="help-block">
+                  La fecha y hora son requeridos
+                </span>
+              </div>
+              <div class="form-group col-sm-4" *ngIf="mesa_examen">
+                <label class="control-label">Hora realizacion (*)</label>
+                <timepicker 
+                  required
+                  formControlName="hora"
+                  [showMeridian]="false" 
+                  [showSpinners]="false">
+                </timepicker>
+              </div>
+              <div class="form-group col-sm-4" *ngIf="mesa_examen">
+                <label class="control-label">Fecha cierre (*)</label>
+                <input bsDatepicker
+                  required
+                  [minDate]="fecha_inicio"
+                  formControlName="fecha_cierre"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Fecha">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label class="control-label">Ubicacion</label>
+                <input
+                  formControlName="ubicacion"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Ubicacion">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Libro</label>
+                <input
+                  formControlName="libro"
+                  type="text" 
+                  class="form-control">
+              </div>
+              <div class="form-group col-sm-3">
+                <label class="control-label">Folio</label>
+                <input
+                  formControlName="folio"
+                  type="text" 
+                  class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label class="control-label">Observaciones</label>
+                <input
+                  formControlName="observaciones"
+                  type="text" 
+                  class="form-control">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-success btn-block-xs-only m-1"
+            type="submit"
+            color="accent"
+            (click)="continuar()"
+            [disabled]="consultando"
+            [disabled]="!formulario.valid">
+            Guardar cambios
+            </button>
+          <button class="btn btn-secondary btn-block-xs-only m-1"
+            [disabled]="consultando"
+            (click)="volver()">
+            Listado de Materias por Mesa de Examen
+            </button>
+          <button class="btn btn-primary btn-block-xs-only m-1"
+            [disabled]="consultando"
+            (click)="volver_mesa_examen()">
+            Mesa de Examen
+            </button>
+          <button class="btn btn-danger btn-block-xs-only m-1"
+            [disabled]="consultando"
+            (click)="excel()">
+            Excel de Inscriptos
+            </button>
+          <button class="btn btn-danger btn-block-xs-only m-1"
+            [disabled]="consultando"
+            (click)="notas()">
+            Subir notas
+            </button>
+          <button class="btn btn-danger btn-block-xs-only m-1"
+            [disabled]="consultando"
+            (click)="acta_reporte()">
+            Descargar Acta de Examen
+            </button>
+          <button class="btn btn-danger btn-block-xs-only m-1"
+            [disabled]="consultando"
+            (click)="acta_imprimir()">
+            Imprimir Acta de Examen
+            </button>
+        </div>
+      </div>  
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Alumnos inscriptos
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th>Agregado</th>
+                  <th>Usuario</th>
+                  <th>Alumno</th>
+                  <th>Condicion</th>
+                  <th>Detalles</th>
+                  <th class="option"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
+                  <td>{{ item.alumno.apellido }} {{ item.alumno.nombre }} {{ item.alumno.documento }}</td>
+                  <td>
+                    <ng-container *ngIf="item.condicion">
+                      {{item.condicion.nombre}}
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.nota">
+                        Nota: {{ item.nota }} ({{ item.nota_nombre }})<br>
+                    </ng-container>
+                    <ng-container *ngIf="item.observaciones">
+                        Obs: {{ item.observaciones }}
+                    </ng-container>
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown placement="top right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="alumno_editar(item)" href="javascript:void(0);">Editar</a>
+                          <a class="dropdown-item" (click)="alumno_desasociar(item)" href="javascript:void(0);">Dar de baja</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

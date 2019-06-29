@@ -1,0 +1,62 @@
+<div class="animated fadeIn" >
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" >
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Cuotas
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Vencimiento</th>
+                  <th>Monto</th>
+                  <th>Interes por Mora</th>
+                  <th>Interes pagado</th>
+                  <th>Pagado</th>
+                  <th>Saldo</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" class="{{id_ultimo==item.id?'ultimo':''}}">
+                  <td>{{ item.descripcion }}</td>
+                  <td>{{ item.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                      ${{ item.monto | number:'1.2-2':'es-AR' }}
+                  </td>
+                  <td>
+                    <div *ngIf="item.interes">
+                        ${{ item.interes.monto | number:'1.2-2':'es-AR' }}
+                    </div>
+                    <div *ngIf="!item.interes">
+                        $0,00
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="item.interes">
+                        ${{ (item.interes.monto-item.interes.saldo) | number:'1.2-2':'es-AR' }}
+                    </div>
+                    <div *ngIf="!item.interes">
+                        $0,00
+                    </div>
+                  </td>
+                  <td>
+                      ${{ (item.monto-item.saldo) | number:'1.2-2':'es-AR' }}
+                  </td>
+                  <td>
+                      ${{ item.saldo | number:'1.2-2':'es-AR' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-info" type="button" (click)="volver()">VOLVER</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
