@@ -29,7 +29,9 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "node_modules/datatables.net-select-dt/css/select.dataTables.css",
-              "node_modules/angular-calendar/css/angular-calendar.css"
+              "node_modules/angular-calendar/css/angular-calendar.css",
+              "node_modules/grapesjs/dist/css/grapes.min.css",
+              "node_modules/grapesjs-preset-newsletter/dist/grapesjs-preset-newsletter.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
@@ -39,7 +41,9 @@
               "node_modules/jquery/dist/jquery.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "node_modules/@ckeditor/ckeditor5-build-classic/build/translations/es.js",
-              "node_modules/datatables.net-select/js/dataTables.select.js"
+              "node_modules/datatables.net-select/js/dataTables.select.js",
+              "node_modules/grapesjs/dist/grapes.min.js",
+              "node_modules/grapesjs-preset-newsletter/dist/grapesjs-preset-newsletter.min.js"
             ]
           },
           "configurations": {

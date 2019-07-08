@@ -9,6 +9,7 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { TemplateComponent } from './notificaciones/template/template.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,9 @@ export const routes: Routes = [
     data: {
       title: 'Register Page'
     }
+  },
+  {
+    path: 'template',canActivate: [AuthGuard],component: TemplateComponent,
   },
   {
     path: '',

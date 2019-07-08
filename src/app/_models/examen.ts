@@ -1,6 +1,7 @@
 import { Comision } from './comision';
 import { Usuario } from './usuario';
-import { Alumno } from './alumno';
+import { Alumno, TipoCondicionAlumno } from './alumno';
+import { TipoAsistenciaAlumno } from './asistencia';
 
 export interface Examen{
     id:number;
@@ -37,4 +38,6 @@ export interface ExamenAlumno{
     created_at:Date;
     updated_at:Date;
     alumno:Alumno;
+
+    tipo:TipoAsistenciaAlumno;
 }

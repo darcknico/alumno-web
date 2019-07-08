@@ -2,7 +2,7 @@
 import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { PlantillaService } from '../../_services/plantilla.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -13,8 +13,6 @@ import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.c
 import { DomSanitizer } from '@angular/platform-browser';
 import { saveAs } from 'file-saver';
 import { map} from 'rxjs/operators';
-
-import { DialogTextareaComponent } from '../../_generic/dialog-textarea/dialog-textarea.component';
 
 @Component({
   selector: 'app-plantilla-editar',
@@ -29,7 +27,6 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
   formulario: FormGroup;
   
   data:string="";
-  html:string='';
   public Editor = ClassicEditor;
   config = {
     toolbar: [ 'bold', 'italic', '|', 'undo', 'redo' ],
@@ -51,6 +48,12 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
       titulo: ['', Validators.required],
       descripcion: '',
     });
+
+    this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.data = this.router.getCurrentNavigation().extras.state.contenido;
+      }
+    });
   }
 
   ngOnInit() {
@@ -70,8 +73,9 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
         this.plantillaService.getById(this.id).subscribe(response=>{
           this.f.titulo.setValue(response.titulo);
           this.f.descripcion.setValue(response.descripcion);
-          this.html = response.cuerpo;
-          this.data = response.cuerpo;
+          if(!this.data){
+            this.data = response.cuerpo;
+          }
           this.archivos = response.archivos;
           this.archivos.forEach(archivo=>{
             this.plantillaService.archivo(archivo).subscribe(blob=>{
@@ -86,11 +90,7 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if(this.data.length<this.html.length){
-      
-    } else {
-      this.html='';
-    }
+    
   }
 
   get f(){
@@ -101,19 +101,11 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
     if(!this.formulario.valid){
       return;
     }
-    if(this.data.length==0 || this.html.length==0){
-      this.toastr.warning('El cuerpo de la plantilla no puede estar vacio.', '');
-      return;
-    }
     var item = <Plantilla>{}
     item.id = this.id;
     item.titulo = this.f.titulo.value;
     item.descripcion = this.f.descripcion.value;
-    if(this.html.length>0){
-      item.cuerpo = this.html;
-    } else {
-      item.cuerpo = this.data;
-    }
+    item.cuerpo = this.data;
     if(this.id>0){
       this.plantillaService.update(item).subscribe(response=>{
         this.toastr.success('Plantilla editada', '');
@@ -147,21 +139,6 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
 
   volver(){
     this.router.navigate(['/notificaciones/plantillas']);
-  }
-
-  cuerpo(){
-    const modal = this.modalService.show(DialogTextareaComponent,{class: 'modal-warning'});
-    (<DialogTextareaComponent>modal.content).onShow("Insertar HTML","",this.data);
-    (<DialogTextareaComponent>modal.content).onClose.subscribe(result => {
-      if (result.length>0) {
-        this.html = result;
-      }
-    });
-  }
-
-  editor(){
-    this.data="";
-    this.html="";
   }
   
     /**
@@ -233,11 +210,17 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
 
   previa(){
     var wnd = window.open("about:blank", "", "_blank,width = 600, height = 800");
-    if(this.data.length<this.html.length){
-      wnd.document.write(this.html);
-    } else {
-      wnd.document.write(this.data);
-    }
+    wnd.document.write(this.data);
   }
 
+  editor(){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        return:'notificaciones/plantillas',
+        id:this.id,
+        contenido:this.data, 
+      }
+    };
+    this.router.navigate(['template'],navigationExtras);
+  }
 }

@@ -1,9 +1,29 @@
 export const navItems = [
   {
-    name: 'Usuarios',
-    url: '/admin/usuarios',
-    icon: 'icon-user',
+    name: 'Administracion',
+    url: '/admin',
+    icon: 'fa fa-superpowers',
     permisos: [1],
+    children: [
+      {
+        name: 'Usuarios',
+        url: '/admin/usuarios',
+        icon: 'icon-user',
+        permisos: [1],
+      },
+      {
+        name: 'Novedades',
+        url: '/admin/novedades',
+        icon: 'fa fa-newspaper-o',
+        permisos: [1],
+      },
+      {
+        name: 'Documentacion',
+        url: '/admin/documentos',
+        icon: 'fa fa-info-circle',
+        permisos: [1],
+      }
+    ]
   },
   {
     name: 'Establecimiento',
@@ -68,6 +88,12 @@ export const navItems = [
         icon: 'icon-docs',
         permisos: [1,2,4],
       },
+      {
+        name: 'Mesa*Materia',
+        url: '/mesas/materias',
+        icon: 'fa fa-check-square',
+        permisos: [1,2,4,8],
+      },
     ]
   },{
     name: 'Comunicaciones',
@@ -124,30 +150,24 @@ export const navItems = [
         permisos: [1,2,4],
       },
       {
-        name: 'Asistencias',
-        url: '/asistencias',
-        icon: 'fa fa-check-square-o'
-      },
-      {
-        name: 'Examenes',
-        url: '/examenes',
-        icon: 'fa fa-check-square-o'
-      },
-      {
         name: 'Comisiones',
         url: '/comisiones',
         icon: 'fa fa-check-square',
         permisos: [1,2,4,8],
       },
       {
-        name: 'Comision*Alumno',
-        url: '/comisiones/alumnos',
-        icon: 'fa fa-check-square',
-        permisos: [1,2,4,8],
+        name: 'Comision*Asistencia',
+        url: '/asistencias',
+        icon: 'fa fa-check-square-o'
       },
       {
-        name: 'Mesa*Materia',
-        url: '/mesas/materias',
+        name: 'Comision*Examen',
+        url: '/examenes',
+        icon: 'fa fa-check-square-o'
+      },
+      {
+        name: 'Comision*Alumno',
+        url: '/comisiones/alumnos',
         icon: 'fa fa-check-square',
         permisos: [1,2,4,8],
       },

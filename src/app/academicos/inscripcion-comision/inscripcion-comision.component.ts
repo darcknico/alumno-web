@@ -61,6 +61,10 @@ export class InscripcionComisionComponent implements OnInit {
     });
   }
 
+  comision(item:ComisionAlumno){
+    this.router.navigate(['/comisiones/'+item.id_comision+'/ver']);
+  }
+
   volver(){
     this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/ver']);
   }

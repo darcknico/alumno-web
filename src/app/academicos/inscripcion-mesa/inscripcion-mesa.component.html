@@ -35,8 +35,11 @@
                   <th>Fecha</th>
                   <th>Mesa</th>
                   <th>Materia</th>
+                  <th>Libro</th>
+                  <th>Folio</th>
                   <th>Condicion</th>
-                  <th>Detalle</th>
+                  <th>Nota</th>
+                  <th>Observaciones</th>
                   <th></th>
                 </tr>
               </thead>
@@ -45,15 +48,24 @@
                   <td>{{ item.mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
                   <td>{{ item.mesa_examen_materia.mesa_examen.nombre }}</td>
                   <td>{{ item.mesa_examen_materia.materia.nombre }}</td>
+                  <td>{{ item.mesa_examen_materia.libro }}</td>
+                  <td>{{ item.mesa_examen_materia.folio }}</td>
                   <td>
                     <ng-container *ngIf="item.condicion">
                       {{item.condicion.nombre}}
                     </ng-container>
                   </td>
-                  <td> Nota: {{ item.nota?item.nota:'-' }} <br>Obs: {{item.observaciones?item.observaciones:'-'}}</td>
+                  <td>
+                    {{ item.nota }} <br *ngIf="item.nota_nombre">({{item.nota_nombre}})</td>
+                  <td>
+                    {{ item.observaciones }}
+                  </td>
                   <td>
                     <button class="btn btn-danger btn-sm" (click)="alumno_desasociar(item)" *ngIf="!item.nota">
                       <span class="fa fa-trash"></span>
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="mesa_examen_materia(item)" >
+                      <span class="fa fa-file"></span>
                     </button>
                   </td>
                 </tr>

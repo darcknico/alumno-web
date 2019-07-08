@@ -11,9 +11,10 @@ import { PlantillaService } from '../_services/plantilla.service';
 import { NotificacionService } from '../_services/notificacion.service';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, TimepickerModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TimepickerModule, BsDatepickerModule, ModalModule } from 'ngx-bootstrap';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PlantillaNuevaModalComponent } from './plantilla-nueva-modal/plantilla-nueva-modal.component';
 
 @NgModule({
   imports: [
@@ -26,18 +27,23 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BsDatepickerModule,
     CKEditorModule,
     TimepickerModule,
-    NgSelectModule
+    NgSelectModule,
+    ModalModule.forRoot(),
   ],
   declarations: [
     PlantillaComponent, 
     PlantillaEditarComponent, 
     NotificacionComponent, 
     NotificacionEditarComponent, 
-    NotificacionVerComponent
+    NotificacionVerComponent, 
+    PlantillaNuevaModalComponent,
   ],
   providers:[
     PlantillaService,
     NotificacionService,
+  ],
+  entryComponents:[
+    PlantillaNuevaModalComponent,
   ]
 })
 export class NotificacionesModule { }

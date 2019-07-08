@@ -46,7 +46,12 @@
                   <td>{{ item.comision.materia.nombre }}</td>
                   <td>{{ item.comision.alumnos_cantidad }}</td>
                   <td>
-
+                    <button 
+                      class="btn btn-sm btn-primary"
+                      tooltip="ir a la Comision"
+                      (click)="comision(item)">
+                      <span class="fa fa-eye" ></span>
+                    </button>
                   </td>
                 </tr>
               </tbody>

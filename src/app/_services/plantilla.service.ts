@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Plantilla, PlantillaArchivo } from '../_models/plantilla';
+import { SedeService } from './sede.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,13 @@ export class PlantillaService {
     id_sede:number;
 
     constructor(
+        private sedeService:SedeService,
         private http: HttpClient,
     ) {
+        this.id_sede = this.sedeService.getIdSede();
+        this.sedeService.id_sede$.subscribe(id=>{
+            this.id_sede = id;
+        });
     }
 
     sede(id_sede:number){

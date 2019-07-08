@@ -1,0 +1,46 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Nueva Plantilla</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formulario" >
+      <div class="row">
+        <div class="form-group col-sm-12 {{ f.titulo.touched && f.titulo.invalid?'was-validated':''}}">
+          <label class="control-label">Titulo (*)</label>
+          <input currencyMask
+            required
+            formControlName="titulo"
+            type="text" 
+            class="form-control">
+          <div *ngIf= "f.titulo.touched" class="invalid-feedback">
+            <span *ngIf="f.titulo.hasError('required')" class="help-block">
+                El titulo es requerido
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="control-label">Descripcion</label>
+          <textarea 
+            formControlName="descripcion"
+            type="text" 
+            class="form-control"
+            placeholder="">
+            </textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+    <button 
+      [disabled]="!formulario.valid"
+      type="button" 
+      class="btn btn-success" 
+      (click)="confirmar()">Continuar</button>
+  </div>
+</div>

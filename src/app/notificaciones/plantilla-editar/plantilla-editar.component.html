@@ -46,17 +46,12 @@
           <div class="row">
             <div class="col-sm-12">
               <label class="control-label">Cuerpo del Mensaje&nbsp; </label>
-              <button class="btn btn-warning" *ngIf="html.length<=data.length"
-                type="button" 
-                (click)="cuerpo()">
-                INJECTAR HTML
-              </button>
-              <button class="btn btn-warning" *ngIf="html.length>data.length"
+              <button class="btn btn-warning"
                 type="button" 
                 (click)="editor()">
-                QUITAR INJECCION HTML
+                ABRIR EDITOR
               </button>
-              <ckeditor *ngIf="html.length<=data.length"
+              <ckeditor
                 [editor]="Editor" 
                 [(ngModel)]="data"
                 [config]="config"

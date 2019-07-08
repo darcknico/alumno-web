@@ -31,8 +31,6 @@ export class AppComponent implements OnInit {
       this.sedeService.actualizar();
     });
 
-    if (this.auth.isAuthenticated()){
-      this.auth.iniciar();
-    }
+    this.auth.iniciar();
   }
 }

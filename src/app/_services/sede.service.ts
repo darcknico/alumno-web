@@ -8,7 +8,7 @@ import { UsuarioSede } from '../_models/usuario';
 @Injectable()
 export class SedeService {
 
-    sede$ = new Subject<Sede>();
+    sede$ = new Subject<UsuarioSede>();
     id_sede$ = new Subject<number>();
     api:string = environment.apiUrl;
 
@@ -52,10 +52,14 @@ export class SedeService {
         return Number(localStorage.getItem('id_sede'));
     }
 
+    getSede(){
+        return JSON.parse(localStorage.getItem('sede'));
+    }
+
     private setSede(sede:UsuarioSede){
         localStorage.setItem('sede',JSON.stringify(sede));
         localStorage.setItem('id_sede',String(sede.id_sede));
-        this.sede$.next(sede.sede);
+        this.sede$.next(sede);
         this.id_sede$.next(sede.id_sede);
     }
 }

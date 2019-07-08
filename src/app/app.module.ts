@@ -80,6 +80,7 @@ const requestFilters = [
   { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/movimientos?') },
   { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/pagos?') },
   { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/planes_pago?') },
+  { method: 'GET', url: new RegExp('/api/usuarios?') },
   { method: 'GET', url: new RegExp('/api/docentes?') },
 ];
 
@@ -123,6 +124,10 @@ import { DocenteService } from './_services/docente.service';
 import { ComisionAlumnoService } from './_services/comision_alumno.service';
 import { ExamenAlumnoService } from './_services/examen_alumno.service';
 import { AsistenciaAlumnoService } from './_services/asistencia_alumno.service';
+import { NovedadSistemaService } from './_services/novedad_sistema.service';
+import { PlantillaImagenService } from './_services/plantilla_imagen.service';
+import { NovedadModalComponent } from './modals/novedad-modal/novedad-modal.component';
+import { TemplateComponent } from './notificaciones/template/template.component';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -195,6 +200,8 @@ export const customCurrencyMaskConfig = {
     ExamenAlumnoEditarModalComponent,
     InscripcionAsistenciaModalComponent,
     InscripcionExamenModalComponent,
+    NovedadModalComponent,
+    TemplateComponent,
   ],
   providers: [
     AuthGuard,
@@ -227,6 +234,8 @@ export const customCurrencyMaskConfig = {
     ComisionAlumnoService,
     ExamenAlumnoService,
     AsistenciaAlumnoService,
+    NovedadSistemaService,
+    PlantillaImagenService,
 
     { provide: HTTP_INTERCEPTORS, useClass: PassportInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },

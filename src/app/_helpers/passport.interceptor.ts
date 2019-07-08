@@ -21,7 +21,7 @@ export class PassportInterceptor implements HttpInterceptor {
         if (this.authenticationService.isAuthenticated()) {
             request = request.clone({
                 setHeaders: { 
-                    Authorization: 'Bearer '+this.authenticationService.getToken(),
+                    Authorization: this.authenticationService.getToken(),
                 }
             });
         }

@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MesaExamenMateriaService } from '../../_services/mesa_examen_materia.service';
 import { TipoCondicionAlumno } from '../../_models/alumno';
 import { AlumnoService } from '../../_services/alumno.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-inscripcion-mesa-nuevo',
@@ -23,7 +24,8 @@ export class InscripcionMesaNuevoComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dataSourceMesaExamen:MesaExamen[];
   dataSourceMesaExamenMateria:MesaExamenMateria[];
-  id_tipo_condicion_alumno:number = 1;
+
+  formulario:FormGroup;
   constructor(
     private alumnoService:AlumnoService,
     private inscripcionService:InscripcionService,
@@ -32,7 +34,13 @@ export class InscripcionMesaNuevoComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
+    private fb:FormBuilder,
   ) {
+    this.formulario = this.fb.group({
+      id_tipo_condicion_alumno:1,
+      nota:[null,[Validators.min(0),Validators.max(10),Validators.nullValidator]],
+      nota_nombre:'',
+    });
   }
 
   ngOnInit() {
@@ -66,6 +74,10 @@ export class InscripcionMesaNuevoComponent implements OnInit {
     });
   }
 
+  get f(){
+    return this.formulario.controls;
+  }
+
   seleccionar_mesa_examen(item:MesaExamen){
     this.mesa_examen = item;
     this.inscripcionService.mesas_examenes_materias_disponibles(this.inscripcion.id,this.mesa_examen.id).subscribe(response=>{
@@ -87,11 +99,16 @@ export class InscripcionMesaNuevoComponent implements OnInit {
   }
 
   continuar(){
+    if(!this.formulario.valid){
+      return;
+    }
     let item = <MesaExamenMateriaAlumno>{};
     item.id_mesa_examen_materia = this.mesa_examen_materia.id;
     item.id_alumno = this.inscripcion.id_alumno;
     item.id_inscripcion = this.inscripcion.id;
-    item.id_tipo_condicion_alumno = this.id_tipo_condicion_alumno
+    item.id_tipo_condicion_alumno = this.f.id_tipo_condicion_alumno.value;
+    item.nota = this.f.nota.value;
+    item.nota_nombre = this.f.nota_nombre.value;
     this.mesaExamenMateriaService.alumno_asociar(item).subscribe(response=>{
       this.toastr.success('Inscripcion a Mesa de examen realizada', '');
       this.volver();

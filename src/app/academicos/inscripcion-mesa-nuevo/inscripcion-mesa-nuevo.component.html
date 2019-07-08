@@ -133,35 +133,46 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              Nombre: {{ mesa_examen_materia.materia.nombre}}
+          <form [formGroup]="formulario">
+            <div class="row">
+              <div class="col-md-4">
+                Nombre: {{ mesa_examen_materia.materia.nombre}}
+              </div>
+              <div class="col-md-4">
+                Horario : {{ mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm'}}
+              </div>
+              <div class="col-md-4">
+                Ubicacion: {{ mesa_examen_materia.Ubicacion }}
+              </div>
             </div>
-            <div class="col-md-4">
-              Horario : {{ mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm'}}
+            <div class="row">
+              <div class="form-inline col-sm-6">
+                <label class="control-label">Condicion del alumno: </label>
+                <select
+                  formControlName="id_tipo_condicion_alumno"
+                  class="form-control">
+                  <option *ngFor="let item of condicionalidades" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="form-inline col-sm-3">
+                <label class="control-label">Nota: </label>
+                <input type="number" formControlName="nota" class="form-control">
+              </div>
+              <div class="form-inline col-sm-3">
+                <label class="control-label">Nota Nombre: </label>
+                <input type="text" formControlName="nota_nombre" class="form-control">
+              </div>
             </div>
-            <div class="col-md-4">
-              Ubicacion: {{ mesa_examen_materia.Ubicacion }}
+            <div class="row">
+              <div class="col-md-4">
+                Observaciones: {{ mesa_examen_materia.observaciones }}
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="form-inline col-sm-6">
-              <label class="control-label">Condicion del alumno: </label>
-              <select
-                [(ngModel)]="id_tipo_condicion_alumno"
-                class="form-control">
-                <option *ngFor="let item of condicionalidades" [value]="item.id">{{item.nombre}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              Observaciones: {{ mesa_examen_materia.observaciones }}
-            </div>
-          </div>
+          </form>
         </div>
         <div class="card-footer">
           <button 
+            [disabled]="!formulario.valid"
             class="btn btn-success btn-block-xs-only m-1"
             (click)="continuar()">Confirmar inscripcion
           </button>

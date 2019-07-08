@@ -25,7 +25,7 @@ export class ExamenAlumnoEditarModalComponent implements OnInit {
     ) { 
       this.formulario = this.fb.group({
         id_tipo_asistencia_alumno:['',Validators.required],
-        nota:'',
+        nota:['',[Validators.min(0),Validators.max(10)]],
         observaciones:'',
       });
     }

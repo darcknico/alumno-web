@@ -30,9 +30,6 @@
     -->
     <li class="nav-item">
       <a class="nav-link" href="javascript:void(0);" (click)="cambiar_sede()">
-        <div *ngIf="sede$ | async as sede" class="d-inline text-white">
-          {{sede.nombre}}
-        </div>
         <i class="icon-location-pin"></i>
       </a>
     </li>
@@ -66,7 +63,10 @@
 </app-header>
 <div class="app-body">
   <app-sidebar [fixed]="true" [display]="'lg'">
-    <div class="sidebar-header" *ngIf="usuario$ | async as usuario">
+    <div class="sidebar-header" *ngIf="usuario">
+      <div *ngIf="sede" class="d-inline text-white">
+        {{sede.sede?.nombre}}
+      </div>
       <div>
         <strong>{{usuario?.nombre}} {{usuario?.apellido}}</strong>
       </div>

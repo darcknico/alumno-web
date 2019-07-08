@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
+import { PlantillaNuevaModalComponent } from '../plantilla-nueva-modal/plantilla-nueva-modal.component';
 
 @Component({
   selector: 'app-plantilla',
@@ -47,7 +48,12 @@ export class PlantillaComponent implements OnInit {
   }
 
   nuevo(){
-    this.router.navigate(['/notificaciones/plantillas/nuevo']);
+    const modal = this.modalService.show(PlantillaNuevaModalComponent,{class: 'modal-lg'});
+    (<PlantillaNuevaModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
   }
 
   editar(item:Plantilla){

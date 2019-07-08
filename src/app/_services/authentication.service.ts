@@ -86,7 +86,7 @@ export class AuthenticationService {
     }
 
     getToken(){
-        return localStorage.getItem('token');
+        return 'Bearer '+localStorage.getItem('token');
     }
 
     iniciar(){

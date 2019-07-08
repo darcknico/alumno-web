@@ -78,4 +78,8 @@ export class InscripcionMesaComponent implements OnInit {
       this.dataSource = response;
     });
   }
+
+  mesa_examen_materia(item:MesaExamenMateriaAlumno){
+    this.router.navigate(['/mesas/materias/'+item.id_mesa_examen_materia+'/editar']);
+  }
 }

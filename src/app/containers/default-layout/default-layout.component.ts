@@ -1,14 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { navItems } from './../../_nav';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { Usuario } from '../../_models/usuario';
+import { Usuario, UsuarioSede } from '../../_models/usuario';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UsuarioSedeModalComponent } from '../../modals/usuario-sede-modal/usuario-sede-modal.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { SedeService } from '../../_services/sede.service';
-import { Sede } from '../../_models/sede';
-import { Subject } from 'rxjs/internal/Subject';
 
 export interface Children{
   name:string;
@@ -36,8 +34,8 @@ export class DefaultLayoutComponent implements OnInit {
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
 
-  usuario$:Subject<Usuario>;
-  sede$:Subject<Sede>;
+  usuario:Usuario;
+  sede:UsuarioSede;
 
   constructor(
     private sedeService:SedeService,
@@ -73,10 +71,18 @@ export class DefaultLayoutComponent implements OnInit {
       }
       
     });
-    this.usuario$ = this.authenticationService.usuario$;
-    this.sede$ = this.sedeService.sede$;
+    this.usuario = this.authenticationService.localUsuario();
+    this.sede = this.sedeService.getSede();
+    if(this.usuario){
+      this.navegador(this.usuario);
+    }
+    
     this.authenticationService.usuario$.subscribe(usuario=>{
+      this.usuario = usuario;
       this.navegador(usuario);
+    });
+    this.sedeService.sede$.subscribe(sede=>{
+      this.sede = sede;
     });
   }
 

@@ -35,3 +35,14 @@ export interface PlantillaArchivo{
     url:any;
     subido:boolean;
 }
+export interface PlantillaImagen{
+    id:number;
+    id_empresa:number;
+    id_usuario:number;
+    nombre:string;
+    url:string;
+    created_at:string;
+    updated_at:string;
+
+    archivo:any;
+}
