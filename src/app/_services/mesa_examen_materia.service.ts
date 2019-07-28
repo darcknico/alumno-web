@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { MesaExamenMateria, MesaExamenMateriaAlumno } from '../_models/mesa.examen';
+import { MesaExamenMateria, MesaExamenMateriaAlumno, MesaExamenMateriaDocente } from '../_models/mesa.examen';
+import { SedeService } from './sede.service';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
  
 export interface FiltroMesaExamenMateria {
     search:string;
@@ -13,6 +15,9 @@ export interface FiltroMesaExamenMateria {
     id_departamento:number;
     id_carrera:number;
     id_materia:number;
+    id_mesa_examen:number;
+    fecha_ini:string;
+    fecha_fin:string;
 }
 export interface MesaExamenMateriaAjax{
     items: MesaExamenMateria[];
@@ -27,7 +32,12 @@ export class MesaExamenMateriaService {
     id_sede:number;
     constructor(
         private http: HttpClient,
+        private sedeService:SedeService,
         ) {
+        this.id_sede = this.sedeService.getIdSede();
+        this.sedeService.id_sede$.subscribe(id=>{
+            this.id_sede = id;
+        });
     }
 
     sede(id_sede:number){
@@ -40,21 +50,18 @@ export class MesaExamenMateriaService {
 
     ajax(filtro:FiltroMesaExamenMateria):  Observable<MesaExamenMateriaAjax>{
         return this.http.get<MesaExamenMateriaAjax>(this.api + this.id_sede + this._endpoint, {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_departamento: String(filtro.id_departamento),
-                id_carrera: String(filtro.id_carrera),
-                id_materia: String(filtro.id_materia),
-            }
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
 
-    getById(id:number) {
-        return this.http.get<MesaExamenMateria>(this.api + this.id_sede + this.endpoint +id);
+    getById(id:number,id_inscripcion:number=null) {
+        let params = {};
+        if(id_inscripcion!=null){
+            params['id_inscripcion'] = id_inscripcion;
+        }
+        return this.http.get<MesaExamenMateria>(this.api + this.id_sede + this.endpoint +id,{
+            params:params
+        });
     }
 
     register(item: MesaExamenMateria) {
@@ -98,6 +105,10 @@ export class MesaExamenMateriaService {
         return this.http.get<MesaExamenMateriaAlumno[]>(this.api + this.id_sede + this.endpoint +id_mesa_examen_materia+'/alumnos');
     }
 
+    docentes(id_mesa_examen_materia:number){
+        return this.http.get<MesaExamenMateriaDocente[]>(this.api + this.id_sede + this.endpoint +id_mesa_examen_materia+'/docentes');
+    }
+
     check_in(id:number){
         return this.http.get(this.api + this.id_sede + this.endpoint + id +'/check_in',{responseType: 'blob'});
     }
@@ -114,10 +125,15 @@ export class MesaExamenMateriaService {
         return this.http.post(this.api + this.id_sede + this.endpoint +id+'/check_out', input);
     }
 
-    reporte_acta(id_mesa_examen_materia:number) {
+    reporte_acta(id_mesa_examen_materia:number,id_tipo_condicion_alumno:number=3) {
         return this.http.get(
             this.api + this.id_sede + this.endpoint + 
-            id_mesa_examen_materia + '/reportes/acta',{responseType: 'blob'});
+            id_mesa_examen_materia + '/reportes/acta',{
+                responseType: 'blob',
+                params:{
+                    id_tipo_condicion_alumno:String(id_tipo_condicion_alumno)
+                }
+            });
     }
 
 }

@@ -20,6 +20,7 @@ import { ListadoExamenComponent } from './listado-examen/listado-examen.componen
 import { ListadoAlumnoComponent } from './listado-alumno/listado-alumno.component';
 import { ComisionAlumnoEditarModalComponent } from './comision-alumno-editar-modal/comision-alumno-editar-modal.component';
 import { ComisionAlumnoVerModalComponent } from './comision-alumno-ver-modal/comision-alumno-ver-modal.component';
+import { ListadoComisionDocenteModalComponent } from './componente/listado-comision-docente-modal/listado-comision-docente-modal.component';
 
 @NgModule({
   imports: [
@@ -47,11 +48,12 @@ import { ComisionAlumnoVerModalComponent } from './comision-alumno-ver-modal/com
     ExamenNuevoComponent, 
     ListadoExamenComponent, 
     ListadoAlumnoComponent, 
-    ComisionAlumnoEditarModalComponent, ComisionAlumnoVerModalComponent
+    ComisionAlumnoEditarModalComponent, ComisionAlumnoVerModalComponent, ListadoComisionDocenteModalComponent
   ],
   entryComponents:[
     ComisionAlumnoEditarModalComponent,
     ComisionAlumnoVerModalComponent,
+    ListadoComisionDocenteModalComponent,
   ]
 })
 export class ComisionesModule { }

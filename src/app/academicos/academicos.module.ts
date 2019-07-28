@@ -31,6 +31,8 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { TramiteNuevoModalComponent } from './componentes/tramite-nuevo-modal/tramite-nuevo-modal.component';
 import { ListadoPagoInscripcionModalComponent } from './componentes/listado-pago-inscripcion-modal/listado-pago-inscripcion-modal.component';
 import { ListadoComisionModalComponent } from './listado-comision-modal/listado-comision-modal.component';
+import { ListadoAlumnoSedeModalComponent } from './componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
+import { AlumnoVerModalComponent } from './componentes/alumno-ver-modal/alumno-ver-modal.component';
 
 @NgModule({
   imports: [
@@ -71,11 +73,15 @@ import { ListadoComisionModalComponent } from './listado-comision-modal/listado-
     TramiteNuevoModalComponent,
     ListadoPagoInscripcionModalComponent,
     ListadoComisionModalComponent,
+    ListadoAlumnoSedeModalComponent,
+    AlumnoVerModalComponent,
   ],
   entryComponents: [
     TramiteNuevoModalComponent,
     ListadoPagoInscripcionModalComponent,
     ListadoComisionModalComponent,
+    ListadoAlumnoSedeModalComponent,
+    AlumnoVerModalComponent,
   ],
   providers:[
     AlumnoCuotaGuard,

@@ -1,4 +1,4 @@
-import { Usuario } from "./usuario";
+import { Usuario, Docente } from "./usuario";
 import { Sede } from "./sede";
 import { Materia } from "./materia";
 import { Carrera } from "./carrera";
@@ -28,6 +28,7 @@ export interface Comision{
     carrera:Carrera;
     modalidad:Modalidad;
     alumnos:ComisionAlumno[];
+    docentes:ComisionDocente[];
     usuario_baja:Usuario;
     usuario_alta:Usuario;
 }
@@ -43,7 +44,7 @@ export interface ComisionAlumno{
     observaciones:string;
     estado:boolean;
     created_at:Date;
-    updated_atDate;
+    updated_at:Date;
 
     usuario:Usuario;
     usuario_baja:Usuario;
@@ -51,4 +52,15 @@ export interface ComisionAlumno{
     comision:Comision;
     inscripcion:Inscripcion;
     tipo:TipoCondicionAlumno;
+}
+
+export interface ComisionDocente{
+    id:number;
+    id_comision:number;
+    id_usuario:number;
+    created_at:Date;
+    updated_at:Date;
+    comision:Comision;
+    usuario:Usuario;
+    docente:Docente;
 }

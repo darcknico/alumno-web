@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Docentes
           <div class="card-header-actions">
-            <button class="btn btn-block btn-primary" type="button" (click)="nuevo()">Nuevo</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar docente</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -64,7 +64,7 @@
                 </tr>
               </thead>
               <tbody *ngIf="usuarios?.length != 0">
-                <tr *ngFor="let item of usuarios" class="{{item.estado==0?'bg-danger':''}}">
+                <tr *ngFor="let item of usuarios" class="{{item.usuario.estado==0?'bg-danger':''}}">
                   <td>{{ item.cuit }}</td>
                   <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
                   <td>{{ item.titulo }}</td>
@@ -87,6 +87,11 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <p>Los docentes marcados aun no se encuentran habilitados para ingresar al sistema. Contacte al administrador para dar acceso.</p>
+            </div>
           </div>
         </div>
       </div>

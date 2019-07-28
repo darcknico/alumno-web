@@ -1,115 +1,176 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { MesaExamenMateriaService } from '../../_services/mesa_examen_materia.service';
-import { MesaExamenService } from '../../_services/mesa_examen.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { MesaExamen, MesaExamenMateria, MesaExamenMateriaAlumno } from '../../_models/mesa.examen';
+import { MesaExamen, MesaExamenMateria, MesaExamenMateriaAlumno, MesaExamenMateriaDocente } from '../../_models/mesa.examen';
 import { DataTableDirective } from 'angular-datatables';
 
 import * as moment from 'moment';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { MesaMateriaAlumnoModalComponent } from '../componente/mesa-materia-alumno-modal/mesa-materia-alumno-modal.component';
+import { MesaMateriaEditarModalComponent } from '../componente/mesa-materia-editar-modal/mesa-materia-editar-modal.component';
+import { MesaMateriaDocenteEditarModalComponent } from '../componente/mesa-materia-docente-editar-modal/mesa-materia-docente-editar-modal.component';
+import { MesaExamenMateriaDocenteService } from '../../_services/mesa_examen_materia_docente.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
+import { MesaExamenMateriaAlumnoService } from '../../_services/mesa_examen_materia_alumno.service';
 
 @Component({
   selector: 'app-mesa-materia-editar',
   templateUrl: './mesa-materia-editar.component.html',
   styleUrls: ['./mesa-materia-editar.component.scss']
 })
-export class MesaMateriaEditarComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
+  @ViewChildren(DataTableDirective) dtElements: QueryList<DataTableDirective>;
 
   formulario: FormGroup;
   fecha_inicio:Date;
 
-  dtOptions: any = {};
+  dtOptions: DataTables.Settings = {};
+  dtOptionsDocente: DataTables.Settings = {};
   dataSource:MesaExamenMateriaAlumno[];
+  dataSourceDocente:MesaExamenMateriaDocente[];
   
   mesa_examen:MesaExamen;
   mesa_examen_materia:MesaExamenMateria;
   consultando = false;
 
+  dtTrigger: Subject<any> = new Subject();
+  dtTriggerDocente: Subject<any> = new Subject();
   constructor(
     private mesaExamenMateriaService:MesaExamenMateriaService,
-    private mesaExamenService:MesaExamenService,
+    private mesaExamenMateriaDocenteService:MesaExamenMateriaDocenteService,
+    private mesaExamenMateriaAlumnoService:MesaExamenMateriaAlumnoService,
     private modalService: BsModalService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService,
   ) {
-    this.formulario = this.fb.group({
-      fecha: ['', Validators.required],
-      fecha_cierre: '',
-      hora: ['', Validators.required],
-      ubicacion: '',
-      libro: '',
-      folio: '',
-      observaciones: '',
-    });
+    this.dtOptions = {
+      order: [[ 0, "desc" ]],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columns: [
+        { 
+          data: 'created_at',
+          width: '5%', 
+        },
+        { 
+          data: 'id_usuario',
+        },
+        { 
+          data: 'id_alumno',
+        },
+        { 
+          data: 'id_comision',
+        },
+        { 
+          data: 'nota',
+        },
+        { 
+          data: 'id_tipo_condicion_alumno',
+          visible:false,
+        },
+        {
+          data:'Adeuda',
+          width: '5%', 
+        },
+        { 
+          data: 'id_comision_alumno',
+        },
+        { 
+          width: '5%', 
+        },
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
+      ],
+      responsive:true,
+      drawCallback: function ( settings ) {
+        var api = this.api();
+        var rows = api.rows( {page:'current'} ).nodes();
+        var last=null; 
+        api.column(5, {page:'current'} ).data().each( function ( group, i ) {
+            if ( last !== group ) {
+                $(rows).eq( i ).before(
+                    '<tr style="background-color:#dedede" class="group text-center"><th colspan="8">'+group+'</th></tr>'
+                ); 
+                last = group;
+            }
+        });
+      }
+    };
   }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenMateriaService.sede(id_sede);
-    this.mesaExamenService.sede(id_sede);
-
     this.route.params.subscribe(params=>{
       let ids = params['id_mesa_examen_materia'];
       this.mesaExamenMateriaService.getById(ids).subscribe(response=>{
         this.mesa_examen_materia = response;
-        let fecha = moment(this.mesa_examen_materia.fecha).toDate();
-        if(this.mesa_examen_materia.fecha_cierre){
-          let fecha_cierre = moment(this.mesa_examen_materia.fecha_cierre).toDate();
-          this.f.fecha_cierre.setValue(fecha_cierre);
-        }
-        this.f.fecha.setValue(fecha);
-        this.f.hora.setValue(fecha);
-        this.f.ubicacion.setValue(this.mesa_examen_materia.ubicacion);
-        this.f.libro.setValue(this.mesa_examen_materia.libro);
-        this.f.folio.setValue(this.mesa_examen_materia.folio);
-        this.f.observaciones.setValue(this.mesa_examen_materia.observaciones);
-        this.mesaExamenService.getById(this.mesa_examen_materia.id_mesa_examen).subscribe(response=>{
-          this.mesa_examen = response;
-          this.fecha_inicio = moment(this.mesa_examen.fecha_inicio).toDate();
-        });
+        this.mesa_examen = response.mesa_examen;
       });
-      
       this.mesaExamenMateriaService.alumnos(ids).subscribe(response=>{
         this.dataSource = response;
+        this.dtTrigger.next();
+      });
+      this.mesaExamenMateriaService.docentes(ids).subscribe(response=>{
+        this.dataSourceDocente = response;
+        this.dtTriggerDocente.next();
       });
     });
+    this.dtOptionsDocente = {
+      order: [[ 0, "desc" ]],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      searching:false,
+      paging:false,
+      columns: [
+        { 
+          data: 'created_at',
+          width: '5%', 
+        },
+        { 
+          data: 'id_usuario',
+        },
+        { 
+          data: 'id_tipo_mesa_docente',
+        },
+        { 
+          width: '5%', 
+        },
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
+      ],
+      responsive:true,
+    };
   }
 
-  get f(){
-    return this.formulario.controls;
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+    this.dtTriggerDocente.unsubscribe();
   }
 
-  continuar(){
-    if(!this.formulario.valid){
-      return;
-    }
-    var item = <MesaExamenMateria>{};
-    item.id = this.mesa_examen_materia.id;
-    let fecha = moment(this.f.fecha.value);
-    let fecha_cierre = moment(this.f.fecha_cierre.value);
-    let hora = moment(this.f.hora.value);
-    fecha.set('hour',hora.hour());
-    fecha.set('minute',hora.minute());
-    item.fecha = fecha.format('YYYY-MM-DD HH:mm:00');
-    item.fecha_cierre = fecha_cierre.format('YYYY-MM-DD');
-    item.ubicacion = this.f.ubicacion.value;
-    item.libro = this.f.libro.value;
-    item.folio = this.f.folio.value;
-    item.observaciones = this.f.observaciones.value;
-
-    this.consultando = true;
-    this.mesaExamenMateriaService.update(item).subscribe(resposne=>{
-      this.toastr.success('Mesa de examen editada', '');
-      this.volver();
-    },err=>{
-      this.consultando = false;
+  editar(){
+    const modal = this.modalService.show(MesaMateriaEditarModalComponent,{class: 'modal-info modal-lg'});
+    (<MesaMateriaEditarModalComponent>modal.content).onShow(this.mesa_examen.id,this.mesa_examen_materia);
+    (<MesaMateriaEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.mesaExamenMateriaService.getById(this.mesa_examen_materia.id).subscribe(response=>{
+          this.mesa_examen_materia = response;
+        });
+      }
     });
   }
 
@@ -139,6 +200,39 @@ export class MesaMateriaEditarComponent implements OnInit {
     });
   }
 
+  docente_agregar(){
+    const modal = this.modalService.show(MesaMateriaDocenteEditarModalComponent,{class: 'modal-info'});
+    (<MesaMateriaDocenteEditarModalComponent>modal.content).onShow(this.mesa_examen_materia.id);
+    (<MesaMateriaDocenteEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescarDocente();
+      }
+    });
+  }
+
+  docente_editar(item:MesaExamenMateriaDocente){
+    const modal = this.modalService.show(MesaMateriaDocenteEditarModalComponent,{class: 'modal-info'});
+    (<MesaMateriaDocenteEditarModalComponent>modal.content).onShow(this.mesa_examen_materia.id,item);
+    (<MesaMateriaDocenteEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescarDocente();
+      }
+    });
+  }
+
+  docente_desasociar(item:MesaExamenMateriaDocente){
+    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+    (<DialogConfirmComponent>modal.content).onShow("Remover al docente de la mesa de examen","");
+    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.mesaExamenMateriaDocenteService.delete(item.id).subscribe(response=>{
+          this.toastr.success('Docente removido', '');
+          this.refrescarDocente();
+        });
+      }
+    });
+  }
+
   excel(){
     let aviso = this.toastr.warning('Preparando archivo de descarga');
     this.mesaExamenMateriaService.check_in(this.mesa_examen_materia.id).subscribe(data => {
@@ -148,9 +242,13 @@ export class MesaMateriaEditarComponent implements OnInit {
     });
   }
 
-  acta_reporte(){
-    let aviso = this.toastr.warning('Preparando descarga', '');
-    this.mesaExamenMateriaService.reporte_acta(this.mesa_examen_materia.id).subscribe(data =>{
+  acta_reporte(id_tipo_condicion_alumno:number=3){
+    let aviso = this.toastr.warning('Preparando descarga', '',{
+      timeOut:30000,
+      tapToDismiss:false,
+      extendedTimeOut:0,
+    });
+    this.mesaExamenMateriaService.reporte_acta(this.mesa_examen_materia.id,id_tipo_condicion_alumno).subscribe(data =>{
       this.toastr.remove(aviso.toastId);
       this.toastr.success('Descarga lista');
       var mediaType = 'application/pdf';
@@ -162,9 +260,13 @@ export class MesaMateriaEditarComponent implements OnInit {
     });
   }
 
-  acta_imprimir(){
-    let aviso = this.toastr.warning('Preparando descarga', '');
-    this.mesaExamenMateriaService.reporte_acta(this.mesa_examen_materia.id).subscribe(data =>{
+  acta_imprimir(id_tipo_condicion_alumno:number=3){
+    let aviso = this.toastr.warning('Preparando descarga', '',{
+      timeOut:30000,
+      tapToDismiss:false,
+      extendedTimeOut:0,
+    });
+    this.mesaExamenMateriaService.reporte_acta(this.mesa_examen_materia.id,id_tipo_condicion_alumno).subscribe(data =>{
       this.toastr.remove(aviso.toastId);
       this.toastr.success('Archivo listo');
       var blob = new Blob([data], {type: 'application/pdf'});
@@ -178,9 +280,23 @@ export class MesaMateriaEditarComponent implements OnInit {
   }
 
   refrescar(){
-    this.dataSource = null;
     this.mesaExamenMateriaService.alumnos(this.mesa_examen_materia.id).subscribe(response=>{
       this.dataSource = response;
+      this.dtElements.last.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTrigger.next();
+      });
+    });
+  }
+  refrescarDocente(){
+    this.mesaExamenMateriaService.docentes(this.mesa_examen_materia.id).subscribe(response=>{
+      this.dataSourceDocente = response;
+      /*
+      this.dtElements.first.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTriggerDocente.next();
+      });
+      */
     });
   }
 
@@ -189,11 +305,18 @@ export class MesaMateriaEditarComponent implements OnInit {
   }
 
   volver_mesa_examen(){
-    this.router.navigate(['/mesas/'+this.mesa_examen_materia.id_mesa_examen+'/editar']);
+    this.router.navigate(['/mesas/'+this.mesa_examen_materia.id_mesa_examen+'/ver']);
   }
 
   volver(){
     this.router.navigate(['/mesas/materias']);
   }
 
+  constancia_descargar(item:MesaExamenMateriaAlumno){
+    AuxiliarFunction.descargar(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_constancia(item.id));
+  }
+
+  constancia_imprimir(item:MesaExamen){
+    AuxiliarFunction.imprimir(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_constancia(item.id));
+  }
 }

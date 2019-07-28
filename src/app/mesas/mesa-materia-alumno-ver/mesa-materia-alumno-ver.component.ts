@@ -36,10 +36,6 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenMateriaService.sede(id_sede);
-    this.mesaExamenService.sede(id_sede);
-
     this.dtOptions = {
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -52,9 +48,6 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
         },
       ],
     };
-
-    
-
     this.route.params.subscribe(params=>{
       let ids = params['id_mesa_examen_materia'];
       this.mesaExamenMateriaService.getById(ids).subscribe(response=>{
@@ -82,7 +75,7 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigate(['/mesas/materias']);
+    this.router.navigate(['/mesas/materias/'+this.mesa_examen_materia.id+'/editar']);
   }
 
   ver_mesa_examen(){

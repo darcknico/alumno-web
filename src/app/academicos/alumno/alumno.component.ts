@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
 import { Alumno, TipoAlumnoEstado } from '../../_models/alumno';
 import { Departamento } from '../../_models/departamento';
 import { FiltroAlumno, AlumnoService } from '../../_services/alumno.service';
@@ -13,6 +13,10 @@ import { Usuario } from '../../_models/usuario';
 
 import * as moment from 'moment';
 import { saveAs } from 'file-saver';
+import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { AlumnoVerModalComponent } from '../componentes/alumno-ver-modal/alumno-ver-modal.component';
+import { SedeService } from '../../_services/sede.service';
 
 @Component({
   selector: 'app-alumno',
@@ -20,9 +24,12 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./alumno.component.scss']
 })
 export class AlumnoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild('alta', {read: DataTableDirective}) alta: DataTableDirective;
+  @ViewChild('baja', {read: DataTableDirective}) baja: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  dtOptionsBaja: DataTables.Settings = {};
   dataSource: Alumno[] = [];
+  dataSourceBaja: Alumno[] = [];
   departamentos:Departamento[]=[];
   tipos_estado:TipoAlumnoEstado[]=[];
   usuario:Usuario;
@@ -33,10 +40,18 @@ export class AlumnoComponent implements OnInit {
     id_tipo_alumno_estado:0,
     id_carrera:0,
   };
+
+  requestBaja = <FiltroAlumno>{
+    search:"",
+    estado:0,
+  };
+
+  id_sede:number;
   constructor(
     private alumnoService:AlumnoService,
     private authenticationService:AuthenticationService,
     private departamentoService:DepartamentoService,
+    private sedeService:SedeService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -44,8 +59,12 @@ export class AlumnoComponent implements OnInit {
     
   }
 
+  ajax:Subscription;
+  ajaxBaja:Subscription;
+
   ngOnInit() {
     this.usuario = this.authenticationService.localUsuario();
+    this.id_sede = this.sedeService.getIdSede();
     this.departamentoService.getAll().subscribe(response => {
       this.departamentos = response;
     });
@@ -64,13 +83,56 @@ export class AlumnoComponent implements OnInit {
       serverSide: true,
       processing: true,
       ajax: (dataTablesParameters: any, callback) => {
+        if(that.ajax){
+          that.ajax.unsubscribe();
+        }
         that.request.start = dataTablesParameters.start;
         that.request.length = dataTablesParameters.length;
         that.request.order = dataTablesParameters.order[0].dir;
         that.request.search = dataTablesParameters.search.value;
         that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
-        this.alumnoService.ajax(that.request).subscribe(resp => {
-            that.dataSource = resp.items;
+        that.ajax = this.alumnoService.ajax(that.request).subscribe(resp => {
+          that.dataSource = resp.items;
+
+          callback({
+            recordsTotal: resp.total_count,
+            recordsFiltered: resp.total_count,
+            data: []
+          });
+        });
+      },
+      columns: [
+        { 
+          data: 'created_at',
+          width: '5%', 
+        }, { data: 'nombre' }, { data: 'documento' },{ data: 'id_tipo_alumno_estado'},
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
+      ],
+    };
+    this.dtOptionsBaja = {
+      order: [[ 0, "desc" ]],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback) => {
+        if(that.ajaxBaja){
+          that.ajaxBaja.unsubscribe();
+        }
+        that.requestBaja.start = dataTablesParameters.start;
+        that.requestBaja.length = dataTablesParameters.length;
+        that.requestBaja.order = dataTablesParameters.order[0].dir;
+        that.requestBaja.search = dataTablesParameters.search.value;
+        that.requestBaja.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+        that.ajaxBaja = this.alumnoService.ajax(that.requestBaja).subscribe(resp => {
+            that.dataSourceBaja = resp.items;
 
             callback({
               recordsTotal: resp.total_count,
@@ -81,9 +143,9 @@ export class AlumnoComponent implements OnInit {
       },
       columns: [
         { 
-          data: 'created_at',
-          width: '5%', 
-        }, { data: 'nombre' }, { data: 'documento' },{ data: 'id_tipo_alumno_estado'},
+          data: 'deleted_at',
+          width: '10%', 
+        }, { data: 'nombre' }, { data: 'documento' },{ data: 'id_usuario_baja'},
       ],
       columnDefs: [ {
         targets: 'no-sort',
@@ -109,6 +171,7 @@ export class AlumnoComponent implements OnInit {
         this.alumnoService.delete(item.id).subscribe(response=>{
           this.toastr.success('Alumno eliminado', '');
           this.refrescar();
+          this.refrescarBaja();
         });
       }
     });
@@ -138,8 +201,37 @@ export class AlumnoComponent implements OnInit {
   }
 
   refrescar(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    this.alta.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
     });
+  }
+  refrescarBaja(){
+    this.baja.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.ajax.reload();
+    });
+  }
+
+  alumno_sede(alumno:Alumno){
+    const modal = this.modalService.show(ListadoAlumnoSedeModalComponent,{class: 'modal-info'});
+    (<ListadoAlumnoSedeModalComponent>modal.content).onShow(alumno);
+    (<ListadoAlumnoSedeModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
+  }
+
+  alumno_ver(alumno:Alumno){
+    const modal = this.modalService.show(AlumnoVerModalComponent,{class: 'modal-info modal-lg'});
+    (<AlumnoVerModalComponent>modal.content).onShow(alumno);
+    (<AlumnoVerModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.router.navigate(['/academicos/alumnos/'+alumno.id+'/ver']);
+      }
+    });
+  }
+
+  auditorias(){
+    this.router.navigate(['alumnos','auditorias']);
   }
 }

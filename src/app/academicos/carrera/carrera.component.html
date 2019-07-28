@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Carreras
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Carrera</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Carrera</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -49,21 +49,32 @@
                   </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Ver</a>
+                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                            <i class="fa fa-cog"></i>
+                            Gestionar
+                          </a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
                         </li>
+                        
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                            <i class="fa fa-remove"></i>
+                            Eliminar
+                          </a>
+                        </li>
+                        <li class="divider dropdown-divider" *ngIf="item.plan_estudio"></li>
                         <li role="menuitem">
                           <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);" *ngIf="item.plan_estudio">Comisiones</a>
-                        </li>
-                        <li role="menuitem">
-                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
                         </li>
                       </ul>
                     </div>

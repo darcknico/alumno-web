@@ -1,0 +1,102 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Ultimos cambios
+          
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive" >
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Evento</th>
+                  <th class="no-sort">Alumno</th>
+                  <th class="no-sort">Dato Previo</th>
+                  <th class="no-sort">Dato posterior</th>
+                  <th class="no-sort">Usuario</th>
+                  <th class="no-sort"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.event }} </td>
+                  <td>
+                    {{ item.auditable.tipo_documento?.nombre }}:&nbsp;{{ item.auditable.documento }}
+                  </td>
+                  <td>
+                    <div *ngFor="let key of objectKeys(item.old_values)">{{key + ' : ' + item.old_values[key]}}</div>
+                  </td>
+                  <td>
+                    <div *ngFor="let key of objectKeys(item.new_values)">{{key + ' : ' + item.old_values[key]}}</div>
+                  </td>
+                  <td>
+                    {{ item.user.apellido }} {{ item.user.nombre }}
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-info" *ngIf="item.auditable.estado == 1" (click)="gestionar(item.auditable)" tooltip="Gestionar">
+                        <i class="fa fa-cog" ></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSource?.length == 0">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Ultimas Asociaciones
+          
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive" >
+            <table datatable [dtOptions]="dtOptionsSede" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th class="no-sort">Sede</th>
+                  <th class="no-sort">Alumno</th>
+                  <th class="no-sort">Usuario</th>
+                  <th class="no-sort"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSourceSede?.length != 0">
+                <tr *ngFor="let item of dataSourceSede" class="{{item.estado==0?'bg-danger':''}}">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.alumno.sede?.nombre }} </td>
+                  <td>
+                      {{ item.alumno.tipo_documento?.nombre }}:&nbsp;{{ item.alumno.documento }} {{ item.alumno.apellido }} {{ item.alumno.nombre }}
+                  </td>
+                  <td>
+                    {{ item.usuario.apellido }} {{ item.usuario.nombre }}
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-info" *ngIf="item.alumno.estado == 1" (click)="gestionar(item.alumno)" tooltip="Gestionar">
+                        <i class="fa fa-cog" ></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSourceSede?.length == 0">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

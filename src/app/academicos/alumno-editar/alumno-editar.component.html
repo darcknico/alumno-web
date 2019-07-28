@@ -8,6 +8,69 @@
         </div>
         <div class="card-body">
           <form [formGroup]="formulario" >
+            <div class="row" formGroupName="usuario">
+              <div class="form-group col-sm-2 col-4">
+                <label class="control-label">Tipo</label>
+                <select 
+                  class="form-control"
+                  formControlName="id_tipo_documento">
+                  <option *ngFor="let item of tipo_documentos" [value]="item.id">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-4 col-8 ">
+                <label class="control-label">Documento (*)</label>
+                <input 
+                  formControlName="documento"
+                  type="number" 
+                  class="form-control {{ (u.documento.touched || u.documento.dirty)?((f.usuario.invalid || u.documento.invalid )?'is-invalid':'is-valid'):''}}"
+                  placeholder="Documento"
+                  >
+                <div *ngIf= " (u.documento.touched || u.documento.dirty) && f.usuario.invalid " class="invalid-feedback">
+                  <span *ngIf="u.documento.hasError('required')" class="help-block">
+                    El documento es requerido
+                  </span>
+                  <span *ngIf="usuario.hasError('coincidencia')" class="help-block">
+                    El documento ya se encuentra registrado
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-sm-6" >
+                <p for="" *ngIf="usuario.hasError('alumno') && !(documento_original == u.documento.value && id_tipo_documento_original == u.id_tipo_documento.value)">
+                  {{usuario.errors.alumno.tipo_documento.nombre}} - {{usuario.errors.alumno.documento}} {{usuario.errors.alumno.apellido}} {{usuario.errors.alumno.nombre}} -
+                  Sede:{{usuario.errors.alumno.sede.nombre}}
+                </p>
+                <p *ngIf="usuario.enabled && documento_original == u.documento.value && id_tipo_documento_original == u.id_tipo_documento.value">
+                  El documento a modificar debe ser distinto que el original.
+                </p>
+                <p *ngIf="usuario.disabled">
+                  Para cambiar el documento debe habilitar la edición. El nuevo documento debe ser distinto que el actual.
+                </p>
+                <p *ngIf="!usuario.hasError('alumno') && usuario.enabled && !consultando && u.documento.value.length>0">
+                  El documento se encuentra disponible
+                </p>
+                <ng-container *ngIf="id>0">
+                    <button class="btn btn-sm btn-block-xs-only m-1 btn-info" *ngIf="usuario.disabled"
+                    (click)="habilitar_documento()"
+                    >Habilitar edición</button>
+                    <button class="btn btn-sm btn-block-xs-only m-1 btn-info" *ngIf="usuario.enabled"
+                    (click)="deshabilitar_documento()"
+                    >Descartar edición</button>
+                </ng-container>
+                <ng-container *ngIf="usuario.hasError('alumno') && usuario.enabled">
+                    <button class="btn btn-sm btn-block-xs-only m-1 btn-info"
+                    (click)="alumno_sede(usuario.errors.alumno)"
+                    >Sedes asociadas</button>
+                    <button class="btn btn-sm btn-block-xs-only m-1 btn-danger" *ngIf="usuario.errors.alumno.id_sede != id_sede"
+                    (click)="alumno_sede_asociar(usuario.errors.alumno)"
+                    >Asociar alumno</button>
+                    <button class="btn btn-sm btn-block-xs-only m-1 btn-info" *ngIf="usuario.errors.alumno.id_sede == id_sede"
+                    (click)="alumno_ver(usuario.errors.alumno)"
+                    >Ver alumno</button>
+                </ng-container>
+                
+                
+              </div>
+            </div>
             <div class="row">
               <div class="form-group col-sm-4 {{ f.nombre.touched && f.nombre.invalid?'was-validated':''}}">
                 <label class="control-label">Nombre (*)</label>
@@ -63,29 +126,6 @@
               </div>
             </div>
             <div class="row">
-              <div class="form-group col-sm-2 col-4">
-                <label class="control-label">Tipo</label>
-                <select 
-                  class="form-control"
-                  formControlName="id_tipo_documento">
-                  <option *ngFor="let item of tipo_documentos" [value]="item.id">{{item.nombre}}</option>
-                </select>
-              </div>
-              <div class="form-group col-sm-3 col-8 {{ f.documento.touched && f.documento.invalid?'was-validated':''}}">
-                <label class="control-label">Documento (*)</label>
-                <input 
-                  formControlName="documento"
-                  required
-                  type="number" 
-                  class="form-control"
-                  placeholder="Documento"
-                  min="0">
-                <div *ngIf= "f.documento.touched && f.documento.invalid" class="invalid-feedback">
-                  <span *ngIf="f.documento.hasError('required')" class="help-block">
-                    El documento es requerido
-                  </span>
-                </div>
-              </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Sexo</label>
                 <select 
@@ -218,12 +258,12 @@
                           placeholder="Nombre"
                           [value]="archivo.nombre">
                       <button 
-                        class="btn btn-danger m-2" 
+                        class="btn btn-sm btn-danger m-2" 
                         (click)="eliminar(archivo)" >
                         Eliminar
                       </button> 
                       <button *ngIf="id>0"
-                        class="btn btn-primary m-2"  
+                        class="btn btn-sm btn-primary m-2"  
                         (click)="descargar(archivo)" >
                         Descargar
                       </button> 

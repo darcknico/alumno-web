@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Comision, ComisionAlumno } from '../_models/comision';
+import { Comision, ComisionAlumno, ComisionDocente } from '../_models/comision';
 import { Alumno } from '../_models/alumno';
 import { Asistencia } from '../_models/asistencia';
 import { Examen } from '../_models/examen';
+import { SedeService } from './sede.service';
  
 export interface FiltroComision {
     search:string;
@@ -27,7 +28,12 @@ export class ComisionService {
     id_sede:number;
     constructor(
         private http: HttpClient,
+        private sedeService: SedeService,
         ) {
+        this.id_sede = this.sedeService.getIdSede();
+        this.sedeService.id_sede$.subscribe(id=>{
+            this.id_sede = id;
+        });
     }
 
     sede(id_sede:number){
@@ -90,6 +96,10 @@ export class ComisionService {
 
     alumnos(id_comision:number){
         return this.http.get<ComisionAlumno[]>(this.api + this.id_sede + '/comisiones/' +id_comision+'/alumnos');
+    }
+
+    docentes(id_comision:number){
+        return this.http.get<ComisionDocente[]>(this.api + this.id_sede + '/comisiones/' +id_comision+'/docentes');
     }
 
     alumnos_disponibles(id_comision:number){

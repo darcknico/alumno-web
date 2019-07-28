@@ -1,9 +1,10 @@
 import { Sede } from "./sede";
-import { Usuario } from "./usuario";
+import { Usuario, Docente } from "./usuario";
 import { Carrera } from "./carrera";
 import { Materia } from "./materia";
 import { Alumno, TipoCondicionAlumno } from "./alumno";
 import { Inscripcion } from "./inscripcion";
+import { TipoMesaDocente } from './tipo';
 
 export interface MesaExamen{
     id:number;
@@ -61,6 +62,7 @@ export interface MesaExamenMateriaAlumno{
     nota:number;
     nota_nombre:number;
     observaciones:string;
+    adeuda:boolean;
 
     mesa_examen_materia:MesaExamenMateria;
     alumno:Alumno;
@@ -68,6 +70,20 @@ export interface MesaExamenMateriaAlumno{
     usuario:Usuario;
     usuario_baja:Usuario;
     condicion:TipoCondicionAlumno;
+}
+
+export interface MesaExamenMateriaDocente{
+    id:number;
+    id_mesa_examen_materia:number;
+    id_usuario:number;
+    id_tipo_mesa_docente:number;
+    observaciones:string;
+    created_at:Date;
+    updated_at:Date;
+
+    tipo:TipoMesaDocente;
+    usuario:Usuario;
+    docente:Docente;
 }
 
 export interface AlumnoMateriaNota{

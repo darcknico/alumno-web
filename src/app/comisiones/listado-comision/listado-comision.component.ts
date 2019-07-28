@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ComisionService, FiltroComision } from '../../_services/comision.service';
-import { Comision } from '../../_models/comision';
+import { Comision, ComisionDocente, ComisionAlumno } from '../../_models/comision';
 import { DataTableDirective } from 'angular-datatables';
 import { Departamento } from '../../_models/departamento';
 import { Carrera } from '../../_models/carrera';
@@ -13,6 +13,9 @@ import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Usuario } from '../../_models/usuario';
 import { SedeService } from '../../_services/sede.service';
+import { ListadoComisionDocenteModalComponent } from '../componente/listado-comision-docente-modal/listado-comision-docente-modal.component';
+import { FiltroComisionDocente, ComisionDocenteService } from '../../_services/comision_docente.service';
+import { ComisionAlumnoService, FiltroComisionAlumno } from '../../_services/comision_alumno.service';
 
 @Component({
   selector: 'app-listado-comision',
@@ -21,9 +24,13 @@ import { SedeService } from '../../_services/sede.service';
 })
 export class ListadoComisionComponent implements OnInit {
   usuario:Usuario;
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{read:'principal'})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  dtOptionsDocente: DataTables.Settings = {};
+  dtOptionsAlumno: DataTables.Settings = {};
   dataSource: Comision[] = [];
+  dataSourceDocente: ComisionDocente[]= [];
+  dataSourceAlumno: ComisionAlumno[]= [];
   departamentos:Departamento[]=[];
   carreras:Carrera[]=[];
 
@@ -34,8 +41,17 @@ export class ListadoComisionComponent implements OnInit {
     id_carrera:0,
   };
 
+  requestDocente = <FiltroComisionDocente>{
+    search:"",
+  }
+  requestAlumno = <FiltroComisionAlumno>{
+    search:"",
+  }
+
   constructor(
     private comisionService:ComisionService,
+    private comisionDocenteService:ComisionDocenteService,
+    private comisionAlumnoService:ComisionAlumnoService,
     private sedeService:SedeService,
     private authenticationService:AuthenticationService,
     private departamentoService:DepartamentoService,
@@ -90,6 +106,10 @@ export class ListadoComisionComponent implements OnInit {
       },
       columns: [
         { 
+          data: 'created_at',
+          width: '5%', 
+        }, 
+        { 
           data: 'anio',
           width: '5%', 
         }, 
@@ -97,6 +117,86 @@ export class ListadoComisionComponent implements OnInit {
         { data: 'id_materia' },
         { data: 'numero' },
         { data: 'alumnos_cantidad'},
+      ],
+      responsive:true,
+    };
+    this.dtOptionsDocente = {
+      order: [[ 0, "desc" ]],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      pagingType: 'full_numbers',
+      lengthMenu: [5],
+      pageLength: 5,
+      serverSide: true,
+      processing: true,
+      searching:false,
+      ajax: (dataTablesParameters: any, callback) => {
+        that.requestDocente.start = dataTablesParameters.start;
+        that.requestDocente.length = dataTablesParameters.length;
+        that.requestDocente.order = dataTablesParameters.order[0].dir;
+        that.requestDocente.search = dataTablesParameters.search.value;
+        that.requestDocente.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+        this.comisionDocenteService.ajax(that.requestDocente).subscribe(resp => {
+            that.dataSourceDocente = resp.items;
+
+            callback({
+              recordsTotal: resp.total_count,
+              recordsFiltered: resp.total_count,
+              data: []
+            });
+          });
+      },
+      columns: [
+        { 
+          data: 'created_at',
+          width: '5%', 
+        }, 
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
+      ],
+      responsive:true,
+    };
+    this.dtOptionsAlumno = {
+      order: [[ 0, "desc" ]],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      pagingType: 'full_numbers',
+      lengthMenu: [5],
+      pageLength: 5,
+      serverSide: true,
+      processing: true,
+      searching:false,
+      ajax: (dataTablesParameters: any, callback) => {
+        that.requestAlumno.start = dataTablesParameters.start;
+        that.requestAlumno.length = dataTablesParameters.length;
+        that.requestAlumno.order = dataTablesParameters.order[0].dir;
+        that.requestAlumno.search = dataTablesParameters.search.value;
+        that.requestAlumno.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+        this.comisionAlumnoService.ajax(that.requestAlumno).subscribe(resp => {
+            that.dataSourceAlumno = resp.items;
+
+            callback({
+              recordsTotal: resp.total_count,
+              recordsFiltered: resp.total_count,
+              data: []
+            });
+          });
+      },
+      columns: [
+        { 
+          data: 'created_at',
+          width: '5%', 
+        }, 
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
       ],
       responsive:true,
     };
@@ -112,6 +212,16 @@ export class ListadoComisionComponent implements OnInit {
 
   examenes(item:Comision){
     this.router.navigate(['/comisiones/'+item.id+'/examenes']);
+  }
+
+  docentes(item:Comision){
+    const modal = this.modalService.show(ListadoComisionDocenteModalComponent,{class: 'modal-info'});
+    (<ListadoComisionDocenteModalComponent>modal.content).onShow(item);
+    (<ListadoComisionDocenteModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
   }
 
   nuevo(){

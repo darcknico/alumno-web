@@ -46,7 +46,7 @@ export class MateriaComponent implements OnInit {
   }
 
   nuevo(){
-    const modal = this.modalService.show(MateriaEditarComponent);
+    const modal = this.modalService.show(MateriaEditarComponent,{class:'modal-lg modal-success'});
     (<MateriaEditarComponent>modal.content).onShow(this.planEstudio);
     (<MateriaEditarComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
@@ -57,7 +57,7 @@ export class MateriaComponent implements OnInit {
   }
 
   comisiones(item:Materia){
-    const modal = this.modalService.show(ListadoComisionModalComponent);
+    const modal = this.modalService.show(ListadoComisionModalComponent,{class:'modal-lg modal-info'});
     (<ListadoComisionModalComponent>modal.content).onShow(item);
     (<ListadoComisionModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
@@ -100,7 +100,7 @@ export class MateriaComponent implements OnInit {
 
   refrescar(){
     this.dataSource = null;
-    this.materiaService.getAll().subscribe(response=>{
+    this.materiaService.planEstudio(this.planEstudio.id).subscribe(response=>{
       this.dataSource = response;
     });
   }

@@ -8,6 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Carrera } from '../../_models/carrera';
 import { CarreraService } from '../../_services/carrera.service';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { MesaExamenMateriaService, FiltroMesaExamenMateria } from '../../_services/mesa_examen_materia.service';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { MesaMateriaEditarModalComponent } from '../componente/mesa-materia-editar-modal/mesa-materia-editar-modal.component';
 
 @Component({
   selector: 'app-mesa-ver',
@@ -19,27 +22,82 @@ export class MesaVerComponent implements OnInit {
 
   fecha_inicio:Date;
 
-  dtOptions: any = {};
-  dataSource:MesaExamenMateria[];
+  dtOptions: DataTables.Settings = {};
+  dataSource:MesaExamenMateria[]=[];
   carreras:Carrera[];
   
   mesa_examen:MesaExamen;
   consultando = false;
 
+  request = <FiltroMesaExamenMateria>{
+    search:"",
+    id_carrera:0,
+  };
+
   constructor(
     private mesaExamenService:MesaExamenService,
+    private mesaExamenMateriaService:MesaExamenMateriaService,
     private carreraService:CarreraService,
     private modalService: BsModalService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
   ) {
+    this.route.params.subscribe(params=>{
+      let ids = params['id_mesa_examen'];
+      this.mesaExamenService.getById(ids).subscribe(response=>{
+        this.mesa_examen = response;
+      });
+      
+      this.request.id_mesa_examen = ids;
+      const that = this;
+      this.dtOptions = {
+        order: [[ 0, "desc" ]],
+        language: {
+          url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          if(this.subscription){
+            this.subscription.unsubscribe();
+            this.subscription = null;
+          }
+          that.request.start = dataTablesParameters.start;
+          that.request.length = dataTablesParameters.length;
+          that.request.order = dataTablesParameters.order[0].dir;
+          that.request.search = dataTablesParameters.search.value;
+          that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+          this.subscription = this.mesaExamenMateriaService.ajax(that.request).subscribe(resp => {
+              that.dataSource = resp.items;
+
+              callback({
+                recordsTotal: resp.total_count,
+                recordsFiltered: resp.total_count,
+                data: []
+              });
+            });
+        },
+        columns: [
+          { 
+            data: 'created_at',
+            width: '5%', 
+          },
+        ],
+        columnDefs: [ {
+          targets: 'no-sort',
+          orderable: false,
+          },
+        ],
+        responsive:true,
+      };
+    });
   }
+  subscription:Subscription;
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenService.sede(id_sede);
-
     this.carreraService.getAll().subscribe(response=>{
       this.carreras = response;
       let item = <Carrera>{};
@@ -49,33 +107,29 @@ export class MesaVerComponent implements OnInit {
       this.carreras = this.carreras.reverse();
     });
 
-    this.dtOptions = {
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      columnDefs: [ {
-        targets:'option',
-        orderable: false,
-        width:"7%",
-        } ]
-    };
-    
-    this.route.params.subscribe(params=>{
-      let ids = params['id_mesa_examen'];
-      this.mesaExamenService.getById(ids).subscribe(response=>{
-        this.mesa_examen = response;
-      });
-      
-      this.mesaExamenService.materias(ids).subscribe(response=>{
-        this.dataSource = response;
-      });
+  }
+
+  asociar_materia_masivo(){
+    this.router.navigate(['/mesas/'+this.mesa_examen.id+'/materias/disponibles']);
+  }
+  asociar_materia_simple(){
+    const modal = this.modalService.show(MesaMateriaEditarModalComponent,{class: 'modal-info modal-lg'});
+    (<MesaMateriaEditarModalComponent>modal.content).onShow(this.mesa_examen.id);
+    (<MesaMateriaEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescar();
+      }
     });
   }
 
-  asociar_materia(){
-    this.router.navigate(['/mesas/'+this.mesa_examen.id+'/materias/disponibles']);
+  editar_materia(item:MesaExamenMateria){
+    const modal = this.modalService.show(MesaMateriaEditarModalComponent,{class: 'modal-info modal-lg'});
+    (<MesaMateriaEditarModalComponent>modal.content).onShow(this.mesa_examen.id,item);
+    (<MesaMateriaEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescar();
+      }
+    });
   }
 
   ver(mesa:MesaExamenMateria){
@@ -99,16 +153,8 @@ export class MesaVerComponent implements OnInit {
   }
 
   refrescar(){
-    this.dataSource = null;
-    this.mesaExamenService.materias(this.mesa_examen.id).subscribe(response=>{
-      this.dataSource = response;
-    });
-  }
-
-  seleccionar_carrera(event){
-    this.dataSource = null;
-    this.mesaExamenService.materias(this.mesa_examen.id,event.id).subscribe(response=>{
-      this.dataSource = response;
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.ajax.reload();
     });
   }
 

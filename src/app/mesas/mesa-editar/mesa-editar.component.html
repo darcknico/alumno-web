@@ -68,18 +68,19 @@
       </div>  
     </div>
   </div>
+  <!--
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Materias asociadas
           <div class="card-header-actions">
-            <button class="btn btn-block btn-danger" type="button" (click)="asociar_materia()">Asociar materia</button>
+            <button class="btn btn-sm btn-block btn-danger" type="button" (click)="asociar_materia()">Asociar materia</button>
           </div>
         </div>
         <div class="card-body p-1">
           <div class="row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-8">
               <label class="control-label">Carrera</label>
               <ng-select [items]="carreras"
                   [selectOnTab]="true"
@@ -112,13 +113,21 @@
                   <td>{{ item.ubicacion }}</td>
                   <td>
                     <div class="btn-group" dropdown placement="top right" container="body">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Inscriptos</a>
-                          <a class="dropdown-item" (click)="desasociar_materia(item)" href="javascript:void(0);">Dar de baja</a>
+                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                            <i class="fa fa-cog"></i>
+                            Gestionar
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="desasociar_materia(item)" href="javascript:void(0);">
+                            <i class="fa fa-remove"></i>
+                            Remover
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -131,4 +140,5 @@
       </div>
     </div>
   </div>
+  -->
 </div>

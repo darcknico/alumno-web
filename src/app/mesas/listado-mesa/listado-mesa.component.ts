@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
 import { MesaExamen } from '../../_models/mesa.examen';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { Subscription } from 'rxjs';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-listado-mesa',
@@ -28,10 +30,10 @@ export class ListadoMesaComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) { }
+  
+  subscription:Subscription;
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenService.sede(id_sede);
     const that = this;
 
     this.dtOptions = {
@@ -44,12 +46,16 @@ export class ListadoMesaComponent implements OnInit {
       serverSide: true,
       processing: true,
       ajax: (dataTablesParameters: any, callback) => {
+        if(this.subscription){
+          this.subscription.unsubscribe();
+          this.subscription = null;
+        }
         that.request.start = dataTablesParameters.start;
         that.request.length = dataTablesParameters.length;
         that.request.order = dataTablesParameters.order[0].dir;
         that.request.search = dataTablesParameters.search.value;
         that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
-        this.mesaExamenService.ajax(that.request).subscribe(resp => {
+        this.subscription = this.mesaExamenService.ajax(that.request).subscribe(resp => {
             that.dataSource = resp.items;
 
             callback({
@@ -66,7 +72,15 @@ export class ListadoMesaComponent implements OnInit {
         }, 
         { data: 'fecha_inicio' },
         { data: 'nombre' },
-        { data: 'numero' },
+        { data: 'numero', className:'text-center', width: '5%' },
+        { data: 'totales', className:'text-center', width: '5%' },
+        { data: 'inscriptos', className:'text-center', width: '5%' },
+        { data: 'opciones', className:'text-center', width: '5%' },
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
       ],
       responsive:true,
     };
@@ -102,6 +116,14 @@ export class ListadoMesaComponent implements OnInit {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
     });
+  }
+
+  descargar(item:MesaExamen){
+    AuxiliarFunction.descargar(this.toastr,this.mesaExamenService.reporte_resumen(item.id));
+  }
+
+  imprimir(item:MesaExamen){
+    AuxiliarFunction.imprimir(this.toastr,this.mesaExamenService.reporte_resumen(item.id));
   }
 
 }

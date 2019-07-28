@@ -71,6 +71,7 @@ export const routes: Routes = [
       { path: 'estadisticas', loadChildren:'./estadisticas/estadisticas.module#EstadisticasModule' },
       { path: 'pages', loadChildren:'./pages/pages.module#PagesModule' },
       { path: 'docentes', loadChildren:'./docentes/docentes.module#DocentesModule' },
+      { path: 'alumnos', loadChildren:'./alumnos/alumnos.module#AlumnosModule' },
       { path: 'base', loadChildren:'./views/base/base.module#BaseModule' },
       
       /*

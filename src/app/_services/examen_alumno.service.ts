@@ -37,8 +37,8 @@ export class ExamenAlumnoService {
         private sede:SedeService,
         ) {
         this.id_sede = this.sede.getIdSede();
-        this.sede.sede$.subscribe(sede => {
-            this.id_sede = sede.id;
+        this.sede.id_sede$.subscribe(id_sede => {
+            this.id_sede = id_sede;
         });
     }
 

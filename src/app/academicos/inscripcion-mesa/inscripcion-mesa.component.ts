@@ -7,6 +7,8 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { MesaExamenMateriaService } from '../../_services/mesa_examen_materia.service';
+import { MesaExamenMateriaAlumnoService } from '../../_services/mesa_examen_materia_alumno.service';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-inscripcion-mesa',
@@ -22,6 +24,7 @@ export class InscripcionMesaComponent implements OnInit {
   constructor(
     private inscripcionService:InscripcionService,
     private mesaExamenMateriaService:MesaExamenMateriaService,
+    private mesaExamenMateriaAlumnoService:MesaExamenMateriaAlumnoService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
@@ -30,9 +33,6 @@ export class InscripcionMesaComponent implements OnInit {
   }
 
   ngOnInit() {
-    let ids = +localStorage.getItem('id_sede');
-    this.inscripcionService.sede(ids);
-    this.mesaExamenMateriaService.sede(ids);
     this.dtOptions = {
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -81,5 +81,13 @@ export class InscripcionMesaComponent implements OnInit {
 
   mesa_examen_materia(item:MesaExamenMateriaAlumno){
     this.router.navigate(['/mesas/materias/'+item.id_mesa_examen_materia+'/editar']);
+  }
+
+  descargar(item:MesaExamenMateriaAlumno){
+    AuxiliarFunction.descargar(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_constancia(item.id));
+  }
+
+  imprimir(item:MesaExamenMateriaAlumno){
+    AuxiliarFunction.imprimir(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_constancia(item.id));
   }
 }

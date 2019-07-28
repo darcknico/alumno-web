@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Mesas de examenes
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Mesa de examen</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Mesa de examen</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -17,8 +17,10 @@
                   <th>Mes</th>
                   <th>Dia</th>
                   <th>Nombre</th>
-                  <th>Numero</th>
-                  <th></th>
+                  <th>Nº</th>
+                  <th class="no-sort">T/A/C</th>
+                  <th class="no-sort">Inscriptos</th>
+                  <th class="no-sort"></th>
                 </tr>
             </thead>
             <tbody *ngIf="dataSource?.length != 0">
@@ -26,17 +28,43 @@
                 <td>{{ item.fecha_inicio | date:'MMMM yyyy' }}</td>
                 <td>{{ item.fecha_inicio | date:'dd/MM'}} - {{item.fecha_fin | date:'dd/MM'}} </td>
                 <td>{{ item.nombre }} </td>
-                <td>{{ item.numero }}</td>
+                <td class="text-center">{{ item.numero }}</td>
+                <td class="text-center">{{ item.totales.total|number:'2.0-0' }}/{{ item.totales.abiertos|number:'2.0-0' }}/{{ item.totales.cerrados|number:'2.0-0' }}</td>
+                <td class="text-center">{{ item.inscriptos.total }}</td>
                 <td>
                   <div class="btn-group" dropdown placement="bottom right" container="body">
-                    <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                    <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                       <span class="caret"></span>
                     </button>
                     <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                       <li role="menuitem">
-                        <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
-                        <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas Información</a>
-                        <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                        <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                          <i class="fa fa-cog"></i>
+                          Gestionar
+                        </a>
+                      </li>
+                      <li role="menuitem">
+                        <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                          <i class="fa fa-edit"></i>
+                          Editar
+                        </a>
+                      </li>
+                      <li role="menuitem">
+                        <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                          <i class="fa fa-remove"></i>
+                          Eliminar
+                        </a>
+                      </li>
+                      <li class="divider dropdown-divider"></li>
+                      <li role="menuitem">
+                        <a class="dropdown-item" (click)="descargar(item)" href="javascript:void(0);">
+                          Descargar
+                        </a>
+                      </li>
+                      <li role="menuitem">
+                        <a class="dropdown-item" (click)="imprimir(item)" href="javascript:void(0);">
+                          Imprimir
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -49,6 +77,11 @@
                 </tr>
             </tbody>
             </table>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <p>T/A/C: Total de las mesas, abiertas y cerradas(con fecha de cierre).</p>
+            </div>
           </div>
         </div>
       </div>

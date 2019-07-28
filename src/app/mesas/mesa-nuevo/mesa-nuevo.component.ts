@@ -34,8 +34,7 @@ export class MesaNuevoComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenService.sede(id_sede);
+    
   }
 
   get f(){

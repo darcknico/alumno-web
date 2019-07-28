@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Alumno, TipoAlumnoCivil, TipoAlumnoEstado, TipoAlumnoDocumentacion, AlumnoArchivo, TipoCondicionAlumno } from '../_models/alumno';
+import { Alumno, TipoAlumnoCivil, TipoAlumnoEstado, TipoAlumnoDocumentacion, AlumnoArchivo, TipoCondicionAlumno, AlumnoSede } from '../_models/alumno';
 import { Inscripcion } from '../_models/inscripcion';
 import { PlanPago } from '../_models/plan_pago';
 import { Obligacion } from '../_models/obligacion';
@@ -18,6 +18,7 @@ export interface FiltroAlumno {
     id_departamento:number;
     id_carrera:number;
     id_tipo_alumno_estado:number;
+    estado:number;
 }
 export interface AlumnoAjax{
     items: Alumno[];
@@ -38,8 +39,8 @@ export class AlumnoService {
         private sede:SedeService,
         ) {
         this.id_sede = this.sede.getIdSede();
-        this.sede.sede$.subscribe(sede => {
-            this.id_sede = sede.id;
+        this.sede.id_sede$.subscribe(id_sede => {
+            this.id_sede = id_sede;
         });
     }
 
@@ -147,4 +148,28 @@ export class AlumnoService {
         return this.http.get( [this.api,this.resource,id,'estados','deuda'].join('/') );
     }
 
+    coincidencia(
+        id_tipo_documento,
+        documento
+    ){
+        return this.http.get<{
+            coincidencia:boolean,
+            alumno:Alumno,
+        }>( [this.api,this.resource,'coincidencia'].join('/') ,
+        {
+            params:{
+                id_tipo_documento:id_tipo_documento,
+                documento:documento
+            },
+        }
+        );
+    }
+
+    sedes(id:number){
+        return this.http.get<AlumnoSede[]>( [this.api,this.resource,id,'sedes'].join('/') );
+    }
+
+    password(item:Alumno){
+        return this.http.post<Alumno>( [this.api,this.resource,item.id,'password'].join('/'),item );
+    }
 }

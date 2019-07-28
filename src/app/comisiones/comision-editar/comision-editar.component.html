@@ -9,26 +9,32 @@
         <div class="card-body">
           <form [formGroup]="formulario" >
             <div class="row">
-              <div class="form-group col-sm-4">
-                <label class="control-label">Año (*)</label>
-                <input 
-                  required
+              <div class="form-group col-sm-4 ">
+                <label class="control-label">Año de curso (*)</label>
+                <input
                   formControlName="anio"
-                  type="text" 
-                  class="form-control"
+                  type="number" 
+                  class="form-control {{ f.anio.invalid?'is-invalid':'is-valid'}}"
                   placeholder="2019">
-                <span *ngIf="formulario.get('anio').hasError('required')" class="help-block">
-                  El nombre es requerido
-                </span>
+                <div *ngIf= " (f.anio.touched || f.anio.dirty) && f.anio.invalid " class="invalid-feedback">
+                  <span *ngIf="formulario.get('anio').hasError('required')" class="help-block">
+                    El nombre es requerido
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-4">
-                <label class="control-label">Numero (*)</label>
+                <label class="control-label">Identificación (*)</label>
                 <input 
                   required
                   formControlName="numero"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.numero.touched || f.numero.dirty)?(f.numero.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Numero de la comision">
+                <div *ngIf= " (f.numero.touched || f.numero.dirty) && f.numero.invalid " class="invalid-feedback">
+                  <span *ngIf="formulario.get('numero').hasError('required')" class="help-block">
+                    La identificacion es necesaria.
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Modalidad (*)</label>
@@ -115,12 +121,19 @@
               </div>
               <div class="form-group col-sm-4" *ngIf="!usuario_cambiar">
                 <label class="control-label">Usuario</label>
-                <p>{{usuario.email}} <button class="btn btn-danger btn-sm" (click)="cambiar_usuario()">CAMBIAR</button></p>
+                <p>
+                  <ng-component *ngIf="usuario else ninguno">
+                    {{usuario.email}}
+                  </ng-component>
+                  <ng-template #ninguno>
+                    SIN USUARIO
+                  </ng-template>
+                  <button class="btn btn-danger btn-sm" (click)="cambiar_usuario()">CAMBIAR</button>
+                </p>
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Apellido (*)</label>
                 <input 
-                  required
                   formControlName="responsable_apellido"
                   type="text" 
                   class="form-control"
@@ -130,12 +143,37 @@
               <div class="form-group col-sm-4">
                 <label class="control-label">Nombre (*)</label>
                 <input 
-                  required
                   formControlName="responsable_nombre"
                   type="text" 
                   class="form-control"
                   [readonly]="usuario_seleccionado"
                   placeholder="Nombre del responsable">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-center">
+                <hr>
+                <label class="control-label">Docentes a cargo</label>
+              </div>
+            </div>
+            <div class="row" *ngIf="docentes">
+              <div class="form-group col-sm-12" >
+                <label class="control-label">Seleccionar</label>
+                <ng-select [items]="docentes" #docentesSelect
+                  formControlName="docentes"
+                  [multiple]="true"
+                  notFoundText="No se a encontrado al docente"
+                  [selectOnTab]="true"
+                  [clearable]="false">
+                  <ng-template ng-option-tmp let-item="item" >
+                    CUIT:{{item.cuit}} <br>
+                    <small>{{item.usuario.apellido}} {{item.usuario.nombre}}</small>
+                  </ng-template>
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="ng-value-label">{{item.usuario.apellido}} {{item.usuario.nombre}}</span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                </ng-select>
               </div>
             </div>
           </form>

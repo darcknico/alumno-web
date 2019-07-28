@@ -20,12 +20,14 @@ export class InscripcionMesaNuevoComponent implements OnInit {
   mesa_examen:MesaExamen;
   mesa_examen_materia:MesaExamenMateria;
   condicionalidades:TipoCondicionAlumno[];
+  deuda:number = 0;
 
   dtOptions: DataTables.Settings = {};
   dataSourceMesaExamen:MesaExamen[];
   dataSourceMesaExamenMateria:MesaExamenMateria[];
 
   formulario:FormGroup;
+  consultando:boolean=false;
   constructor(
     private alumnoService:AlumnoService,
     private inscripcionService:InscripcionService,
@@ -40,13 +42,13 @@ export class InscripcionMesaNuevoComponent implements OnInit {
       id_tipo_condicion_alumno:1,
       nota:[null,[Validators.min(0),Validators.max(10),Validators.nullValidator]],
       nota_nombre:'',
+      adeuda:false,
     });
   }
 
   ngOnInit() {
     let ids = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(ids);
-    this.mesaExamenMateriaService.sede(ids);
     this.dtOptions = {
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -65,13 +67,20 @@ export class InscripcionMesaNuevoComponent implements OnInit {
         });
         this.inscripcionService.mesas_examenes_disponibles(ids).subscribe(response=>{
           this.dataSourceMesaExamen = response;
-        })
+        });
+        this.inscripcionService.estado_deuda(ids).subscribe((response:any)=>{
+          this.deuda = response.deuda;
+          if(this.deuda>0){
+            this.f.adeuda.setValue(true);
+          }
+        });
       }
     });
 
     this.alumnoService.tipos_condicion().subscribe(response=>{
       this.condicionalidades = response;
     });
+    
   }
 
   get f(){
@@ -87,6 +96,11 @@ export class InscripcionMesaNuevoComponent implements OnInit {
 
   seleccionar_mesa_examen_materia(item:MesaExamenMateria){
     this.mesa_examen_materia = item;
+    this.consultando = true;
+    this.mesaExamenMateriaService.getById(item.id,this.inscripcion.id).subscribe(response=>{
+      this.consultando = false;
+      this.mesa_examen_materia = response;
+    });
   }
 
   cambiar_mesa_examen(){
@@ -109,6 +123,7 @@ export class InscripcionMesaNuevoComponent implements OnInit {
     item.id_tipo_condicion_alumno = this.f.id_tipo_condicion_alumno.value;
     item.nota = this.f.nota.value;
     item.nota_nombre = this.f.nota_nombre.value;
+    item.adeuda = this.f.adeuda.value;
     this.mesaExamenMateriaService.alumno_asociar(item).subscribe(response=>{
       this.toastr.success('Inscripcion a Mesa de examen realizada', '');
       this.volver();

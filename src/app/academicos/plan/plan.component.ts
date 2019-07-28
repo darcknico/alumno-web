@@ -51,7 +51,7 @@ export class PlanComponent implements OnInit {
   }
 
   nuevo(){
-    const modal = this.modalService.show(PlanEditarComponent);
+    const modal = this.modalService.show(PlanEditarComponent,{class:'modal-lg modal-success'});
     (<PlanEditarComponent>modal.content).onShow(this.carrera);
     (<PlanEditarComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
@@ -61,7 +61,7 @@ export class PlanComponent implements OnInit {
   }
 
   editar(item:PlanEstudio){
-    const modal = this.modalService.show(PlanEditarComponent);
+    const modal = this.modalService.show(PlanEditarComponent,{class:'modal-lg modal-info'});
     (<PlanEditarComponent>modal.content).onShow(this.carrera,item.id);
     (<PlanEditarComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {

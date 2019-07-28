@@ -89,7 +89,7 @@ export const navItems = [
         permisos: [1,2,4],
       },
       {
-        name: 'Mesa*Materia',
+        name: 'Actas mesas',
         url: '/mesas/materias',
         icon: 'fa fa-check-square',
         permisos: [1,2,4,8],

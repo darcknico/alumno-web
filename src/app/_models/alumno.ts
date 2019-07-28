@@ -1,6 +1,7 @@
 import { Usuario } from "./usuario";
 import { Provincia } from "./extra";
 import { TipoDocumento } from "./tipo_documento";
+import { Sede } from './sede';
 
 export interface Alumno{
     id:number;
@@ -30,6 +31,7 @@ export interface Alumno{
     id_tipo_alumno_estado:number;
     observaciones:string;
     id_usuario:number;
+    password:string;
 
     usuario:Usuario;
     provincia:Provincia;
@@ -85,4 +87,16 @@ export interface AlumnoNotificacion{
 export interface TipoCondicionAlumno{
     id:number;
     nombre:string;
+}
+
+export interface AlumnoSede{
+    id:number;
+    id_alumno:number;
+    id_sede:number;
+    id_usuario:number;
+    estado:boolean;
+
+    alumno:Alumno;
+    sede:Sede;
+    usuario:Usuario;
 }

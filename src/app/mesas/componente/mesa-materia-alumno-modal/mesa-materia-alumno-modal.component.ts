@@ -5,10 +5,7 @@ import { MesaExamenMateriaAlumno } from '../../../_models/mesa.examen';
 import { Subject } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { PlanEstudio } from '../../../_models/plan_estudio';
-import { Materia } from '../../../_models/materia';
 import { MesaExamenMateriaAlumnoService } from '../../../_services/mesa_examen_materia_alumno.service';
-import { MesaExamenMateriaService } from '../../../_services/mesa_examen_materia.service';
 import { AlumnoService } from '../../../_services/alumno.service';
 
 @Component({
@@ -32,19 +29,17 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
     private toastr: ToastrService,
     ) {
       this.formulario = this.fb.group({
-        asistencia: [ '', Validators.required],
-        nota: [ '', Validators.required],
+        asistencia:  null,
+        nota: [ '', [Validators.required,Validators.min(0),Validators.max(10)]],
         nota_nombre: [ '', Validators.required],
         id_tipo_condicion_alumno: [ '', Validators.required],
         observaciones: '',
+        adeuda: false,
       });
     }
 
   onShow(alumno:MesaExamenMateriaAlumno){
     this.alumno = alumno;
-    
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenMateriaAlumnoService.sede(id_sede,this.alumno.id_mesa_examen_materia);
 
     this.alumnoService.tipos_condicion().subscribe(response=>{
       this.condicionalidades = response;
@@ -56,6 +51,7 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
     this.f.nota_nombre.setValue(this.alumno.nota_nombre);
     this.f.id_tipo_condicion_alumno.setValue(this.alumno.id_tipo_condicion_alumno);
     this.f.observaciones.setValue(this.alumno.observaciones);
+    this.f.adeuda.setValue(this.alumno.adeuda);
   }
   ngOnInit() {
     
@@ -69,14 +65,13 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
     if(!this.formulario.valid){
       return;
     }
-    var item = <MesaExamenMateriaAlumno>{}
-    item.id = this.alumno.id;
-    item.asistencia = this.f.asistencia.value;
-    item.nota = this.f.nota.value;
-    item.nota_nombre = this.f.nota_nombre.value;
-    item.id_tipo_condicion_alumno = this.f.id_tipo_condicion_alumno.value;
-    item.observaciones = this.f.observaciones.value;
-    this.mesaExamenMateriaAlumnoService.update(item).subscribe(response=>{
+    this.alumno.asistencia = this.f.asistencia.value;
+    this.alumno.nota = this.f.nota.value;
+    this.alumno.nota_nombre = this.f.nota_nombre.value;
+    this.alumno.id_tipo_condicion_alumno = this.f.id_tipo_condicion_alumno.value;
+    this.alumno.observaciones = this.f.observaciones.value;
+    this.alumno.adeuda = this.f.adeuda.value;
+    this.mesaExamenMateriaAlumnoService.update(this.alumno).subscribe(response=>{
       this.toastr.success('Alumno Editado', '');
       this.onClose.next(true);
       this.bsModalRef.hide();

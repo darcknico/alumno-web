@@ -7,7 +7,7 @@ import { MesaNuevoComponent } from './mesa-nuevo/mesa-nuevo.component';
 import { MesaEditarComponent } from './mesa-editar/mesa-editar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
-import { BsDropdownModule, BsDatepickerModule, CollapseModule, TimepickerModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsDatepickerModule, CollapseModule, TimepickerModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListadoMateriaComponent } from './listado-materia/listado-materia.component';
 import { MesaDetalleComponent } from './componente/mesa-detalle/mesa-detalle.component';
@@ -17,6 +17,8 @@ import { MesaMateriaAlumnoVerComponent } from './mesa-materia-alumno-ver/mesa-ma
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { MesaVerComponent } from './mesa-ver/mesa-ver.component';
+import { MesaMateriaEditarModalComponent } from './componente/mesa-materia-editar-modal/mesa-materia-editar-modal.component';
+import { MesaMateriaDocenteEditarModalComponent } from './componente/mesa-materia-docente-editar-modal/mesa-materia-docente-editar-modal.component';
 
 @NgModule({
   imports: [
@@ -31,10 +33,12 @@ import { MesaVerComponent } from './mesa-ver/mesa-ver.component';
     BsDatepickerModule,
     TimepickerModule,
     CollapseModule,
+    ModalModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory
-    })
+    }),
+    TooltipModule.forRoot(),
   ],
   declarations: [
     ListadoMesaComponent, 
@@ -46,9 +50,12 @@ import { MesaVerComponent } from './mesa-ver/mesa-ver.component';
     MesaMateriaEditarComponent, 
     MesaMateriaAlumnoVerComponent,
     MesaVerComponent,
+    MesaMateriaEditarModalComponent,
+    MesaMateriaDocenteEditarModalComponent,
   ],
   entryComponents:[
-
+    MesaMateriaEditarModalComponent,
+    MesaMateriaDocenteEditarModalComponent,
   ]
 })
 export class MesasModule { }

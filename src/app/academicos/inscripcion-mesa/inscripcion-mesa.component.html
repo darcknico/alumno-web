@@ -24,7 +24,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Mesas de examenes inscriptas
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Inscribir a nueva mesa de examen</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Inscribir a nueva mesa de examen</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -61,11 +61,18 @@
                     {{ item.observaciones }}
                   </td>
                   <td>
-                    <button class="btn btn-danger btn-sm" (click)="alumno_desasociar(item)" *ngIf="!item.nota">
+                    <button class="btn btn-danger btn-sm m-1" (click)="alumno_desasociar(item)" tooltip="Dar de baja">
                       <span class="fa fa-trash"></span>
                     </button>
-                    <button class="btn btn-danger btn-sm" (click)="mesa_examen_materia(item)" >
+                    <button class="btn btn-danger btn-sm m-1" (click)="mesa_examen_materia(item)" tooltip="Ir a la mesa">
                       <span class="fa fa-file"></span>
+                    </button>
+                    <br>
+                    <button class="btn btn-info btn-sm m-1" (click)="descargar(item)" tooltip="Descargar constancia">
+                      <span class="fa fa-download"></span>
+                    </button>
+                    <button class="btn btn-secondary btn-sm m-1" (click)="imprimir(item)" tooltip="Imprimir constancia">
+                      <span class="fa fa-print"></span>
                     </button>
                   </td>
                 </tr>

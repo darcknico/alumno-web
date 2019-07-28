@@ -19,7 +19,7 @@
         <u>Numero:</u> {{mesa_examen.numero}}
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="mesa_examen.usuario">
       <div class="form-group col-sm-6">
         <u>Responsable:</u> {{mesa_examen.usuario.apellido}} {{mesa_examen.usuario.nombre}}
       </div>

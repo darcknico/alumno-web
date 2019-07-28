@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { CarreraService } from '../../_services/carrera.service';
 import { Carrera } from '../../_models/carrera';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FiltroMesaExamenMateria } from '../../_services/mesa_examen_materia.service';
 
 @Component({
   selector: 'app-listado-materia',
@@ -47,9 +48,6 @@ export class ListadoMateriaComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenService.sede(id_sede);
-
     this.carreraService.getAll().subscribe(response=>{
       this.carreras = response;
       let item = <Carrera>{};
@@ -93,7 +91,7 @@ export class ListadoMateriaComponent implements OnInit {
         this.fecha_inicio = moment(this.mesa_examen.fecha_inicio).toDate();
         this.f.fecha.setValue(this.fecha_inicio);
       });
-      this.mesaExamenService.materias_disponibles(ids).subscribe(response=>{
+      this.mesaExamenService.materias_disponibles(ids).subscribe((response:Materia[])=>{
         this.dataSource = response;
       });
     });
@@ -152,13 +150,15 @@ export class ListadoMateriaComponent implements OnInit {
 
   refrescar(event){
     this.dataSource = null;
-    this.mesaExamenService.materias_disponibles(this.mesa_examen.id,event.id).subscribe(response=>{
+    this.mesaExamenService.materias_disponibles(this.mesa_examen.id,<FiltroMesaExamenMateria>{
+      id_carrera:event.id,
+    }).subscribe((response:Materia[])=>{
       this.dataSource = response;
     });
   }
 
   volver(){
-    this.router.navigate(['/mesas/'+this.mesa_examen.id+'/editar']);
+    this.router.navigate(['/mesas/'+this.mesa_examen.id+'/ver']);
   }
 
 }

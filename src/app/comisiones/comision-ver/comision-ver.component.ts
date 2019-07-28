@@ -8,6 +8,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { ComisionAlumnoEditarModalComponent } from '../comision-alumno-editar-modal/comision-alumno-editar-modal.component';
 import { ComisionAlumnoVerModalComponent } from '../comision-alumno-ver-modal/comision-alumno-ver-modal.component';
+import { ListadoComisionDocenteModalComponent } from '../componente/listado-comision-docente-modal/listado-comision-docente-modal.component';
 
 @Component({
   selector: 'app-comision-ver',
@@ -124,6 +125,16 @@ export class ComisionVerComponent implements OnInit {
 
   examenes(){
     this.router.navigate(['/comisiones/'+this.comision.id+'/examenes']);
+  }
+
+  docentes(){
+    const modal = this.modalService.show(ListadoComisionDocenteModalComponent,{class: 'modal-info'});
+    (<ListadoComisionDocenteModalComponent>modal.content).onShow(this.comision);
+    (<ListadoComisionDocenteModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
   }
 
   volver(){

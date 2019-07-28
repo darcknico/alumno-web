@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Carrera } from '../../_models/carrera';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ComisionService } from '../../_services/comision.service';
@@ -9,12 +9,14 @@ import { MateriaService } from '../../_services/materia.service';
 import { Materia } from '../../_models/materia';
 import * as moment from 'moment';
 import { UsuarioService } from '../../_services/usuario.service';
-import { Usuario } from '../../_models/usuario';
+import { Usuario, Docente } from '../../_models/usuario';
 import { Comision } from '../../_models/comision';
 import { ModalidadService } from '../../_services/modalidad.service';
 import { Modalidad } from '../../_models/modalidad';
 import { PlanEstudio } from '../../_models/plan_estudio';
 import { PlanService } from '../../_services/plan.service';
+import { DocenteService, FiltroDocente } from '../../_services/docente.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-comision-editar',
@@ -22,7 +24,7 @@ import { PlanService } from '../../_services/plan.service';
   styleUrls: ['./comision-editar.component.scss']
 })
 export class ComisionEditarComponent implements OnInit {
-
+  @ViewChild('docentesSelect')docentesSelect: NgSelectComponent;
   id_carrera:number;
 
   titulo:string;
@@ -31,6 +33,7 @@ export class ComisionEditarComponent implements OnInit {
   planes_estudio:PlanEstudio[] = [];
   materias:Materia[] = [];
   usuarios:Usuario[] = [];
+  docentes:Docente[] = [];
   modalidades:Modalidad[] = [];
   usuario:Usuario = null;
   usuario_seleccionado = false;
@@ -46,6 +49,7 @@ export class ComisionEditarComponent implements OnInit {
     private planService:PlanService,
     private materiaService:MateriaService,
     private usuarioService:UsuarioService,
+    private docenteService:DocenteService,
     private modalidadService:ModalidadService,
     private route: ActivatedRoute,
     private router: Router,
@@ -59,7 +63,8 @@ export class ComisionEditarComponent implements OnInit {
       id_carrera:'',
       id_plan_estudio:'',
       id_materia: ['', Validators.required],
-      id_modalidad: ['', Validators.required],
+      id_modalidad: [null, Validators.required],
+      docentes:null,
       responsable_nombre: ['', Validators.required],
       responsable_apellido: ['', Validators.required],
     });
@@ -120,6 +125,12 @@ export class ComisionEditarComponent implements OnInit {
       this.usuarios.push(item);
       this.usuarios = this.usuarios.reverse();
     });
+    this.docenteService.getAll(<FiltroDocente>{
+      id_sede:+id_sede,
+      estado:null,
+    }).subscribe(response=>{
+      this.docentes = response;
+    });
     this.route.params.subscribe(params=>{
       let ids = params['id_comision'];
       if(ids==null){
@@ -129,7 +140,6 @@ export class ComisionEditarComponent implements OnInit {
       }
       this.iniciar();
     });
-    
     this.modalidadService.getAll().subscribe(response=>{
       this.modalidades = response;
     });
@@ -157,6 +167,14 @@ export class ComisionEditarComponent implements OnInit {
         this.materia = response.materia;
         this.carrera = response.carrera;
         this.usuario_cambiar = false;
+
+        let docentes = [];
+        this.comisionService.docentes(this.id).subscribe(response=>{
+          response.forEach(item=>{
+            docentes.push(item.docente);
+          });
+          this.f.docentes.setValue(docentes);
+        });
       });
     }
   }
@@ -182,6 +200,7 @@ export class ComisionEditarComponent implements OnInit {
     item.responsable_nombre = this.f.responsable_nombre.value;
     item.responsable_apellido = this.f.responsable_apellido.value;
     item.id_modalidad = this.f.id_modalidad.value;
+    item.docentes = this.f.docentes.value;
 
     this.consultando = true;
     if(item.id>0){

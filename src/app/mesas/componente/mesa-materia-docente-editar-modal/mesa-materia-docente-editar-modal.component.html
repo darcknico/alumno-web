@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" >
+    Docente
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-12" *ngIf="item?.id==0">
+        <label class="control-label">Docente (*)</label>
+        <ng-select [items]="docentes"
+          notFoundText="No se a encontrado al docente"
+          formControlName="id_usuario"
+          [selectOnTab]="true"
+          [clearable]="false">
+          <ng-template ng-option-tmp let-item="item" >
+            CUIT:{{item.cuit}} <br>
+            <small>{{item.usuario?.apellido}} {{item.usuario?.nombre}}</small>
+          </ng-template>
+          <ng-template ng-label-tmp let-item="item" >
+            {{item.usuario?.apellido}} {{item.usuario?.nombre}}
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group col-sm-12" *ngIf="item?.id>0">
+        <u>Usuario:</u> {{item.usuario.apellido}} {{item.usuario.nombre}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Tipo (*)</label>
+        <select
+          class="form-control"
+          formControlName="id_tipo_mesa_docente">
+          <option *ngFor="let item of tipos" [value]="item.id">{{item.nombre}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Observaciones</label>
+        <input
+          formControlName="observaciones"
+          type="text" 
+          class="form-control"
+          placeholder=" - ">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    [disabled]="!formulario.valid"
+    type="button" 
+    class="btn btn-success" 
+    (click)="confirmar()">Guardar</button>
+</div>

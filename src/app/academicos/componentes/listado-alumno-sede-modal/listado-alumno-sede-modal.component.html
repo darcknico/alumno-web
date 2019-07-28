@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Sedes asociadas</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-center">
+  <div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+            <thead>
+              <tr>
+                <th class="no-sort">Fecha</th>
+                <th class="no-sort">Sede</th>
+                <th class="no-sort">Usuario</th>
+                <th class="no-sort"></th>
+              </tr>
+            </thead>
+            <tbody *ngIf="dataSource?.length != 0">
+              <tr *ngFor="let item of dataSource" class="{{!item.estado?'bg-danger':''}}">
+                <td>{{ item.created_at | date:'dd/MM/yyyy'}}</td>
+                <td>{{ item.sede.nombre}}</td>
+                <td>{{ item.usuario?.apellido}} {{ item.usuario?.nombre}}</td>
+                <td>
+                  
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+</div>

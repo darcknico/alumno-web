@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Alumnos
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nuevo Alumno</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Nuevo Alumno</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+            <table #alta datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
               <thead>
                 <tr>
                   <th>Agregado</th>
@@ -46,28 +46,52 @@
                 </tr>
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
-                <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
-                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                <tr *ngFor="let item of dataSource" >
+                  <td>
+                    {{ item.created_at | date:'dd/MM/yyyy' }}
+                    <span class="btn badge badge-danger" *ngIf="id_sede != item.id_sede" (click)="alumno_sede(item)">N/Sede</span>
+                  </td>
                   <td>{{ item.nombre }} {{ item.apellido }}</td>
-                  <td><div *ngIf="item.tipo_documento">{{item.tipo_documento.nombre}}:</div>{{ item.documento }}</td>
+                  <td>
+                    <ng-container *ngIf="item.tipo_documento">{{item.tipo_documento.nombre}}:&nbsp;</ng-container>{{ item.documento }}
+                  </td>
                   <td>{{item.tipo_estado?.nombre}}</td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="usuario">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" >
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas Informacion</a>
+                          <a class="dropdown-item" (click)="alumno_ver(item)" href="javascript:void(0);">
+                            <i class="fa fa-info"></i>
+                            Ver
+                          </a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                            <i class="fa fa-cog"></i>
+                            Gestionar
+                          </a>
                         </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
+                        </li>
+                        <li role="menuitem" *ngIf="[99,1,2].indexOf(usuario.id_tipo_usuario)>=0">
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                            <i class="fa fa-remove"></i>
+                            Eliminar
+                          </a>
+                        </li>
+                        <li class="divider dropdown-divider"></li>
                         <li role="menuitem">
                           <a class="dropdown-item" (click)="inscribir(item)" href="javascript:void(0);">Nueva Inscripcion</a>
                         </li>
-                        <li role="menuitem" *ngIf="[99,1,2].indexOf(usuario.id_tipo_usuario)>=0">
-                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="alumno_sede(item)" href="javascript:void(0);">Sedes asociadas</a>
                         </li>
                       </ul>
                     </div>
@@ -81,9 +105,21 @@
               </tbody>
             </table>
           </div>
+          <div class="row">
+              <div class="col-12">
+                  <hr>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12">
+                  <p>
+                    <span class="badge badge-danger">N/Sede</span> = El alumno fue registrado en otra sede 
+                  </p>
+              </div>
+          </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-block-xs-only btn-danger"
+          <button class="btn btn-block-xs-only btn-info"
             type="button"
             color="accent"
             (click)="exportar()">
@@ -95,4 +131,50 @@
     <!--/.col-->
   </div>
   <!--/.row-->
+  <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Alumnos Eliminados
+            <div class="card-header-actions">
+              <button class="btn btn-sm btn-block btn-danger" type="button" (click)="auditorias()">AUDITORIA</button>
+            </div>
+          </div>
+          <div class="card-body p-1">
+            <div class="table-responsive">
+              <table #baja datatable [dtOptions]="dtOptionsBaja" class="table row-border hover compact" width="100%" >
+                <thead>
+                  <tr>
+                    <th>Eliminado</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Documento</th>
+                    <th class="no-sort">Responsable</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="dataSourceBaja?.length != 0">
+                  <tr *ngFor="let item of dataSourceBaja">
+                    <td>{{ item.deleted_at | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ item.nombre }} {{ item.apellido }}</td>
+                    <td>
+                      <ng-container *ngIf="item.tipo_documento">{{item.tipo_documento.nombre}}:&nbsp;</ng-container>{{ item.documento }}
+                    </td>
+                    <td>
+                      {{ item.usuario_baja?.apellido }} {{ item.usuario_baja?.nombre }}
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="dataSourceBaja?.length == 0">
+                  <tr>
+                    <td colspan="3" class="no-data-available">No data!</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            
+          </div>
+        </div>
+      </div>
+    </div>
 </div>

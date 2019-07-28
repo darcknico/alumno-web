@@ -1,0 +1,110 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="alumno">
+    Alumno: <b>{{alumno.apellido}} {{alumno.nombre}}</b> <div *ngIf="alumno.codigo">({{alumno.codigo}})</div>
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" *ngIf="alumno">
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <u>{{alumno.tipo_documento.nombre}}:</u> {{alumno.documento}}
+    </div>
+    <div class="form-group col-sm-4" *ngIf="alumno.sexo">
+      <u>Sexo:</u> {{alumno.sexo=='M'?'Masculino':'Femenino'}}
+    </div>
+    <div class="form-group col-sm-4" *ngIf="alumno.tipo_civil">
+      <u>Estado Civil:</u> {{alumno.tipo_civil.nombre}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-4" *ngIf="alumno.provincia">
+      <u>Provincia:</u> {{alumno.provincia.nombre}}
+    </div>
+    <div class="form-group col-sm-4">
+      <u>Localidad:</u> {{alumno.localidad}}
+    </div>
+    <div class="form-group col-sm-4">
+      <u>Codigo Postal:</u> {{alumno.codigo_postal}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <u>Fecha nacimiento:</u> {{alumno.fecha_nacimiento | date:'dd/MM/yyyy'}}
+    </div>
+    <div class="form-group col-sm-4">
+      <u>Lugar nacimiento:</u> {{alumno.ciudad_nacimiento}}
+    </div>
+    <div class="form-group col-sm-4">
+      <u>Nacionalidad:</u> {{alumno.nacionalidad}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-3">
+      <u>Domicilio:</u> {{alumno.domicilio}}
+    </div>
+    <div class="form-group col-sm-3">
+      <u>Calle:</u> {{alumno.calle}}
+    </div>
+    <div class="form-group col-sm-2">
+      <u>Nro:</u> {{alumno.numero}}
+    </div>
+    <div class="form-group col-sm-2">
+      <u>Piso:</u> {{alumno.piso}}
+    </div>
+    <div class="form-group col-sm-2">
+      <u>Depto:</u> {{alumno.depto}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <u>Correo Electronico:</u> {{alumno.email}}
+    </div>
+    <div class="form-group col-sm-4">
+      <u>Telefono:</u> {{alumno.telefono}}
+    </div>
+    <div class="form-group col-sm-4">
+      <u>Celular</u>: {{alumno.celular}}
+    </div>
+  </div>
+  <p class="card-text">{{alumno.observaciones}}</p>
+  <div class="row" >
+    <div class="col-sm-12">
+      <hr>
+      <div class="row">
+        <div class="col-sm-6 " *ngFor="let archivo of archivos">
+          <div class="form-group">
+            <label class="control-label">{{archivo.tipo_documentacion.nombre}}</label>
+            <div class="input-group">
+              <input 
+                class="form-control"
+                  readonly="readonly"
+                  type="text"
+                  placeholder="Nombre"
+                  [value]="archivo.nombre">
+              <button 
+                class="btn btn-sm btn-primary"  
+                (click)="descargar(archivo)" >
+                <i class="fa fa-download"></i>
+              </button> 
+            </div>
+          </div>
+          <div class="form-group" *ngIf="archivo.url && [1,2].indexOf(archivo.id_tipo_alumno_documentacion) >= 0 ">
+            <img [src]="archivo.url" class="img-thumbnail" [alt]="archivo.nombre" width="200">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button
+    type="button" 
+    class="btn btn-info" 
+    (click)="ver()">
+    <i class="fa fa-cog"></i>
+    Gestionar
+  </button>
+</div>

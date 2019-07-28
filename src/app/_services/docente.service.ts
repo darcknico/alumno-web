@@ -26,8 +26,10 @@ export class DocenteService {
         ) {
     }
 
-    getAll(){
-        return this.http.get<Docente[]>(this.api );
+    getAll(filtro:FiltroDocente = <FiltroDocente>{}){
+        return this.http.get<Docente[]>(this.api,{
+            params:AuxiliarFunction.toParams(filtro),
+        });
     }
 
     ajax(filtro:FiltroDocente):  Observable<Ajax<Docente>>{

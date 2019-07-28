@@ -45,9 +45,6 @@ export class MesaEditarComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.mesaExamenService.sede(id_sede);
-
     this.carreraService.getAll().subscribe(response=>{
       this.carreras = response;
       let item = <Carrera>{};

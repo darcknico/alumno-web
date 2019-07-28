@@ -9,140 +9,181 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
       <div class="card">
         <div class="card-header">
-          <strong>Mesa de examen - Materia - Edicion</strong>
-          <small> Formulario</small>
+          <strong>Mesa de examen - Materia</strong>
         </div>
-        <div class="card-body">
-          <form [formGroup]="formulario" >
-            <div class="row" *ngIf="mesa_examen_materia">
-              <div class="form-group col-sm-6">
-                <u>Materia:</u> {{mesa_examen_materia.materia.nombre}}
-              </div>
-              <div class="form-group col-sm-6">
-                <u>Carrera:</u> {{mesa_examen_materia.carrera.nombre}}
-              </div>
-              <div class="form-group col-sm-6">
-                <u>Plan de estudio:</u> {{mesa_examen_materia.materia.plan_estudio.nombre}} ({{mesa_examen_materia.materia.plan_estudio.anio}})
-              </div>
+        <div class="card-body" *ngIf="mesa_examen_materia">
+          <div class="row" >
+            <div class="form-group col-sm-6">
+              <u>Materia:</u> {{mesa_examen_materia.materia.nombre}}
             </div>
-            <div class="row">
-              <div class="form-group col-sm-12">
-                <hr>                
-              </div>
+            <div class="form-group col-sm-6">
+              <u>Carrera:</u> {{mesa_examen_materia.carrera.nombre}}
             </div>
-            <div class="row">
-              <div class="form-group col-sm-4" *ngIf="mesa_examen">
-                <label class="control-label">Fecha provista (*)</label>
-                <input bsDatepicker
-                  required
-                  [minDate]="fecha_inicio"
-                  formControlName="fecha"
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Fecha">
-                <span *ngIf="formulario.get('fecha').hasError('required')" class="help-block">
-                  La fecha y hora son requeridos
-                </span>
-              </div>
-              <div class="form-group col-sm-4" *ngIf="mesa_examen">
-                <label class="control-label">Hora realizacion (*)</label>
-                <timepicker 
-                  required
-                  formControlName="hora"
-                  [showMeridian]="false" 
-                  [showSpinners]="false">
-                </timepicker>
-              </div>
-              <div class="form-group col-sm-4" *ngIf="mesa_examen">
-                <label class="control-label">Fecha cierre (*)</label>
-                <input bsDatepicker
-                  required
-                  [minDate]="fecha_inicio"
-                  formControlName="fecha_cierre"
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Fecha">
-              </div>
+            <div class="form-group col-sm-6">
+              <u>Plan de estudio:</u> {{mesa_examen_materia.materia.plan_estudio.nombre}} ({{mesa_examen_materia.materia.plan_estudio.anio}})
             </div>
-            <div class="row">
-              <div class="form-group col-sm-6">
-                <label class="control-label">Ubicacion</label>
-                <input
-                  formControlName="ubicacion"
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Ubicacion">
-              </div>
-              <div class="form-group col-sm-3">
-                <label class="control-label">Libro</label>
-                <input
-                  formControlName="libro"
-                  type="text" 
-                  class="form-control">
-              </div>
-              <div class="form-group col-sm-3">
-                <label class="control-label">Folio</label>
-                <input
-                  formControlName="folio"
-                  type="text" 
-                  class="form-control">
-              </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-8">
+              <u>Fecha provista:</u> {{mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm'}}
             </div>
-            <div class="row">
-              <div class="form-group col-sm-12">
-                <label class="control-label">Observaciones</label>
-                <input
-                  formControlName="observaciones"
-                  type="text" 
-                  class="form-control">
-              </div>
+            <div class="form-group col-sm-4" *ngIf="mesa_examen_materia.fecha_cierre">
+              <u>Fecha cierre:</u> {{mesa_examen_materia.fecha_cierre | date:'dd/MM/yyyy'}}
             </div>
-          </form>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <u>Ubicacion:</u> {{mesa_examen_materia.ubicacion}}
+            </div>
+            <div class="form-group col-sm-3">
+              <u>Libro:</u> {{mesa_examen_materia.libro}}
+            </div>
+            <div class="form-group col-sm-3" >
+              <u>Folio:</u> {{mesa_examen_materia.folio}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <u>Observaciones:</u> {{mesa_examen_materia.observaciones}}               
+            </div>
+          </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-success btn-block-xs-only m-1"
+          <button class="btn btn-info btn-block-xs-only m-1"
             type="submit"
             color="accent"
-            (click)="continuar()"
-            [disabled]="consultando"
-            [disabled]="!formulario.valid">
-            Guardar cambios
-            </button>
-          <button class="btn btn-secondary btn-block-xs-only m-1"
-            [disabled]="consultando"
-            (click)="volver()">
-            Listado de Materias por Mesa de Examen
-            </button>
-          <button class="btn btn-primary btn-block-xs-only m-1"
-            [disabled]="consultando"
-            (click)="volver_mesa_examen()">
-            Mesa de Examen
-            </button>
-          <button class="btn btn-danger btn-block-xs-only m-1"
-            [disabled]="consultando"
-            (click)="excel()">
-            Excel de Inscriptos
-            </button>
-          <button class="btn btn-danger btn-block-xs-only m-1"
-            [disabled]="consultando"
-            (click)="notas()">
-            Subir notas
-            </button>
-          <button class="btn btn-danger btn-block-xs-only m-1"
-            [disabled]="consultando"
-            (click)="acta_reporte()">
-            Descargar Acta de Examen
-            </button>
-          <button class="btn btn-danger btn-block-xs-only m-1"
-            [disabled]="consultando"
-            (click)="acta_imprimir()">
-            Imprimir Acta de Examen
+            (click)="editar()">
+            Editar
             </button>
         </div>
       </div>  
+    </div>
+    <div class="col-lg-6">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Docentes
+            <div class="card-header-actions">
+              <button class="btn btn-sm btn-block btn-success" type="button" (click)="docente_agregar()">Agregar Docente</button>
+            </div>
+          </div>
+          <div class="card-body p-1">
+            <div class="table-responsive">
+              <table #secundario datatable [dtOptions]="dtOptionsDocente" [dtTrigger]="dtTriggerDocente" class="table row-border compact hover" width="100%">
+                <thead>
+                  <tr>
+                    <th>Agregado</th>
+                    <th class="no-sort">Docente</th>
+                    <th class="no-sort">Tipo</th>
+                    <th class="no-sort"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of dataSourceDocente">
+                    <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
+                    <td>{{ item.tipo?.nombre }}</td>
+                    <td>
+                      <div class="btn-group" dropdown placement="top right" container="body">
+                        <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                          <span class="caret"></span>
+                        </button>
+                        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                          <li role="menuitem">
+                            <a class="dropdown-item" (click)="docente_editar(item)" href="javascript:void(0);">
+                              <i class="fa fa-edit"></i>
+                              Editar
+                            </a>
+                          </li>
+                          <li role="menuitem">
+                            <a class="dropdown-item" (click)="docente_desasociar(item)" href="javascript:void(0);">
+                              <i class="fa fa-remove"></i>
+                              Remover
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <strong>Reportes</strong>
+            </div>
+            <div class="card-body p-1" >
+              <div class="form-inline col-lg-12">
+                <div class="col-6">
+                    <label class="control-label">Acta Libres: </label>
+                </div>
+                <div class="btn-group m-1" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(1)">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(1)" tooltip="IMPRIMIR">
+                    <i class="fa fa-print"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-inline col-lg-12">
+                <div class="col-6">
+                    <label class="control-label">Acta Promicionables: </label>
+                </div>
+                <div class="btn-group m-1" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(2)">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(2)" tooltip="IMPRIMIR">
+                    <i class="fa fa-print"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-inline col-lg-12">
+                <div class="col-6">
+                    <label class="control-label">Acta Regulares: </label>
+                </div>
+                <div class="btn-group m-1" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(3)">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(3)" tooltip="IMPRIMIR">
+                    <i class="fa fa-print"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>  
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-12">
+      <button class="btn btn-secondary btn-block-xs-only m-1"
+        [disabled]="consultando"
+        (click)="volver_mesa_examen()">
+        Mesa de Examen
+        </button>
+      <button class="btn btn-info btn-block-xs-only m-1"
+        [disabled]="consultando"
+        (click)="excel()">
+        Excel de Inscriptos
+        </button>
+      <button class="btn btn-danger btn-block-xs-only m-1"
+        [disabled]="consultando"
+        (click)="notas()">
+        Subir notas
+        </button>
     </div>
   </div>
   <div class="row">
@@ -153,26 +194,55 @@
         </div>
         <div class="card-body p-1">
           <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+            <table #principal datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table row-border hover" width="100%">
               <thead>
                 <tr>
                   <th>Agregado</th>
-                  <th>Usuario</th>
-                  <th>Alumno</th>
-                  <th>Condicion</th>
-                  <th>Detalles</th>
-                  <th class="option"></th>
+                  <th class="no-sort">Usuario</th>
+                  <th class="no-sort">Alumno</th>
+                  <th class="no-sort">Comision</th>
+                  <th class="no-sort">C/Estado</th>
+                  <th class="no-sort">Condicion</th>
+                  <th class="no-sort">Adeuda</th>
+                  <th class="no-sort">Detalles</th>
+                  <th class="no-sort"></th>
                 </tr>
               </thead>
-              <tbody *ngIf="dataSource?.length != 0">
+              <tbody >
                 <tr *ngFor="let item of dataSource">
                   <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
                   <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
-                  <td>{{ item.alumno.apellido }} {{ item.alumno.nombre }} {{ item.alumno.documento }}</td>
+                  <td>
+                    {{ item.alumno.apellido }} {{ item.alumno.nombre }} {{item.alumno.tipo_documento.nombre}}:&nbsp;{{ item.alumno.documento }}
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.comision else sinComision">
+                      Año:{{item.comision.comision.anio}} Nº:{{item.comision.comision.numero}}
+                    </ng-container>
+                    <ng-template #sinComision>
+                      S/C
+                    </ng-template>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.comision">
+                      <b>{{item.comision.tipo?.nombre}}</b>
+                      <ng-container *ngIf="item.comision.nota">
+                        Nota:{{item.comision.nota}}
+                      </ng-container>
+                    </ng-container>
+                  </td>
                   <td>
                     <ng-container *ngIf="item.condicion">
-                      {{item.condicion.nombre}}
+                      {{item.condicion?.nombre}}
                     </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.adeuda else noAdeuda">
+                      SI
+                    </ng-container>
+                    <ng-template #noAdeuda>
+                      NO
+                    </ng-template>
                   </td>
                   <td>
                     <ng-container *ngIf="item.nota">
@@ -184,13 +254,32 @@
                   </td>
                   <td>
                     <div class="btn-group" dropdown placement="top right" container="body">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="alumno_editar(item)" href="javascript:void(0);">Editar</a>
-                          <a class="dropdown-item" (click)="alumno_desasociar(item)" href="javascript:void(0);">Dar de baja</a>
+                          <a class="dropdown-item" (click)="alumno_editar(item)" href="javascript:void(0);">
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="alumno_desasociar(item)" href="javascript:void(0);">
+                            <i class="fa fa-remove"></i>
+                            Dar de baja
+                          </a>
+                        </li>
+                        <li class="divider dropdown-divider"></li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="constancia_descargar(item)" href="javascript:void(0);">
+                            C/Descargar
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="constancia_imprimir(item)" href="javascript:void(0);">
+                            C/Imprimir
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -198,6 +287,18 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <p>
+                S/C: No posee comision realizada, de acuerdo a la materia.
+              </p>
+            </div>
+            <div class="col-12">
+              <p>
+                C/Estado: Datos del estado en que se encuentra el alumno en la comision.
+              </p>
+            </div>
           </div>
         </div>
       </div>

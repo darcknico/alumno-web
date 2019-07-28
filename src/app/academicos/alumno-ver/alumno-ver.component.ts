@@ -12,6 +12,8 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { Usuario } from '../../_models/usuario';
 import { AuthenticationService } from '../../_services/authentication.service';
+import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
+import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
 
 @Component({
   selector: 'app-alumno-ver',
@@ -21,7 +23,7 @@ import { AuthenticationService } from '../../_services/authentication.service';
 export class AlumnoVerComponent implements OnInit {
   dtOptionsInscripciones: DataTables.Settings = {};
   dtOptionsNotificaciones: DataTables.Settings = {};
-  dataSource:Inscripcion[] = [];
+  dataSource:Inscripcion[];
   alumno:Alumno;
   id_sede:number;
   id_alumno:number;
@@ -117,6 +119,31 @@ export class AlumnoVerComponent implements OnInit {
     this.router.navigate(['/academicos/inscripciones/nuevo'],{
       queryParams:{
         id_alumno:this.alumno.id,
+      }
+    });
+  }
+
+  sedes(){
+    const modal = this.modalService.show(ListadoAlumnoSedeModalComponent,{class: 'modal-info'});
+    (<ListadoAlumnoSedeModalComponent>modal.content).onShow(this.alumno);
+    (<ListadoAlumnoSedeModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
+  }
+
+  password(){
+    const modal = this.modalService.show(DialogInputComponent);
+    (<DialogInputComponent>modal.content).onShow("Cambiar Contraseña","Contraseña");
+    (<DialogInputComponent>modal.content).onClose.subscribe(result => {
+      if (result.length>5) {
+        this.alumno.password = result;
+        this.alumnoService.password(this.alumno).subscribe(response=>{
+          this.toastr.warning('Contraseña Cambiada', '');
+        });
+      } else {
+        this.toastr.warning('Contraseña demasiado Corta', '');
       }
     });
   }

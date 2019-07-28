@@ -7,3 +7,8 @@ export interface Ajax<T>{
     items:T[];
     total_count:number;
 }
+
+export interface TipoMesaDocente{
+    id:number;
+    nombre:string;
+}

@@ -106,8 +106,13 @@
                     <label class="control-label">Ficha de inscripcion: </label>
                 </div>
                 <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-primary" (click)="ficha_reporte()">DESCARGAR</button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="ficha_imprimir()">IMPRIMIR</button>
+                  <button type="button" class="btn btn-sm btn-info" (click)="ficha_reporte()">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="ficha_imprimir()" tooltip="IMPRIMIR">
+                    <i class="fa fa-print"></i>
+                  </button>
                 </div>
               </div>
               <div class="form-inline col-lg-12">
@@ -115,8 +120,13 @@
                     <label class="control-label">Constancia regular: </label>
                 </div>
                 <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-primary" (click)="constancia_reporte()">DESCARGAR</button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="constancia_imprimir()">IMPRIMIR</button>
+                  <button type="button" class="btn btn-sm btn-info" (click)="constancia_reporte()">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="constancia_imprimir()" tooltip="IMPRIMIR">
+                    <i class="fa fa-print"></i>
+                  </button>
                 </div>
               </div>
               <div class="form-inline col-lg-12">
@@ -124,8 +134,13 @@
                     <label class="control-label">Analitico: </label>
                 </div>
                 <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-primary" (click)="analitico_reporte()">DESCARGAR</button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="analitico_imprimir()">IMPRIMIR</button>
+                  <button type="button" class="btn btn-sm btn-info" (click)="analitico_reporte()">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="analitico_imprimir()" tooltip="IMPRIMIR">
+                    <i class="fa fa-print"></i>
+                  </button>
                 </div>
               </div>
             </div>

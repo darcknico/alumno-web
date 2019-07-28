@@ -32,16 +32,35 @@
                       </ng-select>
                   </div>
               </div>
+              <div class="row">
+                <div class="form-group col-sm-3" >
+                  <label class="control-label">Fecha Inicio</label>
+                  <input bsDatepicker
+                    (bsValueChange)="fecha_inicio($event)"
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Inicio">
+                </div>
+                <div class="form-group col-sm-3" >
+                  <label class="control-label">Fecha Fin</label>
+                  <input bsDatepicker
+                    (bsValueChange)="fecha_fin($event)"
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Fin">
+                </div>
+              </div>
               <div class="table-responsive">
                   <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
                   <thead>
                       <tr>
                       <th>Fecha</th>
-                      <th>Materia</th>
-                      <th>Carrera</th>
+                      <th class="no-sort">Materia</th>
+                      <th class="no-sort">Carrera</th>
                       <th>Inscriptos</th>
-                      <th>Cierre</th>
-                      <th></th>
+                      <th>Libro</th>
+                      <th>Folio</th>
+                      <th class="no-sort"></th>
                       </tr>
                   </thead>
                   <tbody *ngIf="dataSource?.length != 0">
@@ -50,15 +69,36 @@
                       <td>{{ item.materia.nombre }} {{ item.materia.codigo }}  </td>
                       <td>{{ item.carrera.nombre_corto}} {{item.materia.plan_estudio.anio}}</td>
                       <td>{{ item.alumnos_cantidad }}</td>
-                      <td>{{ item.fecha_check_out | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ item.libro }}</td>
+                      <td>{{ item.folio }}</td>
                       <td>
                         <div class="btn-group" dropdown placement="bottom right" container="body">
-                          <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                          <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                             <span class="caret"></span>
                           </button>
                           <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                             <li role="menuitem">
-                              <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Inscriptos</a>
+                              <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                                <i class="fa fa-cog"></i>
+                                Gestionar
+                              </a>
+                            </li>
+                            <li role="menuitem">
+                              <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                                <i class="fa fa-edit"></i>
+                                Editar
+                              </a>
+                            </li>
+                            <li class="divider dropdown-divider"></li>
+                            <li role="menuitem">
+                              <a class="dropdown-item" (click)="acta_imprimir(item)" href="javascript:void(0);">
+                                Imprimir Acta
+                              </a>
+                            </li>
+                            <li role="menuitem">
+                              <a class="dropdown-item" (click)="acta_reporte(item)" href="javascript:void(0);">
+                                Descargar Acta
+                              </a>
                             </li>
                           </ul>
                         </div>

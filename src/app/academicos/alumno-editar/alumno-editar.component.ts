@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Provincia } from '../../_models/extra';
 import { AlumnoService } from '../../_services/alumno.service';
 import { TipoDocumento } from '../../_models/tipo_documento';
-import { Alumno, TipoAlumnoCivil, AlumnoArchivo, TipoAlumnoDocumentacion } from '../../_models/alumno';
+import { Alumno, TipoAlumnoCivil, AlumnoArchivo, TipoAlumnoDocumentacion, AlumnoSede } from '../../_models/alumno';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ExtraService } from '../../_services/extra.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,12 @@ import { saveAs } from 'file-saver';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { CustomValidator } from '../../validators/custom-validator';
+import { ValidateDocumentoUnique } from '../../validators/async-documento-unique.validator';
+import { SedeService } from '../../_services/sede.service';
+import { BsModalService } from 'ngx-bootstrap';
+import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
+import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { AlumnoSedeService } from '../../_services/alumno_sede.service';
 
 @Component({
   selector: 'app-alumno-editar',
@@ -25,6 +31,7 @@ import { CustomValidator } from '../../validators/custom-validator';
 export class AlumnoEditarComponent implements OnInit {
 
   titulo:string;
+  id_sede:number = 0;
   id:number = 0;
   id_tipo_documentacion;
   tipos_civil:TipoAlumnoCivil[]=[];
@@ -32,6 +39,7 @@ export class AlumnoEditarComponent implements OnInit {
   tipo_documentos:TipoDocumento[]=[];
   tipo_documentacion:TipoAlumnoDocumentacion[]=[];
   formulario: FormGroup;
+  usuario: FormGroup;
   archivos:AlumnoArchivo[]=[];
 
   typeaheadLoading: boolean;
@@ -39,16 +47,43 @@ export class AlumnoEditarComponent implements OnInit {
   dataSource: Observable<Alumno>;
   @ViewChild('fileInput') fileInput: ElementRef;
 
+  documento_original:number;
+  id_tipo_documento_original:number;
   consultando:boolean = false;
   constructor(
     private alumnoService:AlumnoService,
+    private alumnoSedeService:AlumnoSedeService,
+    private sedeService:SedeService,
     private extraService:ExtraService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private sanitizer : DomSanitizer,
+    private modalService: BsModalService,
   ) {
+
+    this.usuario = this.fb.group({
+      documento: ['', [Validators.required,Validators.min(1)]],
+      id_tipo_documento: [96,Validators.required],
+    });
+    this.usuario.setAsyncValidators(
+      ValidateDocumentoUnique.createValidator(alumnoService)
+    );
+    this.usuario.statusChanges.subscribe(
+      status => {
+        if(status == 'PENDING'){
+          this.consultando = true;
+        } else {
+          this.consultando = false;
+        }
+        console.log('favoriteLocations validation status: ' + status);
+        }
+        ,
+      error => {
+        this.consultando = false;
+      },
+    );
     this.formulario = this.fb.group({
       nombre: ['', Validators.required],
       apellido: '',
@@ -64,8 +99,7 @@ export class AlumnoEditarComponent implements OnInit {
       numero: '',
       piso: '',
       depto: '',
-      documento: ['', Validators.required],
-      id_tipo_documento: 96,
+      usuario:this.usuario,
       id_tipo_alumno_civil: '',
       ciudad_nacimiento: '',
       nacionalidad: '',
@@ -81,6 +115,8 @@ export class AlumnoEditarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.id_sede = this.sedeService.getIdSede();
+    
     this.route.params.subscribe(params=>{
       let ids_usuario = params['id_alumno'];
       if(ids_usuario==null){
@@ -99,12 +135,16 @@ export class AlumnoEditarComponent implements OnInit {
       this.titulo="Alumno Nuevo";
     } else {
       this.titulo="Alumno Editar";
+      this.usuario.disable();
       tasks.push(
         this.alumnoService.getById(this.id).pipe(
           map(response=>{
             this.f.nombre.setValue(response.nombre);
             this.f.apellido.setValue(response.apellido);
-            this.f.fecha_nacimiento.setValue(moment(response.fecha_nacimiento).toDate());
+            let fecha_nacimiento = moment(response.fecha_nacimiento);
+            if(fecha_nacimiento.isValid()){
+              this.f.fecha_nacimiento.setValue( fecha_nacimiento.toDate());
+            }
             this.f.sexo.setValue(response.sexo);
             this.f.email.setValue(response.email);
             this.f.telefono.setValue(response.telefono);
@@ -116,8 +156,10 @@ export class AlumnoEditarComponent implements OnInit {
             this.f.numero.setValue(response.numero);
             this.f.piso.setValue(response.piso);
             this.f.depto.setValue(response.depto);
-            this.f.documento.setValue(response.documento);
-            this.f.id_tipo_documento.setValue(response.id_tipo_documento);
+            this.documento_original = response.documento;
+            this.id_tipo_documento_original = response.id_tipo_documento;
+            this.u.documento.setValue(response.documento);
+            this.u.id_tipo_documento.setValue(response.id_tipo_documento);
             this.f.id_tipo_alumno_civil.setValue(response.id_tipo_alumno_civil);
             this.f.ciudad_nacimiento.setValue(response.ciudad_nacimiento);
             this.f.nacionalidad.setValue(response.nacionalidad);
@@ -166,6 +208,10 @@ export class AlumnoEditarComponent implements OnInit {
     return this.formulario.controls;
   }
 
+  get u(){
+    return this.usuario.controls;
+  }
+
   continuar(){
     if(!this.formulario.valid){
       return;
@@ -186,8 +232,18 @@ export class AlumnoEditarComponent implements OnInit {
     item.numero = this.f.numero.value;
     item.piso = this.f.piso.value;
     item.depto = this.f.depto.value;
-    item.documento = this.f.documento.value;
-    item.id_tipo_documento = this.f.id_tipo_documento.value;
+    if(this.id>0){
+      if(this.usuario.enabled){
+        item.documento = this.u.documento.value;
+        item.id_tipo_documento = this.u.id_tipo_documento.value;
+      } else {
+        item.documento = this.documento_original;
+        item.id_tipo_documento = this.id_tipo_documento_original;
+      }
+    } else {
+      item.documento = this.u.documento.value;
+      item.id_tipo_documento = this.u.id_tipo_documento.value;
+    }
     item.id_tipo_alumno_civil = this.f.id_tipo_alumno_civil.value;
     item.ciudad_nacimiento = this.f.ciudad_nacimiento.value;
     item.nacionalidad = this.f.nacionalidad.value;
@@ -199,26 +255,32 @@ export class AlumnoEditarComponent implements OnInit {
         this.volver();
       });
     } else {
-      this.alumnoService.register(item).subscribe(response=>{
-        this.toastr.success('Alumno Agregado', '');
-        let tasks = [];
-        if(this.archivos.length == 0){
-          this.volver();
-        } else {
-          this.toastr.warning('Subiendo Archivos', '');
+      const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+      (<DialogConfirmComponent>modal.content).onShow("Dar de alta alumno","Esta por agregar el alumno con documento \""+item.documento+"\" a la sede actual.¿Desea continuar?");
+      (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          this.alumnoService.register(item).subscribe(response=>{
+            this.toastr.success('Alumno Agregado', '');
+            let tasks = [];
+            if(this.archivos.length == 0){
+              this.volver();
+            } else {
+              this.toastr.warning('Subiendo Archivos', '');
+            }
+            this.archivos.forEach(data=>{
+              tasks.push(
+                this.alumnoService.archivoAlta(response.id,data.id_tipo_alumno_documentacion,data.archivo).pipe(
+                  map(response => {
+                    this.toastr.success('Archivo '+data.nombre+' Agregado', '');
+                    this.archivos.find(item=>item.id==data.id).subido = true;
+                  }))
+              );
+            });
+            observableForkJoin(tasks).subscribe(response => {
+              this.volver();
+            });
+          });
         }
-        this.archivos.forEach(data=>{
-          tasks.push(
-            this.alumnoService.archivoAlta(response.id,data.id_tipo_alumno_documentacion,data.archivo).pipe(
-              map(response => {
-                this.toastr.success('Archivo '+data.nombre+' Agregado', '');
-                this.archivos.find(item=>item.id==data.id).subido = true;
-              }))
-          );
-        });
-        observableForkJoin(tasks).subscribe(response => {
-          this.volver();
-        });
       });
     }
   }
@@ -304,4 +366,48 @@ export class AlumnoEditarComponent implements OnInit {
   habilitar(){
     this.consultando = false;    
   }
+
+  alumno_sede(alumno:Alumno){
+    const modal = this.modalService.show(ListadoAlumnoSedeModalComponent,{class: 'modal-info'});
+    (<ListadoAlumnoSedeModalComponent>modal.content).onShow(alumno);
+    (<ListadoAlumnoSedeModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
+  }
+
+  alumno_sede_asociar(item:Alumno){
+    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+    (<DialogConfirmComponent>modal.content).onShow("Asociar alumno a la sede","Esta seguro agregar el alumno \""+item.apellido+" "+item.nombre+"\" a la sede actual");
+    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        let asoc = <AlumnoSede>{};
+        asoc.id_sede = this.id_sede;
+        asoc.id_alumno = item.id;
+        this.alumnoSedeService.register(asoc).subscribe(response=>{
+          this.toastr.success('Alumno Asociado', '');
+          this.alumno_ver(item);
+        });
+      }
+    });
+  }
+
+  alumno_ver(item:Alumno){
+    this.router.navigate(['academicos','alumnos',item.id,'ver']);
+  }
+
+  habilitar_documento(){
+    this.u.documento.markAsTouched();
+    this.usuario.enable();
+  }
+  deshabilitar_documento(){
+    this.usuario.markAsUntouched();
+    this.usuario.disable();
+    this.u.documento.setValue(this.documento_original);
+    this.u.id_tipo_documento.setValue(this.id_tipo_documento_original);
+    //this.usuario.updateValueAndValidity();
+    this.usuario.setErrors(null);
+  }
+  
 }
