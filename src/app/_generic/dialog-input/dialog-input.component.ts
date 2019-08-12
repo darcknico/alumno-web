@@ -31,17 +31,22 @@ export class DialogInputComponent implements OnInit {
     this.onClose = new Subject();
   }
 
-  onShow(titulo:string,descripcion:string,type:string="text"){
+  get f(){
+    return this.formulario.controls;
+  }
+
+  onShow(titulo:string,descripcion:string,type:string="text",value=null){
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.type = type;
+    this.f.input.setValue(value);
   }
 
   confirmar(){
     if(!this.formulario.valid){
       return;
     }
-    this.onClose.next(this.formulario.controls.input.value);
+    this.onClose.next(this.f.input.value);
     this.bsModalRef.hide();
   }
 

@@ -69,23 +69,24 @@ import { DialogTextareaComponent } from './_generic/dialog-textarea/dialog-texta
 import { BlockUIModule } from 'ng-block-ui';
 import { BlockUIHttpModule } from 'ng-block-ui/http';
 const requestFilters = [
-  { method: 'GET', url: new RegExp('/api/alumnos/coincidencia?') },
-  { method: 'GET', url: new RegExp('/api/email?') },
-  { method: 'GET', url: new RegExp('/api/extras/localidades?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/inscripciones?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/alumnos?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/comisiones?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/comisiones/alumnos?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/mesas?') },
-  { method: 'GET', url: new RegExp('/api/carreras?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/usuarios?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/movimientos?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/pagos?') },
-  { method: 'GET', url: new RegExp('/api/sedes/[0-9]+/planes_pago?') },
-  { method: 'GET', url: new RegExp('/api/usuarios?') },
-  { method: 'GET', url: new RegExp('/api/docentes?') },
-  { method: 'GET', url: new RegExp('/api/auditorias/alumnos?') },
-  { method: 'GET', url: new RegExp('/api/alumnos/sedes?') },
+  { method: 'GET', url: new RegExp('api\/alumnos\/coincidencia\?') },
+  { method: 'GET', url: new RegExp('api\/email\?') },
+  { method: 'GET', url: new RegExp('api\/extras\/localidades\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/inscripciones\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/alumnos\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/comisiones\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/comisiones\/alumnos\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/mesas\?') },
+  { method: 'GET', url: new RegExp('api\/carreras\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/usuarios\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/movimientos\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/pagos\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/planes_pago\?') },
+  { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/reportes\?') },
+  { method: 'GET', url: new RegExp('api\/usuarios\?') },
+  { method: 'GET', url: new RegExp('api\/docentes\?') },
+  { method: 'GET', url: new RegExp('api\/auditorias\/alumnos\?') },
+  { method: 'GET', url: new RegExp('api\/alumnos\/sedes\?') },
 ];
 
 export function filter(req: HttpRequest<any>): boolean {
@@ -136,6 +137,7 @@ import { AlumnoSedeService } from './_services/alumno_sede.service';
 import { AuditoriaService } from './_services/auditoria.service';
 import { MesaExamenMateriaDocenteService } from './_services/mesa_examen_materia_docente.service';
 import { ComisionDocenteService } from './_services/comision_docente.service';
+import { ReporteJobService } from './_services/reportejobs.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -248,6 +250,7 @@ export const customCurrencyMaskConfig = {
     PlantillaImagenService,
     AlumnoSedeService,
     AuditoriaService,
+    ReporteJobService,
 
     { provide: HTTP_INTERCEPTORS, useClass: PassportInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { MesaExamen, MesaExamenMateria } from '../../_models/mesa.examen';
 import { MesaExamenService } from '../../_services/mesa_examen.service';
@@ -18,12 +18,14 @@ import { MesaMateriaEditarModalComponent } from '../componente/mesa-materia-edit
   styleUrls: ['./mesa-ver.component.scss']
 })
 export class MesaVerComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChildren(DataTableDirective)dtElements: QueryList<DataTableDirective>;
 
   fecha_inicio:Date;
 
   dtOptions: DataTables.Settings = {};
+  dtOptionsCierre: DataTables.Settings = {};
   dataSource:MesaExamenMateria[]=[];
+  dataSourceCierre:MesaExamenMateria[]=[];
   carreras:Carrera[];
   
   mesa_examen:MesaExamen;
@@ -70,6 +72,7 @@ export class MesaVerComponent implements OnInit {
           that.request.order = dataTablesParameters.order[0].dir;
           that.request.search = dataTablesParameters.search.value;
           that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+          that.request.cierre = false;
           this.subscription = this.mesaExamenMateriaService.ajax(that.request).subscribe(resp => {
               that.dataSource = resp.items;
 
@@ -93,9 +96,55 @@ export class MesaVerComponent implements OnInit {
         ],
         responsive:true,
       };
+
+      this.dtOptionsCierre = {
+        order: [[ 0, "desc" ]],
+        language: {
+          url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          if(this.subscriptionCierre){
+            this.subscriptionCierre.unsubscribe();
+            this.subscriptionCierre = null;
+          }
+          that.request.start = dataTablesParameters.start;
+          that.request.length = dataTablesParameters.length;
+          that.request.order = dataTablesParameters.order[0].dir;
+          that.request.search = dataTablesParameters.search.value;
+          that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+          that.request.cierre = true;
+          this.subscriptionCierre = this.mesaExamenMateriaService.ajax(that.request).subscribe(resp => {
+              that.dataSourceCierre = resp.items;
+
+              callback({
+                recordsTotal: resp.total_count,
+                recordsFiltered: resp.total_count,
+                data: []
+              });
+            });
+        },
+        columns: [
+          { 
+            data: 'created_at',
+            width: '5%', 
+          },
+        ],
+        columnDefs: [ {
+          targets: 'no-sort',
+          orderable: false,
+          },
+        ],
+        searching:false,
+        responsive:true,
+      };
     });
   }
   subscription:Subscription;
+  subscriptionCierre:Subscription;
 
   ngOnInit() {
     this.carreraService.getAll().subscribe(response=>{
@@ -153,8 +202,10 @@ export class MesaVerComponent implements OnInit {
   }
 
   refrescar(){
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.ajax.reload();
+    this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+      dtElement.dtInstance.then((dtInstance: any) => {
+        dtInstance.ajax.reload();
+      });
     });
   }
 

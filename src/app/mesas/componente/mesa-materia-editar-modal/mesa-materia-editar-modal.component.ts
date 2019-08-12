@@ -53,7 +53,9 @@ export class MesaMateriaEditarModalComponent implements OnInit {
         hora: ['', Validators.required],
         ubicacion: '',
         libro: '',
-        folio: '',
+        folio_libre: '',
+        folio_promocion: '',
+        folio_regular: '',
         observaciones: '',
 
         id_carrera:'',
@@ -75,7 +77,9 @@ export class MesaMateriaEditarModalComponent implements OnInit {
       this.f.hora.setValue(fecha);
       this.f.ubicacion.setValue(item.ubicacion);
       this.f.libro.setValue(item.libro);
-      this.f.folio.setValue(item.folio);
+      this.f.folio_libre.setValue(item.folio_libre);
+      this.f.folio_promocion.setValue(item.folio_promocion);
+      this.f.folio_regular.setValue(item.folio_regular);
       this.f.observaciones.setValue(item.observaciones);
       this.carrera = item.carrera;
       this.materia = item.materia;
@@ -112,10 +116,14 @@ export class MesaMateriaEditarModalComponent implements OnInit {
     fecha.set('hour',hora.hour());
     fecha.set('minute',hora.minute());
     item.fecha = fecha.format('YYYY-MM-DD HH:mm:00');
-    item.fecha_cierre = fecha_cierre.format('YYYY-MM-DD');
+    if(fecha_cierre.isValid()){
+      item.fecha_cierre = fecha_cierre.format('YYYY-MM-DD');
+    }
     item.ubicacion = this.f.ubicacion.value;
     item.libro = this.f.libro.value;
-    item.folio = this.f.folio.value;
+    item.folio_libre = this.f.folio_libre.value;
+    item.folio_promocion = this.f.folio_promocion.value;
+    item.folio_regular = this.f.folio_regular.value;
     item.observaciones = this.f.observaciones.value;
     this.consultando = true;
     if(this.id>0){

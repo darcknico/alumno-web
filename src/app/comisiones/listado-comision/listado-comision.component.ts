@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, QueryList, ViewChildren } from '@angular/core';
 import { ComisionService, FiltroComision } from '../../_services/comision.service';
 import { Comision, ComisionDocente, ComisionAlumno } from '../../_models/comision';
 import { DataTableDirective } from 'angular-datatables';
@@ -16,15 +16,17 @@ import { SedeService } from '../../_services/sede.service';
 import { ListadoComisionDocenteModalComponent } from '../componente/listado-comision-docente-modal/listado-comision-docente-modal.component';
 import { FiltroComisionDocente, ComisionDocenteService } from '../../_services/comision_docente.service';
 import { ComisionAlumnoService, FiltroComisionAlumno } from '../../_services/comision_alumno.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-listado-comision',
   templateUrl: './listado-comision.component.html',
   styleUrls: ['./listado-comision.component.scss']
 })
-export class ListadoComisionComponent implements OnInit {
+export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewInit {
   usuario:Usuario;
-  @ViewChild(DataTableDirective,{read:'principal'})dtElement: DataTableDirective;
+  @ViewChildren(DataTableDirective) dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings = {};
   dtOptionsDocente: DataTables.Settings = {};
   dtOptionsAlumno: DataTables.Settings = {};
@@ -48,6 +50,7 @@ export class ListadoComisionComponent implements OnInit {
     search:"",
   }
 
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private comisionService:ComisionService,
     private comisionDocenteService:ComisionDocenteService,
@@ -62,6 +65,7 @@ export class ListadoComisionComponent implements OnInit {
   ) {
   }
 
+  suscription:Subscription;
   ngOnInit() {
     this.usuario = this.authenticationService.localUsuario();
     let id_sede = this.sedeService.getIdSede();
@@ -94,15 +98,18 @@ export class ListadoComisionComponent implements OnInit {
         that.request.order = dataTablesParameters.order[0].dir;
         that.request.search = dataTablesParameters.search.value;
         that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
-        this.comisionService.ajax(that.request).subscribe(resp => {
-            that.dataSource = resp.items;
-
-            callback({
-              recordsTotal: resp.total_count,
-              recordsFiltered: resp.total_count,
-              data: []
-            });
+        that.suscription = this.comisionService.ajax(that.request).subscribe(resp => {
+          if(that.suscription){
+            that.suscription.unsubscribe();
+            that.suscription = null;
+          }
+          that.dataSource = resp.items;
+          callback({
+            recordsTotal: resp.total_count,
+            recordsFiltered: resp.total_count,
+            data: []
           });
+        });
       },
       columns: [
         { 
@@ -160,6 +167,7 @@ export class ListadoComisionComponent implements OnInit {
       ],
       responsive:true,
     };
+
     this.dtOptionsAlumno = {
       order: [[ 0, "desc" ]],
       language: {
@@ -200,6 +208,15 @@ export class ListadoComisionComponent implements OnInit {
       ],
       responsive:true,
     };
+
+
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
+  ngAfterViewInit(): void{
+    this.dtTrigger.next();
   }
 
   ver(item:Comision){
@@ -246,7 +263,7 @@ export class ListadoComisionComponent implements OnInit {
   }
 
   refrescar(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    this.dtElements.first.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
     });
   }

@@ -1,0 +1,97 @@
+<div class="animated fadeIn">
+  <!--/.row-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Reportes
+          <div class="card-header-actions">
+            <button class="btn btn-sm btn-block btn-primary" type="button" (click)="refrescar()">
+                <i class="fa fa-refresh"></i>
+                Refrescar
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+              <thead>
+                <tr>
+                  <th class="option">Agregado</th>
+                  <th>Nombre</th>
+                  <th class="option">Total</th>
+                  <th class="option">Realizado</th>
+                  <th class="option">Terminado</th>
+                  <th class="no-sort">Usuario</th>
+                  <th class="no-sort"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td> {{item.nombre}} </td>
+                  <td> {{item.cantidad}} </td>
+                  <td> {{item.contador}} </td>
+                  <td>
+                    <ng-container *ngIf="item.terminado else noTerminado ">
+                      <ng-container *ngIf="item.cantidad == item.contador else conError">
+                        {{ item.terminado | date:'dd/MM/yyyy HH:mm' }}
+                      </ng-container>
+                      <ng-template #conError>
+                        <span class="badge badge-danger">ERROR</span>
+                      </ng-template>
+                      
+                    </ng-container>
+                    <ng-template #noTerminado>
+                      <ng-container *ngIf="item.contador > 0 else noProceso">
+                        <span class="badge badge-warning">EN PROCESO</span>
+                      </ng-container>
+                      <ng-template #noProceso>
+                        <span class="badge badge-info">EN COLA</span>                        
+                      </ng-template>
+                    </ng-template>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.usuario">
+                      {{item.usuario.apellido}} {{item.usuario.nombre}}
+                    </ng-container>
+                    
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="item.terminado">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem" *ngIf="item.cantidad == item.contador">
+                          <a class="dropdown-item" (click)="descargar(item)" href="javascript:void(0);">
+                            <i class="fa fa-download"></i>
+                            Descargar
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                            <i class="fa fa-remove"></i>
+                            Eliminar
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSource?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">No data!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+  

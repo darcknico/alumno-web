@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { MesaExamenMateria, MesaExamenMateriaAlumno, MesaExamenMateriaDocente } from '../_models/mesa.examen';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { ReporteJob } from '../_models/extra';
  
 export interface FiltroMesaExamenMateria {
     search:string;
@@ -18,6 +19,7 @@ export interface FiltroMesaExamenMateria {
     id_mesa_examen:number;
     fecha_ini:string;
     fecha_fin:string;
+    cierre:boolean;
 }
 export interface MesaExamenMateriaAjax{
     items: MesaExamenMateria[];
@@ -119,10 +121,8 @@ export class MesaExamenMateriaService {
         return this.http.post(this.api + this.id_sede + this.endpoint +id+'/check_out/previa', input);
     }
 
-    check_out(id:number,archivo){
-        let input = new FormData();
-        input.append('archivo', archivo);
-        return this.http.post(this.api + this.id_sede + this.endpoint +id+'/check_out', input);
+    check_out(item:MesaExamenMateria){
+        return this.http.post(this.api + this.id_sede + this.endpoint +item.id+'/check_out', item);
     }
 
     reporte_acta(id_mesa_examen_materia:number,id_tipo_condicion_alumno:number=3) {
@@ -133,6 +133,12 @@ export class MesaExamenMateriaService {
                 params:{
                     id_tipo_condicion_alumno:String(id_tipo_condicion_alumno)
                 }
+            });
+    }
+
+    reporte_acta_masivo(filtro:FiltroMesaExamenMateria,item:ReporteJob=null) {
+        return this.http.post(this.api + this.id_sede + this.endpoint + 'reportes/acta',item,{
+                params:AuxiliarFunction.toParams(filtro)
             });
     }
 

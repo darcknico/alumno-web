@@ -126,4 +126,15 @@ export class ListadoMesaComponent implements OnInit {
     AuxiliarFunction.imprimir(this.toastr,this.mesaExamenService.reporte_resumen(item.id));
   }
 
+  actas(item:MesaExamen){
+    this.router.navigate(['/mesas/materias'],{
+      queryParams:{
+        id_mesa_examen:item.id,
+      },
+      state:{
+        mesa_examen:item,
+      }
+    });
+  }
+
 }

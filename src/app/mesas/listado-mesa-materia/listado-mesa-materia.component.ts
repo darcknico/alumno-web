@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MesaExamenMateriaService, FiltroMesaExamenMateria } from '../../_services/mesa_examen_materia.service';
-import { MesaExamenMateria } from '../../_models/mesa.examen';
+import { MesaExamenMateria, MesaExamen } from '../../_models/mesa.examen';
 import { DataTableDirective } from 'angular-datatables';
 import { Departamento } from '../../_models/departamento';
 import { Carrera } from '../../_models/carrera';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { MateriaService } from '../../_services/materia.service';
@@ -14,13 +14,18 @@ import { Materia } from '../../_models/materia';
 import { MesaMateriaEditarModalComponent } from '../componente/mesa-materia-editar-modal/mesa-materia-editar-modal.component';
 import * as moment from 'moment';
 import { saveAs } from 'file-saver';
+import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { ReporteJobService } from '../../_services/reportejobs.service';
+import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
+import { ReporteJob } from '../../_models/extra';
+import { MesaExamenService } from '../../_services/mesa_examen.service';
 
 @Component({
   selector: 'app-listado-mesa-materia',
   templateUrl: './listado-mesa-materia.component.html',
   styleUrls: ['./listado-mesa-materia.component.scss']
 })
-export class ListadoMesaMateriaComponent implements OnInit {
+export class ListadoMesaMateriaComponent implements OnInit, AfterViewInit {
   @ViewChild(DataTableDirective)dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: MesaExamenMateria[] = [];
@@ -32,18 +37,32 @@ export class ListadoMesaMateriaComponent implements OnInit {
     search:"",
     id_departamento:0,
     id_carrera:0,
+    id_mesa_examen:0,
   };
+
+  mesa_examen:MesaExamen = null;
 
   constructor(
     private mesaExamenMateriaService:MesaExamenMateriaService,
+    private mesaExamenService:MesaExamenService,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private materiaService:MateriaService,
+    private reportesJobsService:ReporteJobService,
+    private route: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {
-    
+    this.route.queryParams.subscribe(params=>{
+      let id_mesa_examen = params['id_mesa_examen'];
+      if(id_mesa_examen){
+        this.request.id_mesa_examen = id_mesa_examen;
+      }
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.mesa_examen = this.router.getCurrentNavigation().extras.state.mesa_examen;
+      }
+    });
   }
 
   ngOnInit() {
@@ -105,6 +124,17 @@ export class ListadoMesaMateriaComponent implements OnInit {
       ],
       responsive:true,
     };
+  }
+
+  ngAfterViewInit(): void {
+    if(this.request.id_mesa_examen>0){
+      this.refrescar();
+      if(this.mesa_examen == null){
+        this.mesaExamenService.getById(this.request.id_mesa_examen).subscribe(response=>{
+          this.mesa_examen = response;
+        });
+      }
+    }
   }
 
   fecha_inicio(event){
@@ -174,4 +204,52 @@ export class ListadoMesaMateriaComponent implements OnInit {
     });
   }
 
+  acta_masivo(){
+    this.reportesJobsService.terminados().subscribe(response=>{
+      let restantes = response.total_count;
+      if(restantes>0){
+        const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger' });
+        (<DialogConfirmComponent>modal.content).onShow("ATENCION","Hay reportes en la cola que aun no terminan de generarse ¿Desea continuar de todas maneras?");
+        (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+            this.acta_masivo_confirmar('modal-danger');
+          }
+        });
+      } else {
+        this.acta_masivo_confirmar();
+      }
+    });
+    
+  }
+
+  private acta_masivo_confirmar(className:string='modal-info'){
+    let nombre = '';
+    if(this.mesa_examen){
+      let re = / /gi;
+      nombre = this.mesa_examen.nombre.replace(re,'_');
+    } else {
+      nombre = moment().format('DD-MM-YYYY') + '_mesa_examen_materia_' + this.dataSource.length;
+    }
+    const modal = this.modalService.show(DialogInputComponent,{class:className });
+    (<DialogInputComponent>modal.content).onShow(
+      "Exportacion de actas",
+      "Esta por generar un archivo comprimido con todas las actas filtradas en la tabla, esto puede llevar su tiempo. Puede fijarse en Consultas->Reportes el estado del mismo. A continuacion ingrese el nombre por el cual sera identificado.",
+      'text',
+      nombre);
+    (<DialogInputComponent>modal.content).onClose.subscribe(result => {
+      if (result.length>0) {
+        let registro = <ReporteJob>{};
+        registro.nombre = result;
+        this.mesaExamenMateriaService.reporte_acta_masivo(this.request,registro).subscribe(response=>{
+          this.toastr.success('La generacion de reportes esta por comenzar', '');
+        });
+      }
+    });
+  }
+
+  quitar(){
+    this.request.id_mesa_examen = 0;
+    this.mesa_examen = null;
+    this.refrescar();
+  }
 }

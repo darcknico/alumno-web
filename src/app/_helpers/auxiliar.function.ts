@@ -51,10 +51,11 @@ export class AuxiliarFunction{
         });
         obs.subscribe(response=>{
             var contentDisposition = response.headers.get('Content-Disposition');
+            var contentType = response.headers.get('Content-Type');
             var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
             toastr.remove(aviso.toastId);
             toastr.success('Descarga lista');
-            var mediaType = 'application/pdf';
+            var mediaType = contentType;
             var blob = new Blob([response.body], {type: mediaType});
             saveAs(blob,filename)
         });

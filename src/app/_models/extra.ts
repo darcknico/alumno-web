@@ -1,4 +1,5 @@
 import { Usuario } from './usuario';
+import { Sede } from './sede';
 
 export interface Provincia{
     id:number;
@@ -29,4 +30,20 @@ export interface Auditoria<T>{
     updated_at:Date;
     user:Usuario;
     auditable:T;
+}
+
+export interface ReporteJob{
+    id:number;
+    nombre:string;
+    ruta:string;
+    cantidad:number;
+    contador:number;
+    terminado:Date;
+    id_usuario:number;
+    id_sede:number;
+    created_at:Date;
+    updated_at:Date;
+
+    usuario:Usuario;
+    sede:Sede;
 }

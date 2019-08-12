@@ -5,7 +5,7 @@
               <div class="card-header">
                 <i class="fa fa-align-justify"></i> Listado de Comisiones
                 <div class="card-header-actions">
-                  <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Comision</button>
+                  <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Comision</button>
                 </div>
               </div>
               <div class="card-body p-1">
@@ -35,7 +35,7 @@
                   </div>
               </div>
               <div class="table-responsive">
-                  <table #principal datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+                  <table #principal datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table row-border hover" width="100%" >
                   <thead>
                       <tr>
                         <th>Registro</th>
@@ -47,7 +47,7 @@
                         <th></th>
                       </tr>
                   </thead>
-                  <tbody *ngIf="dataSource?.length != 0">
+                    <tbody *ngIf="dataSource?.length != 0">
                       <tr *ngFor="let item of dataSource" >
                       <td>{{ item.created_at | date:'dd/MM/yy' }}</td>
                       <td>{{ item.anio }}</td>
@@ -99,12 +99,12 @@
                         </div>
                       </td>
                       </tr>
-                  </tbody>
-                  <tbody *ngIf="dataSource?.length == 0">
+                    </tbody>
+                    <tbody *ngIf="dataSource?.length == 0">
                       <tr>
                       <td colspan="3" class="no-data-available">No data!</td>
                       </tr>
-                  </tbody>
+                    </tbody>
                   </table>
               </div>
               </div>

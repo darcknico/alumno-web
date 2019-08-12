@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { saveAs } from 'file-saver';
+import {Location} from '@angular/common';
+import { DataTableDirective } from 'angular-datatables';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-mesa-materia-alumno-ver',
@@ -15,12 +18,15 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./mesa-materia-alumno-ver.component.scss']
 })
 export class MesaMateriaAlumnoVerComponent implements OnInit {
-
+  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  
   mesa_examen:MesaExamen;
   mesa_examen_materia:MesaExamenMateria;
 
   dtOptions: DataTables.Settings = {};
   dataSource:MesaExamenMateriaAlumno[];
+  formulario: FormGroup;
+  fecha_inicio:Date;
 
   @ViewChild('fileInput') fileInput: ElementRef;
   file:any=null;
@@ -32,8 +38,20 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
     private modalService: BsModalService,
     private route: ActivatedRoute,
     private router: Router,
+    private fb: FormBuilder,
     private toastr: ToastrService,
-  ) { }
+    private location: Location,
+  ) { 
+    this.formulario = this.fb.group({
+      fecha_cierre: ['', Validators.required],
+      libro: '',
+      folio_libre: '',
+      folio_promocion: '',
+      folio_regular: '',
+      observaciones:'',
+      alumnos:null,
+    });
+  }
 
   ngOnInit() {
     this.dtOptions = {
@@ -42,9 +60,16 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
+      paging:false,
       columnDefs: [ {
         targets: 'no-sort',
+        width:'9%',
         orderable: false,
+        },{
+          targets: [ 0 ],
+          visible: false,
+          searchable: false,
         },
       ],
     };
@@ -52,9 +77,19 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
       let ids = params['id_mesa_examen_materia'];
       this.mesaExamenMateriaService.getById(ids).subscribe(response=>{
         this.mesa_examen_materia = response;
+        this.f.observaciones.setValue(this.mesa_examen_materia.observaciones);
+        this.f.libro.setValue(this.mesa_examen_materia.libro);
+        this.f.folio_libre.setValue(this.mesa_examen_materia.folio_libre);
+        this.f.folio_promocion.setValue(this.mesa_examen_materia.folio_promocion);
+        this.f.folio_regular.setValue(this.mesa_examen_materia.folio_regular);
+        let fecha_cierre = moment(this.mesa_examen_materia.fecha_cierre);
+        if(fecha_cierre.isValid()){
+          this.f.fecha_cierre.setValue(fecha_cierre.toDate());
+        }
 
         this.mesaExamenService.getById(this.mesa_examen_materia.id_mesa_examen).subscribe(response=>{
           this.mesa_examen = response;
+          this.fecha_inicio = moment(this.mesa_examen.fecha_inicio).toDate();
         });
       });
       
@@ -64,6 +99,9 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
     });
   }
 
+  get f(){
+    return this.formulario.controls;
+  }
 
   exportar(){
     let aviso = this.toastr.warning('Preparando archivo de descarga');
@@ -75,11 +113,48 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigate(['/mesas/materias/'+this.mesa_examen_materia.id+'/editar']);
+    this.location.back();
   }
 
   ver_mesa_examen(){
     this.router.navigate(['/mesas/'+this.mesa_examen.id+'/editar']);
+  }
+
+  cerrar(){
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      let indexs = dtInstance.rows();
+      var notas = [];
+      for (let index = 0; index < indexs.length; index++) {
+        let row = indexs[index];
+        var item = <MesaExamenMateriaAlumno>{};
+        item.id = +dtInstance.cell(row,0).data();
+        item.asistencia = Boolean($(dtInstance.cell(row,4).node()).find('input'));
+        item.nota_final = +$(dtInstance.cell(row,5).node()).find('input').val();
+        notas.push(item);
+      }
+      this.mesa_examen_materia.alumnos = notas;
+      const modal = this.modalService.show(DialogConfirmComponent);
+      (<DialogConfirmComponent>modal.content).onShow(
+        "Cerrar mesa de examen",
+        "Esta por registrar las notas de "+notas.length+" alumno/s.¿Desea Continuar?");
+      (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          let fecha_cierre = moment(this.f.fecha_cierre.value);
+          if(fecha_cierre.isValid()){
+            this.mesa_examen_materia.fecha_cierre = fecha_cierre.format('YYYY-MM-DD');
+          }
+          this.mesa_examen_materia.observaciones = this.f.observaciones.value;
+          this.mesa_examen_materia.libro = this.f.libro.value;
+          this.mesa_examen_materia.folio_libre = this.f.folio_libre.value;
+          this.mesa_examen_materia.folio_promocion = this.f.folio_promocion.value;
+          this.mesa_examen_materia.folio_regular = this.f.folio_regular.value;
+          this.mesaExamenMateriaService.check_out(this.mesa_examen_materia).subscribe(response=>{
+            this.toastr.success('Mesa cerrada', '');
+            this.volver();
+          });
+        }
+      });
+    });
   }
 
    /**
@@ -124,18 +199,4 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
     this.file = null;
   }
 
-  continuar(){
-    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-info'});
-    (<DialogConfirmComponent>modal.content).onShow("Confirmar importacion desde excel","");
-    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
-      if (result === true) {
-        let aviso = this.toastr.warning('Importando archivo');
-        this.mesaExamenMateriaService.check_out(this.mesa_examen_materia.id,this.file).subscribe(response=>{
-          this.toastr.remove(aviso.toastId);
-          this.toastr.success('Importacion terminada', '');
-          this.volver();
-        });
-      }
-    });
-  }
 }

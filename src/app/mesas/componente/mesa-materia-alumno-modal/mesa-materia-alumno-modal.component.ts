@@ -31,7 +31,9 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
       this.formulario = this.fb.group({
         asistencia:  null,
         nota: [ '', [Validators.required,Validators.min(0),Validators.max(10)]],
-        nota_nombre: [ '', Validators.required],
+        nota_nombre:'',
+        nota_final: [ '', [Validators.required,Validators.min(0),Validators.max(10)]],
+        nota_final_nombre: '',
         id_tipo_condicion_alumno: [ '', Validators.required],
         observaciones: '',
         adeuda: false,
@@ -40,6 +42,8 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
 
   onShow(alumno:MesaExamenMateriaAlumno){
     this.alumno = alumno;
+    this.f.nota_nombre.disable();
+    this.f.nota_final_nombre.disable();
 
     this.alumnoService.tipos_condicion().subscribe(response=>{
       this.condicionalidades = response;
@@ -49,6 +53,8 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
     this.f.asistencia.setValue(this.alumno.asistencia);
     this.f.nota.setValue(this.alumno.nota);
     this.f.nota_nombre.setValue(this.alumno.nota_nombre);
+    this.f.nota_final.setValue(this.alumno.nota_final);
+    this.f.nota_final_nombre.setValue(this.alumno.nota_final_nombre);
     this.f.id_tipo_condicion_alumno.setValue(this.alumno.id_tipo_condicion_alumno);
     this.f.observaciones.setValue(this.alumno.observaciones);
     this.f.adeuda.setValue(this.alumno.adeuda);
@@ -67,7 +73,7 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
     }
     this.alumno.asistencia = this.f.asistencia.value;
     this.alumno.nota = this.f.nota.value;
-    this.alumno.nota_nombre = this.f.nota_nombre.value;
+    this.alumno.nota_final = this.f.nota_final.value;
     this.alumno.id_tipo_condicion_alumno = this.f.id_tipo_condicion_alumno.value;
     this.alumno.observaciones = this.f.observaciones.value;
     this.alumno.adeuda = this.f.adeuda.value;

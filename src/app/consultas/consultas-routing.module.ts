@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListadoPagoComponent } from './listado-pago/listado-pago.component';
 import { ListadoPlanPagoComponent } from './listado-plan-pago/listado-plan-pago.component';
+import { ListadoReporteComponent } from './listado-reporte/listado-reporte.component';
 
 const routes: Routes = [{
   path:'pagos',
@@ -14,6 +15,12 @@ const routes: Routes = [{
   component:ListadoPlanPagoComponent,
   data:{
     title:'Planes de Pago',
+  }
+},{
+  path:'reportes',
+  component:ListadoReporteComponent,
+  data:{
+    title:'Reportes',
   }
 }];
 

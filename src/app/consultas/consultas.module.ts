@@ -8,6 +8,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ListadoReporteComponent } from './listado-reporte/listado-reporte.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgSelectModule,
     BsDatepickerModule,
   ],
-  declarations: [ListadoPagoComponent, ListadoPlanPagoComponent]
+  declarations: [
+    ListadoPagoComponent, 
+    ListadoPlanPagoComponent, 
+    ListadoReporteComponent,
+  ]
 })
 export class ConsultasModule { }

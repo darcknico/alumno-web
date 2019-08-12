@@ -41,7 +41,6 @@ export class InscripcionMesaNuevoComponent implements OnInit {
     this.formulario = this.fb.group({
       id_tipo_condicion_alumno:1,
       nota:[null,[Validators.min(0),Validators.max(10),Validators.nullValidator]],
-      nota_nombre:'',
       adeuda:false,
     });
   }
@@ -122,7 +121,6 @@ export class InscripcionMesaNuevoComponent implements OnInit {
     item.id_inscripcion = this.inscripcion.id;
     item.id_tipo_condicion_alumno = this.f.id_tipo_condicion_alumno.value;
     item.nota = this.f.nota.value;
-    item.nota_nombre = this.f.nota_nombre.value;
     item.adeuda = this.f.adeuda.value;
     this.mesaExamenMateriaService.alumno_asociar(item).subscribe(response=>{
       this.toastr.success('Inscripcion a Mesa de examen realizada', '');

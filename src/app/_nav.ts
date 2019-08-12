@@ -150,6 +150,12 @@ export const navItems = [
         permisos: [1,2,4],
       },
       {
+        name: 'Reportes',
+        url: '/consultas/reportes',
+        icon: 'fa fa-file',
+        permisos: [1,2,4],
+      },
+      {
         name: 'Comisiones',
         url: '/comisiones',
         icon: 'fa fa-check-square',

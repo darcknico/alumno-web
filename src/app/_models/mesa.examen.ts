@@ -36,7 +36,9 @@ export interface MesaExamenMateria{
     check_in:string;
     check_out:string;
     libro:string;
-    folio:string;
+    folio_libre:string;
+    folio_promocion:string;
+    folio_regular:string;
     observaciones:string;
     estado:boolean;
     created_at:Date;
@@ -60,7 +62,9 @@ export interface MesaExamenMateriaAlumno{
     id_tipo_condicion_alumno:number;
     asistencia:boolean;
     nota:number;
-    nota_nombre:number;
+    nota_nombre:string;
+    nota_final:number;
+    nota_final_nombre:string;
     observaciones:string;
     adeuda:boolean;
 

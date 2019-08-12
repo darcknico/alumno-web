@@ -35,14 +35,23 @@
             </div>
           </div>
           <div class="row">
-            <div class="form-group col-sm-4">
+            <div class="form-group col-sm-5">
               <u>Ubicacion:</u> {{mesa_examen_materia.ubicacion}}
             </div>
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm-2">
               <u>Libro:</u> {{mesa_examen_materia.libro}}
             </div>
-            <div class="form-group col-sm-3" >
-              <u>Folio:</u> {{mesa_examen_materia.folio}}
+            <div class="form-group col-sm-5" >
+              <u>Folios:</u> 
+              <ng-container *ngIf="mesa_examen_materia.folio_libre">
+                Libres:<b>{{mesa_examen_materia.folio_libre}}</b>
+              </ng-container>
+              <ng-container *ngIf="mesa_examen_materia.folio_libre">
+                Promocionales:<b>{{mesa_examen_materia.folio_promocion}}</b>
+              </ng-container>
+              <ng-container *ngIf="mesa_examen_materia.folio_libre">
+                Regulares:<b>{{mesa_examen_materia.folio_regular}}</b>
+              </ng-container>
             </div>
           </div>
           <div class="row">
@@ -136,7 +145,7 @@
               </div>
               <div class="form-inline col-lg-12">
                 <div class="col-6">
-                    <label class="control-label">Acta Promicionables: </label>
+                    <label class="control-label">Acta Promocionales: </label>
                 </div>
                 <div class="btn-group m-1" role="group">
                   <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(2)">
@@ -182,7 +191,7 @@
       <button class="btn btn-danger btn-block-xs-only m-1"
         [disabled]="consultando"
         (click)="notas()">
-        Subir notas
+        Cerrar Mesa
         </button>
     </div>
   </div>
@@ -247,6 +256,9 @@
                   <td>
                     <ng-container *ngIf="item.nota">
                         Nota: {{ item.nota }} ({{ item.nota_nombre }})<br>
+                    </ng-container>
+                    <ng-container *ngIf="item.nota">
+                      Final: {{ item.nota_final }} ({{ item.nota_final_nombre }})<br>
                     </ng-container>
                     <ng-container *ngIf="item.observaciones">
                         Obs: {{ item.observaciones }}
