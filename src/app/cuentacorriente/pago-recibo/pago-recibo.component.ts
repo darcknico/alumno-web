@@ -9,6 +9,7 @@ import { PagoService } from '../../_services/pago.service';
 import { ObligacionPago } from '../../_models/obligacion';
 
 import { saveAs } from 'file-saver';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pago-recibo',
@@ -16,7 +17,6 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./pago-recibo.component.scss']
 })
 export class PagoReciboComponent implements OnInit {
-
   id:number;
   id_pago:number;
   plan_pago:PlanPago;
@@ -30,6 +30,7 @@ export class PagoReciboComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
+    private location: Location,
     ) {
       this.dtOptions = {
         language: {
@@ -45,9 +46,7 @@ export class PagoReciboComponent implements OnInit {
 
   ngOnInit() {
     let id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(id_sede);
     this.pagoService.sede(id_sede);
-
     this.route.params.subscribe(params=>{
       this.id = +params['id_plan_pago'];
       this.id_pago = +params['id_pago'];
@@ -66,7 +65,7 @@ export class PagoReciboComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigate(['/cuentacorriente/'+this.id+'/ver']);
+    this.location.back();
   }
 
   reporte(){

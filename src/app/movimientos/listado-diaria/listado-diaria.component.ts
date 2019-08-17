@@ -6,7 +6,9 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
-import { SedeService } from '../../_services/sede.service';
+import { BsModalService } from 'ngx-bootstrap';
+import { Alumno } from '../../_models/alumno';
+import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-listado-diaria',
@@ -23,16 +25,14 @@ export class ListadoDiariaComponent implements OnInit {
   };
   constructor(
     private diariaService:DiariaService,
-    private sedeService:SedeService,
     private router: Router,
+    private modalService: BsModalService,
     private toastr: ToastrService,
     ) {
       
   }
 
   ngOnInit() {
-    let id_sede = this.sedeService.getIdSede();
-    this.diariaService.sede(id_sede);
     const that = this;
 
     this.dtOptions = {
@@ -78,6 +78,9 @@ export class ListadoDiariaComponent implements OnInit {
     this.router.navigate(['/movimientos/diarias/'+item.id+'/ver']);
   }
 
+  nuevo(){
+    this.router.navigate(['/movimientos/diarias/nuevo']);
+  }
 
   refrescar(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -94,4 +97,18 @@ export class ListadoDiariaComponent implements OnInit {
       saveAs(data,"diaria-"+fecha.format('YYYY-MM-DD')+".xlsx");
     });
   }
+
+  eliminar(item:Alumno){
+    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+    (<DialogConfirmComponent>modal.content).onShow("Descartar diaria","Los movimientos que lo comprenden no seran eliminados.");
+    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.diariaService.delete(item.id).subscribe(response=>{
+          this.toastr.success('Diaria eliminada', '');
+          this.refrescar();
+        });
+      }
+    });
+  }
+  
 }

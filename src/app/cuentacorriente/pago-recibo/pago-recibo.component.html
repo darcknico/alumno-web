@@ -26,7 +26,7 @@
                     </tr>
                   </thead>
                   <tbody *ngIf="dataSource?.length != 0">
-                    <tr *ngFor="let item of dataSource" class="{{id_ultimo==item.id?'ultimo':''}}">
+                    <tr *ngFor="let item of dataSource" class="{{!item.obligacion.estado?'bg-danger':''}}">
                       <td>{{ item.obligacion.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
                       <td>{{ item.obligacion.descripcion}}</td>
                       <td>
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <button type="button" class="btn btn-secondary btn-block-xs-only m-1" (click)="volver()">CUENTA CORRIENTE</button>
+          <button type="button" class="btn btn-secondary btn-block-xs-only m-1" (click)="volver()">VOLVER</button>
           <button type="button" class="btn btn-danger btn-block-xs-only m-1" (click)="reporte()">DESCARGAR</button>
           <button type="button" class="btn btn-info btn-block-xs-only m-1" (click)="imprimir()">IMPRIMIR</button>
         </div>

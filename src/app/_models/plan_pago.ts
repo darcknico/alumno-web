@@ -13,6 +13,12 @@ export interface PlanPago{
     cuota_monto:number;
     interes_monto:number;
     anio:number;
+    cuota_cantidad:number;
+    cuota_total:number;
+    cuota_pagado:number;
+    fecha:string;
+    dias_vencimiento:number;
+
     id_usuario:number;
     estado:boolean;
     created_at:Date;
@@ -22,7 +28,6 @@ export interface PlanPago{
     bonificado:number;
     interes_total:number;
     interes_saldo:number;
-    cuota_total:number;
     saldo_total:number;
     saldo_hoy:number;
     

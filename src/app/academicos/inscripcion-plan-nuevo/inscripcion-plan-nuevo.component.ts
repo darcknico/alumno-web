@@ -12,6 +12,8 @@ import { PlanPago } from '../../_models/plan_pago';
 import { Beca } from '../../_models/beca';
 import { BecaService } from '../../_services/beca.service';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
+import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-inscripcion-plan-nuevo',
@@ -25,7 +27,8 @@ export class InscripcionPlanNuevoComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dataSource:Obligacion[]=[];
   formulario: FormGroup;
-  
+  plan_pago:PlanPago;
+  error;
   constructor(
     private inscripcionService:InscripcionService,
     private planPagoService:PlanPagoService,
@@ -36,22 +39,25 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: BsModalService,
     private toastr: ToastrService,
+    private location: Location
   ) { 
-
+    let anio = moment().get('year');
     this.formulario = this.fb.group({
-      anio: [moment().get('year'), [Validators.required, Validators.minLength(4)]],
-      matricula_monto: [0, Validators.required],
-      cuota_monto: [0, Validators.required],
-      interes_monto: [0, Validators.required],
-      id_beca:[1,Validators.required],
-      beca_porcentaje:'',
+      anio: [anio, [Validators.required, Validators.min(1950),Validators.max(anio)]],
+      matricula_monto: [0, [Validators.required,Validators.min(0)]],
+      cuota_monto: [0, [Validators.required,Validators.min(0)]],
+      interes_monto: [0, [Validators.required,Validators.min(0)]],
+      id_beca:null,
+      beca_porcentaje:[0,Validators.min(0)],
+      cuota_cantidad: [10, [Validators.required,Validators.min(0)]],
+      dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
     });
   }
 
   ngOnInit() {
     let ids = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(ids);
-    this.planPagoService.sede(ids);
+    
     this.dtOptions = {
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -75,11 +81,28 @@ export class InscripcionPlanNuevoComponent implements OnInit {
         });
       }
     });
-    this.planPagoService.precios_ultimo().subscribe(response=>{
-      this.f.matricula_monto.setValue(response.matricula_monto);
-      this.f.cuota_monto.setValue(response.cuota_monto);
-      this.f.interes_monto.setValue(response.interes_monto);
+    this.route.params.subscribe(query=>{
+      let id_plan_pago = query['id_plan_pago'];
+      if(id_plan_pago){
+        this.planPagoService.getById(+id_plan_pago).subscribe(response=>{
+          this.plan_pago = response;
+          this.f.anio.setValue(response.anio);
+          this.f.matricula_monto.setValue(response.matricula_monto);
+          this.f.cuota_monto.setValue(response.cuota_monto);
+          this.f.interes_monto.setValue(response.interes_monto);
+          this.f.id_beca.setValue(response.id_beca);
+          this.f.cuota_cantidad.setValue(response.cuota_cantidad);
+          this.f.dias_vencimiento.setValue(response.dias_vencimiento);
+        });
+      } else {
+        this.planPagoService.precios_ultimo().subscribe(response=>{
+          this.f.matricula_monto.setValue(response.matricula_monto);
+          this.f.cuota_monto.setValue(response.cuota_monto);
+          this.f.interes_monto.setValue(response.interes_monto);
+        });
+      }
     });
+    
   }
 
   get f(){
@@ -87,30 +110,17 @@ export class InscripcionPlanNuevoComponent implements OnInit {
   }
 
   vista_previa(){
-    let inscripcion = <Inscripcion>{};
-    inscripcion.id_alumno = this.inscripcion.id_alumno;
-    inscripcion.anio = this.f.anio.value;
-    let id = this.f.id_beca.value;
-    if(id>1){
-      let beca = this.becas.find(data=>data.id == id);
-      if(beca){
-        inscripcion.id_beca = this.f.id_beca.value;
-        inscripcion.beca_nombre = beca.nombre;
-        inscripcion.beca_porcentaje = this.f.beca_porcentaje.value;
-      }
-    } else {
-      inscripcion.id_beca = 1;
-      inscripcion.beca_nombre = "Ninguna";
-      inscripcion.beca_porcentaje = 0;
-    }
-
     let plan_pago = <PlanPago>{};
+    plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
+    plan_pago.anio = this.f.anio.value;
     plan_pago.matricula_monto = this.f.matricula_monto.value;
     plan_pago.cuota_monto = this.f.cuota_monto.value;
     plan_pago.interes_monto = this.f.interes_monto.value;
+    plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
+    plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
 
-    this.alumnoService.inscribir_previa(inscripcion,plan_pago).subscribe(response=>{
-      this.dataSource = response;
+    this.planPagoService.previa(plan_pago).subscribe(response=>{
+      this.dataSource = response.obligaciones;
     });
   }
 
@@ -121,28 +131,54 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     plan_pago.cuota_monto = this.f.cuota_monto.value;
     plan_pago.interes_monto = this.f.interes_monto.value;
     plan_pago.anio = this.f.anio.value;
-    let id = this.f.id_beca.value;
-    if(id>1){
-      let beca = this.becas.find(data=>data.id == id);
-      if(beca){
-        plan_pago.id_beca = this.f.id_beca.value;
-        plan_pago.beca_nombre = beca.nombre;
-        plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
-      }
+    plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
+    plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
+    plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
+
+    if(this.plan_pago){
+      plan_pago.id = this.plan_pago.id;
+
+      const modal = this.modalService.show(DialogConfirmComponent);
+      (<DialogConfirmComponent>modal.content).onShow(
+        "Editar Plan de pagos",
+        "Los pagos realizados no seran eliminados.¿Desea Continuar?");
+      (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          this.planPagoService.update(plan_pago).subscribe(response=>{
+            this.toastr.success('Plan editado', '');
+            this.volver();
+          },error=>{
+            this.errores(error);
+          });
+        }
+      });
+      
     } else {
-      plan_pago.id_beca = 1;
-      plan_pago.beca_nombre = "Ninguna";
-      plan_pago.beca_porcentaje = 0;
+      this.planPagoService.store(plan_pago).subscribe(response=>{
+        this.toastr.success('Plan generado', '');
+        this.volver();
+      },error=>{
+        this.errores(error);
+      });
     }
     
-    this.planPagoService.store(plan_pago).subscribe(response=>{
-      this.toastr.success('Inscripcion Aceptada', '');
-      this.volver();
-    });
+  }
+
+  private errores(error){
+    let tipo = error.error.error;
+    if(typeof tipo === 'string' || tipo instanceof String){
+      this.error = tipo;
+    }
+    if(error.error.anio){
+      this.f.anio.setErrors({
+        ocupado:true,
+      });
+      this.f.anio.markAsDirty();
+    }
   }
 
   volver(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/ver']);
+    this.location.back();
   }
 
   seleccionar_beca(){

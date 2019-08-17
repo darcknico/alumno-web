@@ -73,8 +73,6 @@ export class ObligacionPagarModalComponent implements OnInit {
   onShow(plan_pago:PlanPago,id_sede:number){
     this.plan_pago = plan_pago;
     this.id_sede = id_sede;
-    
-    this.planPagoService.sede(id_sede);
     this.movimientoService.sede(id_sede);
     this.movimientoService.formas().subscribe(response=>this.formas=response);
   }

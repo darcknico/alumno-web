@@ -15,9 +15,7 @@ import 'moment/min/locales';
   styleUrls: ['./pago-bonificar.component.scss']
 })
 export class PagoBonificarComponent implements OnInit {
-
   id:number;
-  id_sede:number;
   dataSource:Obligacion[];
   formulario: FormGroup;
   dtOptions: DataTables.Settings = {};
@@ -54,9 +52,6 @@ export class PagoBonificarComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(this.id_sede);
-
     this.route.params.subscribe(params=>{
       this.id = +params['id_plan_pago'];
     });

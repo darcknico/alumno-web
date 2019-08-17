@@ -53,9 +53,7 @@ export class PagoModalComponent implements OnInit {
   onShow(plan_pago:PlanPago,id_sede:number){
     this.plan_pago = plan_pago;
     this.id_sede = id_sede;
-    
     this.pagoService.sede(id_sede);
-    this.planPagoService.sede(id_sede);
     this.planPagoService.pagos(this.plan_pago.id).subscribe(response=>{
       this.dataSource = response;
     });

@@ -116,18 +116,6 @@ export class AlumnoService {
         });
     }
 
-    inscribir_previa(inscripcion:Inscripcion,plan_pago:PlanPago){
-        return this.http.put<Obligacion[]>(this.ruta +'/'+inscripcion.id_alumno+'/inscripciones/previa',{
-            anio:inscripcion.anio,
-            id_beca:inscripcion.id_beca,
-            beca_nombre:inscripcion.beca_nombre,
-            beca_porcentaje:inscripcion.beca_porcentaje,
-            matricula_monto:plan_pago.matricula_monto,
-            cuota_monto:plan_pago.cuota_monto,
-            interes_monto:plan_pago.interes_monto,
-        });
-    }
-
     inscripciones(id:number){
         return this.http.get<Inscripcion[]>( [this.api,this.resource,id,'inscripciones'].join('/') );        
     }

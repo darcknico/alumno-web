@@ -51,7 +51,6 @@ export class InscripcionVerComponent implements OnInit {
   ngOnInit() {
     this.id_sede = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(this.id_sede);
-    this.planPagoService.sede(this.id_sede);
     this.inscripcionService.tipos_estado().subscribe(response=>{
       this.tipos_estado = response;
     });
@@ -114,7 +113,10 @@ export class InscripcionVerComponent implements OnInit {
     } else {
       this.router.navigate(['/cuentacorriente/'+this.plan_pago.id+'/ver']);
     }
-    
+  }
+
+  plan_pago_editar(item:PlanPago){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/planes/'+item.id+'/editar']);
   }
 
   plan_pago_eliminar(item:PlanPago){

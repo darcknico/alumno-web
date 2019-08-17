@@ -8,11 +8,9 @@ import { Alumno } from '../../_models/alumno';
 import { CarreraService } from '../../_services/carrera.service';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Departamento } from '../../_models/departamento';
-import { Carrera, CarreraModalidad } from '../../_models/carrera';
+import { Carrera } from '../../_models/carrera';
 import { PlanService } from '../../_services/plan.service';
 import { PlanEstudio } from '../../_models/plan_estudio';
-import { ModalidadService } from '../../_services/modalidad.service';
-import { Modalidad } from '../../_models/modalidad';
 import { Inscripcion } from '../../_models/inscripcion';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { BsModalService } from 'ngx-bootstrap';
@@ -21,6 +19,7 @@ import { BecaService } from '../../_services/beca.service';
 import { Beca } from '../../_models/beca';
 import { Obligacion } from '../../_models/obligacion';
 import { PlanPagoService } from '../../_services/plan_pago.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-inscripcion-nuevo',
@@ -41,7 +40,6 @@ export class InscripcionNuevoComponent implements OnInit {
   alumno:Alumno;
   carrera:Carrera;
   id_departamento:number=0;
-  id_sede:number;
   id_modalidad:number;
   id_plan_estudio:number;
 
@@ -58,14 +56,16 @@ export class InscripcionNuevoComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {
-    let ahora = new Date();
+    let anio = moment().get('year');
     this.formulario = this.fb.group({
-      anio: [ahora.getFullYear(), [Validators.required, Validators.minLength(4)]],
-      matricula_monto: [0, Validators.required],
-      cuota_monto: [0, Validators.required],
-      interes_monto: [0, Validators.required],
+      anio: [anio, [Validators.required, Validators.min(1950),Validators.max(anio)]],
+      matricula_monto: [0, [Validators.required,Validators.min(0)]],
+      cuota_monto: [0, [Validators.required,Validators.min(0)]],
+      interes_monto: [0, [Validators.required,Validators.min(0)]],
       id_beca:[1,Validators.required],
-      beca_porcentaje:'',
+      beca_porcentaje:[0,Validators.min(0)],
+      cuota_cantidad: [10, [Validators.required,Validators.min(0)]],
+      dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
     });
   }
 
@@ -80,9 +80,6 @@ export class InscripcionNuevoComponent implements OnInit {
       info:false,
       ordering:false,
     };
-
-    this.id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(this.id_sede);
 
     this.becaService.getAll().subscribe(response=>{
       this.becas = response;
@@ -169,30 +166,14 @@ export class InscripcionNuevoComponent implements OnInit {
   }
 
   vista_previa(){
-    let inscripcion = <Inscripcion>{};
-    inscripcion.id_alumno = this.alumno.id;
-    inscripcion.anio = this.f.anio.value;
-    let id = this.f.id_beca.value;
-    if(id>1){
-      let beca = this.becas.find(data=>data.id == id);
-      if(beca){
-        inscripcion.id_beca = this.f.id_beca.value;
-        inscripcion.beca_nombre = beca.nombre;
-        inscripcion.beca_porcentaje = this.f.beca_porcentaje.value;
-      }
-    } else {
-      inscripcion.id_beca = 1;
-      inscripcion.beca_nombre = "Ninguna";
-      inscripcion.beca_porcentaje = 0;
-    }
-
     let plan_pago = <PlanPago>{};
+    plan_pago.anio = this.f.anio.value;
     plan_pago.matricula_monto = this.f.matricula_monto.value;
     plan_pago.cuota_monto = this.f.cuota_monto.value;
-    plan_pago.interes_monto = this.f.interes_monto.value;
+    plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
 
-    this.alumnoService.inscribir_previa(inscripcion,plan_pago).subscribe(response=>{
-      this.dataSource = response;
+    this.planPagoService.previa(plan_pago).subscribe(response=>{
+      this.dataSource = response.obligaciones;
     });
   }
 

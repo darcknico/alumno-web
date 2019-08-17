@@ -1,7 +1,6 @@
 <div class="animated fadeIn" >
   <app-obligacion-siguiente-component
   [id_plan_pago]="id"
-  [id_sede]="id_sede"
   [id_tipo_obligacion]="1">
   </app-obligacion-siguiente-component>
   <div class="row">
@@ -125,7 +124,7 @@
                     </tr>
                   </thead>
                   <tbody *ngIf="dataSource?.length != 0">
-                    <tr *ngFor="let item of dataSource">
+                    <tr *ngFor="let item of dataSource" >
                       <td>{{ item.obligacion.fecha_vencimiento | date:'dd/MM/yyyy'}}</td>
                       <td>{{ item.obligacion.descripcion }}</td>
                       <td>

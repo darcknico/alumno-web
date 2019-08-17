@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   estadisticas_plan_pago:any;
   estadisticas_carrera:any;
 
-  ultimas:Diaria;
+  ultimas:Diaria[];
   usuario:Usuario;
 
   constructor(
@@ -35,8 +35,6 @@ export class DashboardComponent implements OnInit {
   ){
     this.id_sede = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(this.id_sede);
-    this.planPagoService.sede(this.id_sede);
-    this.diariaService.sede(this.id_sede);
 
     this.alumnoService.estadisticas().subscribe(response=>{
       this.estadisticas_alumno = response;

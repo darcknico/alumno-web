@@ -70,8 +70,6 @@ export class MovimientoEditarModalComponent implements OnInit {
       this.f.cheque_vencimiento.setValue(cheque_vencimiento.toDate());
     }
     this.f.numero.setValue(movimiento.numero);
-    
-    this.planPagoService.sede(movimiento.id_sede);
     this.movimientoService.sede(movimiento.id_sede);
     this.tipoMovimientoService.sede(movimiento.id_sede);
     this.movimientoService.formas().subscribe(response=>this.formas=response);

@@ -14,7 +14,6 @@ import * as moment from "moment";
 export class CuentaCorrienteComponent implements OnInit {
 
   @Input('plan_pago') plan_pago:PlanPago;
-  id_sede:number;
   dtOptions: DataTables.Settings = {};
   dataSource:Obligacion[];
   
@@ -23,8 +22,6 @@ export class CuentaCorrienteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(this.id_sede);
     this.dtOptions = {
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -96,5 +93,11 @@ export class CuentaCorrienteComponent implements OnInit {
       color="#71BA79";
     }
     return color;
+  }
+
+  rearmar(){
+    this.planPagoService.rearmar(this.plan_pago.id).subscribe(response=>{
+      this.actualizar();
+    });
   }
 }

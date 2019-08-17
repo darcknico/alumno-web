@@ -14,7 +14,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListadoPagoComponent implements OnInit {
   id:number;
-
   dataSource:Pago[];
   dtOptions: DataTables.Settings = {};
 
@@ -29,7 +28,6 @@ export class ListadoPagoComponent implements OnInit {
 
   ngOnInit() {
     let id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(id_sede);
     this.pagoService.sede(id_sede);
     this.dtOptions = {
       language: {

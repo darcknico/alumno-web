@@ -9,9 +9,7 @@ import { Obligacion } from '../../_models/obligacion';
   styleUrls: ['./listado-cuota.component.scss']
 })
 export class ListadoCuotaComponent implements OnInit {
-
   id:number;
-
   dataSource:Obligacion[];
   dtOptions: DataTables.Settings = {};
 
@@ -22,8 +20,6 @@ export class ListadoCuotaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(id_sede);
     this.dtOptions = {
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"

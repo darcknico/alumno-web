@@ -45,9 +45,6 @@ export class ListadoPlanPagoComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = this.sedeService.getIdSede();
-    this.planPagoService.sede(id_sede);
-
     this.departamentoService.getAll().subscribe(response => {
       this.departamentos = response;
     });

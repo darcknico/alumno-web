@@ -144,6 +144,12 @@ const routes: Routes = [{
               title:'Planes de pago - Nuevo'
             }
           },{
+            path:'planes/:id_plan_pago/editar',
+            component:InscripcionPlanNuevoComponent,
+            data:{
+              title:'Planes de pago - Nuevo'
+            }
+          },{
             path:'notas',
             component:InscripcionNotaComponent,
             data:{

@@ -31,7 +31,6 @@ export class ListadoMatriculaComponent implements OnInit {
 
   ngOnInit() {
     let id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(id_sede);
     this.pagoService.sede(id_sede);
     this.dtOptions = {
       language: {

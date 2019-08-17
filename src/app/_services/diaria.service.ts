@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Diaria } from '../_models/diaria';
+import { SedeService } from './sede.service';
 
 export interface FiltroDiaria {
     search:string;
@@ -23,12 +24,12 @@ export class DiariaService {
     id_sede:number;
     constructor(
         private http: HttpClient,
+        private sede: SedeService,
         ) { 
-    }
- 
-
-    sede(id_sede:number){
-        this.id_sede = id_sede;
+        this.id_sede = this.sede.getIdSede();
+        this.sede.id_sede$.subscribe(id=>{
+            this.id_sede = id;
+        });
     }
 
     getAll(){
@@ -51,8 +52,20 @@ export class DiariaService {
         return this.http.get<Diaria>([this.api,this.id_sede,this.resource,id].join('/'));
     }
 
+    register(item:Diaria) {
+        return this.http.post<Diaria>([this.api,this.id_sede,this.resource].join('/'),item);
+    }
+
+    update(item:Diaria) {
+        return this.http.put<Diaria>([this.api,this.id_sede,this.resource,item.id].join('/'),item);
+    }
+
+    delete(id: number) {
+        return this.http.delete([this.api,this.id_sede,this.resource,id].join('/'));
+    }
+
     ultimos(){
-        return this.http.get<Diaria>([this.api,this.id_sede,this.resource,'ultimos'].join('/'));
+        return this.http.get<Diaria[]>([this.api,this.id_sede,this.resource,'ultimos'].join('/'));
     }
 
     siguiente(id:number){

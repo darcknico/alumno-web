@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DiariaService } from '../../_services/diaria.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Diaria } from '../../_models/diaria';
+import { DialogDateComponent } from '../../_generic/dialog-date/dialog-date.component';
+import * as moment from 'moment';
+import { BsModalService } from 'ngx-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-diaria',
@@ -18,12 +22,11 @@ export class DiariaComponent implements OnInit {
     private diariaService:DiariaService,
     private route: ActivatedRoute,
     private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.diariaService.sede(id_sede);
-
     this.route.params.subscribe(params=>{
       let id = params['id_diaria'];
       this.diariaService.getById(+id).subscribe(response=>{
@@ -41,5 +44,24 @@ export class DiariaComponent implements OnInit {
 
   cambiar(item:Diaria){
     this.router.navigate(['/movimientos/diarias/'+item.id+'/ver']);
+  }
+
+  cerrar(){
+    let hoy = moment();
+    const modal = this.modalService.show(DialogDateComponent,{class: 'modal-danger'});
+    (<DialogDateComponent>modal.content).onShow("Descartar diaria","Los movimientos que lo comprenden no seran eliminados.",hoy.toDate());
+    (<DialogDateComponent>modal.content).onClose.subscribe(result => {
+      if (result != null) {
+        let fecha = moment(result);
+        if(!fecha.isValid()){
+          return;
+        }
+        this.diaria.fecha_fin = fecha.format('YYYY-MM-DD');
+        this.diariaService.update(this.diaria).subscribe(response=>{
+          this.toastr.success('Diaria cerrada', '');
+          this.router.navigate(['/movimientos/diarias']);
+        });
+      }
+    });
   }
 }

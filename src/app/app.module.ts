@@ -138,6 +138,7 @@ import { AuditoriaService } from './_services/auditoria.service';
 import { MesaExamenMateriaDocenteService } from './_services/mesa_examen_materia_docente.service';
 import { ComisionDocenteService } from './_services/comision_docente.service';
 import { ReporteJobService } from './_services/reportejobs.service';
+import { DialogDateComponent } from './_generic/dialog-date/dialog-date.component';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -212,6 +213,7 @@ export const customCurrencyMaskConfig = {
     InscripcionExamenModalComponent,
     NovedadModalComponent,
     TemplateComponent,
+    DialogDateComponent,
   ],
   providers: [
     AuthGuard,
@@ -261,14 +263,15 @@ export const customCurrencyMaskConfig = {
     AutorizacionErrorModalComponent,
     DialogConfirmComponent,
     DialogAlertComponent,
+    DialogInputComponent,
+    DialogTextareaComponent,
+    DialogDateComponent,
     UsuarioSedeModalComponent,
     PlanEditarComponent,
     MateriaEditarComponent,
     MateriaCorrelativaModalComponent,
-    DialogInputComponent,
     ObligacionPagarModalComponent,
     PagoModalComponent,
-    DialogTextareaComponent,
     MesaMateriaAlumnoModalComponent,
     AlumnoMateriaNotaModalComponent,
     ExamenAlumnoEditarModalComponent,

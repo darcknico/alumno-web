@@ -10,7 +10,6 @@ import { Obligacion } from '../../../_models/obligacion';
 export class ObligacionSiguienteComponent implements OnInit {
 
   @Input('id_plan_pago') id_plan_pago:number;
-  @Input('id_sede') id_sede:number;
   @Input('id_tipo_obligacion') id_tipo_obligacion:number = 1;
 
   @Output() siguiente = new EventEmitter();
@@ -38,7 +37,6 @@ export class ObligacionSiguienteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.planPagoService.sede(this.id_sede);
     this.planPagoService.siguiente(this.id_plan_pago,this.id_tipo_obligacion).subscribe(response=>{
       if(response.estado){
         this.obligacion = response;

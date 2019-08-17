@@ -39,6 +39,17 @@
       </button>
     </div>
   </div>
+  <div class="row" *ngIf="diaria">
+    <div class="col-md-12" *ngIf="!diaria.fecha_fin">
+      <button class="btn btn-block btn-danger"
+        type="submit"
+        color="accent"
+        (click)="cerrar()">
+        CERRAR DIARIA
+      </button>
+    </div>
+  </div>
+  
   <div class="row">
     <div class="col-lg-6">
       <app-ingreso-component

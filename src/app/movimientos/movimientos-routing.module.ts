@@ -4,6 +4,7 @@ import { ListadoMovimientoComponent } from './listado-movimiento/listado-movimie
 import { ListadoDiariaComponent } from './listado-diaria/listado-diaria.component';
 import { DiariaComponent } from './diaria/diaria.component';
 import { MovimientoComponent } from './movimiento/movimiento.component';
+import { DiariaNuevoComponent } from './diaria-nuevo/diaria-nuevo.component';
 
 const routes: Routes = [{
   path:'listado',
@@ -21,10 +22,22 @@ const routes: Routes = [{
   path:'diarias',
   children:[
     {
+      path:'',
+      component:ListadoDiariaComponent,
+      data:{
+        title:'Listado de diarias'
+      },
+    },{
       path:'listado',
       component:ListadoDiariaComponent,
       data:{
         title:'Listado de diarias'
+      },
+    },{
+      path:'nuevo',
+      component:DiariaNuevoComponent,
+      data:{
+        title:'Cerrar diaria',
       },
     },{
       path:':id_diaria/ver',
@@ -33,7 +46,7 @@ const routes: Routes = [{
         title:'Diaria'
       },
     }
-  ]
+  ],
 }];
 
 @NgModule({

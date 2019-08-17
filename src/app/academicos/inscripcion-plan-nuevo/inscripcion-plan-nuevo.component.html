@@ -32,9 +32,20 @@
                 <input 
                   required
                   formControlName="anio"
-                  type="text" 
-                  class="form-control"
-                  placeholder="2018">
+                  type="number" 
+                  class="form-control {{ (f.anio.touched || f.anio.dirty)?( f.anio.invalid ?'is-invalid':'is-valid'):''}}" 
+                  placeholder="2019">
+                <div *ngIf= "f.anio.touched && f.anio.invalid" class="invalid-feedback">
+                  <span *ngIf="f.anio.hasError('required')" class="help-block">
+                      El año del plan es requerido
+                  </span>
+                  <span *ngIf="f.anio.hasError('min') || f.anio.hasError('max')" class="help-block">
+                      El año debe ser valido
+                  </span>
+                  <span *ngIf="f.anio.hasError('ocupado')" class="help-block">
+                      Cambie el año
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Monto de la Matricula</label>
@@ -42,27 +53,82 @@
                   required
                   formControlName="matricula_monto"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.matricula_monto.touched || f.matricula_monto.dirty)?( f.matricula_monto.invalid ?'is-invalid':'is-valid'):''}}"
                   placeholder="Monto Matricula">
+                <div *ngIf= "f.matricula_monto.touched && f.matricula_monto.invalid" class="invalid-feedback">
+                  <span *ngIf="f.matricula_monto.hasError('required')" class="help-block">
+                      El monto de la matricula es requerido
+                  </span>
+                  <span *ngIf="f.matricula_monto.hasError('min')" class="help-block">
+                      El monto debe ser mayor o igual 0 (cero)
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Monto por Cuota</label>
                 <input currencyMask
                   formControlName="cuota_monto"
                   type="text" 
-                  class="form-control" 
+                  class="form-control {{ (f.cuota_monto.touched || f.cuota_monto.dirty)?( f.cuota_monto.invalid ?'is-invalid':'is-valid'):''}}" 
                   placeholder="Monto Cuota">
+                <div *ngIf= "f.cuota_monto.touched && f.cuota_monto.invalid" class="invalid-feedback">
+                  <span *ngIf="f.cuota_monto.hasError('required')" class="help-block">
+                    El monto por cuota es necesario
+                  </span>
+                  <span *ngIf="f.cuota_monto.hasError('min')" class="help-block">
+                    El monto debe ser mayor o igual 0 (cero)
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Recargo de Interes</label>
                 <input currencyMask
                   formControlName="interes_monto"
                   type="text" 
-                  class="form-control" 
-                  placeholder="Monto Interes por Mes">
+                  class="form-control {{ (f.interes_monto.touched || f.interes_monto.dirty)?( f.interes_monto.invalid ?'is-invalid':'is-valid'):''}}" 
+                  >
+                <div *ngIf= "f.interes_monto.touched && f.interes_monto.invalid" class="invalid-feedback">
+                  <span *ngIf="f.interes_monto.hasError('min')" class="help-block">
+                    El monto debe ser mayor a 0 (cero)
+                  </span>
+                </div>
               </div>
             </div>
             <div class="row">
+              <div class="form-group col-sm-2">
+                <label class="control-label">Nº Cuotas</label>
+                <input 
+                  required
+                  formControlName="cuota_cantidad"
+                  type="number" 
+                  class="form-control {{ (f.cuota_cantidad.touched || f.cuota_cantidad.dirty)?( f.cuota_cantidad.invalid ?'is-invalid':'is-valid'):''}}" 
+                  placeholder="10">
+                <div *ngIf= "f.cuota_cantidad.touched && f.cuota_cantidad.invalid" class="invalid-feedback">
+                  <span *ngIf="f.cuota_cantidad.hasError('required')" class="help-block">
+                    La cantidad de cuotas es necesaria
+                  </span>
+                  <span *ngIf="f.cuota_cantidad.hasError('min')" class="help-block">
+                    El numero de cuotas debe ser mayor o igual 0(cero)
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-sm-2">
+                <label class="control-label">Diás Venc.</label>
+                <input 
+                  required
+                  formControlName="dias_vencimiento"
+                  type="number" 
+                  class="form-control {{ (f.dias_vencimiento.touched || f.dias_vencimiento.dirty)?( f.dias_vencimiento.invalid ?'is-invalid':'is-valid'):''}}" 
+                  placeholder="9">
+                <div *ngIf= "f.dias_vencimiento.touched && f.dias_vencimiento.invalid" class="invalid-feedback">
+                  <span *ngIf="f.dias_vencimiento.hasError('required')" class="help-block">
+                    Los dias de vencimiento es requerida
+                  </span>
+                  <span *ngIf="f.dias_vencimiento.hasError('min')" class="help-block">
+                    La cantidad de dias debe ser mayor o igual 0(cero)
+                  </span>
+                </div>
+              </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Beca</label>
                 <ng-select [items]="becas"
@@ -75,7 +141,7 @@
                     [clearable]="false">
                 </ng-select>
               </div>
-              <div class="form-group col-sm-3" *ngIf="formulario.controls.id_beca.value>1">
+              <div class="form-group col-sm-3" *ngIf="formulario.controls.id_beca.value>1 || plan_pago">
                 <label class="control-label">Porcentaje del Beneficio</label>
                 <div class="input-group">
                   <input
@@ -106,7 +172,14 @@
                     <tr *ngFor="let item of dataSource">
                       <td>{{ item.fecha | date:'dd/MM/yyyy' }}</td>
                       <td>{{ item.descripcion}}</td>
-                      <td>{{ item.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
+                      <td>
+                        <ng-container *ngIf="item.id_tipo_obligacion == 1 else noMatricula">
+                            {{ item.fecha_vencimiento | date:'dd/MM/yyyy' }}
+                        </ng-container>
+                        <ng-template #noMatricula>
+                          -
+                        </ng-template>
+                      </td>
                       <td>${{ item.monto | number:'1.2-2':'es-AR' }}</td>
                     </tr>
                   </tbody>
@@ -127,12 +200,22 @@
             type="button" 
             [disabled]="!formulario.valid"
             (click)="continuar()"
-            >Generar nuevo plan de pagos</button>
+            >
+            <ng-container *ngIf="plan_pago else noPlanPago">
+              Editar plan de pagos
+            </ng-container>
+            <ng-template #noPlanPago>
+              Generar nuevo plan de pagos
+            </ng-template>
+          </button>
           <button 
             class="btn btn-block-xs-only m-1 btn-secondary" 
             type="button" 
             (click)="volver()"
             >VOLVER</button>
+          <label class="control-label invalid-feedback" *ngIf="error" style=" display: flex">
+              {{error}}
+          </label>
         </div>
       </div>
     </div>

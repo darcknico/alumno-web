@@ -64,7 +64,6 @@ export class PagoComponent implements OnInit {
 
   ngOnInit(){
     this.id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(this.id_sede);
     this.movimientoService.sede(this.id_sede);
     this.movimientoService.formas().subscribe(response=>this.formas=response);
 

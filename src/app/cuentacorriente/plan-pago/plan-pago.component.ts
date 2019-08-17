@@ -5,6 +5,7 @@ import { PlanPagoService } from '../../_services/plan_pago.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-plan-pago',
@@ -12,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./plan-pago.component.scss']
 })
 export class PlanPagoComponent implements OnInit {
-
   id:number;
   plan_pago:PlanPago;
   constructor(
@@ -21,12 +21,10 @@ export class PlanPagoComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
+    private location: Location,
     ) { }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(id_sede);
-
     this.route.params.subscribe(params=>{
       let ids_usuario = params['id_plan_pago'];
       if(ids_usuario==null){
@@ -66,6 +64,14 @@ export class PlanPagoComponent implements OnInit {
 
   generar_pago_matricula(){
     this.router.navigate(['/cuentacorriente/'+this.plan_pago.id+'/pagos/matricula']);
+  }
+
+  editar(){
+    this.router.navigate(['/academicos/inscripciones/'+this.plan_pago.id_inscripcion+'/planes/'+this.plan_pago.id+'/editar']);
+  }
+
+  volver(){
+    this.location.back();
   }
 
 }

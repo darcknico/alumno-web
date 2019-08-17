@@ -17,15 +17,12 @@ import 'moment/min/locales';
   styleUrls: ['./pago-matricula.component.scss']
 })
 export class PagoMatriculaComponent implements OnInit {
-
   id:number;
   id_sede:number;
   formas:FormaPago[]=[];
   formulario: FormGroup;
   editado:boolean=true;
-
   obligacion:Obligacion;
-
   constructor(
     private planPagoService:PlanPagoService,
     private movimientoService:MovimientoService,
@@ -48,10 +45,8 @@ export class PagoMatriculaComponent implements OnInit {
 
   ngOnInit(){
     this.id_sede = +localStorage.getItem('id_sede');
-    this.planPagoService.sede(this.id_sede);
     this.movimientoService.sede(this.id_sede);
     this.movimientoService.formas().subscribe(response=>this.formas=response);
-
     this.route.params.subscribe(params=>{
       this.id = +params['id_plan_pago'];
     });
