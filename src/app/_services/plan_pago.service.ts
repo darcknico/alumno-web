@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { PlanPago, PlanPagoPrecio } from '../_models/plan_pago';
@@ -17,6 +17,8 @@ export interface FiltroPlanPago {
     id_departamento:number;
     id_carrera:number;
     deudores:number;
+    id_tipo_materia_lectivo:number;
+    anio:number;
 }
 export interface PlanPagoAjax{
     items: PlanPago[];
@@ -120,10 +122,19 @@ export class PlanPagoService {
         return this.http.post( [this.ruta,item.id_plan_pago,'matricula'].join('/') ,item);
     }
 
-    exportar(filtro:FiltroPlanPago){
-        return this.http.get( [this.ruta,'exportar'].join('/') ,
+    exportar(filtro:FiltroPlanPago):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>( [this.ruta,'exportar'].join('/') ,
         {
-            responseType:'blob',
+            observe:'response',
+            responseType:'blob' as 'json',
+            params: AuxiliarFunction.toParams(filtro),
+        });
+    }
+    exportar_alumnos(filtro:FiltroPlanPago):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>( [this.ruta,'exportar/alumnos'].join('/') ,
+        {
+            observe:'response',
+            responseType:'blob' as 'json',
             params: AuxiliarFunction.toParams(filtro),
         });
     }

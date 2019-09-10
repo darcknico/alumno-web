@@ -4,6 +4,9 @@
       <div class="card text-white bg-primary">
         <div class="card-body">
           <div class="text-value">${{diaria.saldo_anterior|number:'1.2-2':'ES_ar'}}</div>
+          <!--
+          <div class="text-value">(${{diaria.saldo_otros_anterior|number:'1.2-2':'ES_ar'}})</div>
+          -->
           <div>Saldo Anterior</div>
         </div>
       </div>
@@ -13,6 +16,8 @@
         <div class="card-body">
           <div class="text-value">${{diaria.total_ingreso|number:'1.2-2':'ES_ar'}}</div>
           <div>Ingresos</div>
+          <div class="text-value">${{diaria.total_otros_ingreso|number:'1.2-2':'ES_ar'}}</div>
+          <div>Otros</div>
         </div>
       </div>
     </div>
@@ -21,6 +26,8 @@
         <div class="card-body">
           <div class="text-value">${{diaria.total_egreso|number:'1.2-2':'ES_ar'}}</div>
           <div>Egresos</div>
+          <div class="text-value">${{diaria.total_otros_egreso|number:'1.2-2':'ES_ar'}}</div>
+          <div>Otros</div>
         </div>
       </div>
     </div>
@@ -28,6 +35,9 @@
       <div class="card text-white bg-info">
         <div class="card-body">
           <div class="text-value">${{diaria.saldo|number:'1.2-2':'ES_ar'}}</div>
+          <!--
+          <div class="text-value">(${{diaria.saldo_otros|number:'1.2-2':'ES_ar'}})</div>
+          -->
           <div>Saldo</div>
         </div>
       </div>

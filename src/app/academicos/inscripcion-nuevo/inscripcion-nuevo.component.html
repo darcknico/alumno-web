@@ -162,6 +162,20 @@
                   </span>
                 </div>
               </div>
+              <div class="form-group col-sm-3 {{ f.fecha.touched && f.fecha.invalid?'was-validated':''}}" >
+                <label class="control-label">Fecha</label>
+                <input bsDatepicker
+                  required
+                  formControlName="fecha"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Fecha">
+                <div *ngIf= "f.fecha.touched && f.fecha.invalid" class="invalid-feedback">
+                  <span *ngIf="f.fecha.hasError('required')" class="help-block">
+                      La fecha es requerida
+                  </span>
+                </div>
+              </div>
               <div class="form-group col-sm-2">
                 <label class="control-label">Diás Venc.</label>
                 <input 

@@ -113,6 +113,9 @@ export class AlumnoService {
             matricula_monto:plan_pago.matricula_monto,
             cuota_monto:plan_pago.cuota_monto,
             interes_monto:plan_pago.interes_monto,
+            cuota_cantidad:plan_pago.cuota_cantidad,
+            dias_vencimiento:plan_pago.dias_vencimiento,
+            fecha:plan_pago.fecha,
         });
     }
 

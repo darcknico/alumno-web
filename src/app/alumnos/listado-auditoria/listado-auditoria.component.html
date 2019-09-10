@@ -29,10 +29,19 @@
                     {{ item.auditable.tipo_documento?.nombre }}:&nbsp;{{ item.auditable.documento }}
                   </td>
                   <td>
-                    <div *ngFor="let key of objectKeys(item.old_values)">{{key + ' : ' + item.old_values[key]}}</div>
+                    <ng-container *ngFor="let key of objectKeys(item.old_values)">
+                      <ng-container *ngIf="item.old_values[key]">
+                        <div >{{key + ' : ' + item.old_values[key]}}</div>
+                      </ng-container>
+                    </ng-container>
+                    
                   </td>
                   <td>
-                    <div *ngFor="let key of objectKeys(item.new_values)">{{key + ' : ' + item.old_values[key]}}</div>
+                    <ng-container *ngFor="let key of objectKeys(item.new_values)">
+                      <ng-container *ngIf="item.new_values[key]">
+                        <div >{{key + ' : ' + item.new_values[key]}}</div>
+                      </ng-container>
+                    </ng-container>
                   </td>
                   <td>
                     {{ item.user.apellido }} {{ item.user.nombre }}

@@ -26,7 +26,12 @@
                 <tr *ngFor="let item of dataSource" >
                   <td>
                     <div *ngIf="item.fecha_fin">
-                      {{ item.fecha_fin | date:'dd/MM/yyyy' }}
+                      <ng-container *ngIf="item.fecha_fin == fecha_inicio else noIgual">
+                          {{ item.fecha_fin | date:'dd/MM/yyyy' }}
+                      </ng-container>
+                      <ng-template #noIgual>
+                          {{ item.fecha_inicio | date:'dd/MM' }} - {{ item.fecha_fin | date:'dd/MM/yyyy' }}
+                      </ng-template>
                     </div>
                     <div *ngIf="!item.fecha_fin">
                       <span class="badge badge-primary">EN CURSO</span>
@@ -39,9 +44,11 @@
                     <div *ngIf="item.saldo_anterior>=0">
                         ${{item.saldo_anterior | number:'1.2-2':'es-AR'}}
                     </div>
+                    <!-- 
                     <div *ngIf="item.saldo_otros_anterior" class="{{item.saldo_otros_anterior<0?'text-danger':''}}">
                       <i>${{item.saldo_otros_anterior | number:'1.2-2':'es-AR'}}</i>
                     </div>
+                    -->
                   </td>
                   <td>
                     ${{item.total_ingreso | number:'1.2-2':'es-AR'}}
@@ -62,9 +69,11 @@
                     <div *ngIf="item.saldo>=0">
                         ${{item.saldo | number:'1.2-2':'es-AR'}}
                     </div>
+                    <!--
                     <div *ngIf="item.saldo_otros" class="{{item.saldo_otros<0?'text-danger':''}}">
                       <i>${{item.saldo_otros | number:'1.2-2':'es-AR'}}</i>
                     </div>
+                    -->
                   </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body">
@@ -101,6 +110,11 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <span><i>Cursiva:</i> Sumatoria de los montos que no son en efectivo</span>
+            </div>
           </div>
         </div>
       </div>

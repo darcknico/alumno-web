@@ -47,14 +47,22 @@ export class ListadoPagoComponent implements OnInit {
   }
 
   eliminar(item:Pago){
+    let mensaje = "Recuperar Pago";
+    if(item.estado){
+      mensaje = "Eliminar Pago";
+    }
     const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
-    (<DialogConfirmComponent>modal.content).onShow("Eliminar Pago","");
+    (<DialogConfirmComponent>modal.content).onShow(mensaje,"");
     (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.pagoService.delete(item.id).subscribe(response=>{
-          this.toastr.success('Pago Eliminado', '');
-        });
+          if(response.estado){
+            this.toastr.success('Pago Recuperado', '');
+          } else {
+            this.toastr.success('Pago Eliminado', '');
+          }
         this.refrescar();
+        });
       }
     });
   }

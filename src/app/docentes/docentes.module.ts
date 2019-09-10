@@ -7,10 +7,17 @@ import { DocenteEditarComponent } from './docente-editar/docente-editar.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables';
-import { BsDatepickerModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDatepickerModule, TooltipModule, ModalModule } from 'ngx-bootstrap';
+import { MateriaEditarModalComponent } from './materia-editar-modal/materia-editar-modal.component';
+import { ListadoDocenteMateriaComponent } from './listado-docente-materia/listado-docente-materia.component';
 
 @NgModule({
-  declarations: [ListadoDocenteComponent, DocenteEditarComponent],
+  declarations: [
+    ListadoDocenteComponent, 
+    DocenteEditarComponent, 
+    MateriaEditarModalComponent,
+    ListadoDocenteMateriaComponent
+  ],
   imports: [
     CommonModule,
     DocentesRoutingModule,
@@ -20,6 +27,10 @@ import { BsDatepickerModule, TooltipModule } from 'ngx-bootstrap';
     DataTablesModule,
     BsDatepickerModule,
     TooltipModule.forRoot(),
+    ModalModule.forRoot(),
+  ],
+  entryComponents: [
+    MateriaEditarModalComponent,
   ]
 })
 export class DocentesModule { }

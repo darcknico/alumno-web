@@ -43,7 +43,9 @@
                   <td>
                     <button class="btn btn-sm btn-danger" type="button" (click)="eliminar(item)" *ngIf="item.estado">
                         <i class="fa fa-remove"></i>&nbsp;Eliminar</button>
-                    <button class="btn btn-sm btn-info" type="button" (click)="recibo(item)" *ngIf="item.estado">
+                    <button class="btn btn-sm btn-info" type="button" (click)="eliminar(item)" *ngIf="!item.estado">
+                      <i class="fa fa-remove"></i>&nbsp;Recuperar</button>
+                    <button class="btn btn-sm btn-info" type="button" (click)="recibo(item)">
                       <i class="fa fa-eye"></i>&nbsp;</button>
                   </td>
                 </tr>

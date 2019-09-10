@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UsuarioSede, Docente, UsuarioArchivo } from '../../_models/usuario';
+import { UsuarioSede, Docente, UsuarioArchivo, DocenteMateria } from '../../_models/usuario';
 import { Sede } from '../../_models/sede';
 import { TipoDocumento } from '../../_models/tipo_documento';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -17,6 +17,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { map } from 'rxjs/internal/operators/map';
 import { saveAs } from 'file-saver';
+import { FiltroDocenteMateria, DocenteMateriaService } from '../../_services/docente_materia.service';
+import { DataTableDirective } from 'angular-datatables';
+import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { BsModalService } from 'ngx-bootstrap';
+import { MateriaEditarModalComponent } from '../materia-editar-modal/materia-editar-modal.component';
 
 @Component({
   selector: 'app-docente-editar',
@@ -38,16 +43,24 @@ export class DocenteEditarComponent implements OnInit {
   archivos:UsuarioArchivo[]=[];
   @ViewChild('fileInput') fileInput: ElementRef;
   consultando:boolean = false;
-
+  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dataSource: DocenteMateria[] = [];
+  request = <FiltroDocenteMateria>{
+    search:"",
+    id_sede:0,
+  };
   constructor(
     private docenteService:DocenteService,
     private tipoService:TipoService,
     private usuarioService:UsuarioService,
     private sedeService:SedeService,
     private extraService:ExtraService,
+    private docenteMateriaService:DocenteMateriaService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private modalService: BsModalService,
     private toastr: ToastrService,
     private sanitizer : DomSanitizer,
   ) {
@@ -73,7 +86,9 @@ export class DocenteEditarComponent implements OnInit {
     });
   }
 
+  suscribe;
   ngOnInit() {
+    this.request.id_sede = this.sedeService.getIdSede();
     this.route.params.subscribe(params=>{
       let ids_usuario = params['id'];
       if(ids_usuario==null){
@@ -91,6 +106,7 @@ export class DocenteEditarComponent implements OnInit {
         this.titulo="Docente Nuevo";
       } else {
         this.titulo="Docente Editar";
+        this.request.id_usuario = this.id;
         this.docenteService.getById(this.id).subscribe(response=>{
           this.f.nombre.setValue(response.usuario.nombre);
           this.f.apellido.setValue(response.usuario.apellido);
@@ -134,6 +150,57 @@ export class DocenteEditarComponent implements OnInit {
       this.sedeService.getAll().subscribe(response=>{
         this.sedes = response;
       });
+      const that = this;
+      this.dtOptions = {
+        language: {
+          url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+        paging:false,
+        searching:false,
+        serverSide: true,
+        processing: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          if(this.suscribe){
+            this.suscribe.unsubscribe();
+            this.suscribe = null;
+          }
+          that.request.start = dataTablesParameters.start;
+          that.request.length = dataTablesParameters.length;
+          that.request.order = dataTablesParameters.order[0].dir;
+          that.request.search = dataTablesParameters.search.value;
+          that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+          this.suscribe = this.docenteMateriaService.ajax(that.request).subscribe(resp => {
+              that.dataSource = resp.items;
+              callback({
+                recordsTotal: resp.total_count,
+                recordsFiltered: resp.total_count,
+                data: []
+              });
+            });
+        },
+        columns: [
+          { 
+            data: 'created_at',
+            width: '5%',
+          },
+          { 
+            data: 'id_materia',
+            width: '5%',
+          },
+          { 
+            data: 'materia',
+          },
+          { 
+            data: 'id_carrera',
+          },
+        ],
+        columnDefs: [ {
+          targets: 'no-sort',
+          orderable: false,
+          },
+        ],
+        responsive:true,
+      };
     });
   }
 
@@ -304,5 +371,34 @@ export class DocenteEditarComponent implements OnInit {
         return !(data.id == item.id)
       });
     }
+  }
+
+  materia_nuevo(){
+    const modal = this.modalService.show(MateriaEditarModalComponent,{class: 'modal-info modal-lg'});
+    (<MateriaEditarModalComponent>modal.content).onShow(this.id);
+    (<MateriaEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescar();
+      }
+    });
+  }
+
+  materia_eliminar(item:DocenteMateria){
+    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+    (<DialogConfirmComponent>modal.content).onShow("Descartar asignación");
+    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.docenteMateriaService.delete(item.id).subscribe(response=>{
+          this.toastr.success('Asignación descartada', '');
+          this.refrescar();
+        });
+      }
+    });
+  }
+
+  refrescar(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.ajax.reload();
+    });
   }
 }

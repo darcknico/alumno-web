@@ -94,3 +94,15 @@ export interface UsuarioArchivo{
     url:any;
     subido:boolean;
 }
+
+export interface DocenteMateria{
+    id:number;
+    id_sede: number;
+    id_usuario:number;
+    id_materia:number;
+    id_carrera:number;
+
+    estado:boolean;
+    created_at:string;
+    updated_at:string;
+}

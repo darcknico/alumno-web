@@ -11,8 +11,10 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
 import * as moment from 'moment';
-import { saveAs } from 'file-saver';
 import { SedeService } from '../../_services/sede.service';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
+import { MateriaService } from '../../_services/materia.service';
+import { TipoMateriaLectivo } from '../../_models/materia';
 
 @Component({
   selector: 'app-listado-plan-pago',
@@ -25,18 +27,22 @@ export class ListadoPlanPagoComponent implements OnInit {
   dataSource: PlanPago[] = [];
   departamentos:Departamento[]=[];
   carreras:Carrera[]=[];
+  tipos:TipoMateriaLectivo[]=[];
 
   request = <FiltroPlanPago>{
     search:"",
     id_departamento:0,
     id_carrera:0,
     deudores:0,
+    id_tipo_materia_lectivo:0,
+    anio:null,
   };
   constructor(
     private planPagoService:PlanPagoService,
     private sedeService:SedeService,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
+    private materiaService:MateriaService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -50,6 +56,14 @@ export class ListadoPlanPagoComponent implements OnInit {
     });
     this.carreraService.getAll().subscribe(response=>{
       this.carreras = response;
+      let item = <Carrera>{};
+      item.id = 0;
+      item.nombre = "TODOS";
+      this.carreras.push(item);
+      this.carreras = this.carreras.reverse();
+    });
+    this.materiaService.tipos_lectivo().subscribe(response=>{
+      this.tipos = response;
     });
 
     const that = this;
@@ -103,11 +117,14 @@ export class ListadoPlanPagoComponent implements OnInit {
   }
 
   exportar(){
-    let aviso = this.toastr.warning('Preparando archivo de descarga.');
-    this.planPagoService.exportar(this.request).subscribe(data => {
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Descarga lista.');
-      saveAs(data,"planes_pago-"+moment().format('DD.MM.YYYY')+".xlsx");
-    });
+    AuxiliarFunction.descargar(this.toastr,this.planPagoService.exportar(this.request));
+  }
+
+  exportar_alumnos(){
+    if(this.request.id_carrera == 0 || this.request.id_tipo_materia_lectivo == 0 || this.request.anio == null){
+      this.toastr.warning('Debe seleccionar la carrera, el periodo lectivo y año para continuar.');
+      return;
+    }
+    AuxiliarFunction.descargar(this.toastr,this.planPagoService.exportar_alumnos(this.request));
   }
 }

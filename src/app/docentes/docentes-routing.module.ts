@@ -2,8 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListadoDocenteComponent } from './listado-docente/listado-docente.component';
 import { DocenteEditarComponent } from './docente-editar/docente-editar.component';
+import { ListadoDocenteMateriaComponent } from './listado-docente-materia/listado-docente-materia.component';
 
 const routes: Routes = [
+  {
+    path:'asignaciones',
+    data:{
+      title:'Asignaciones',
+    },
+    component:ListadoDocenteMateriaComponent,
+  },
   {
     path:'',
     data:{
@@ -12,6 +20,13 @@ const routes: Routes = [
     children:[
       {
         path:'',
+        component:ListadoDocenteComponent,
+        data:{
+          title:'Listado',
+        }
+      },
+      {
+        path:'listado',
         component:ListadoDocenteComponent,
         data:{
           title:'Listado',
@@ -37,9 +52,7 @@ const routes: Routes = [
         ]
       },
     ]
-  },
-  
-  
+  }
 ];
 
 @NgModule({

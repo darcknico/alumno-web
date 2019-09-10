@@ -68,6 +68,10 @@ export class PagoReciboComponent implements OnInit {
     this.location.back();
   }
 
+  cuenta(){
+    this.router.navigate(['cuentacorriente',this.plan_pago.id,'ver'])
+  }
+
   reporte(){
     let aviso = this.toastr.warning('Preparando descarga', '',{
       timeOut:15000,

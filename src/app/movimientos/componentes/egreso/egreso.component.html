@@ -23,10 +23,10 @@
                   <td>
                     {{ item.fecha | date:'dd/MM/yyyy' }}
                   </td>
-                  <td>{{item.forma.nombre}}</td>
+                  <td class="{{ item.id_forma_pago>1?'border border-warning':'' }}">{{item.forma.nombre}}</td>
                   <td>{{item.tipo.nombre}}</td>
                   <td>{{item.descripcion}}</td>
-                  <td>${{item.monto | number:'1.2-2':'es-AR'}}</td>
+                  <td class="{{ item.id_forma_pago>1?'border border-warning':'' }}">${{item.monto | number:'1.2-2':'es-AR'}}</td>
                 </tr>
               </tbody>
             </table>

@@ -139,6 +139,8 @@ import { MesaExamenMateriaDocenteService } from './_services/mesa_examen_materia
 import { ComisionDocenteService } from './_services/comision_docente.service';
 import { ReporteJobService } from './_services/reportejobs.service';
 import { DialogDateComponent } from './_generic/dialog-date/dialog-date.component';
+import { HomeService } from './_services/home.service';
+import { DocenteMateriaService } from './_services/docente_materia.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -246,6 +248,7 @@ export const customCurrencyMaskConfig = {
     TramiteService,
     TipoService,
     DocenteService,
+    DocenteMateriaService,
     ExamenAlumnoService,
     AsistenciaAlumnoService,
     NovedadSistemaService,
@@ -253,6 +256,7 @@ export const customCurrencyMaskConfig = {
     AlumnoSedeService,
     AuditoriaService,
     ReporteJobService,
+    HomeService,
 
     { provide: HTTP_INTERCEPTORS, useClass: PassportInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },

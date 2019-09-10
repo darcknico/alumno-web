@@ -26,8 +26,10 @@
                 <td>{{ item.usuario.apellido}} {{ item.usuario.nombre}}</td>
                 <td>
                   <button class="btn btn-danger" type="button" (click)="eliminar(item)" *ngIf="item.estado">
-                      <i class="fa fa-trash"></i>&nbsp;</button>
-                  <button class="btn btn-info" type="button" (click)="recibo(item)" *ngIf="item.estado">
+                    <i class="fa fa-trash"></i>&nbsp;</button>
+                  <button class="btn btn-info" type="button" (click)="eliminar(item)" *ngIf="!item.estado">
+                    <i class="fa fa-trash"></i>&nbsp;</button>
+                  <button class="btn btn-info" type="button" (click)="recibo(item)" >
                     <i class="fa fa-eye"></i>&nbsp;</button>
                 </td>
               </tr>

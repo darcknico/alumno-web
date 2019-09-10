@@ -42,6 +42,11 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     private location: Location
   ) { 
     let anio = moment().get('year');
+    let fecha = moment().set({
+      'year':anio,
+      'month':1,
+      'date':1
+    });
     this.formulario = this.fb.group({
       anio: [anio, [Validators.required, Validators.min(1950),Validators.max(anio)]],
       matricula_monto: [0, [Validators.required,Validators.min(0)]],
@@ -51,6 +56,7 @@ export class InscripcionPlanNuevoComponent implements OnInit {
       beca_porcentaje:[0,Validators.min(0)],
       cuota_cantidad: [10, [Validators.required,Validators.min(0)]],
       dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
+      fecha: [fecha.toDate(), [Validators.required]],
     });
   }
 
@@ -93,6 +99,17 @@ export class InscripcionPlanNuevoComponent implements OnInit {
           this.f.id_beca.setValue(response.id_beca);
           this.f.cuota_cantidad.setValue(response.cuota_cantidad);
           this.f.dias_vencimiento.setValue(response.dias_vencimiento);
+          let fecha = moment(response.fecha);
+          if(fecha.isValid()){
+            this.f.fecha.setValue(fecha.toDate());
+          } else {
+            fecha = moment().set({
+              'year':response.anio,
+              'month':1,
+              'date':1
+            });
+            this.f.fecha.setValue(fecha.toDate());
+          }
         });
       } else {
         this.planPagoService.precios_ultimo().subscribe(response=>{
@@ -118,6 +135,10 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     plan_pago.interes_monto = this.f.interes_monto.value;
     plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
     plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
+    let fecha = moment(this.f.fecha.value);
+    if(fecha.isValid()){
+      plan_pago.fecha = fecha.format('YYYY-MM-DD');
+    }
 
     this.planPagoService.previa(plan_pago).subscribe(response=>{
       this.dataSource = response.obligaciones;
@@ -134,6 +155,10 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
     plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
     plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
+    let fecha = moment(this.f.fecha.value);
+    if(fecha.isValid()){
+      plan_pago.fecha = fecha.format('YYYY-MM-DD');
+    }
 
     if(this.plan_pago){
       plan_pago.id = this.plan_pago.id;

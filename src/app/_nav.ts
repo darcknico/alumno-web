@@ -51,10 +51,23 @@ export const navItems = [
         url: '/establecimientos/becas',
         icon: 'icon-settings'
       },
+      
+    ]
+  },
+  {
+    name: 'Docentes',
+    url: '/docentes',
+    icon: 'icon-people',
+    permisos: [1,2,4],
+    children:[
       {
-        name: 'Docentes',
-        url: '/docentes',
+        name: 'Listado',
+        url: '/docentes/listado',
         icon: 'icon-people',
+      },
+      {
+        name: 'Asignaciones',
+        url: '/docentes/asignaciones',
       },
     ]
   },

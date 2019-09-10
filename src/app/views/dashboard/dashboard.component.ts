@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
@@ -10,12 +10,15 @@ import { DiariaService } from '../../_services/diaria.service';
 import { Diaria } from '../../_models/diaria';
 import { Usuario } from '../../_models/usuario';
 import { AuthenticationService } from '../../_services/authentication.service';
+import { Chart } from 'chart.js';
+import { HomeService } from '../../_services/home.service';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-
   id_sede:number;
   estadisticas_alumno:any;
   estadisticas_inscripcion:any;
@@ -25,6 +28,15 @@ export class DashboardComponent implements OnInit {
   ultimas:Diaria[];
   usuario:Usuario;
 
+  @ViewChild("barCanvas") barCanvas: ElementRef;
+  @ViewChild("doughnutCanvas") doughnutCanvas: ElementRef;
+  @ViewChild("lineCanvas") lineCanvas: ElementRef;
+
+  private barChart: Chart;
+  private doughnutChart: Chart;
+  private lineChart: Chart;
+  private resumen$:Observable<any>;
+
   constructor(
     private alumnoService:AlumnoService,
     private inscripcionService:InscripcionService,
@@ -32,6 +44,7 @@ export class DashboardComponent implements OnInit {
     private carreraService:CarreraService,
     private diariaService:DiariaService,
     private authenticationService:AuthenticationService,
+    private homeService:HomeService,
   ){
     this.id_sede = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(this.id_sede);
@@ -56,383 +69,237 @@ export class DashboardComponent implements OnInit {
       this.usuario = usuario;
     });
   }
-  radioModel: string = 'Month';
-
-  // lineChart1
-  public lineChart1Data: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart1Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart1Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 40 - 5,
-          max: 84 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart1Colours: Array<any> = [
-    {
-      backgroundColor: getStyle('--primary'),
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];
-  public lineChart1Legend = false;
-  public lineChart1Type = 'line';
-
-  // lineChart2
-  public lineChart2Data: Array<any> = [
-    {
-      data: [1, 18, 9, 17, 34, 22, 11],
-      label: 'Series A'
-    }
-  ];
-  public lineChart2Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart2Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 1 - 5,
-          max: 34 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        tension: 0.00001,
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart2Colours: Array<any> = [
-    { // grey
-      backgroundColor: getStyle('--info'),
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];
-  public lineChart2Legend = false;
-  public lineChart2Type = 'line';
-
-
-  // lineChart3
-  public lineChart3Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart3Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart3Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart3Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
-    }
-  ];
-  public lineChart3Legend = false;
-  public lineChart3Type = 'line';
-
-
-  // barChart1
-  public barChart1Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
-  public barChart1Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false,
-        barPercentage: 0.6,
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    legend: {
-      display: false
-    }
-  };
-  public barChart1Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.3)',
-      borderWidth: 0
-    }
-  ];
-  public barChart1Legend = false;
-  public barChart1Type = 'bar';
-
-  // mainChart
-
-  public mainChartElements = 27;
-  public mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
-
-  public mainChartData: Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Current'
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Previous'
-    },
-    {
-      data: this.mainChartData3,
-      label: 'BEP'
-    }
-  ];
-  /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  /* tslint:enable:max-line-length */
-  public mainChartOptions: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips,
-      intersect: true,
-      mode: 'index',
-      position: 'nearest',
-      callbacks: {
-        labelColor: function(tooltipItem, chart) {
-          return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor };
-        }
-      }
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function(value: any) {
-            return value.charAt(0);
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public mainChartColours: Array<any> = [
-    { // brandInfo
-      backgroundColor: hexToRgba(getStyle('--info'), 10),
-      borderColor: getStyle('--info'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandSuccess
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--success'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandDanger
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--danger'),
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5]
-    }
-  ];
-  public mainChartLegend = false;
-  public mainChartType = 'line';
-
-  // social box charts
-
-  public brandBoxChartData1: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Facebook'
-    }
-  ];
-  public brandBoxChartData2: Array<any> = [
-    {
-      data: [1, 13, 9, 17, 34, 41, 38],
-      label: 'Twitter'
-    }
-  ];
-  public brandBoxChartData3: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'LinkedIn'
-    }
-  ];
-  public brandBoxChartData4: Array<any> = [
-    {
-      data: [35, 23, 56, 22, 97, 23, 64],
-      label: 'Google+'
-    }
-  ];
-
-  public brandBoxChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public brandBoxChartOptions: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false,
-      }],
-      yAxes: [{
-        display: false,
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public brandBoxChartColours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.1)',
-      borderColor: 'rgba(255,255,255,.55)',
-      pointHoverBackgroundColor: '#fff'
-    }
-  ];
-  public brandBoxChartLegend = false;
-  public brandBoxChartType = 'line';
-
-  public random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
+  
   ngOnInit(): void {
     this.usuario = this.authenticationService.localUsuario();
+    /*
     // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));
       this.mainChartData2.push(this.random(80, 100));
       this.mainChartData3.push(65);
     }
+    */
+
+    moment.locale('es');
+    this.homeService.estadisticas_pagos().subscribe((response:any)=>{
+      let fechas = [];
+      let montos = [];
+      response.forEach(item => {
+        fechas.push(item.fecha);
+        montos.push(item.total);
+      });
+      this.barChart = new Chart(this.barCanvas.nativeElement, {
+        type: "bar",
+        data: {
+          labels: fechas,
+          datasets: [
+            {
+              data: montos,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255,99,132,1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+                "rgba(255,99,132,1)",
+                "rgba(54, 162, 235, 1)",
+              ],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Pagos de la ultima semana',
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                let value = data.datasets[0].data[tooltipItems.index];
+                let str;
+                if (parseInt(value) >= 1000) {
+                    str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                } else {
+                  str = '$' + value;
+                }
+                return moment(data.labels[tooltipItems.index]).format('dddd') + ' ' + str;
+              }
+            }
+          },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  callback: function(value, index, values) {
+                    if (parseInt(value) >= 1000) {
+                       return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    } else {
+                       return '$' + value;
+                    }
+                 }
+                }
+              }
+            ],
+            xAxes: [
+              {
+                type: 'time',
+                time: {
+                  parser: 'YYYY-MM-DD',
+                  tooltipFormat: 'dddd DD',
+                  unit: 'day',
+                  unitStepSize: 1,
+                  displayFormats: {
+                    'day': 'DD/MM'
+                  }
+                }
+              }
+            ],
+          }
+        }
+      });
+    });
+
+    this.homeService.estadisticas_carreras().subscribe((response:any)=>{
+      let productos = [];
+      let totales = [];
+      response.forEach(item => {
+        productos.push(item.nombre);
+        totales.push(item.total);
+      });
+      this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
+        type: "doughnut",
+        data: {
+          labels: productos,
+          datasets: [
+            {
+              label: "# of Votes",
+              data: totales,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#FF6384", "#36A2EB", "#FFCE56"]
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Mas Inscripciones por carrera del corriente año',
+          },
+        }
+      });
+    });
+    
+    this.homeService.estadisticas_obligaciones().subscribe((response:any)=>{
+      let fechas = [];
+      let montos = [];
+      response.forEach(item => {
+        fechas.push(moment().set({'year': item.anio, 'month': item.mes}));
+        montos.push(item.total);
+      });
+      this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+        type: "line",
+        data: {
+          labels: fechas,
+          datasets: [
+            {
+              fill: false,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: "butt",
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: "miter",
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: montos,
+              spanGaps: false
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Proyección cuotas del corriente año',
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                let value = data.datasets[0].data[tooltipItems.index];
+                let str;
+                if (parseInt(value) >= 1000) {
+                    str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                } else {
+                  str = '$' + value;
+                }
+                return moment(data.labels[tooltipItems.index]).format('MMMM YYYY') + ' ' + str;
+              }
+            }
+          },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  callback: function(value, index, values) {
+                    if (parseInt(value) >= 1000) {
+                       return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    } else {
+                       return '$' + value;
+                    }
+                 }
+                }
+              }
+            ],
+            xAxes: [
+              {
+                type: 'time',
+                time: {
+                  tooltipFormat: 'MMMM',
+                  unit: 'month',
+                  unitStepSize: 1,
+                  displayFormats: {
+                    'month': 'MMM/YY'
+                  }
+                }
+              }
+            ],
+          }
+        },
+      });
+    });
   }
 }

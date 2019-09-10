@@ -20,7 +20,7 @@
       <div class="card">
         <p class="text-center"> Fecha desde {{diaria.fecha_inicio | date:'dd/MM/yyyy'}} 
           <ng-container *ngIf="diaria.fecha_fin">hasta {{diaria.fecha_fin | date:'dd/MM/yyyy'}}</ng-container>
-          <ng-container *ngIf="!diaria.fecha_fin"> y en curso</ng-container>
+          <ng-container *ngIf="!diaria.fecha_fin"> y en <b>CURSO</b></ng-container>
         </p>
       </div>
     </div>

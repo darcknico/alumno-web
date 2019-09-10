@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  //apiUrl: 'http://127.0.0.1:8000/api/',
   apiUrl: 'http://alumno-rest.proyectosinformaticos.com.ar/api/',
   //apiUrl: 'http://ariasdesaavedra.edu.ar/sistema/alumno-rest/public/api/',
   //apiUrl: 'http://34.226.235.220/alumno-rest/public/index.php/api/',

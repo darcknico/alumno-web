@@ -57,6 +57,11 @@ export class InscripcionNuevoComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     let anio = moment().get('year');
+    let fecha = moment().set({
+      'year':anio,
+      'month':1,
+      'date':1
+    });
     this.formulario = this.fb.group({
       anio: [anio, [Validators.required, Validators.min(1950),Validators.max(anio)]],
       matricula_monto: [0, [Validators.required,Validators.min(0)]],
@@ -66,6 +71,7 @@ export class InscripcionNuevoComponent implements OnInit {
       beca_porcentaje:[0,Validators.min(0)],
       cuota_cantidad: [10, [Validators.required,Validators.min(0)]],
       dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
+      fecha: [fecha.toDate(), [Validators.required]],
     });
   }
 
@@ -171,7 +177,12 @@ export class InscripcionNuevoComponent implements OnInit {
     plan_pago.matricula_monto = this.f.matricula_monto.value;
     plan_pago.cuota_monto = this.f.cuota_monto.value;
     plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
-
+    plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
+    plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
+    let fecha = moment(this.f.fecha.value);
+    if(fecha.isValid()){
+      plan_pago.fecha = fecha.format('YYYY-MM-DD');
+    }
     this.planPagoService.previa(plan_pago).subscribe(response=>{
       this.dataSource = response.obligaciones;
     });
@@ -202,6 +213,12 @@ export class InscripcionNuevoComponent implements OnInit {
     plan_pago.matricula_monto = this.f.matricula_monto.value;
     plan_pago.cuota_monto = this.f.cuota_monto.value;
     plan_pago.interes_monto = this.f.interes_monto.value;
+    plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
+    plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
+    let fecha = moment(this.f.fecha.value);
+    if(fecha.isValid()){
+      plan_pago.fecha = fecha.format('YYYY-MM-DD');
+    }
     
     const modal = this.modalService.show(DialogConfirmComponent);
     (<DialogConfirmComponent>modal.content).onShow(
