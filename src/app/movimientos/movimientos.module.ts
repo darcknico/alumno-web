@@ -19,6 +19,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { MovimientoEditarModalComponent } from './movimiento-editar-modal/movimiento-editar-modal.component';
 import { DiariaNuevoComponent } from './diaria-nuevo/diaria-nuevo.component';
+import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 
 @NgModule({
   imports: [
@@ -41,7 +42,7 @@ import { DiariaNuevoComponent } from './diaria-nuevo/diaria-nuevo.component';
     ListadoDiariaComponent, 
     DiariaComponent, 
     MovimientoComponent, 
-    MovimientoEditarModalComponent, DiariaNuevoComponent
+    MovimientoEditarModalComponent, DiariaNuevoComponent, EstadisticasComponent
   ],
   providers:[
     MovimientoService,

@@ -5,8 +5,17 @@ import { ListadoDiariaComponent } from './listado-diaria/listado-diaria.componen
 import { DiariaComponent } from './diaria/diaria.component';
 import { MovimientoComponent } from './movimiento/movimiento.component';
 import { DiariaNuevoComponent } from './diaria-nuevo/diaria-nuevo.component';
+import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 
-const routes: Routes = [{
+const routes: Routes = [
+{
+  path:'estadisticas',
+  component:EstadisticasComponent,
+  data:{
+    title:'Estadisticas'
+  }
+},
+{
   path:'listado',
   component:ListadoMovimientoComponent,
   data:{

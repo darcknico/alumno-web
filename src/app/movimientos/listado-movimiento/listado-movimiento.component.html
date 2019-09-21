@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Movimientos
           <div class="card-header-actions">
-            <button class="btn btn-block btn-info" type="button" (click)="exportar()">Exportar</button>
+            <button class="btn btn-sm btn-block btn-info" type="button" (click)="exportar()">Exportar tabla</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -51,6 +51,20 @@
                 placeholder="Fin">
             </div>
           </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label">Tipo de Movimiento</label>
+                <ng-select [items]="tipos_movimientos"
+                    [selectOnTab]="true"
+                    bindValue="id"
+                    bindLabel="nombre"
+                    (ngModelChange)="refrescar()"
+                    placeholder="Seleccione la Carrera"
+                    [(ngModel)]="request.id_tipo_movimiento"
+                    [clearable]="false">
+                </ng-select>
+            </div>
+          </div>
           <div class="table-responsive">
             <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
               <thead>
@@ -85,7 +99,7 @@
                   <td>${{ item.monto | number:'1.2-2':'es-AR'}}</td>
                   <td class="m-0">
                     <div class="btn-group" dropdown placement="bottom right" container="body">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
@@ -106,6 +120,20 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              Total Efectivo: <strong>${{ total_efectivo | number:'1.2-2':'es-AR'}}</strong>
+            </div>
+            <div class="col-3">
+              Total Tarjeta: <strong>${{ total_tarjeta | number:'1.2-2':'es-AR'}}</strong>
+            </div>
+            <div class="col-3">
+              Total Cheque: <strong>${{ total_cheque | number:'1.2-2':'es-AR'}}</strong>
+            </div>
+            <div class="col-3">
+              Total Otros: <strong>${{ total_otros | number:'1.2-2':'es-AR'}}</strong>
+            </div>
           </div>
         </div>
         <div class="card-footer">

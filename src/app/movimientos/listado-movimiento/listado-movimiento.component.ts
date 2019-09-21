@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Movimiento, FormaPago } from '../../_models/movimiento';
+import { Movimiento, FormaPago, TipoMovimiento } from '../../_models/movimiento';
 import { MovimientoService, FiltroMovimiento } from '../../_services/movimiento.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { saveAs } from 'file-saver';
 import { MovimientoEditarModalComponent } from '../movimiento-editar-modal/movimiento-editar-modal.component';
 import { SedeService } from '../../_services/sede.service';
+import { TipoMovimientoService } from '../../_services/tipo_movimiento.service';
 
 @Component({
   selector: 'app-listado-movimiento',
@@ -22,6 +23,12 @@ export class ListadoMovimientoComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dataSource: Movimiento[] = [];
   formas:FormaPago[]=[];
+  tipos_movimientos:TipoMovimiento[]=[];
+
+  total_cheque;
+  total_efectivo;
+  total_otros;
+  total_tarjeta;
 
   request = <FiltroMovimiento>{
     search:"",
@@ -34,6 +41,7 @@ export class ListadoMovimientoComponent implements OnInit {
   };
   constructor(
     private movimientoService:MovimientoService,
+    private tipoMovimientoService:TipoMovimientoService,
     private sedeService:SedeService,
     private router: Router,
     private modalService: BsModalService,
@@ -43,10 +51,25 @@ export class ListadoMovimientoComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = this.sedeService.getIdSede();
-    this.movimientoService.sede(id_sede);
     this.movimientoService.formas().subscribe(response=>{
       this.formas = response;
+    });
+    this.tipoMovimientoService.getAll().subscribe(response=>{
+      this.tipos_movimientos = response;
+      this.tipos_movimientos.forEach(item=>{
+        if(item.id_tipo_egreso_ingreso == 1){//INGRESO
+          item.nombre = item.nombre + ' (INGRESO)';
+        } else { //EGRESO
+          item.nombre = item.nombre + ' (EGRESO)';
+        }
+        return item;
+      });
+      let item = <TipoMovimiento>{};
+      item.id = 0;
+      item.nombre = "TODOS";
+      this.tipos_movimientos.push(item);
+      this.tipos_movimientos = this.tipos_movimientos.reverse();
+
     });
     const that = this;
 
@@ -65,9 +88,12 @@ export class ListadoMovimientoComponent implements OnInit {
         that.request.order = dataTablesParameters.order[0].dir;
         that.request.search = dataTablesParameters.search.value;
         that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
-        this.movimientoService.ajax(that.request).subscribe(resp => {
+        this.movimientoService.ajax(that.request).subscribe((resp:any) => {
             that.dataSource = resp.items;
-
+            that.total_cheque = resp.total_cheque;
+            that.total_efectivo = resp.total_efectivo;
+            that.total_otros = resp.total_otros;
+            that.total_tarjeta = resp.total_tarjeta;
             callback({
               recordsTotal: resp.total_count,
               recordsFiltered: resp.total_count,

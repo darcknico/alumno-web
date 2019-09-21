@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Movimiento, FormaPago, TipoComprobante } from '../_models/movimiento';
 import { Observable } from 'rxjs';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { SedeService } from './sede.service';
 
 export interface FiltroMovimiento {
     search:string;
@@ -28,7 +30,12 @@ export class MovimientoService {
     id_sede:number;
     constructor(
         private http: HttpClient,
+        private sedeService:SedeService,
         ) {
+        this.id_sede = this.sedeService.getIdSede();
+        this.sedeService.id_sede$.subscribe( id=>{
+            this.id_sede = id
+        });
     }
  
 
@@ -42,17 +49,7 @@ export class MovimientoService {
 
     ajax(filtro:FiltroMovimiento):  Observable<MovimientoAjax>{
         return this.http.get<MovimientoAjax>(this.api + this.id_sede + '/movimientos', {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_forma_pago: String(filtro.id_forma_pago),
-                id_tipo_egreso_ingreso: String(filtro.id_tipo_egreso_ingreso),
-                fecha_inicio: filtro.fecha_inicio,
-                fecha_fin: filtro.fecha_fin,
-            }
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
 
@@ -87,13 +84,18 @@ export class MovimientoService {
     exportar(filtro:FiltroMovimiento){
         return this.http.get(this.api + this.id_sede + '/movimientos/exportar',{
             responseType:'blob',
-            params:{
-                search: filtro.search,
-                id_forma_pago: String(filtro.id_forma_pago),
-                id_tipo_egreso_ingreso: String(filtro.id_tipo_egreso_ingreso),
-                fecha_inicio: filtro.fecha_inicio,
-                fecha_fin: filtro.fecha_fin,
-            }
+            params: AuxiliarFunction.toParams(filtro),
+        });
+    }
+
+    estadisticas_tipo(filtro:FiltroMovimiento){
+        return this.http.get(this.api + this.id_sede + '/movimientos/estadisticas/tipos',{
+            params: AuxiliarFunction.toParams(filtro),
+        });
+    }
+    estadisticas_diaria(filtro:FiltroMovimiento){
+        return this.http.get(this.api + this.id_sede + '/movimientos/estadisticas/diarias',{
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
 }

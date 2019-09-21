@@ -1,0 +1,41 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-content">
+          <p class="text-center">
+            Filtro por fechas
+          </p>
+          <p class="text-center">
+            {{request.fecha_inicio | date:'dd/MM/yyyy'}} - {{request.fecha_fin | date:'dd/MM/yyyy'}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-content">
+          <canvas #ingresosDoughnutCanvas></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-content">
+          <canvas #egresosDoughnutCanvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-content">
+          <canvas #barCanvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

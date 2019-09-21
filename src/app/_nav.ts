@@ -143,6 +143,10 @@ export const navItems = [
         name: 'Tipos de Mov.',
         url: '/tipos_movimiento/listado',
         icon: 'fa fa-columns'
+      },{
+        name: 'Estadisticas',
+        url: '/movimientos/estadisticas',
+        icon: 'fa fa-pie-chart'
       },
     ]
   },{
