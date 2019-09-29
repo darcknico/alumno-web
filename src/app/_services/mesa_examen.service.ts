@@ -79,6 +79,26 @@ export class MesaExamenService {
             item.id_materia);
     }
 
+    masivo_previa(id_mesa_examen:number,id_departamento,id_carrera) {
+        return this.http.get(
+            this.api + this.id_sede + this.endpoint +
+            id_mesa_examen + '/materias/masivo',{
+                params:{
+                    id_departamento:id_departamento,
+                    id_carrera:id_carrera
+                }
+            });
+    }
+
+    masivo_asociar(id_mesa_examen:number,id_departamento,id_carrera) {
+        return this.http.post(
+            this.api + this.id_sede + this.endpoint +
+            id_mesa_examen + '/materias/masivo',{
+                id_departamento:id_departamento,
+                id_carrera:id_carrera,
+            });
+    }
+
     materias(id_mesa_examen:number,id_carrera:number=0){
         return this.http.get<MesaExamenMateria[]>(this.api + this.id_sede + this.endpoint +id_mesa_examen+'/materias',{
             params:{

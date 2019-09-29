@@ -8,9 +8,17 @@ import { ModalidadComponent } from './modalidad/modalidad.component';
 import { ModalidadEditarComponent } from './modalidad-editar/modalidad-editar.component';
 import { BecaComponent } from './beca/beca.component';
 import { BecaEditarComponent } from './beca-editar/beca-editar.component';
+import { AulaComponent } from './aula/aula.component';
 
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
+    path: 'aulas',
+    component: AulaComponent,
+    data: {
+      title: 'Aulas'
+    },
+  },{
     path: 'sedes',
     component: SedeComponent,
     data: {

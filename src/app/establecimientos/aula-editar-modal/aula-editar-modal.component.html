@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Aula</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label class="control-label">Numero (*)</label>
+        <input
+          formControlName="numero"
+          type="number" 
+          class="form-control {{ (f.numero.touched || f.numero.dirty)?(f.numero.invalid?'is-invalid':'is-valid'):''}}"
+          placeholder="1">
+        <div *ngIf= "f.numero.invalid " class="invalid-feedback">
+          <span *ngIf="f.numero.hasError('required')" class="help-block">
+            El numero es requerido
+          </span>
+          <span *ngIf="f.numero.hasError('min') " class="help-block">
+            Debe estar mayor que 0
+          </span>
+        </div>
+      </div>
+      <div class="form-group col-sm-6">
+        <label class="control-label">Capacidad (*)</label>
+        <input
+          formControlName="capacidad"
+          type="number" 
+          class="form-control {{ (f.capacidad.touched || f.capacidad.dirty)?(f.capacidad.invalid?'is-invalid':'is-valid'):''}}"
+          placeholder="31">
+        <div *ngIf= "f.capacidad.invalid " class="invalid-feedback">
+          <span *ngIf="f.capacidad.hasError('required')" class="help-block">
+            La capacidad es requerida
+          </span>
+          <span *ngIf="f.capacidad.hasError('min') " class="help-block">
+            Debe estar mayor que 0
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Nombre</label>
+        <input
+          formControlName="nombre"
+          type="text" 
+          class="form-control "
+          placeholder=" - ">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    [disabled]="!formulario.valid"
+    type="button" 
+    class="btn btn-primary" 
+    (click)="confirmar()">Guardar</button>
+</div>

@@ -122,16 +122,17 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
 
   cerrar(){
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      let indexs = dtInstance.rows();
+      let length = dtInstance.rows().count();
       var notas = [];
-      for (let index = 0; index < indexs.length; index++) {
-        let row = indexs[index];
+      for (let index = 0; index < length; index++) {
+        let row = dtInstance.rows(index);
         var item = <MesaExamenMateriaAlumno>{};
         item.id = +dtInstance.cell(row,0).data();
-        item.asistencia = Boolean($(dtInstance.cell(row,4).node()).find('input'));
-        item.nota_final = +$(dtInstance.cell(row,5).node()).find('input').val();
+        item.asistencia = Boolean($(dtInstance.cell(row,4).node()).find('.asistencia').is(':checked'));
+        item.nota_final = +$(dtInstance.cell(row,5).node()).find('.nota').val();
         notas.push(item);
       }
+      console.log(notas);
       this.mesa_examen_materia.alumnos = notas;
       const modal = this.modalService.show(DialogConfirmComponent);
       (<DialogConfirmComponent>modal.content).onShow(

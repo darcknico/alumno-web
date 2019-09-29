@@ -22,6 +22,8 @@ export interface Carrera{
     modalidades:CarreraModalidad[];
     planes_estudio:PlanEstudio[];
     plan_estudio:PlanEstudio;
+
+    disabled:boolean; //NG-SELECT
 }
 
 export interface CarreraModalidad{

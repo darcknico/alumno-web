@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Ajax } from '../_models/tipo';
-import { Docente } from '../_models/usuario';
+import { Docente, DocenteContrato } from '../_models/usuario';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
  
 export interface FiltroDocente {
@@ -14,6 +14,7 @@ export interface FiltroDocente {
     length:number;
     id_sede:number;
     id_tipo_contrato:number;
+    id_carrera:number;
     estado:boolean;
 }
 
@@ -52,6 +53,14 @@ export class DocenteService {
 
     delete(id:number) {
         return this.http.delete([this.api,id].join('/'));
+    }
+
+    contrato_asociar(item:DocenteContrato){
+        return this.http.post([this.api,item.id_usuario,'contratos',item.id_tipo_contrato].join('/'),{});
+    }
+
+    contrato_desasociar(item:DocenteContrato){
+        return this.http.delete([this.api,item.id_usuario,'contratos',item.id_tipo_contrato].join('/'));
     }
 
 }

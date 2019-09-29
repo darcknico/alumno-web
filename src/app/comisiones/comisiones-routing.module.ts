@@ -11,6 +11,7 @@ import { ComisionMateriaComponent } from './comision-materia/comision-materia.co
 import { ExamenNuevoComponent } from './examen-nuevo/examen-nuevo.component';
 import { ListadoExamenComponent } from './listado-examen/listado-examen.component';
 import { ListadoAlumnoComponent } from './listado-alumno/listado-alumno.component';
+import { ListadoHorarioComponent } from './listado-horario/listado-horario.component';
 
 const routes: Routes = [
 {
@@ -18,6 +19,13 @@ const routes: Routes = [
   component:ListadoAlumnoComponent,
   data:{
     title:'Comision por Alumno',
+  },
+},
+{
+  path:'horarios',
+  component:ListadoHorarioComponent,
+  data:{
+    title:'Comision por Horario',
   },
 },
 {

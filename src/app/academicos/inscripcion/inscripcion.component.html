@@ -88,17 +88,32 @@
                         <td>{{item.tipo_estado?.nombre}}</td>
                         <td>
                             <div class="btn-group" dropdown placement="bottom right" container="body">
-                                <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                                <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                                   <span class="caret"></span>
                                 </button>
                                 <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                                  <li role="menuitem">
-                                    <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);">Comisiones</a>
-                                    <a class="dropdown-item" (click)="mesas_examenes(item)" href="javascript:void(0);">Mesas de examen</a>
-                                    <a class="dropdown-item" (click)="notas(item)" href="javascript:void(0);">Notas (Viejo)</a>
-                                    <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas Información</a>
-                                    <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
-                                  </li>
+                                    <li role="menuitem">
+                                        <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                                            <i class="fa fa-cog"></i>
+                                            Gestionar
+                                        </a>
+                                    </li>
+                                    <li role="menuitem">
+                                        <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                                            <i class="fa fa-edit"></i>
+                                            Editar
+                                        </a>
+                                    </li>
+                                    <li class="divider dropdown-divider"></li>
+                                    <li role="menuitem">
+                                        <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);">Comisiones</a>
+                                    </li>
+                                    <li role="menuitem">
+                                        <a class="dropdown-item" (click)="mesas_examenes(item)" href="javascript:void(0);">Mesas de examen</a>
+                                    </li>
+                                    <li role="menuitem">
+                                        <a class="dropdown-item" (click)="notas(item)" href="javascript:void(0);">Notas (Viejo)</a>
+                                    </li>
                                 </ul>
                             </div>
                         </td>

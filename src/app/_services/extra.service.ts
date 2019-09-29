@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TipoDocumento } from '../_models/tipo_documento';
-import { Provincia, Localidad } from '../_models/extra';
+import { Provincia, Localidad, Dia } from '../_models/extra';
  
 @Injectable()
 export class ExtraService {
@@ -24,5 +24,9 @@ export class ExtraService {
             termino:termino,
             id_provincia:String(id_provincia)
         }});
+    }
+
+    dias(){
+        return this.http.get<Dia[]>( this.api + 'extras/dias');
     }
 }

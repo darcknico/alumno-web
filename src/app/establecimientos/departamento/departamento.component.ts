@@ -13,13 +13,9 @@ import { Departamento } from '../../_models/departamento';
   styleUrls: ['./departamento.component.scss']
 })
 export class DepartamentoComponent implements OnInit {
-
   dtOptions: DataTables.Settings = {};
   departamentos:Departamento[];
   sede:Sede;
-
-  id_sede:number;
-
   constructor(
     private departamentoService:DepartamentoService,
     private router: Router,
@@ -29,7 +25,6 @@ export class DepartamentoComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.id_sede = +localStorage.getItem('id_sede');
     this.departamentoService.getAll().subscribe(response=>{
       this.departamentos = response;
     });

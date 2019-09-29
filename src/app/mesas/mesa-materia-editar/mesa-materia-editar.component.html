@@ -13,6 +13,14 @@
       <div class="card">
         <div class="card-header">
           <strong>Mesa de examen - Materia</strong>
+          <div class="card-header-actions">
+            <button class="btn btn-info btn-sm btn-block-xs-only m-1"
+              type="submit"
+              color="accent"
+              (click)="editar()">
+              EDITAR
+              </button>
+          </div>
         </div>
         <div class="card-body" *ngIf="mesa_examen_materia">
           <div class="row" >
@@ -22,16 +30,21 @@
             <div class="form-group col-sm-6">
               <u>Carrera:</u> {{mesa_examen_materia.carrera.nombre}}
             </div>
-            <div class="form-group col-sm-6">
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
               <u>Plan de estudio:</u> {{mesa_examen_materia.materia.plan_estudio.nombre}} ({{mesa_examen_materia.materia.plan_estudio.anio}})
             </div>
           </div>
           <div class="row">
-            <div class="form-group col-sm-8">
-              <u>Fecha provista:</u> {{mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm'}}
+            <div class="form-group col-sm-4">
+              <u>Fecha:</u> {{mesa_examen_materia.fecha | date:'dd/MM/yy'}}
+            </div>
+            <div class="form-group col-sm-4">
+              <u>Hora:</u> {{mesa_examen_materia.fecha | date:'HH:mm'}}
             </div>
             <div class="form-group col-sm-4" *ngIf="mesa_examen_materia.fecha_cierre">
-              <u>Fecha cierre:</u> {{mesa_examen_materia.fecha_cierre | date:'dd/MM/yyyy'}}
+              <u>Cierre:</u> {{mesa_examen_materia.fecha_cierre | date:'dd/MM/yy'}}
             </div>
           </div>
           <div class="row">
@@ -54,125 +67,113 @@
               </ng-container>
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="mesa_examen_materia.observaciones">
             <div class="form-group col-sm-12">
               <u>Observaciones:</u> {{mesa_examen_materia.observaciones}}               
             </div>
           </div>
         </div>
-        <div class="card-footer">
-          <button class="btn btn-info btn-block-xs-only m-1"
-            type="submit"
-            color="accent"
-            (click)="editar()">
-            Editar
-            </button>
-        </div>
       </div>  
     </div>
     <div class="col-lg-6">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header">
-            <i class="fa fa-align-justify"></i> Docentes
-            <div class="card-header-actions">
-              <button class="btn btn-sm btn-block btn-success" type="button" (click)="docente_agregar()">Agregar Docente</button>
-            </div>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Docentes
+          <div class="card-header-actions">
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="docente_agregar()">Agregar Docente</button>
           </div>
-          <div class="card-body p-1">
-            <div class="table-responsive">
-              <table #secundario datatable [dtOptions]="dtOptionsDocente" [dtTrigger]="dtTriggerDocente" class="table row-border compact hover" width="100%">
-                <thead>
-                  <tr>
-                    <th>Agregado</th>
-                    <th class="no-sort">Docente</th>
-                    <th class="no-sort">Tipo</th>
-                    <th class="no-sort"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of dataSourceDocente">
-                    <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
-                    <td>{{ item.tipo?.nombre }}</td>
-                    <td>
-                      <div class="btn-group" dropdown placement="top right" container="body">
-                        <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
-                          <span class="caret"></span>
-                        </button>
-                        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                          <li role="menuitem">
-                            <a class="dropdown-item" (click)="docente_editar(item)" href="javascript:void(0);">
-                              <i class="fa fa-edit"></i>
-                              Editar
-                            </a>
-                          </li>
-                          <li role="menuitem">
-                            <a class="dropdown-item" (click)="docente_desasociar(item)" href="javascript:void(0);">
-                              <i class="fa fa-remove"></i>
-                              Remover
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        </div>
+        <div class="card-body p-1">
+          <div class="table-responsive">
+            <table #secundario datatable [dtOptions]="dtOptionsDocente" [dtTrigger]="dtTriggerDocente" class="table row-border compact hover" width="100%">
+              <thead>
+                <tr>
+                  <th>Agregado</th>
+                  <th class="no-sort">Docente</th>
+                  <th class="no-sort">Tipo</th>
+                  <th class="no-sort"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dataSourceDocente">
+                  <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
+                  <td>{{ item.tipo?.nombre }}</td>
+                  <td>
+                    <div class="btn-group" dropdown placement="top right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="docente_editar(item)" href="javascript:void(0);">
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="docente_desasociar(item)" href="javascript:void(0);">
+                            <i class="fa fa-remove"></i>
+                            Remover
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <strong>Reportes</strong>
+      <div class="card">
+        <div class="card-header">
+          <strong>Reportes</strong>
+        </div>
+        <div class="card-body p-1" >
+          <div class="form-inline col-lg-12">
+            <div class="col-6">
+                <label class="control-label">Acta Libres: </label>
             </div>
-            <div class="card-body p-1" >
-              <div class="form-inline col-lg-12">
-                <div class="col-6">
-                    <label class="control-label">Acta Libres: </label>
-                </div>
-                <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(1)">
-                    <i class="fa fa-download"></i>
-                    DESCARGAR
-                  </button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(1)" tooltip="IMPRIMIR">
-                    <i class="fa fa-print"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="form-inline col-lg-12">
-                <div class="col-6">
-                    <label class="control-label">Acta Promocionales: </label>
-                </div>
-                <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(2)">
-                    <i class="fa fa-download"></i>
-                    DESCARGAR
-                  </button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(2)" tooltip="IMPRIMIR">
-                    <i class="fa fa-print"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="form-inline col-lg-12">
-                <div class="col-6">
-                    <label class="control-label">Acta Regulares: </label>
-                </div>
-                <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(3)">
-                    <i class="fa fa-download"></i>
-                    DESCARGAR
-                  </button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(3)" tooltip="IMPRIMIR">
-                    <i class="fa fa-print"></i>
-                  </button>
-                </div>
-              </div>
+            <div class="btn-group m-1" role="group">
+              <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(1)">
+                <i class="fa fa-download"></i>
+                DESCARGAR
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(1)" tooltip="IMPRIMIR">
+                <i class="fa fa-print"></i>
+              </button>
             </div>
-          </div>  
+          </div>
+          <div class="form-inline col-lg-12">
+            <div class="col-6">
+                <label class="control-label">Acta Promocionales: </label>
+            </div>
+            <div class="btn-group m-1" role="group">
+              <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(2)">
+                <i class="fa fa-download"></i>
+                DESCARGAR
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(2)" tooltip="IMPRIMIR">
+                <i class="fa fa-print"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-inline col-lg-12">
+            <div class="col-6">
+                <label class="control-label">Acta Regulares: </label>
+            </div>
+            <div class="btn-group m-1" role="group">
+              <button type="button" class="btn btn-sm btn-info" (click)="acta_reporte(3)">
+                <i class="fa fa-download"></i>
+                DESCARGAR
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" (click)="acta_imprimir(3)" tooltip="IMPRIMIR">
+                <i class="fa fa-print"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

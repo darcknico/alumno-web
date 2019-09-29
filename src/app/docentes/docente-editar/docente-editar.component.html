@@ -31,7 +31,6 @@
               <div class="form-group col-sm-4">
                 <label class="control-label">Fecha Nacimiento</label>
                 <input bsDatepicker [maxDate]="hoy"
-                  required
                   formControlName="fecha_nacimiento"
                   type="text" 
                   class="form-control" 
@@ -115,15 +114,6 @@
             </div>
             <div class="row">
               <div class="form-group col-sm-3">
-                <label class="control-label">Tipo Contrato </label>
-                <ng-select [searchable]="false"
-                  id="id_tipo_contrato"
-                  formControlName="id_tipo_contrato"
-                  >
-                  <ng-option *ngFor="let item of tipos" [value]="item.id" >{{item.nombre}}</ng-option>
-                </ng-select>
-              </div>
-              <div class="form-group col-sm-3">
                 <label class="control-label">CUIT</label>
                 <input 
                   formControlName="cuit"
@@ -150,6 +140,21 @@
                   placeholder="...">
               </div>
             </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Contratos</label>
+                <div class="col-md-8 col-form-label">
+                  <div class="form-check" *ngFor="let item of tipos">
+                    <input class="form-check-input" type="checkbox"
+                    name="id_tipo_contrato[]"
+                    [value]="item.id"
+                    [checked]="tipo_asociada(item)"
+                    (change)="tipo_asociacion($event,item)">
+                    <label class="form-check-label" >
+                      {{ item.nombre }}
+                    </label>
+                  </div>
+                </div>
+              </div>
             <div class="row">
               <div class="col-12">
                 <hr>
@@ -248,7 +253,7 @@
       </div>  
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="id>0">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">

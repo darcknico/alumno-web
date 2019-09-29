@@ -97,6 +97,14 @@ export class InscripcionService {
         return this.http.get<Pago[]>([this.api.substring(0,this.api.length-1),this.id_sede,this.resource,id,'pagos'].join('/'));
     }
 
+    rendimientos(id:number,anio) {
+        return this.http.get([this.api.substring(0,this.api.length-1),this.id_sede,this.resource,id,'rendimientos'].join('/'),{
+            params:{
+                anio:anio,
+            }
+        });
+    }
+
     estadisticas() {
         return this.http.get(this.api + this.id_sede + '/inscripciones/estadisticas');
     }

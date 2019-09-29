@@ -7,7 +7,7 @@ import { ComisionEditarComponent } from './comision-editar/comision-editar.compo
 import { ComisionVerComponent } from './comision-ver/comision-ver.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { BsDatepickerModule, BsDropdownModule, CollapseModule, ModalModule } from 'ngx-bootstrap';
+import { BsDatepickerModule, BsDropdownModule, CollapseModule, ModalModule, TimepickerModule } from 'ngx-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { ComisionDetalleComponent } from './componente/comision-detalle/comision-detalle.component';
 import { ListadoAsistenciaComponent } from './listado-asistencia/listado-asistencia.component';
@@ -21,6 +21,9 @@ import { ListadoAlumnoComponent } from './listado-alumno/listado-alumno.componen
 import { ComisionAlumnoEditarModalComponent } from './comision-alumno-editar-modal/comision-alumno-editar-modal.component';
 import { ComisionAlumnoVerModalComponent } from './comision-alumno-ver-modal/comision-alumno-ver-modal.component';
 import { ListadoComisionDocenteModalComponent } from './componente/listado-comision-docente-modal/listado-comision-docente-modal.component';
+import { ListadoComisionHorarioComponent } from './componente/listado-comision-horario/listado-comision-horario.component';
+import { ComisionHorarioEditarModalComponent } from './componente/comision-horario-editar-modal/comision-horario-editar-modal.component';
+import { ListadoHorarioComponent } from './listado-horario/listado-horario.component';
 
 @NgModule({
   imports: [
@@ -33,6 +36,7 @@ import { ListadoComisionDocenteModalComponent } from './componente/listado-comis
     NgSelectModule,
     BsDatepickerModule,
     CollapseModule,
+    TimepickerModule,
     ModalModule.forRoot(),
   ],
   declarations: [
@@ -48,12 +52,17 @@ import { ListadoComisionDocenteModalComponent } from './componente/listado-comis
     ExamenNuevoComponent, 
     ListadoExamenComponent, 
     ListadoAlumnoComponent, 
-    ComisionAlumnoEditarModalComponent, ComisionAlumnoVerModalComponent, ListadoComisionDocenteModalComponent
+    ComisionAlumnoEditarModalComponent, 
+    ComisionAlumnoVerModalComponent, 
+    ListadoComisionDocenteModalComponent, 
+    ListadoComisionHorarioComponent, 
+    ComisionHorarioEditarModalComponent, ListadoHorarioComponent,
   ],
   entryComponents:[
     ComisionAlumnoEditarModalComponent,
     ComisionAlumnoVerModalComponent,
     ListadoComisionDocenteModalComponent,
+    ComisionHorarioEditarModalComponent,
   ]
 })
 export class ComisionesModule { }

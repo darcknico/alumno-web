@@ -47,3 +47,8 @@ export interface ReporteJob{
     usuario:Usuario;
     sede:Sede;
 }
+
+export interface Dia{
+    id:number;
+    nombre:string;
+}

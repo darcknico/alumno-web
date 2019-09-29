@@ -5,6 +5,7 @@ import { Carrera } from "./carrera";
 import { Alumno, TipoCondicionAlumno } from "./alumno";
 import { Inscripcion } from "./inscripcion";
 import { Modalidad } from './modalidad';
+import { Dia } from './extra';
 
 export interface Comision{
     id:number;
@@ -63,4 +64,16 @@ export interface ComisionDocente{
     comision:Comision;
     usuario:Usuario;
     docente:Docente;
+}
+
+export interface ComisionHorario{
+    id:number;
+    id_comision:number;
+    id_dia:number;
+    hora_inicial:string;
+    hora_final:string;
+    created_at:Date;
+    updated_at:Date;
+    comision:Comision;
+    dia:Dia;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UsuarioSede, Docente, UsuarioArchivo, DocenteMateria } from '../../_models/usuario';
+import { UsuarioSede, Docente, UsuarioArchivo, DocenteMateria, DocenteContrato } from '../../_models/usuario';
 import { Sede } from '../../_models/sede';
 import { TipoDocumento } from '../../_models/tipo_documento';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -35,6 +35,7 @@ export class DocenteEditarComponent implements OnInit {
   id:number = 0;
   sedes:Sede[]=[];
   sedes_asociadas:UsuarioSede[]=[];
+  contratos_asociados:DocenteContrato[]=[];
   tipos:TipoContrato[];
   tipo_documentos:TipoDocumento[];
   formulario: FormGroup;
@@ -79,7 +80,6 @@ export class DocenteEditarComponent implements OnInit {
       id_tipo_documento: null,
       email: ['',Validators.required,ValidateEmailUnique.createValidator(this.usuarioService)],
 
-      id_tipo_contrato:null,
       cuit:'',
       titulo:'',
       observaciones:'',
@@ -127,12 +127,12 @@ export class DocenteEditarComponent implements OnInit {
           this.f.email.updateValueAndValidity();
           this.f.email.disable();
 
-          this.f.id_tipo_contrato.setValue(response.id_tipo_contrato);
           this.f.cuit.setValue(response.cuit);
           this.f.titulo.setValue(response.titulo);
           this.f.observaciones.setValue(response.observaciones);
 
           this.sedes_asociadas = response.usuario.sedes;
+          this.contratos_asociados = response.contratos;
 
           this.usuarioService.archivos(this.id).subscribe(archivos=>{
             this.archivos = archivos;
@@ -233,8 +233,8 @@ export class DocenteEditarComponent implements OnInit {
 
     item.cuit = this.f.cuit.value;
     item.titulo = this.f.titulo.value;
-    item.id_tipo_contrato = this.f.id_tipo_contrato.value;
     item.observaciones = this.f.observaciones.value;
+    item.contratos = this.contratos_asociados;
 
     if(this.id>0){
       this.docenteService.update(item).subscribe(response=>{
@@ -319,6 +319,39 @@ export class DocenteEditarComponent implements OnInit {
   sede_asociada(item:Sede):boolean{
     return this.sedes_asociadas.filter(function( obj ) {
       return obj.id_sede == item.id;
+    }).length>0;
+  }
+
+  tipo_asociacion(event,item:TipoContrato){
+    if(this.id==0){
+      if(event.target.checked){
+        var ints:DocenteContrato = <DocenteContrato>{};
+        ints.id_tipo_contrato = item.id;
+        this.contratos_asociados.push(ints);
+      } else {
+        this.contratos_asociados = this.contratos_asociados.filter(function( obj ) {
+          return obj.id_tipo_contrato !== item.id;
+        });
+      }
+    } else {
+      var pertenece:DocenteContrato = <DocenteContrato>{};
+      pertenece.id_usuario = this.id;
+      pertenece.id_tipo_contrato = item.id;
+      if(event.target.checked){
+        this.docenteService.contrato_asociar(pertenece).subscribe(response=>{
+          this.toastr.success('Contrato \"'+item.nombre+'\" Asociada', '');
+        });
+      } else {
+        this.docenteService.contrato_desasociar(pertenece).subscribe(response=>{
+          this.toastr.success('Contrato \"'+item.nombre+'\" Desasociada', '');
+        });
+      }
+    }
+  }
+
+  tipo_asociada(item:TipoContrato):boolean{
+    return this.contratos_asociados.filter(function( obj ) {
+      return obj.id_tipo_contrato == item.id;
     }).length>0;
   }
 

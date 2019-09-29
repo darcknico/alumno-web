@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Horario</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formulario" >
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="control-label">Dia</label>
+          <ng-select [items]="dias"
+            [selectOnTab]="true"
+            placeholder="Seleccione el Dia"
+            formControlName="id_dia"
+            bindValue="id"
+            bindLabel="nombre"
+            [clearable]="false">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6" >
+          <label class="control-label">Hora inicial</label>
+          <timepicker 
+            required
+            formControlName="hora_inicial"
+            [showMeridian]="false" 
+            [showSpinners]="false">
+          </timepicker>
+          <div *ngIf= " f.hora_inicial.invalid " class="invalid-feedback">
+            <span *ngIf="f.hora_inicial.hasError('required')" class="help-block">
+              La hora es necesaria
+            </span>
+          </div>
+        </div>
+        <div class="form-group col-sm-6" >
+          <label class="control-label">Hora final</label>
+          <timepicker 
+            required
+            formControlName="hora_final"
+            [showMeridian]="false" 
+            [showSpinners]="false">
+          </timepicker>
+          <div *ngIf= "f.hora_final.invalid " class="invalid-feedback">
+            <span *ngIf="f.hora_final.hasError('required')" class="help-block">
+              La hora es necesaria
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+    <button 
+      [disabled]="!formulario.valid"
+      type="button" 
+      class="btn btn-primary" 
+      (click)="confirmar()">Guardar</button>
+  </div>

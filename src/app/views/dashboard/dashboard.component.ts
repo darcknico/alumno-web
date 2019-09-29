@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit {
       let fechas = [];
       let montos = [];
       response.forEach(item => {
-        fechas.push(moment().set({'year': item.anio, 'month': item.mes}));
+        fechas.push(moment([item.anio,item.mes-1,1]));
         montos.push(item.total);
       });
       this.lineChart = new Chart(this.lineCanvas.nativeElement, {

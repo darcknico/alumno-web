@@ -15,6 +15,10 @@ import { CarreraService } from '../../_services/carrera.service';
 import { Carrera } from '../../_models/carrera';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FiltroMesaExamenMateria } from '../../_services/mesa_examen_materia.service';
+import { DepartamentoService } from '../../_services/departamento.service';
+import { Departamento } from '../../_models/departamento';
+import { map } from 'rxjs/operators';
+import { BlockUIService, BLOCKUI_DEFAULT } from 'ng-block-ui';
 
 @Component({
   selector: 'app-listado-materia',
@@ -30,16 +34,25 @@ export class ListadoMateriaComponent implements OnInit {
 
   dtOptions: any = {};
   dataSource:Materia[];
-  carreras:Carrera[];
+  carreras:Carrera[]=[];
+  departamentos:Departamento[]=[];
 
+  porMateria:boolean = false;
+  porFiltro:boolean = true;
+  id_departamento:number = 0;
+  id_carrera:number = 0;
+  previa:Observable<any>;
+  resultado:any;
   constructor(
     private mesaExamenService:MesaExamenService,
+    private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private modalService: BsModalService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService,
+    private block: BlockUIService,
   ) {
     this.formulario = this.fb.group({
       fecha: ['', Validators.required],
@@ -55,6 +68,14 @@ export class ListadoMateriaComponent implements OnInit {
       item.nombre = "TODOS";
       this.carreras.push(item);
       this.carreras = this.carreras.reverse();
+    });
+    this.departamentoService.getAll().subscribe(response=>{
+      this.departamentos = response;
+      let item = <Departamento>{};
+      item.id = 0;
+      item.nombre = "TODOS";
+      this.departamentos.push(item);
+      this.departamentos = this.departamentos.reverse();
     });
 
     this.dtOptions = {
@@ -90,6 +111,7 @@ export class ListadoMateriaComponent implements OnInit {
         this.mesa_examen = response;
         this.fecha_inicio = moment(this.mesa_examen.fecha_inicio).toDate();
         this.f.fecha.setValue(this.fecha_inicio);
+        this.buscar();
       });
       this.mesaExamenService.materias_disponibles(ids).subscribe((response:Materia[])=>{
         this.dataSource = response;
@@ -161,4 +183,69 @@ export class ListadoMateriaComponent implements OnInit {
     this.router.navigate(['/mesas/'+this.mesa_examen.id+'/ver']);
   }
 
+  btnPorMateria(){
+    this.porMateria = true;
+    this.porFiltro = false;
+  }
+
+  btnPorFiltro(){
+    this.porMateria = false;
+    this.porFiltro = true;
+    this.buscar();
+  }
+
+  seleccionarDepartamento(event){
+    this.id_carrera = 0;
+    if(this.id_departamento>0){
+      this.carreras = this.carreras.map(item=>{
+        if(item.id == 0){
+          return item;
+        } else {
+          if(item.id_departamento == this.id_departamento){
+            item.disabled = false;
+          } else {
+            item.disabled = true;
+          }
+          return item;
+        }
+      });
+    } else {
+      this.carreras = this.carreras.map(item=>{
+        if(item.id == 0){
+          return item;
+        } else {
+          item.disabled = false;
+          return item;
+        }
+      });
+    }
+    this.buscar();
+  }
+
+  buscar(event?){
+    this.previa = this.mesaExamenService.masivo_previa(this.mesa_examen.id,this.id_departamento,this.id_carrera).pipe(
+      map(response=>{
+        this.resultado = response;
+        return response;
+      })
+    );
+  }
+
+  asociar_filtros(){
+    const modal = this.modalService.show(DialogConfirmComponent);
+      (<DialogConfirmComponent>modal.content).onShow(
+        "Mesas de examen",
+        "Esta por generar "+this.resultado.total_materias+" mesa/s mesas de examen/es para \""+this.mesa_examen.nombre+"\".¿Desea Continuar?");
+      (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          this.block.start(BLOCKUI_DEFAULT);
+          this.mesaExamenService.masivo_asociar(this.mesa_examen.id,this.id_departamento,this.id_carrera).subscribe(response=>{
+            this.block.stop(BLOCKUI_DEFAULT);
+            this.volver();
+          },err=>{
+            this.block.stop(BLOCKUI_DEFAULT);
+          });
+        }
+      });
+  }
 }

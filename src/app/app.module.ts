@@ -141,6 +141,8 @@ import { ReporteJobService } from './_services/reportejobs.service';
 import { DialogDateComponent } from './_generic/dialog-date/dialog-date.component';
 import { HomeService } from './_services/home.service';
 import { DocenteMateriaService } from './_services/docente_materia.service';
+import { AulaService } from './_services/aula.service';
+import { ComisionHorarioService } from './_services/comision_horario.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -182,10 +184,11 @@ export const customCurrencyMaskConfig = {
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     BlockUIModule.forRoot({
-      message: 'Cargando'
+      message: 'Espere por favor...',
+      
     }), 
     BlockUIHttpModule.forRoot({
-      requestFilters:[filter]
+      requestFilters:[filter],
     }), 
     NgSelectModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
@@ -239,6 +242,7 @@ export const customCurrencyMaskConfig = {
     ComisionService,
     ComisionAlumnoService,
     ComisionDocenteService,
+    ComisionHorarioService,
     AsistenciaService,
     ExamenService,
     MesaExamenService,
@@ -257,6 +261,7 @@ export const customCurrencyMaskConfig = {
     AuditoriaService,
     ReporteJobService,
     HomeService,
+    AulaService,
 
     { provide: HTTP_INTERCEPTORS, useClass: PassportInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },

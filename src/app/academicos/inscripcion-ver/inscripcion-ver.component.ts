@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { Inscripcion, TipoInscripcionEstado } from '../../_models/inscripcion';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { PagoModalComponent } from '../../modals/pago-modal/pago-modal.component
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { TramiteNuevoModalComponent } from '../componentes/tramite-nuevo-modal/tramite-nuevo-modal.component';
 import { ListadoPagoInscripcionModalComponent } from '../componentes/listado-pago-inscripcion-modal/listado-pago-inscripcion-modal.component';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-inscripcion-ver',
@@ -22,6 +23,7 @@ import { ListadoPagoInscripcionModalComponent } from '../componentes/listado-pag
   styleUrls: ['./inscripcion-ver.component.scss']
 })
 export class InscripcionVerComponent implements OnInit {
+  @ViewChild("rendimientosLineCanvas") rendimientosLineCanvas: any;
 
   id_sede:number;
   inscripcion:Inscripcion;
@@ -33,7 +35,8 @@ export class InscripcionVerComponent implements OnInit {
   tipos_estado:TipoInscripcionEstado[];
   obligacionDtOptions: DataTables.Settings = {};
   formulario:FormGroup;
-
+  anios:number[]=[];
+  anio:string;
   constructor(
     private inscripcionService:InscripcionService,
     private planPagoService:PlanPagoService,
@@ -49,6 +52,7 @@ export class InscripcionVerComponent implements OnInit {
   }
 
   ngOnInit() {
+    moment.locale('es');
     this.id_sede = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(this.id_sede);
     this.inscripcionService.tipos_estado().subscribe(response=>{
@@ -72,7 +76,79 @@ export class InscripcionVerComponent implements OnInit {
           this.obligaciones = [];
           this.f.id_tipo_inscripcion_estado.setValue(response.id_tipo_inscripcion_estado);
           this.actualizar();
+          let egreso = moment(this.inscripcion.fecha_egreso);
+          if(!egreso.isValid()){
+            egreso = moment();
+          }
+          let fin = egreso.get('year');
+          for (let index = this.inscripcion.anio; index <= fin; index++) {
+            this.anios.push(index);
+          }
+          this.anio = String(fin);
+          this.rendimientos();
         });
+      }
+    });
+
+    this.rendimientosLineCanvas = new Chart(this.rendimientosLineCanvas.nativeElement, {
+      type: 'line',
+      data: [[],[],[],[]],
+      options: {
+        responsive: true,
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Promedio'
+            },
+            ticks: {
+              max: 10,
+              min: 0
+            },
+          }],
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                tooltipFormat: 'MMMM',
+                unit: 'month',
+                displayFormats: {
+                  'month': 'MMMM'
+                }
+              }
+            }
+          ],
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            label: function(tooltipItems, data) {
+              let value = data.datasets[0].data[tooltipItems.index];
+              if(tooltipItems.datasetIndex == 0){
+                let cantidad = data.datasets[2].data[tooltipItems.index];
+                return 'Examen Prom.:' + parseFloat(value).toFixed(2) + ' Cant.:'+cantidad;
+              }
+              value = data.datasets[1].data[tooltipItems.index];
+              if(tooltipItems.datasetIndex == 1){
+                let cantidad = data.datasets[3].data[tooltipItems.index];
+                return 'Mesa de Examen Prom.:' + parseFloat(value).toFixed(2) +  ' Cant.:'+cantidad;
+              }
+            }
+          }
+        },
+        legend: {
+          labels: {
+            filter: function(item, chart) {
+                return !item.text.includes('0');
+            }
+          }
+        }
       }
     });
   }
@@ -345,5 +421,55 @@ export class InscripcionVerComponent implements OnInit {
 
   notas(){
     this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/notas']);
+  }
+
+  rendimientos(){
+    this.inscripcionService.rendimientos(this.inscripcion.id,this.anio).subscribe((response:any)=>{
+      let label = [];
+      let notas_total = [];
+      let notas_cantidad = [];
+      let mesas_total = [];
+      let mesas_cantidad = [];
+      response.notas.forEach(item => {
+        let fecha = moment([item.anio,item.mes-1,1]);
+        label.push(fecha);
+        notas_total.push(item.total);
+        notas_cantidad.push(item.cantidad);
+      });
+      response.mesas.forEach(item => {
+        mesas_total.push(item.total);
+        mesas_cantidad.push(item.cantidad);
+      });
+      var lineChartData = {
+        labels: label,
+        datasets: [{
+          label: 'Promedio de nota por Examenes',
+          borderColor: "rgba(255, 99, 132, 0.2)",
+          backgroundColor: "red",
+          fill: false,
+          data: notas_total,
+        },{
+          label: 'Promedio de nota por Mesa de Examen',
+          borderColor: "rgba(255, 159, 64, 0.2)",
+          backgroundColor: "orange",
+          fill: false,
+          data: mesas_total,
+        },{
+          label: '0',
+          hidden:true,
+          data: notas_cantidad,
+        },{
+          label: '0',
+          hidden:true,
+          data: mesas_cantidad,
+        }]
+      };
+      this.rendimientosLineCanvas.data = lineChartData;
+      this.rendimientosLineCanvas.options.title = {
+        display: true,
+        text: 'Rendimiento Academico - Periodo: '+this.anio,
+      },
+      this.rendimientosLineCanvas.update();
+    });
   }
 }

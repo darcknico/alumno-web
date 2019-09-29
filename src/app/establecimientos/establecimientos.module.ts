@@ -12,6 +12,9 @@ import { ModalidadComponent } from './modalidad/modalidad.component';
 import { ModalidadEditarComponent } from './modalidad-editar/modalidad-editar.component';
 import { BecaComponent } from './beca/beca.component';
 import { BecaEditarComponent } from './beca-editar/beca-editar.component';
+import { AulaComponent } from './aula/aula.component';
+import { AulaEditarModalComponent } from './aula-editar-modal/aula-editar-modal.component';
+import { ModalModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -21,6 +24,7 @@ import { BecaEditarComponent } from './beca-editar/beca-editar.component';
     FormsModule,
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   declarations: [
     SedeComponent,
@@ -31,6 +35,11 @@ import { BecaEditarComponent } from './beca-editar/beca-editar.component';
     ModalidadEditarComponent,
     BecaComponent,
     BecaEditarComponent,
+    AulaComponent,
+    AulaEditarModalComponent,
   ],
+  entryComponents:[
+    AulaEditarModalComponent,
+  ]
 })
 export class EstablecimientosModule { }

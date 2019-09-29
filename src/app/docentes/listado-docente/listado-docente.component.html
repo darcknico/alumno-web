@@ -52,6 +52,20 @@
               </select>
             </div>
           </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <label class="control-label">Carrera</label>
+              <ng-select [items]="carreras"
+                  [selectOnTab]="true"
+                  bindValue="id"
+                  bindLabel="nombre"
+                  (ngModelChange)="refrescar()"
+                  placeholder="Seleccione la Carrera"
+                  [(ngModel)]="request.id_carrera"
+                  [clearable]="false">
+              </ng-select>
+            </div>
+          </div>
           <div class="table-responsive">
             <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
               <thead>
@@ -59,7 +73,7 @@
                   <th>CUIT</th>
                   <th>Apellido y Nombre</th>
                   <th class="no-sort">Titulo</th>
-                  <th>Tipo Usuario</th>
+                  <th>Contratos</th>
                   <th class="no-sort"></th>
                 </tr>
               </thead>
@@ -69,7 +83,11 @@
                   <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
                   <td>{{ item.titulo }}</td>
                   <td>
-                    {{ item.tipo?.nombre }}
+                    <ng-container *ngIf="item.contratos">
+                      <div *ngFor="let contrato of item.contratos">
+                        {{contrato.tipo.nombre}}
+                      </div>
+                    </ng-container>
                   </td>
                   <td>
                     <button 

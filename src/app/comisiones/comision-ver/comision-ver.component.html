@@ -1,11 +1,17 @@
 <div class="animated fadeIn">
-  <div class="row">
-    <div class="col-lg-12">
+  <div class="row" *ngIf="comision">
+    <div class="col-lg-6">
       <app-comision-detalle-component
         [comision]="comision"
-        [collapsed]="true"
-        *ngIf="comision">
+        [collapsed]="false"
+        >
       </app-comision-detalle-component>
+    </div>
+    <div class="col-lg-6">
+      <app-listado-comision-horario-component
+        [comision]="comision"
+        >
+      </app-listado-comision-horario-component>
     </div>
   </div>
   <div class="row">

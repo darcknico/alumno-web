@@ -1,5 +1,6 @@
 import { TipoDocumento } from "./tipo_documento";
 import { Sede } from './sede';
+import { TipoContrato } from './tipo';
 
 export interface UsuarioSede{
     id:number;
@@ -77,9 +78,10 @@ export class Docente implements Usuario {
 
     id_usuario:number;
     titulo:number;
-    id_tipo_contrato:number;
     cuit:number;
     observaciones:number;
+
+    contratos:DocenteContrato[];
 
     usuario:Usuario;
 }
@@ -101,6 +103,18 @@ export interface DocenteMateria{
     id_usuario:number;
     id_materia:number;
     id_carrera:number;
+
+    estado:boolean;
+    created_at:string;
+    updated_at:string;
+}
+
+export interface DocenteContrato{
+    id:number;
+    id_usuario:number;
+    id_tipo_contrato:number;
+
+    tipo:TipoContrato;
 
     estado:boolean;
     created_at:string;
