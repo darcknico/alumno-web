@@ -67,7 +67,7 @@ export class MateriaComponent implements OnInit {
   }
 
   correlatividades(item:Materia){
-    const modal = this.modalService.show(MateriaCorrelativaModalComponent);
+    const modal = this.modalService.show(MateriaCorrelativaModalComponent,{class:'modal-lg modal-info'});
     (<MateriaCorrelativaModalComponent>modal.content).onShow(this.planEstudio,item.id);
     (<MateriaCorrelativaModalComponent>modal.content).onClose.subscribe(result => {
         this.refrescar();

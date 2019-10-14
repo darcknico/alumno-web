@@ -1,0 +1,42 @@
+<div class="card" *ngIf="item">
+  <div class="card-header">
+    Materia: <b>{{item.nombre}} ({{item.codigo}})</b>
+    <div class="card-header-actions">
+      <a  (click)="isCollapsed = !isCollapsed"
+        href="javascript:void(0);"
+        [attr.aria-expanded]="!isCollapsed" 
+        aria-controls="collapseBody">
+        <i class="icons cui-chevron-bottom"></i>
+    </a>
+    </div>
+  </div>
+  <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+    <div class="row">
+      <div class="col-4">
+        <u>Horas:</u> {{item.horas}}
+      </div>
+      <div class="col-4" *ngIf="item.tipo_regimen">
+        <u>Regimen:</u> {{item.tipo_regimen.nombre}}
+      </div>
+      <div class="col-4" *ngIf="item.tipo_lectivo">
+        <u>Periodo Lectivo:</u> {{item.tipo_lectivo.nombre}}
+      </div>
+    </div>
+    <div class="row" *ngIf="item.correlatividades?.length>0">
+      <div class="col-12">
+        <u>Correlatividades:</u>
+        <ul *ngFor="let correlatividad of item.correlatividades">
+          <li>({{correlatividad.correlatividad?.codigo}}) {{correlatividad.correlatividad?.nombre}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row" *ngIf="item.plan_estudio">
+      <div class="col-8">
+        <u>Plan Estudio:</u> ({{item.plan_estudio.codigo}}) {{item.plan_estudio.nombre}}
+      </div>
+      <div class="col-8">
+        <u>Año:</u> {{item.plan_estudio.anio}}
+      </div>
+    </div>
+  </div>
+</div>

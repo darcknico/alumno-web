@@ -66,6 +66,10 @@ export class PlanPagoComponent implements OnInit {
     this.router.navigate(['/cuentacorriente/'+this.plan_pago.id+'/pagos/matricula']);
   }
 
+  inscripcion(){
+    this.router.navigate(['/academicos/inscripciones/'+this.plan_pago.id_inscripcion+'/ver']);
+  }
+
   editar(){
     this.router.navigate(['/academicos/inscripciones/'+this.plan_pago.id_inscripcion+'/planes/'+this.plan_pago.id+'/editar']);
   }

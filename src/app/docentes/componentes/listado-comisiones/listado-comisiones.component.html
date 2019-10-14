@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-align-justify"></i> Comisiones
+  </div>
+  <div class="card-body p-1">
+    <div class="table-responsive">
+      <table #baja datatable [dtOptions]="dtOptions" class="table row-border hover compact" width="100%" >
+        <thead>
+          <tr>
+            <th>Agregado</th>
+            <th class="no-sort">Materia</th>
+            <th class="no-sort">Año</th>
+            <th class="no-sort">Observaciones</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="dataSource?.length != 0">
+          <tr *ngFor="let item of dataSource">
+            <td>{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              {{ item.comision.materia.nombre }}
+            </td>
+            <td>
+              {{ item.comision.anio }}
+            </td>
+            <td>
+              {{ item.observaciones}}
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="dataSource?.length == 0">
+          <tr>
+            <td colspan="3" class="no-data-available">No data!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    
+  </div>
+</div>
+  

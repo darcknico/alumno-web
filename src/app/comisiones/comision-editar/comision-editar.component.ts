@@ -9,7 +9,7 @@ import { MateriaService } from '../../_services/materia.service';
 import { Materia } from '../../_models/materia';
 import * as moment from 'moment';
 import { UsuarioService } from '../../_services/usuario.service';
-import { Usuario, Docente } from '../../_models/usuario';
+import { Usuario, Docente, DocenteMateria } from '../../_models/usuario';
 import { Comision } from '../../_models/comision';
 import { ModalidadService } from '../../_services/modalidad.service';
 import { Modalidad } from '../../_models/modalidad';
@@ -17,6 +17,7 @@ import { PlanEstudio } from '../../_models/plan_estudio';
 import { PlanService } from '../../_services/plan.service';
 import { DocenteService, FiltroDocente } from '../../_services/docente.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { DocenteMateriaService, FiltroDocenteMateria } from '../../_services/docente_materia.service';
 
 @Component({
   selector: 'app-comision-editar',
@@ -29,11 +30,13 @@ export class ComisionEditarComponent implements OnInit {
 
   titulo:string;
   id:number = 0;
+  id_sede:number;
   carreras:Carrera[] = [];
   planes_estudio:PlanEstudio[] = [];
   materias:Materia[] = [];
   usuarios:Usuario[] = [];
   docentes:Docente[] = [];
+  recomendaciones:DocenteMateria[]=[];
   modalidades:Modalidad[] = [];
   usuario:Usuario = null;
   usuario_seleccionado = false;
@@ -51,6 +54,7 @@ export class ComisionEditarComponent implements OnInit {
     private usuarioService:UsuarioService,
     private docenteService:DocenteService,
     private modalidadService:ModalidadService,
+    private docenteMateriaService:DocenteMateriaService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -71,8 +75,8 @@ export class ComisionEditarComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.comisionService.sede(id_sede);
+    this.id_sede = +localStorage.getItem('id_sede');
+    this.comisionService.sede(this.id_sede);
     this.carreraService.getAll().subscribe(response => {
       this.carreras = response;
 
@@ -126,7 +130,7 @@ export class ComisionEditarComponent implements OnInit {
       this.usuarios = this.usuarios.reverse();
     });
     this.docenteService.getAll(<FiltroDocente>{
-      id_sede:+id_sede,
+      id_sede:this.id_sede,
       estado:null,
     }).subscribe(response=>{
       this.docentes = response;
@@ -174,6 +178,21 @@ export class ComisionEditarComponent implements OnInit {
             docentes.push(item.docente);
           });
           this.f.docentes.setValue(docentes);
+        });
+
+        let filtro = <FiltroDocenteMateria>{};
+        filtro.id_sede = this.id_sede;
+        filtro.id_materia = response.id_materia;
+        this.docenteMateriaService.getAll(filtro).subscribe(response=>{
+          this.recomendaciones = response;
+          docentes.forEach(docente=>{
+            this.recomendaciones.forEach(item=>{
+              if(item.id_usuario == docente.id_usuario){
+                item.estado = false;
+              }
+              return item;
+            });
+          });
         });
       });
     }
@@ -251,6 +270,15 @@ export class ComisionEditarComponent implements OnInit {
       }
     });
   }
+  seleccionar_materia(materia:Materia){
+    this.recomendaciones = [];
+    let filtro = <FiltroDocenteMateria>{};
+    filtro.id_sede = this.id_sede;
+    filtro.id_materia = materia.id;
+    this.docenteMateriaService.getAll(filtro).subscribe(response=>{
+      this.recomendaciones = response;
+    });
+  }
 
   seleccionar_usuario(usuario:Usuario){
     if(usuario.id>0){
@@ -263,6 +291,42 @@ export class ComisionEditarComponent implements OnInit {
       this.usuario_seleccionado = false;
     }
     this.usuario = usuario;
+  }
+
+  seleccionar_docente(item:DocenteMateria){
+    item.estado = false;
+    let docentes:Docente[] = this.f.docentes.value;
+    if(!docentes){
+      docentes = [];
+    }
+    let existe = docentes.find(docente=>{
+      return docente.id_usuario==item.id_usuario;
+    });
+    if(!existe){
+      docentes.push(item.docente);
+    }
+    this.f.docentes.setValue(docentes);
+  }
+
+  compararDocente(a: Docente, b: Docente){
+    return a.id_usuario == b.id_usuario;
+  }
+
+  docenteRemovido(any){
+    this.recomendaciones.forEach(docente=>{
+      if(docente.id_usuario == any.value.id_usuario){
+        docente.estado = true;
+      }
+      return docente;
+    });
+  }
+  docenteAgregado(item:Docente){
+    this.recomendaciones.forEach(docente=>{
+      if(docente.id_usuario == item.id_usuario){
+        docente.estado = false;
+      }
+      return docente;
+    });
   }
 
   cambiar_usuario(){

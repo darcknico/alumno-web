@@ -197,7 +197,8 @@ export class InscripcionVerComponent implements OnInit {
 
   plan_pago_eliminar(item:PlanPago){
     const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
-    (<DialogConfirmComponent>modal.content).onShow("Eliminar Plan de Pago","Eliminara todos los pagos y movimientos asociados al plan \""+item.anio+"\"");
+    let mensaje = "Eliminara todos los pagos y movimientos asociados al plan \""+item.anio+"\"";
+    (<DialogConfirmComponent>modal.content).onShow("Eliminar Plan de Pago","");
     (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.planPagoService.delete(item.id).subscribe(response=>{
@@ -327,7 +328,7 @@ export class InscripcionVerComponent implements OnInit {
     this.inscripcionService.planes_pago(this.inscripcion.id).subscribe(response=>{
       this.dataSource = response;      
       this.dataSource.forEach(data => {
-        if(data.saldo_total>0 && !this.plan_pago){
+        if(data.saldo_total>0 && !this.plan_pago && data.estado){
           this.plan_pago = data;
           this.planPagoService.cuenta_corriente(this.plan_pago.id).pipe(
             map(data=>{

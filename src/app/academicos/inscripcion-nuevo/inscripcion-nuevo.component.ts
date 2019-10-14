@@ -63,7 +63,7 @@ export class InscripcionNuevoComponent implements OnInit {
       'date':1
     });
     this.formulario = this.fb.group({
-      anio: [anio, [Validators.required, Validators.min(1950),Validators.max(anio)]],
+      anio: [anio, [Validators.required, Validators.min(1950)]],
       matricula_monto: [0, [Validators.required,Validators.min(0)]],
       cuota_monto: [0, [Validators.required,Validators.min(0)]],
       interes_monto: [0, [Validators.required,Validators.min(0)]],

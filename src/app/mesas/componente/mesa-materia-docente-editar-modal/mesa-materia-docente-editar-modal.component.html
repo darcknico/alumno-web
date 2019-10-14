@@ -7,12 +7,56 @@
   </button>
 </div>
 <div class="modal-body">
+  <ng-container *ngIf="recomendaciones.length > 0 && item?.id==0">
+    <div class="row animated fadeIn">
+      <div class="col-sm-12">
+        <div class="card bg-secondary text-white">
+          <div class="card-body">
+            <h5 class="card-title">Sugeridos</h5>
+            <p class="card-text">La materia posee docentes asignados. Seleccione uno para agregarlo.</p>
+            <div class="table-responsive">
+              <table class="table table-light table-sm table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th >Asignado</th>
+                    <th >Docente</th>
+                    <th >Cargo</th>
+                    <th ></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of recomendaciones">
+                    <td>{{ item.fecha_asignacion | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ item.docente.usuario.apellido }}, {{ item.docente.usuario.nombre }}</td>
+                    <td>
+                      <ng-container *ngIf="item.cargo">
+                          {{ item.cargo.nombre }}
+                      </ng-container>
+                    </td>
+                    <td>
+                      <button [disabled]="!item.estado"
+                        class="btn btn-sm {{item.estado?'btn-primary':'btn-secondary'}} animated fadeIn"
+                        tooltip="Seleccionar"
+                        (click)="seleccionar_docente(item)">
+                          <span class="fa fa-check" ></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
   <form [formGroup]="formulario" >
     <div class="row">
       <div class="form-group col-sm-12" *ngIf="item?.id==0">
         <label class="control-label">Docente (*)</label>
-        <ng-select [items]="docentes"
+        <ng-select [items]="docentes" #docentesSelect [compareWith]="compararDocente"
           notFoundText="No se a encontrado al docente"
+          (change)="docenteCambiado($event)"
           formControlName="id_usuario"
           [selectOnTab]="true"
           [clearable]="false">

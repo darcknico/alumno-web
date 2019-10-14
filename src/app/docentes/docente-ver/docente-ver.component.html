@@ -1,0 +1,17 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-docente-detalle [item]="docente" *ngIf="docente"></app-componente-docente-detalle>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-listado-comisiones [item]="docente" *ngIf="docente"></app-componente-listado-comisiones>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-listado-mesa-examen [item]="docente" *ngIf="docente"></app-componente-listado-mesa-examen>
+    </div>
+  </div>
+</div>

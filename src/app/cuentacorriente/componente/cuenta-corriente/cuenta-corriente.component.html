@@ -41,6 +41,12 @@
                     </ng-container>
                     </td>
                   <td>
+                      <button *ngIf="[1,2].indexOf(item.id_tipo_obligacion) >= 0"
+                        class="btn btn-sm btn-primary"
+                        tooltip="Detalle"
+                        (click)="ver(item)">
+                          <span class="fa fa-eye" ></span>
+                      </button>
                   </td>
                 </tr>
               </tbody>

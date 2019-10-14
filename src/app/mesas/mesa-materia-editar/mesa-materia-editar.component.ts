@@ -31,7 +31,7 @@ export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
   dtOptions: DataTables.Settings = {};
   dtOptionsDocente: DataTables.Settings = {};
   dataSource:MesaExamenMateriaAlumno[];
-  dataSourceDocente:MesaExamenMateriaDocente[];
+  dataSourceDocente:MesaExamenMateriaDocente[] = [];
   
   mesa_examen:MesaExamen;
   mesa_examen_materia:MesaExamenMateria;
@@ -133,6 +133,7 @@ export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
       },
       searching:false,
       paging:false,
+      info:false,
       columns: [
         { 
           data: 'created_at',
@@ -201,8 +202,9 @@ export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
   }
 
   docente_agregar(){
+    this.mesa_examen_materia.docentes = this.dataSourceDocente;
     const modal = this.modalService.show(MesaMateriaDocenteEditarModalComponent,{class: 'modal-info'});
-    (<MesaMateriaDocenteEditarModalComponent>modal.content).onShow(this.mesa_examen_materia.id);
+    (<MesaMateriaDocenteEditarModalComponent>modal.content).onShow(this.mesa_examen_materia);
     (<MesaMateriaDocenteEditarModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.refrescarDocente();
@@ -211,8 +213,9 @@ export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
   }
 
   docente_editar(item:MesaExamenMateriaDocente){
+    this.mesa_examen_materia.docentes = this.dataSourceDocente;
     const modal = this.modalService.show(MesaMateriaDocenteEditarModalComponent,{class: 'modal-info'});
-    (<MesaMateriaDocenteEditarModalComponent>modal.content).onShow(this.mesa_examen_materia.id,item);
+    (<MesaMateriaDocenteEditarModalComponent>modal.content).onShow(this.mesa_examen_materia,item);
     (<MesaMateriaDocenteEditarModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.refrescarDocente();

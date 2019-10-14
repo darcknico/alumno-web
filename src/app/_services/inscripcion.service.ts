@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from './authentication.service';
 import { Inscripcion, TipoInscripcionEstado } from '../_models/inscripcion';
 import { ComisionAlumno } from '../_models/comision';
 import { MesaExamen, MesaExamenMateriaAlumno, MesaExamenMateria, AlumnoMateriaNota } from '../_models/mesa.examen';
@@ -10,6 +9,7 @@ import { PlanPago } from '../_models/plan_pago';
 import { ExamenAlumno } from '../_models/examen';
 import { AsistenciaAlumno } from '../_models/asistencia';
 import { Pago } from '../_models/pago';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
  
 export interface FiltroInscripcion {
     search:string;
@@ -23,6 +23,8 @@ export interface FiltroInscripcion {
     id_beca:number;
     anio_inicial:number;
     anio_final:number;
+    fecha_inicial:string;
+    fecha_final:string;
 }
 export interface InscripcionAjax{
     items: Inscripcion[];
@@ -49,19 +51,7 @@ export class InscripcionService {
 
     ajax(filtro:FiltroInscripcion):  Observable<InscripcionAjax>{
         return this.http.get<InscripcionAjax>(this.api + this.id_sede + '/inscripciones', {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_departamento: String(filtro.id_departamento),
-                id_carrera: String(filtro.id_carrera),
-                id_tipo_inscripcion_estado: String(filtro.id_tipo_inscripcion_estado),
-                id_beca: String(filtro.id_beca),
-                anio_inicial: String(filtro.anio_inicial),
-                anio_final: String(filtro.anio_final),
-            }
+            params: AuxiliarFunction.toParams(filtro)
         });
     }
 
@@ -141,18 +131,11 @@ export class InscripcionService {
         return this.http.get(this.api + this.id_sede + '/inscripciones/' + id +'/reportes/analitico',{responseType: 'blob'});
     }
 
-    exportar(filtro:FiltroInscripcion){
-        return this.http.get(this.api + this.id_sede + '/inscripciones/exportar',{
-            responseType:'blob',
-            params:{
-                search: filtro.search,
-                id_departamento: String(filtro.id_departamento),
-                id_carrera: String(filtro.id_carrera),
-                id_beca: String(filtro.id_beca),
-                id_tipo_inscripcion_estado: String(filtro.id_tipo_inscripcion_estado),
-                anio_inicial: String(filtro.anio_inicial),
-                anio_final: String(filtro.anio_final),
-            }
+    exportar(filtro:FiltroInscripcion):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>(this.api + this.id_sede + '/inscripciones/exportar',{
+            observe:'response',
+            responseType:'blob' as 'json',
+            params:AuxiliarFunction.toParams(filtro),
         });
     }
 

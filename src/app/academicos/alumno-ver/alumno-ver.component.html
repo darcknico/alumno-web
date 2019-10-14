@@ -38,7 +38,7 @@
                 </tr>
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
-                <tr *ngFor="let item of dataSource">
+                <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
                   <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
                   <td>{{ item.usuario.apellido }} {{item.usuario.nombre}}</td>
                   <td>{{ item.carrera.departamento.nombre }} {{item.carrera.nombre}} {{item.plan_estudio.anio}}</td>
@@ -46,27 +46,29 @@
                   <td>{{ item.beca.nombre }}</td>
                   <td>{{ item.tipo_estado.nombre }}</td>
                   <td>
-                    <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="id_sede == item.id_sede">
-                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
-                        <span class="caret"></span>
-                      </button>
-                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                        <li role="menuitem">
-                          <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
-                            <i class="fa fa-info"></i>
-                            Administrar
-                          </a>
-                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
-                            <i class="fa fa-edit"></i>
-                            Editar
-                          </a>
-                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);" *ngIf="[99,1,2].indexOf(usuario.id_tipo_usuario)>=0">
-                            <i class="fa fa-remove"></i>
-                            Eliminar
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <ng-container *ngIf="item.estado">
+                        <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="id_sede == item.id_sede">
+                          <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                            <span class="caret"></span>
+                          </button>
+                          <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li role="menuitem">
+                              <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                                <i class="fa fa-info"></i>
+                                Administrar
+                              </a>
+                              <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                                <i class="fa fa-edit"></i>
+                                Editar
+                              </a>
+                              <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);" *ngIf="[99,1,2].indexOf(usuario.id_tipo_usuario)>=0">
+                                <i class="fa fa-remove"></i>
+                                Eliminar
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                    </ng-container>
                   </td>
                 </tr>
               </tbody>

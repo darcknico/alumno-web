@@ -13,8 +13,8 @@ import { BecaService } from '../../_services/beca.service';
 import { Beca } from '../../_models/beca';
 
 import * as moment from 'moment';
-import { saveAs } from 'file-saver';
 import { SedeService } from '../../_services/sede.service';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-inscripcion',
@@ -29,6 +29,7 @@ export class InscripcionComponent implements OnInit {
   carreras:Carrera[]=[];
   becas:Beca[]=[];
   tipos_estado:TipoInscripcionEstado[]=[];
+  consultando:boolean = false;
 
   request = <FiltroInscripcion>{
     search:"",
@@ -122,14 +123,28 @@ export class InscripcionComponent implements OnInit {
     this.router.navigate(['/academicos/inscripciones/'+item.id+'/editar']);
   }
 
+  fecha_inicio(event){
+    if(event == null){
+      this.request.fecha_inicial = "";
+    } else {
+      this.request.fecha_inicial = moment(event).format('YYYY-MM-DD');
+    }
+    this.refrescar();
+  }
+
+  fecha_fin(event){
+    if(event == null){
+      this.request.fecha_final = "";
+    } else {
+      this.request.fecha_final = moment(event).format('YYYY-MM-DD');
+    }
+    this.refrescar();
+  }
+
   exportar(){
-    let aviso = this.toastr.warning('Preparando archivo de descarga','',{
-      timeOut:15000,
-    });
-    this.inscripcionService.exportar(this.request).subscribe(data => {
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Descarga lista');
-      saveAs(data,"inscripciones-"+moment().format('DD.MM.YYYY')+".xlsx");
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.inscripcionService.exportar(this.request)).then(()=>{
+      this.consultando = false;
     });
   }
 

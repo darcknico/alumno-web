@@ -32,9 +32,7 @@ export class MateriaCorrelativaModalComponent implements OnInit {
     this.id = id;
 
     this.materiaService.planEstudio(this.plan_estudio.id).subscribe(response=>{
-      this.materias = response.filter(data=>{
-        return data.id != this.id;
-      });
+      this.materias = response;
     });
 
     this.materiaService.getById(this.id).subscribe(response=>{

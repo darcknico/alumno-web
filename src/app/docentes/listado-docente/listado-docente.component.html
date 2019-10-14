@@ -78,8 +78,11 @@
                 </tr>
               </thead>
               <tbody *ngIf="usuarios?.length != 0">
-                <tr *ngFor="let item of usuarios" class="{{item.usuario.estado==0?'bg-danger':''}}">
-                  <td>{{ item.cuit }}</td>
+                <tr *ngFor="let item of usuarios" >
+                  <td>
+                    {{ item.cuit }}
+                    <span class="btn badge badge-danger" *ngIf="item.usuario.estado==0" >N/H</span>
+                  </td>
                   <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
                   <td>{{ item.titulo }}</td>
                   <td>
@@ -96,6 +99,12 @@
                       (click)="editar(item)">
                         <span class="fa fa-pencil" ></span>
                     </button>
+                    <button 
+                      class="btn btn-sm btn-primary"
+                      tooltip="Ver"
+                      (click)="ver(item)">
+                        <span class="fa fa-eye" ></span>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -108,7 +117,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <p>Los docentes marcados aun no se encuentran habilitados para ingresar al sistema. Contacte al administrador para dar acceso.</p>
+              <p>N/H: No se encuentran habilitados para ingresar al sistema. Contacte al administrador para dar acceso.</p>
             </div>
           </div>
         </div>

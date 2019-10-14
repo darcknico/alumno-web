@@ -93,4 +93,20 @@ export class MateriaService {
         return this.http.get<TipoMateriaLectivo[]>(environment.apiUrl+ 'materias/lectivo/tipos');
     }
 
+    estadisticas_historico(id_materia:number,id_sede){
+        return this.http.get<Materia>([this.api,id_materia,'estadisticas/historico'].join('/'),{
+            params:{
+                id_sede:id_sede,
+            }
+        });
+    }
+    estadisticas_anual(id_materia:number,id_sede,anio){
+        return this.http.get<Materia>([this.api,id_materia,'estadisticas/anual'].join('/'),{
+            params:{
+                id_sede:id_sede,
+                anio:anio,
+            }
+        });
+    }
+
 }

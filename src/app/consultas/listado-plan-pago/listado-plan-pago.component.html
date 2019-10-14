@@ -6,8 +6,8 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Cobranzas
           <div class="card-header-actions">
-            <button class="btn btn-sm btn-info m-1" type="button" (click)="exportar()">Exportar tabla</button>
-            <button class="btn btn-sm btn-info m-1" type="button" (click)="exportar_alumnos()">Exportar cuotas por carrera</button>
+            <button class="btn btn-sm btn-info m-1" type="button" (click)="exportar()" [disabled]="consultando">Exportar tabla</button>
+            <button class="btn btn-sm btn-info m-1" type="button" (click)="exportar_alumnos()" [disabled]="consultando">Exportar cuotas por carrera</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -52,7 +52,7 @@
           </div>
           </div>
           <div class="row">
-            <div class="form-group col-sm-12">
+            <div class="form-group col-sm-8">
                 <label class="control-label">Carrera</label>
                 <ng-select [items]="carreras"
                     [selectOnTab]="true"
@@ -61,6 +61,18 @@
                     (ngModelChange)="refrescar()"
                     placeholder="Seleccione la Carrera"
                     [(ngModel)]="request.id_carrera"
+                    [clearable]="false">
+                </ng-select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="control-label">Beca</label>
+                <ng-select [items]="becas"
+                    [selectOnTab]="true"
+                    bindValue="id"
+                    bindLabel="nombre"
+                    (ngModelChange)="refrescar()"
+                    placeholder="Seleccione la Beca"
+                    [(ngModel)]="request.id_beca"
                     [clearable]="false">
                 </ng-select>
             </div>

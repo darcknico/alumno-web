@@ -17,9 +17,33 @@ import { InscripcionEditarComponent } from './inscripcion-editar/inscripcion-edi
 import { InscripcionNotaComponent } from './inscripcion-nota/inscripcion-nota.component';
 import { AlumnoCuotaGuard } from '../_guards/alumno_cuota.guard';
 import { InscripcionCuotaGuard } from '../_guards/inscripcion_cuota.guard';
+import { ListadoMateriaComponent } from './listado-materia/listado-materia.component';
+import { MateriaVerComponent } from './materia-ver/materia-ver.component';
 
-
-const routes: Routes = [{
+const routes: Routes = [
+  {
+    path:'materias',
+    data: {
+      title:'Materias',
+    },
+    children:[
+      {
+        path:'',
+        component:ListadoMateriaComponent,
+        data: {
+          title:'Listado',
+        },
+      },
+      {
+        path:':id_materia/ver',
+        component:MateriaVerComponent,
+        data: {
+          title:'Ver',
+        },
+      }
+    ]
+  },
+  {
     path: 'carreras',
     data: {
       title: 'Carreras'

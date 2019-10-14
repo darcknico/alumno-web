@@ -13,6 +13,9 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { SedeService } from '../../_services/sede.service';
+import * as moment from 'moment';
+import { TipoService } from '../../_services/tipo.service';
+import { TipoDocenteCargo } from '../../_models/tipo';
 
 @Component({
   selector: 'app-materia-editar-modal',
@@ -23,19 +26,20 @@ export class MateriaEditarModalComponent implements OnInit {
 
   public onClose: Subject<boolean>;
   formulario: FormGroup;
-  id:number=0;
   id_usuario:number=0;
   item:DocenteMateria;
 
   carreras:Carrera[] = [];
   planes_estudio:PlanEstudio[] = [];
   materias:Materia[] = [];
+  cargos:TipoDocenteCargo[]=[];
 
   consultando = false;
   materia:Materia = null;
   carrera:Carrera = null;
   constructor(
     public service:DocenteMateriaService,
+    private tipos:TipoService,
     private carreraService:CarreraService,
     private planService:PlanService,
     private sedeService:SedeService,
@@ -49,6 +53,9 @@ export class MateriaEditarModalComponent implements OnInit {
         id_carrera:'',
         id_plan_estudio:'',
         id_materia: ['', Validators.required],
+        fecha_asignacion:[],
+        horas_catedra:0,
+        id_tipo_docente_cargo:null,
       });
     }
 
@@ -56,8 +63,16 @@ export class MateriaEditarModalComponent implements OnInit {
     this.id_usuario = id_usuario;
     this.item = item;
     if(item){
-
+      let fecha = moment(item.fecha_asignacion);
+      if(fecha.isValid){
+        this.f.fecha_asignacion.setValue(fecha.toDate());
+      }
+      this.f.horas_catedra.setValue(item.horas_catedra);
+      this.f.id_tipo_docente_cargo.setValue(item.id_tipo_docente_cargo);
+      this.f.id_materia.disable();
     } else {
+      this.item = <DocenteMateria>{};
+      this.item.id = 0;
       this.carreraService.getAll().subscribe(response => {
         this.carreras = response;
       });
@@ -65,6 +80,9 @@ export class MateriaEditarModalComponent implements OnInit {
   }
   ngOnInit() {
     this.onClose = new Subject();
+    this.tipos.docentes_cargos().subscribe(response=>{
+      this.cargos = response;
+    });
   }
 
   get f(){
@@ -75,14 +93,21 @@ export class MateriaEditarModalComponent implements OnInit {
     if(!this.formulario.valid){
       return;
     }
-    var item = <DocenteMateria>{};
-    item.id_usuario = this.id_usuario;
-    item.id_materia = this.f.id_materia.value;
-    item.id_carrera = this.f.id_carrera.value;
-    item.id_sede = this.sedeService.getIdSede();
+    this.item.id_usuario = this.id_usuario;
+    this.item.id_materia = this.f.id_materia.value;
+    this.item.id_carrera = this.f.id_carrera.value;
+    this.item.id_sede = this.sedeService.getIdSede();
+    let fecha = moment(this.f.fecha_asignacion.value);
+    if(fecha.isValid()){
+      this.item.fecha_asignacion = fecha.format('YYYY-MM-DD');
+    } else {
+      this.item.fecha_asignacion = null;
+    }
+    this.item.horas_catedra = this.f.horas_catedra.value;
+    this.item.id_tipo_docente_cargo = this.f.id_tipo_docente_cargo.value;
     this.consultando = true;
-    if(this.id>0){
-      this.service.update(item).subscribe(response=>{
+    if(this.item.id>0){
+      this.service.update(this.item).subscribe(response=>{
         this.toastr.success('Mesa de examen editada con exito', '');
         this.onClose.next(true);
         this.bsModalRef.hide();
@@ -90,8 +115,8 @@ export class MateriaEditarModalComponent implements OnInit {
         this.consultando = false;
       });
     } else {
-      item.id_materia = this.f.id_materia.value;
-      this.service.register(item).subscribe(response=>{
+      this.item.id_materia = this.f.id_materia.value;
+      this.service.register(this.item).subscribe(response=>{
         this.toastr.success('Mesa de examen registrada con exito', '');
         this.onClose.next(true);
         this.bsModalRef.hide();
@@ -132,6 +157,9 @@ export class MateriaEditarModalComponent implements OnInit {
         this.f.id_materia.enable();
       }
     });
+  }
+  seleccionar_materia(materia:Materia){
+    this.f.horas_catedra.setValue(materia.horas);
   }
 
   cancelar(){

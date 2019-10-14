@@ -68,9 +68,10 @@
                       <th>Fecha</th>
                       <th class="no-sort">Materia</th>
                       <th class="no-sort">Carrera</th>
-                      <th>Inscriptos</th>
+                      <th>Ins.</th>
                       <th>Libro</th>
-                      <th>Folio</th>
+                      <th class="no-sort">Folio L/P/R</th>
+                      <th class="no-sort">Alu. P/A/NA</th>
                       <th class="no-sort"></th>
                       </tr>
                   </thead>
@@ -81,7 +82,8 @@
                       <td>{{ item.carrera.nombre_corto}} {{item.materia.plan_estudio.anio}}</td>
                       <td>{{ item.alumnos_cantidad }}</td>
                       <td>{{ item.libro }}</td>
-                      <td>{{ item.folio }}</td>
+                      <td>{{ item.folio_libre?item.folio_libre:'-' }}/{{item.folio_promocion?item.folio_promocion:'-'}}/{{item.folio_regular?item.folio_regular:'-'}}</td>
+                      <td>{{ item.alumnos_cantidad_presente }}/{{item.alumnos_cantidad_aprobado}}/{{item.alumnos_cantidad_no_aprobado}}</td>
                       <td>
                         <div class="btn-group" dropdown placement="bottom right" container="body">
                           <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
@@ -122,6 +124,12 @@
                       </tr>
                   </tbody>
                   </table>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <p>Folio L/P/R: Numero de Folio para Libres, Promocionales y Regulares.</p>
+                  <p>Alu. P/A/NA: Cantidad de alumnos Presentes, Aprobados y No Aprobados.</p>
+                </div>
               </div>
             </div>
             <div class="card-footer">

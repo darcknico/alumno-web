@@ -50,7 +50,7 @@ export class AuxiliarFunction{
         let aviso = toastr.warning('Preparando descarga', '',{
             timeOut:15000,
         });
-        obs.subscribe(response=>{
+        return obs.toPromise().then(response=>{
             var contentDisposition = response.headers.get('Content-Disposition');
             var contentType = response.headers.get('Content-Type');
             var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
@@ -66,7 +66,7 @@ export class AuxiliarFunction{
         let aviso = toastr.warning('Preparando descarga', '',{
             timeOut:15000,
         });
-        obs.subscribe(response=>{
+        return obs.toPromise().then(response=>{
             toastr.remove(aviso.toastId);
             toastr.success('Archivo listo');
             var blob = new Blob([response.body], {type: 'application/pdf'});

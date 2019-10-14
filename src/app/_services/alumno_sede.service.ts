@@ -13,6 +13,8 @@ export interface FiltroAlumnoSede {
     start:number;
     length:number;
     id_sede:number;
+    id_alumno:number;
+    documento:number;
 }
 @Injectable()
 export class AlumnoSedeService {
@@ -28,8 +30,10 @@ export class AlumnoSedeService {
         ) {
     }
 
-    getAll(){
-        return this.http.get<AlumnoSede[]>(this.ruta );
+    getAll(filtro:FiltroAlumnoSede = null){
+        return this.http.get<AlumnoSede[]>(this.ruta, {
+            params: AuxiliarFunction.toParams(filtro),
+        });
     }
 
     ajax(filtro:FiltroAlumnoSede):  Observable<Ajax<AlumnoSede>>{

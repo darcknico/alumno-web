@@ -85,7 +85,7 @@
         </div>
         <div class="card-body p-1">
           <div class="table-responsive">
-            <table #secundario datatable [dtOptions]="dtOptionsDocente" [dtTrigger]="dtTriggerDocente" class="table row-border compact hover" width="100%">
+            <table #secundario datatable [dtOptions]="dtOptionsDocente" [dtTrigger]="dtTriggerDocente" class="table row-border compact hover" width="100%" *ngIf="dataSourceDocente">
               <thead>
                 <tr>
                   <th>Agregado</th>
@@ -94,7 +94,7 @@
                   <th class="no-sort"></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody *ngIf="dataSourceDocente?.length != 0">
                 <tr *ngFor="let item of dataSourceDocente">
                   <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
                   <td>{{ item.usuario.apellido }} {{ item.usuario.nombre }}</td>
@@ -120,6 +120,11 @@
                       </ul>
                     </div>
                   </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="dataSourceDocente?.length == 0">
+                <tr>
+                  <td colspan="4" class="no-data-available">Sin docentes asociados</td>
                 </tr>
               </tbody>
             </table>

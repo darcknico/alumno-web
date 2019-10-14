@@ -33,6 +33,11 @@ import { ListadoPagoInscripcionModalComponent } from './componentes/listado-pago
 import { ListadoComisionModalComponent } from './listado-comision-modal/listado-comision-modal.component';
 import { ListadoAlumnoSedeModalComponent } from './componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
 import { AlumnoVerModalComponent } from './componentes/alumno-ver-modal/alumno-ver-modal.component';
+import { ListadoMateriaComponent } from './listado-materia/listado-materia.component';
+import { MateriaVerComponent } from './materia-ver/materia-ver.component';
+import { MateriaDetalleComponent } from './componentes/materia-detalle/materia-detalle.component';
+import { ListadoMateriaComisionComponent } from './componentes/listado-materia-comision/listado-materia-comision.component';
+import { ListadoMateriaMesaExamenComponent } from './componentes/listado-materia-mesa-examen/listado-materia-mesa-examen.component';
 
 @NgModule({
   imports: [
@@ -75,6 +80,11 @@ import { AlumnoVerModalComponent } from './componentes/alumno-ver-modal/alumno-v
     ListadoComisionModalComponent,
     ListadoAlumnoSedeModalComponent,
     AlumnoVerModalComponent,
+    ListadoMateriaComponent,
+    MateriaVerComponent,
+    MateriaDetalleComponent,
+    ListadoMateriaComisionComponent,
+    ListadoMateriaMesaExamenComponent,
   ],
   entryComponents: [
     TramiteNuevoModalComponent,

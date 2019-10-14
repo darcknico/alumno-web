@@ -51,6 +51,7 @@ export interface MesaExamenMateria{
     usuario_check_in:Usuario;
     usuario_check_out:Usuario;
     alumnos:MesaExamenMateriaAlumno[];
+    docentes:MesaExamenMateriaDocente[];
 }
 
 export interface MesaExamenMateriaAlumno{

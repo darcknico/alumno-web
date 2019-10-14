@@ -73,6 +73,18 @@
                 [clearable]="false">
               </ng-select>
             </div>
+            <div class="form-group col-sm-4">
+              <label class="control-label">Cargo</label>
+              <ng-select [items]="cargos"
+                [selectOnTab]="true"
+                (change)="refrescar()"
+                bindValue="id"
+                bindLabel="nombre"
+                placeholder="Seleccione el Cargo"
+                [(ngModel)]="request.id_tipo_docente_cargo"
+                [clearable]="false">
+              </ng-select>
+            </div>
           </div>
           <div class="table-responsive">
             <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
@@ -83,6 +95,9 @@
                   <th class="no-sort">Docente</th>
                   <th class="no-sort">Materia</th>
                   <th class="no-sort">Carrera</th>
+                  <th class="no-sort">Asignacion</th>
+                  <th class="no-sort">Cargo</th>
+                  <th class="no-sort">H/Catedra</th>
                 </tr>
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
@@ -94,6 +109,13 @@
                   <td>
                     {{ item.carrera.nombre }}
                   </td>
+                  <td>{{ item.fecha_asignacion | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    <ng-container *ngIf="item.cargo">
+                        {{ item.cargo.nombre }}
+                    </ng-container>
+                  </td>
+                  <td>{{ item.horas_catedra }}</td>
                 </tr>
               </tbody>
               <tbody *ngIf="dataSource?.length == 0">

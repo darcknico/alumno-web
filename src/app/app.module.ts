@@ -85,6 +85,7 @@ const requestFilters = [
   { method: 'GET', url: new RegExp('api\/sedes\/[0-9]+\/reportes\?') },
   { method: 'GET', url: new RegExp('api\/usuarios\?') },
   { method: 'GET', url: new RegExp('api\/docentes\?') },
+  { method: 'GET', url: new RegExp('api\/materias\?') },
   { method: 'GET', url: new RegExp('api\/auditorias\/alumnos\?') },
   { method: 'GET', url: new RegExp('api\/alumnos\/sedes\?') },
 ];
@@ -143,6 +144,7 @@ import { HomeService } from './_services/home.service';
 import { DocenteMateriaService } from './_services/docente_materia.service';
 import { AulaService } from './_services/aula.service';
 import { ComisionHorarioService } from './_services/comision_horario.service';
+import { ObligacionService } from './_services/obligacion.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -262,6 +264,7 @@ export const customCurrencyMaskConfig = {
     ReporteJobService,
     HomeService,
     AulaService,
+    ObligacionService,
 
     { provide: HTTP_INTERCEPTORS, useClass: PassportInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },

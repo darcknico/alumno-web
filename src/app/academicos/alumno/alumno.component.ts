@@ -165,11 +165,26 @@ export class AlumnoComponent implements OnInit {
 
   eliminar(item:Alumno){
     const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
-    (<DialogConfirmComponent>modal.content).onShow("Eliminar alumno","Esto eliminara las inscripciones, planes de pago, pagos y movimientos que se hayan generado a partir del alumno \""+item.apellido+" "+item.nombre+"\"");
+    let mensaje = "Esto eliminara las inscripciones, planes de pago, pagos y movimientos que se hayan generado a partir del alumno \""+item.apellido+" "+item.nombre+"\"";
+    (<DialogConfirmComponent>modal.content).onShow("Eliminar alumno","");
     (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.alumnoService.delete(item.id).subscribe(response=>{
           this.toastr.success('Alumno eliminado', '');
+          this.refrescar();
+          this.refrescarBaja();
+        });
+      }
+    });
+  }
+
+  recuperar(item:Alumno){
+    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+    (<DialogConfirmComponent>modal.content).onShow("Recuperar alumno","");
+    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.alumnoService.delete(item.id).subscribe(response=>{
+          this.toastr.success('Alumno recuperado', '');
           this.refrescar();
           this.refrescarBaja();
         });

@@ -1,0 +1,113 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Detalle <b *ngIf="item">- {{item.tipo.nombre}}</b> </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" *ngIf="item">
+  <div class="row" *ngIf="item.id_tipo_obligacion == 1">
+    <div class="col-lg-6">
+      <p>Fecha: {{ item.fecha | date:'dd MMMM yyyy' }}</p>
+    </div>
+    <div class="col-lg-6">
+      <p>Vto.: {{ item.fecha_vencimiento | date:'dd MMMM yyyy' }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <p>Monto: <b>${{ item.monto | number:'1.2-2':'es-AR' }}</b></p>
+    </div>
+    <div class="col-lg-4">
+      <p>Saldo: <b>${{ item.saldo | number:'1.2-2':'es-AR' }}</b></p>
+    </div>
+    <div class="col-lg-4">
+      <p>Pagado: <b>${{ item.saldo | number:'1.2-2':'es-AR' }}</b></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <p>Concepto: {{item.descripcion}}</p>
+    </div>
+  </div>
+  <h2 class="pl-2">Pagos</h2>
+  <div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Descripcion</th>
+          <th>Pago</th>
+          <th>Imputado</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="dataSource?.length != 0">
+        <tr *ngFor="let item of dataSource" class="{{!item.estado?'bg-danger':''}}">
+          <td>{{ item.pago.fecha | date:'dd/MM/yyyy' }}</td>
+          <td>{{ item.pago.descripcion}}</td>
+          <td>
+              ${{ item.pago.monto | number:'1.2-2':'es-AR' }}
+          </td>
+          <td>
+              ${{ item.monto | number:'1.2-2':'es-AR' }} 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-container *ngIf="item.interes && item.interes.monto>0 else sinInteres">
+    <div class="row" >
+      <div class="col-lg-12">
+        <h2 class="pl-2">Interes</h2>
+        <p>Concepto: {{item.interes.descripcion}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <p>Monto: <b>${{ item.interes.monto | number:'1.2-2':'es-AR' }}</b></p>
+      </div>
+      <div class="col-lg-4">
+        <p>Saldo: <b>${{ item.interes.saldo | number:'1.2-2':'es-AR' }}</b></p>
+      </div>
+      <div class="col-lg-4">
+        <p>Pagado: <b>${{ item.interes.saldo | number:'1.2-2':'es-AR' }}</b></p>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #sinInteres >
+    <div class="row" *ngIf="item.id_tipo_obligacion == 1">
+      <div class="col-lg-12">
+        <h2 class="pl-2">Sin intereses</h2>
+      </div>
+    </div>
+  </ng-template>
+  <ng-container *ngIf="item.obligacion">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="pl-2">Obligación</h2>
+        <p>{{item.obligacion.descripcion}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <p>Fecha: {{ item.obligacion.fecha | date:'dd MMMM yyyy' }}</p>
+      </div>
+      <div class="col-lg-6">
+        <p>Vto.: {{ item.obligacion.fecha_vencimiento | date:'dd MMMM yyyy' }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <p>Monto: <b>${{ item.obligacion.monto | number:'1.2-2':'es-AR' }}</b></p>
+      </div>
+      <div class="col-lg-4">
+        <p>Saldo: <b>${{ item.obligacion.saldo | number:'1.2-2':'es-AR' }}</b></p>
+      </div>
+      <div class="col-lg-4">
+        <p>Pagado: <b>${{ item.obligacion.saldo | number:'1.2-2':'es-AR' }}</b></p>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+</div>

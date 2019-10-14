@@ -60,6 +60,7 @@ export class AlumnoVerComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
       columnDefs: [ {
         targets: [4,5,6],
         orderable: false
@@ -75,6 +76,7 @@ export class AlumnoVerComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
       columnDefs: [ {
         targets: [3],
         orderable: false
@@ -101,7 +103,8 @@ export class AlumnoVerComponent implements OnInit {
 
   eliminar(item:Inscripcion){
     const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
-    (<DialogConfirmComponent>modal.content).onShow("Eliminar inscripcion","Esto eliminara las inscripciones, planes de pago, pagos y movimientos que se hayan generado a partir de la inscripcion "+item.carrera.nombre+". Año:"+item.anio);
+    let mensaje = "Esto eliminara las inscripciones, planes de pago, pagos y movimientos que se hayan generado a partir de la inscripcion "+item.carrera.nombre+". Año:"+item.anio;
+    (<DialogConfirmComponent>modal.content).onShow("Eliminar inscripcion","");
     (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.inscripcionService.delete(item.id).subscribe(response=>{

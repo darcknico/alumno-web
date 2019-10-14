@@ -1,0 +1,187 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-materia-detalle [item]="item" *ngIf="item"></app-componente-materia-detalle>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Datos Historicos</h5>
+          <ng-container *ngIf="$historico | async as estadistica; else noHistorico">
+            <div class="card-text" *ngIf="estadistica.examenes">
+              Total de examenes tomados: {{estadistica.examenes?.total}}
+            </div>
+            <div class="card-text" *ngIf="estadistica.examinados as est">
+              Alumnos examinados
+              <ul>
+                <li *ngIf="est.total">
+                  Total: {{est.total}}
+                </li>
+                <li *ngIf="est.promedio">
+                  Promedio: {{est.promedio}}
+                </li>
+                <li *ngIf="est.aprobados">
+                  Aprobados: {{est.aprobados}}
+                </li>
+                <li *ngIf="est.reprobados">
+                  Reprobados: {{est.reprobados}}
+                </li>
+                <li *ngIf="est.ausentes">
+                  Ausentes: {{est.ausentes}}
+                </li>
+                <li *ngIf="est.presentes">
+                  Presentes: {{est.presentes}}
+                </li>
+                <li *ngIf="est.justificados">
+                  Justificados: {{est.justificados}}
+                </li>
+              </ul>
+            </div>
+            <div class="card-text" *ngIf="estadistica.asistencias">
+              Total de asistencias realizadas: {{estadistica.asistencias?.total}}
+            </div>
+            <div class="card-text" *ngIf="estadistica.asistidos as est">
+              Asistencias de los alumnos
+              <ul>
+                <li *ngIf="est.total">
+                  Total: {{est.total}}
+                </li>
+                <li *ngIf="est.ausentes">
+                  Ausentes: {{est.ausentes}}
+                </li>
+                <li *ngIf="est.presentes">
+                  Presentes: {{est.presentes}}
+                </li>
+                <li *ngIf="est.justificados">
+                  Justificados: {{est.justificados}}
+                </li>
+              </ul>
+            </div>
+            <div class="card-text" *ngIf="estadistica.mesas as est">
+              Mesas de examenes
+              <ul>
+                <li *ngIf="est.total">
+                  Total: {{est.total}}
+                </li>
+                <li *ngIf="est.cerrados">
+                  Cerradas: {{est.cerrados}}
+                </li>
+                <li *ngIf="est.alumnos">
+                  Total Alumnos: {{est.alumnos}}
+                </li>
+                <li *ngIf="est.presentes">
+                  Presentes: {{est.presentes}}
+                </li>
+                <li *ngIf="est.aprobados">
+                  Aprobados: {{est.aprobados}}
+                </li>
+                <li *ngIf="est.no_aprobados">
+                  No aprobados: {{est.no_aprobados}}
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+          <ng-template #noHistorico>
+              <p class="card-text text-center"><i class='fa fa-spinner fa-spin fa-2x fa-fw'></i></p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Dato Anual {{anio}}</h5>
+          <ng-container *ngIf="$anual | async as estadistica; else noAnual">
+            <div class="card-text" *ngIf="estadistica.examenes">
+              Total de examenes tomados: {{estadistica.examenes?.total}}
+            </div>
+            <div class="card-text" *ngIf="estadistica.examinados as est">
+              Alumnos examinados
+              <ul>
+                <li *ngIf="est.total">
+                  Total: {{est.total}}
+                </li>
+                <li *ngIf="est.promedio">
+                  Promedio: {{est.promedio}}
+                </li>
+                <li *ngIf="est.aprobados">
+                  Aprobados: {{est.aprobados}}
+                </li>
+                <li *ngIf="est.reprobados">
+                  Reprobados: {{est.reprobados}}
+                </li>
+                <li *ngIf="est.ausentes">
+                  Ausentes: {{est.ausentes}}
+                </li>
+                <li *ngIf="est.presentes">
+                  Presentes: {{est.presentes}}
+                </li>
+                <li *ngIf="est.justificados">
+                  Justificados: {{est.justificados}}
+                </li>
+              </ul>
+            </div>
+            <div class="card-text" *ngIf="estadistica.asistencias">
+              Total de asistencias realizadas: {{estadistica.asistencias?.total}}
+            </div>
+            <div class="card-text" *ngIf="estadistica.asistidos as est">
+              Asistencias de los alumnos
+              <ul>
+                <li *ngIf="est.total">
+                  Total: {{est.total}}
+                </li>
+                <li *ngIf="est.ausentes">
+                  Ausentes: {{est.ausentes}}
+                </li>
+                <li *ngIf="est.presentes">
+                  Presentes: {{est.presentes}}
+                </li>
+                <li *ngIf="est.justificados">
+                  Justificados: {{est.justificados}}
+                </li>
+              </ul>
+            </div>
+            <div class="card-text" *ngIf="estadistica.mesas as est">
+              Mesas de examenes
+              <ul>
+                <li *ngIf="est.total">
+                  Total: {{est.total}}
+                </li>
+                <li *ngIf="est.cerrados">
+                  Cerradas: {{est.cerrados}}
+                </li>
+                <li *ngIf="est.alumnos">
+                  Total Alumnos: {{est.alumnos}}
+                </li>
+                <li *ngIf="est.presentes">
+                  Presentes: {{est.presentes}}
+                </li>
+                <li *ngIf="est.aprobados">
+                  Aprobados: {{est.aprobados}}
+                </li>
+                <li *ngIf="est.no_aprobados">
+                  No aprobados: {{est.no_aprobados}}
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+          <ng-template #noAnual>
+              <p class="card-text text-center"><i class='fa fa-spinner fa-spin fa-2x fa-fw'></i></p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-componente-listado-materia-comision [item]="item" *ngIf="item"></app-componente-listado-materia-comision>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-componente-listado-materia-mesa-examen [item]="item" *ngIf="item"></app-componente-listado-materia-mesa-examen>
+    </div>
+  </div>
+</div>

@@ -4,44 +4,86 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" *ngIf="item">
   <form [formGroup]="formulario" >
+    <ng-container *ngIf="item.id>0 else nuevo">
+      <div class="form-group col-sm-6" *ngIf="item.carrera as carrera">
+        <label class="control-label">Carrera </label>
+        <p>{{carrera.nombre}} ({{carrera.nombre_corto}})</p>
+      </div>
+      <div class="form-group col-sm-6" *ngIf="item.materia as materia">
+        <label class="control-label">Materia</label>
+        <p>{{materia.nombre}} ({{materia.codigo}})</p>
+      </div>
+    </ng-container>
+    <ng-template #nuevo>
+      <div class="row">
+        <div class="form-group col-sm-8">
+          <label class="control-label">Carrera</label>
+          <ng-select [items]="carreras"
+            [selectOnTab]="true"
+            (change)="seleccionar_carrera($event)"
+            placeholder="Seleccione la Carrera"
+            formControlName="id_carrera"
+            bindValue="id"
+            bindLabel="nombre"
+            [clearable]="false">
+          </ng-select>
+        </div>
+        <div class="form-group col-sm-4">
+          <label class="control-label">Plan estudio</label>
+          <ng-select [items]="planes_estudio"
+            [selectOnTab]="true"
+            (change)="seleccionar_plan_estudio($event)"
+            placeholder="Seleccione el Plan"
+            formControlName="id_plan_estudio"
+            bindValue="id"
+            bindLabel="codigo"
+            [clearable]="false">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="form-group col-sm-6">
+          <label class="control-label">Materia (*)</label>
+          <ng-select [items]="materias"
+            [selectOnTab]="true"
+            (change)="seleccionar_materia($event)"
+            bindValue="id"
+            bindLabel="nombre"
+            notFoundText="No hay materias en la carrera seleccionada"
+            placeholder="Seleccione la Materia"
+            formControlName="id_materia"
+            [clearable]="false">
+          </ng-select>
+        </div>
+      </div>
+    </ng-template>
     <div class="row">
-      <div class="form-group col-sm-8">
-        <label class="control-label">Carrera</label>
-        <ng-select [items]="carreras"
-          [selectOnTab]="true"
-          (change)="seleccionar_carrera($event)"
-          placeholder="Seleccione la Carrera"
-          formControlName="id_carrera"
-          bindValue="id"
-          bindLabel="nombre"
-          [clearable]="false">
-        </ng-select>
+      <div class="form-group col-sm-4" >
+        <label class="control-label">Fecha de asignación</label>
+        <input bsDatepicker
+          formControlName="fecha_asignacion"
+          type="text" 
+          class="form-control" 
+          placeholder="Fecha">
+      </div>
+      <div class="form-group col-sm-3">
+        <label class="control-label">Horas catedra</label>
+        <input
+          formControlName="horas_catedra"
+          type="number" 
+          class="form-control" 
+          placeholder="0">
       </div>
       <div class="form-group col-sm-4">
-        <label class="control-label">Plan estudio</label>
-        <ng-select [items]="planes_estudio"
-          [selectOnTab]="true"
-          (change)="seleccionar_plan_estudio($event)"
-          placeholder="Seleccione el Plan"
-          formControlName="id_plan_estudio"
-          bindValue="id"
-          bindLabel="codigo"
-          [clearable]="false">
-        </ng-select>
-      </div>
-    </div>
-    <div class="row" >
-      <div class="form-group col-sm-6">
-        <label class="control-label">Materia (*)</label>
-        <ng-select [items]="materias"
+        <label class="control-label">Cargo</label>
+        <ng-select [items]="cargos"
           [selectOnTab]="true"
           bindValue="id"
           bindLabel="nombre"
-          notFoundText="No hay materias en la carrera seleccionada"
-          placeholder="Seleccione la Materia"
-          formControlName="id_materia"
+          placeholder="Seleccione el Cargo"
+          formControlName="id_tipo_docente_cargo"
           [clearable]="false">
         </ng-select>
       </div>

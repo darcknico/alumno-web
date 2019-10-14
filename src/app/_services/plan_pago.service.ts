@@ -16,6 +16,7 @@ export interface FiltroPlanPago {
     length:number;
     id_departamento:number;
     id_carrera:number;
+    id_beca:number;
     deudores:number;
     id_tipo_materia_lectivo:number;
     anio:number;

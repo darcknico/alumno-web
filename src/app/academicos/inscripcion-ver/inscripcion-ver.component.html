@@ -189,7 +189,7 @@
                 </tr>
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
-                <tr *ngFor="let item of dataSource">
+                <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
                   <td >{{ item.anio }}</td>
                   <td class="dt-center">
                     ${{ item.matricula_monto | number:'1.2-2':'es-AR' }}
@@ -201,6 +201,7 @@
                   <td class="dt-center">${{ item.interes_total | number:'1.2-2':'es-AR' }}</td>
                   <td class="dt-center">${{ item.saldo_hoy | number:'1.2-2':'es-AR' }}</td>
                   <td>
+                    <ng-container *ngIf="item.estado">
                       <button 
                         class="btn btn-sm btn-primary"
                         tooltip="Mas informacion"
@@ -227,6 +228,7 @@
                         (click)="plan_pago_eliminar(item)">
                         <span class="fa fa-trash" ></span>
                       </button>
+                    </ng-container>
                   </td>
                 </tr>
               </tbody>

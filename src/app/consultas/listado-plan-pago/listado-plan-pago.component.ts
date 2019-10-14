@@ -15,6 +15,8 @@ import { SedeService } from '../../_services/sede.service';
 import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 import { MateriaService } from '../../_services/materia.service';
 import { TipoMateriaLectivo } from '../../_models/materia';
+import { BecaService } from '../../_services/beca.service';
+import { Beca } from '../../_models/beca';
 
 @Component({
   selector: 'app-listado-plan-pago',
@@ -27,12 +29,15 @@ export class ListadoPlanPagoComponent implements OnInit {
   dataSource: PlanPago[] = [];
   departamentos:Departamento[]=[];
   carreras:Carrera[]=[];
+  becas:Beca[]=[];
   tipos:TipoMateriaLectivo[]=[];
+  consultando:boolean = false;
 
   request = <FiltroPlanPago>{
     search:"",
     id_departamento:0,
     id_carrera:0,
+    id_beca:0,
     deudores:0,
     id_tipo_materia_lectivo:0,
     anio:null,
@@ -43,6 +48,7 @@ export class ListadoPlanPagoComponent implements OnInit {
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private materiaService:MateriaService,
+    private becaService:BecaService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -61,6 +67,14 @@ export class ListadoPlanPagoComponent implements OnInit {
       item.nombre = "TODOS";
       this.carreras.push(item);
       this.carreras = this.carreras.reverse();
+    });
+    this.becaService.getAll().subscribe(response => {
+      this.becas = response;
+      let item = <Beca>{};
+      item.id = 0;
+      item.nombre = "TODOS";
+      this.becas.push(item);
+      this.becas = this.becas.reverse();
     });
     this.materiaService.tipos_lectivo().subscribe(response=>{
       this.tipos = response;
@@ -117,7 +131,10 @@ export class ListadoPlanPagoComponent implements OnInit {
   }
 
   exportar(){
-    AuxiliarFunction.descargar(this.toastr,this.planPagoService.exportar(this.request));
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.planPagoService.exportar(this.request)).then(()=>{
+      this.consultando = false;
+    });
   }
 
   exportar_alumnos(){
@@ -125,6 +142,9 @@ export class ListadoPlanPagoComponent implements OnInit {
       this.toastr.warning('Debe seleccionar la carrera, el periodo lectivo y año para continuar.');
       return;
     }
-    AuxiliarFunction.descargar(this.toastr,this.planPagoService.exportar_alumnos(this.request));
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.planPagoService.exportar_alumnos(this.request)).then(()=>{
+      this.consultando = false;
+    });
   }
 }

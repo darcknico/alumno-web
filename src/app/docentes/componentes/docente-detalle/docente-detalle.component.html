@@ -1,0 +1,36 @@
+<div class="card" *ngIf="item">
+  <div class="card-header">
+    Docente: <b>{{item.usuario.apellido}} {{item.usuario.nombre}}</b>
+    <div class="card-header-actions">
+      <a  (click)="isCollapsed = !isCollapsed"
+        href="javascript:void(0);"
+        [attr.aria-expanded]="!isCollapsed" 
+        aria-controls="collapseBody">
+        <i class="icons cui-chevron-bottom"></i>
+    </a>
+    </div>
+  </div>
+  <div class="card-body" id="collapseBody" [collapse]="isCollapsed" >
+    <div class="row">
+      <div class="col-6">
+        <u>CUIT:</u> {{item.cuit}}
+      </div>
+      <div class="col-6">
+        <u>Titulo:</u> {{item.titulo}}
+      </div>
+    </div>
+    <div class="row" *ngIf="item.contratos">
+      <div class="col-12">
+        <u>Contratos:</u> 
+        <ng-container *ngFor="let contrato of item.contratos">
+          <b>{{contrato.tipo.nombre}} - </b>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <u>Observaciones:</u> {{item.observaciones}}
+      </div>
+    </div>
+  </div>
+</div>

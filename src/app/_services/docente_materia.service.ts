@@ -18,6 +18,7 @@ export interface FiltroDocenteMateria {
     id_plan_estudio:number;
     id_carrera:number;
     id_departamento:number;
+    id_tipo_docente_cargo:number;
 }
 
 @Injectable()

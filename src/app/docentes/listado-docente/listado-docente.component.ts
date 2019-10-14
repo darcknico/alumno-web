@@ -113,6 +113,10 @@ export class ListadoDocenteComponent implements OnInit {
     this.router.navigate([this.resource,item.id_usuario,'editar']);
   }
 
+  ver(item:Docente){
+    this.router.navigate([this.resource,item.id_usuario,'ver']);
+  }
+
   refrescar(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();

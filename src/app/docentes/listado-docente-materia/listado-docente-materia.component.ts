@@ -15,6 +15,8 @@ import { CarreraService } from '../../_services/carrera.service';
 import { PlanService } from '../../_services/plan.service';
 import { MateriaService } from '../../_services/materia.service';
 import { Materia } from '../../_models/materia';
+import { TipoDocenteCargo } from '../../_models/tipo';
+import { TipoService } from '../../_services/tipo.service';
 
 @Component({
   selector: 'app-listado-docente-materia',
@@ -31,6 +33,7 @@ export class ListadoDocenteMateriaComponent implements OnInit {
   carreras:Carrera[] = [];
   planes_estudio:PlanEstudio[] = [];
   materias:Materia[] = [];
+  cargos:TipoDocenteCargo[]=[];
 
   request = <FiltroDocenteMateria>{
     search:"",
@@ -38,6 +41,7 @@ export class ListadoDocenteMateriaComponent implements OnInit {
     id_departamento:0,
     id_carrera:0,
     id_materia:0,
+    id_tipo_docente_cargo:0,
   };
   constructor(
     private service:DocenteMateriaService,
@@ -46,6 +50,7 @@ export class ListadoDocenteMateriaComponent implements OnInit {
     private sedeService:SedeService,
     private materiaService:MateriaService,
     private departamentoService:DepartamentoService,
+    private tipos:TipoService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -119,6 +124,14 @@ export class ListadoDocenteMateriaComponent implements OnInit {
     this.materias.push(materia);
     this.carreraService.getAll().subscribe(response => {
       this.carreras = this.carreras.concat(response);
+    });
+
+    this.tipos.docentes_cargos().subscribe(response=>{
+      this.cargos = response;
+      let cargo = <TipoDocenteCargo>{};
+      cargo.id = 0;
+      cargo.nombre = 'TODOS';
+      this.cargos.push(cargo);
     });
   }
 

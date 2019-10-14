@@ -271,6 +271,9 @@
                   <th class="no-sort">CODIGO</th>
                   <th class="no-sort">Nombre</th>
                   <th class="no-sort">Carrera</th>
+                  <th class="no-sort">Asignacion</th>
+                  <th class="no-sort">Cargo</th>
+                  <th class="no-sort">H/Catedra</th>
                   <th class="no-sort"></th>
                 </tr>
               </thead>
@@ -280,7 +283,20 @@
                   <td>{{ item.materia.codigo }}</td>
                   <td>{{ item.materia.nombre }}</td>
                   <td>{{ item.carrera.nombre }}</td>
+                  <td>{{ item.fecha_asignacion | date:'dd/MM/yyyy' }}</td>
                   <td>
+                    <ng-container *ngIf="item.cargo">
+                        {{ item.cargo.nombre }}
+                    </ng-container>
+                  </td>
+                  <td>{{ item.horas_catedra }}</td>
+                  <td>
+                     <button 
+                      class="btn btn-sm btn-primary"
+                      tooltip="Editar"
+                      (click)="materia_editar(item)">
+                        <span class="fa fa-pencil" ></span>
+                    </button>
                     <button 
                       class="btn btn-sm btn-danger"
                       tooltip="Descartar"

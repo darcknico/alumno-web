@@ -1,0 +1,76 @@
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-align-justify"></i> Mesas de Examen
+    <div class="card-header-actions">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button class="btn btn-sm btn-info" type="button" (click)="descargar()" [disabled]="consultando">
+          Generar Acta de Notificación
+        </button>
+        <button class="btn btn-sm btn-secondary" type="button" (click)="imprimir()" [disabled]="consultando">
+          <i class="fa fa-print" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body p-1">
+    <div class="row">
+        <div class="form-group col-sm-4" >
+            <label class="control-label">Fecha Inicial</label>
+            <input bsDatepicker
+            (bsValueChange)="fecha_inicio($event)"
+            type="text" 
+            class="form-control" 
+            placeholder="Inicio">
+        </div>
+        <div class="form-group col-sm-4" >
+            <label class="control-label">Fecha Final</label>
+            <input bsDatepicker
+            (bsValueChange)="fecha_fin($event)"
+            type="text" 
+            class="form-control" 
+            placeholder="Fin">
+        </div>
+    </div>
+    <div class="table-responsive">
+      <table #baja datatable [dtOptions]="dtOptions" class="table row-border hover compact" width="100%" >
+        <thead>
+          <tr>
+            <th>Agregado</th>
+            <th class="no-sort">Materia</th>
+            <th class="no-sort">Fechas</th>
+            <th class="no-sort">Tipo</th>
+            <th class="no-sort">Mesa</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="dataSource?.length != 0">
+          <tr *ngFor="let item of dataSource">
+            <td>{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              {{ item.mesa_examen_materia.materia.nombre }}
+            </td>
+            <td>
+                {{ item.mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm' }}
+              <ng-container *ngIf="item.mesa_examen_materia.fecha_cierre">
+                  <div>CIERRE:{{ item.mesa_examen_materia.fecha_cierre | date:'dd/MM/yyyy' }}</div>
+              </ng-container>
+            </td>
+            <td>
+              {{ item.tipo.nombre }}
+            </td>
+            <td>
+              {{ item.mesa_examen_materia.mesa_examen.nombre }}
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="dataSource?.length == 0">
+          <tr>
+            <td colspan="3" class="no-data-available">No data!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    
+  </div>
+</div>

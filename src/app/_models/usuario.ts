@@ -1,6 +1,8 @@
 import { TipoDocumento } from "./tipo_documento";
 import { Sede } from './sede';
-import { TipoContrato } from './tipo';
+import { TipoContrato, TipoDocenteCargo } from './tipo';
+import { Materia } from './materia';
+import { Carrera } from './carrera';
 
 export interface UsuarioSede{
     id:number;
@@ -103,10 +105,19 @@ export interface DocenteMateria{
     id_usuario:number;
     id_materia:number;
     id_carrera:number;
+    id_tipo_docente_cargo:number;
+    fecha_asignacion:string;
+    horas_catedra:number;
 
     estado:boolean;
     created_at:string;
     updated_at:string;
+
+    docente:Docente;
+    cargo:TipoDocenteCargo;
+    materia:Materia;
+    carrera:Carrera;
+    sede:Sede;
 }
 
 export interface DocenteContrato{

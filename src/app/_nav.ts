@@ -96,6 +96,11 @@ export const navItems = [
         permisos: [1],
       },
       {
+        name: 'Materias',
+        url: '/academicos/materias',
+        icon: 'fa fa-book',
+      },
+      {
         name: 'Inscripciones',
         url: '/academicos/inscripciones',
         icon: 'icon-docs',

@@ -155,10 +155,11 @@ export class DocenteEditarComponent implements OnInit {
         language: {
           url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },
-        paging:false,
+        paging:true,
         searching:false,
         serverSide: true,
         processing: true,
+        info:false,
         ajax: (dataTablesParameters: any, callback) => {
           if(this.suscribe){
             this.suscribe.unsubscribe();
@@ -407,8 +408,18 @@ export class DocenteEditarComponent implements OnInit {
   }
 
   materia_nuevo(){
-    const modal = this.modalService.show(MateriaEditarModalComponent,{class: 'modal-info modal-lg'});
+    const modal = this.modalService.show(MateriaEditarModalComponent,{class: 'modal-success modal-lg'});
     (<MateriaEditarModalComponent>modal.content).onShow(this.id);
+    (<MateriaEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescar();
+      }
+    });
+  }
+
+  materia_editar(item:DocenteMateria){
+    const modal = this.modalService.show(MateriaEditarModalComponent,{class: 'modal-info modal-lg'});
+    (<MateriaEditarModalComponent>modal.content).onShow(this.id,item);
     (<MateriaEditarModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.refrescar();

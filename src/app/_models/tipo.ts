@@ -12,3 +12,8 @@ export interface TipoMesaDocente{
     id:number;
     nombre:string;
 }
+
+export interface TipoDocenteCargo{
+    id:number;
+    nombre:string;
+}

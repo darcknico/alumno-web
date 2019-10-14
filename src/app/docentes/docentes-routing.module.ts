@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListadoDocenteComponent } from './listado-docente/listado-docente.component';
 import { DocenteEditarComponent } from './docente-editar/docente-editar.component';
 import { ListadoDocenteMateriaComponent } from './listado-docente-materia/listado-docente-materia.component';
+import { DocenteVerComponent } from './docente-ver/docente-ver.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,13 @@ const routes: Routes = [
             component:DocenteEditarComponent,
             data:{
               title:'Editar',
+            }
+          },
+          {
+            path:'ver',
+            component:DocenteVerComponent,
+            data:{
+              title:'Ver',
             }
           },
         ]

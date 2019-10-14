@@ -10,7 +10,7 @@ import { PlanPagoTableroComponent } from './componente/plan-pago-tablero/plan-pa
 import { CuentaCorrienteComponent } from './componente/cuenta-corriente/cuenta-corriente.component';
 import { ObligacionSiguienteComponent } from './componente/obligacion-siguiente/obligacion-siguiente.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsDatepickerModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { PagoMatriculaComponent } from './pago-matricula/pago-matricula.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ListadoCuotaComponent } from './listado-cuota/listado-cuota.component';
@@ -18,6 +18,7 @@ import { ListadoMatriculaComponent } from './listado-matricula/listado-matricula
 import { PagoReciboComponent } from './pago-recibo/pago-recibo.component';
 import { PlanPagoDetalleComponent } from './componente/plan-pago-detalle/plan-pago-detalle.component';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { ObligacionVerModalComponent } from './componente/obligacion-ver-modal/obligacion-ver-modal.component';
 
 @NgModule({
   imports: [
@@ -29,8 +30,27 @@ import { NgxCurrencyModule } from 'ngx-currency';
     BsDropdownModule.forRoot(),
     BsDatepickerModule,
     NgxCurrencyModule,
+    ModalModule.forRoot(),
+    TooltipModule.forRoot(),
   ],
-  declarations: [PlanPagoComponent, PagoComponent, PagoBonificarComponent, ListadoPagoComponent, PlanPagoTableroComponent, CuentaCorrienteComponent, ObligacionSiguienteComponent, PagoMatriculaComponent, ListadoCuotaComponent, ListadoMatriculaComponent, PagoReciboComponent, PlanPagoDetalleComponent],
+  declarations: [
+    PlanPagoComponent, 
+    PagoComponent, 
+    PagoBonificarComponent, 
+    ListadoPagoComponent, 
+    PlanPagoTableroComponent, 
+    CuentaCorrienteComponent, 
+    ObligacionSiguienteComponent, 
+    PagoMatriculaComponent, 
+    ListadoCuotaComponent, 
+    ListadoMatriculaComponent, 
+    PagoReciboComponent, 
+    PlanPagoDetalleComponent, 
+    ObligacionVerModalComponent,
+  ],
+  entryComponents:[
+    ObligacionVerModalComponent,
+  ],
   providers:[
   ]
 })

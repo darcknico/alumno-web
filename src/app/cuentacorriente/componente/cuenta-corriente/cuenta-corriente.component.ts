@@ -5,6 +5,8 @@ import { PlanPago } from '../../../_models/plan_pago';
 
 import { map} from 'rxjs/operators';
 import * as moment from "moment";
+import { ObligacionVerModalComponent } from '../obligacion-ver-modal/obligacion-ver-modal.component';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-cuenta-corriente-component',
@@ -19,7 +21,8 @@ export class CuentaCorrienteComponent implements OnInit {
   
   constructor(
     private planPagoService:PlanPagoService,
-  ) { }
+    private modalService: BsModalService,
+    ) { }
 
   ngOnInit() {
     this.dtOptions = {
@@ -85,6 +88,16 @@ export class CuentaCorrienteComponent implements OnInit {
       this.dataSource = (response);
     });
   }
+  ver(item:Obligacion){
+    const modal = this.modalService.show(ObligacionVerModalComponent,{class: 'modal-info'});
+    (<ObligacionVerModalComponent>modal.content).onShow(item);
+    (<ObligacionVerModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
+  }
+
   ultimo(item:Obligacion):string{
     let color="";
     if(!item.estado){

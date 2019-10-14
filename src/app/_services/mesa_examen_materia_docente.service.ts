@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { MesaExamenMateriaDocente } from '../_models/mesa.examen';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { Ajax } from '../_models/tipo';
+import { Observable } from 'rxjs';
 
 export interface FiltroMesaExamenMateriaDocente {
     search:string;
@@ -17,6 +18,8 @@ export interface FiltroMesaExamenMateriaDocente {
     id_materia:number;
     id_mesa_examen:number;
     id_usuario:number;
+    fecha_inicial:string;
+    fecha_final:string;
 }
 
 @Injectable()
@@ -65,5 +68,14 @@ export class MesaExamenMateriaDocenteService {
 
     delete(id:number){
         return this.http.delete<MesaExamenMateriaDocente>([this.ruta,id].join('/'));
+    }
+
+    reporte_docente(filtro:FiltroMesaExamenMateriaDocente):Observable<HttpResponse<Blob>> {
+        return this.http.get<Blob>(
+            this.ruta + '/reportes',{
+                observe:'response',
+                responseType:'blob' as 'json',
+                params:AuxiliarFunction.toParams(filtro),
+            });
     }
 }

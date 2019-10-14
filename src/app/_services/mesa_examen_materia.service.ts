@@ -20,6 +20,7 @@ export interface FiltroMesaExamenMateria {
     fecha_ini:string;
     fecha_fin:string;
     cierre:boolean;
+    id_usuario:number;
 }
 export interface MesaExamenMateriaAjax{
     items: MesaExamenMateria[];

@@ -1,0 +1,75 @@
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-align-justify"></i> Mesas de Examen
+  </div>
+  <div class="card-body p-1">
+    <div class="row">
+        <div class="form-group col-sm-4" >
+            <label class="control-label">Fecha Inicial</label>
+            <input bsDatepicker
+            (bsValueChange)="fecha_inicio($event)"
+            type="text" 
+            class="form-control" 
+            placeholder="Inicio">
+        </div>
+        <div class="form-group col-sm-4" >
+            <label class="control-label">Fecha Final</label>
+            <input bsDatepicker
+            (bsValueChange)="fecha_fin($event)"
+            type="text" 
+            class="form-control" 
+            placeholder="Fin">
+        </div>
+    </div>
+    <div class="table-responsive">
+      <table #baja datatable [dtOptions]="dtOptions" class="table row-border hover compact" width="100%" >
+        <thead>
+          <tr>
+            <th>Agregado</th>
+            <th class="no-sort">Fechas</th>
+            <th class="no-sort">Mesa</th>
+            <th class="no-sort">Ins.</th>
+            <th class="no-sort">Libro</th>
+            <th class="no-sort">Folio L/P/R</th>
+            <th class="no-sort">Alu. P/A/NA</th>
+            <th class="no-sort">Ubicación</th>
+            <th class="no-sort">Observaciones</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="dataSource?.length != 0">
+          <tr *ngFor="let item of dataSource">
+            <td>{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+                {{ item.fecha | date:'dd/MM/yyyy HH:mm' }}
+              <ng-container *ngIf="item.fecha_cierre">
+                  <div>CIERRE:{{ item.fecha_cierre | date:'dd/MM/yyyy' }}</div>
+              </ng-container>
+            </td>
+            <td>
+              {{ item.mesa_examen?.nombre }}
+            </td>
+            <td>{{ item.alumnos_cantidad }}</td>
+            <td>{{ item.libro }}</td>
+            <td>{{ item.folio_libre?item.folio_libre:'-' }}/{{item.folio_promocion?item.folio_promocion:'-'}}/{{item.folio_regular?item.folio_regular:'-'}}</td>
+            <td>{{ item.alumnos_cantidad_presente }}/{{item.alumnos_cantidad_aprobado}}/{{item.alumnos_cantidad_no_aprobado}}</td>
+            <td>
+              {{ item.ubicacion }}
+            </td>
+            <td>
+              {{ item.observaciones }}
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="dataSource?.length == 0">
+          <tr>
+            <td colspan="3" class="no-data-available">No data!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    
+  </div>
+</div>
+  
