@@ -36,6 +36,7 @@ export class ExamenVerComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
       columnDefs: [ {
         targets: [5,6],
         orderable: false,

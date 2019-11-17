@@ -93,6 +93,7 @@
                     <thead>
                         <tr>
                         <th>Agregado</th>
+                        <th>Año</th>
                         <th>Alumno</th>
                         <th>Carrera</th>
                         <th>Beca</th>
@@ -103,6 +104,7 @@
                     <tbody *ngIf="dataSource?.length != 0">
                         <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
                         <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ item.anio }}</td>
                         <td>{{ item.alumno.nombre }} {{ item.alumno.apellido }} {{item.alumno.tipo_documento.nombre}}:{{item.alumno.documento}}</td>
                         <td>{{ item.carrera.departamento.nombre}} {{ item.carrera.nombre }} {{item.plan_estudio.anio}}</td>
                         <td>{{item.beca_nombre}}</td>

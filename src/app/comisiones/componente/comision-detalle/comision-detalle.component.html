@@ -31,6 +31,25 @@
       <div class="form-group col-sm-6">
         <u>Cantidad de alumnos:</u> {{comision.alumnos_cantidad}}
       </div>
+      <div class="form-group col-sm-6" >
+        <u>Automatizacion de Asistencia:</u> {{comision.asistencia?'Habilitado':'Deshabilitado'}}
+      </div>
     </div>
+    <div class="row">
+      <div class="form-group col-sm-6" *ngIf="comision.clase_inicio">
+        <u>Inicio de clases:</u> {{comision.clase_inicio | date:'dd/MM/yy'}}
+      </div>
+      <div class="form-group col-sm-6" *ngIf="comision.clase_final">
+        <u>Finalizacion de clases:</u> {{comision.clase_final | date:'dd/MM/yy'}}
+      </div>
+      
+    </div>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-secondary btn-block-xs-only m-1"
+      (click)="editar()">
+      <i class="fa fa-edit"></i>
+      Editar
+      </button>
   </div>
 </div>

@@ -74,4 +74,10 @@ export class MesaExamenMateriaAlumnoService {
             responseType:'blob' as 'json',
         });
     }
+    reporte_asistencia(id:number):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>([this.ruta,id,'reportes/asistencia'].join('/'),{
+            observe:'response',
+            responseType:'blob' as 'json',
+        });
+    }
 }

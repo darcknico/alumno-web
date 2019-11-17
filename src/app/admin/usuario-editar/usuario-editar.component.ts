@@ -46,7 +46,7 @@ export class UsuarioEditarComponent implements OnInit {
       direccion_piso: '',
       direccion_dpto: '',
       documento: '',
-      id_tipo_documento: '',
+      id_tipo_documento: 96,
       id_tipo_usuario: ['',Validators.required],
       email: ['',Validators.required,ValidateEmailUnique.createValidator(this.usuarioService)],
     });

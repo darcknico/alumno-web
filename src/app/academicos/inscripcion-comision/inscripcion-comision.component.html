@@ -24,27 +24,37 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Comisiones inscriptas
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Inscribir a nueva comision</button>
+            <button class="btn btn-block btn-sm btn-success" type="button" (click)="nuevo()">Inscribir a nueva comision</button>
           </div>
         </div>
         <div class="card-body p-1">
           <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+            <table datatable [dtOptions]="dtOptions" class="table table-sm row-border hover" width="100%" *ngIf="dataSource">
               <thead>
                 <tr>
                   <th>Año</th>
-                  <th>Numero</th>
+                  <th class="text-center">N°</th>
                   <th>Materia</th>
-                  <th>Cantidad Alumnos</th>
+                  <th class="text-center">Inscriptos</th>
+                  <th class="text-center">Nota</th>
+                  <th>Condicion</th>
+                  <th class="text-center">
+                    A/E
+                  </th>
                   <th></th>
                 </tr>
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
                 <tr *ngFor="let item of dataSource">
                   <td>{{ item.comision.anio }}</td>
-                  <td>{{ item.comision.numero }}</td>
+                  <td class="text-center">{{ item.comision.numero }}</td>
                   <td>{{ item.comision.materia.nombre }}</td>
-                  <td>{{ item.comision.alumnos_cantidad }}</td>
+                  <td class="text-center">{{ item.comision.alumnos_cantidad }}</td>
+                  <td class="text-center">{{ item.nota }}</td>
+                  <td>{{ item.tipo?.nombre }}</td>
+                  <td class="text-center">
+                    {{ item.asistencia_presente_promedio| number:'1.2-2':'es-AR' }}% / {{ item.examen_presente_promedio| number:'1.2-2':'es-AR' }}%
+                  </td>
                   <td>
                     <button 
                       class="btn btn-sm btn-primary"
@@ -57,22 +67,27 @@
               </tbody>
             </table>
           </div>
+          <div class="row">
+            <div class="col-12">
+              <p>A/E= Promedio de asistencias y examenes presentes</p>
+            </div>
+          </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-block-xs-only btn-secondary m-1"
+          <button class="btn btn-block-xs-only btn-sm btn-secondary m-1"
             type="submit"
             (click)="volver()">
-            Mas informacion
+            Administrar Inscripción
             </button>
-          <button class="btn btn-block-xs-only btn-primary m-1"
+          <button class="btn btn-block-xs-only btn-sm btn-primary m-1"
             type="submit"
             (click)="asistencias()">
-            Asistencias
+            Consultar Asistencias
             </button>
-          <button class="btn btn-block-xs-only btn-primary m-1"
+          <button class="btn btn-block-xs-only btn-sm btn-primary m-1"
             type="submit"
             (click)="examenes()">
-            Examenes
+            Consultar Examenes
             </button>
         </div>
       </div>

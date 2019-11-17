@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
     this.id_sede = +localStorage.getItem('id_sede');
     this.inscripcionService.sede(this.id_sede);
 
-    this.alumnoService.estadisticas().subscribe(response=>{
+    this.alumnoService.estadisticas(this.id_sede).subscribe(response=>{
       this.estadisticas_alumno = response;
     });
     this.inscripcionService.estadisticas().subscribe(response=>{

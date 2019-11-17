@@ -77,7 +77,7 @@ export class DocenteEditarComponent implements OnInit {
       direccion_piso: '',
       direccion_dpto: '',
       documento: '',
-      id_tipo_documento: null,
+      id_tipo_documento: 96,
       email: ['',Validators.required,ValidateEmailUnique.createValidator(this.usuarioService)],
 
       cuit:'',

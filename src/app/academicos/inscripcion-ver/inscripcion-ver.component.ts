@@ -16,6 +16,7 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
 import { TramiteNuevoModalComponent } from '../componentes/tramite-nuevo-modal/tramite-nuevo-modal.component';
 import { ListadoPagoInscripcionModalComponent } from '../componentes/listado-pago-inscripcion-modal/listado-pago-inscripcion-modal.component';
 import { Chart } from 'chart.js';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-inscripcion-ver',
@@ -37,6 +38,7 @@ export class InscripcionVerComponent implements OnInit {
   formulario:FormGroup;
   anios:number[]=[];
   anio:string;
+  consultando:boolean = false;
   constructor(
     private inscripcionService:InscripcionService,
     private planPagoService:PlanPagoService,
@@ -224,95 +226,74 @@ export class InscripcionVerComponent implements OnInit {
   }
 
   ficha_reporte(){
-    let aviso = this.toastr.warning('Preparando descarga', '',{
-      timeOut:15000,
-    });
-    this.inscripcionService.reporte_ficha(this.inscripcion.id).subscribe(data =>{
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Descarga lista');
-      var mediaType = 'application/pdf';
-      var blob = new Blob([data], {type: mediaType});
-      var filename = "ficha_inscripcion_"+this.inscripcion.alumno.documento+".pdf";
-      saveAs(blob,filename)
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.inscripcionService.reporte_ficha(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
   }
 
   ficha_imprimir(){
-    let aviso = this.toastr.warning('Preparando descarga', '',{
-      timeOut:15000,
-    });
-    this.inscripcionService.reporte_ficha(this.inscripcion.id).subscribe(data =>{
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Archivo listo');
-      var blob = new Blob([data], {type: 'application/pdf'});
-      const blobUrl = URL.createObjectURL(blob);
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = blobUrl;
-      document.body.appendChild(iframe);
-      iframe.contentWindow.print();
+    this.consultando = true;
+    AuxiliarFunction.imprimir(this.toastr,this.inscripcionService.reporte_ficha(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
   }
 
   constancia_reporte(){
-    let aviso = this.toastr.warning('Preparando descarga', '',{
-      timeOut:15000,
-    });
-    this.inscripcionService.reporte_constancia_regular(this.inscripcion.id).subscribe(data =>{
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Descarga lista');
-      var mediaType = 'application/pdf';
-      var blob = new Blob([data], {type: mediaType});
-      var filename = "constancia_alumno_regular_"+this.inscripcion.alumno.documento+".pdf";
-      saveAs(blob,filename)
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.inscripcionService.reporte_constancia_regular(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
   }
 
   constancia_imprimir(){
-    let aviso = this.toastr.warning('Preparando descarga', '',{
-      timeOut:15000,
-    });
-    this.inscripcionService.reporte_constancia_regular(this.inscripcion.id).subscribe(data =>{
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Archivo listo');
-      var blob = new Blob([data], {type: 'application/pdf'});
-      const blobUrl = URL.createObjectURL(blob);
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = blobUrl;
-      document.body.appendChild(iframe);
-      iframe.contentWindow.print();
+    this.consultando = true;
+    AuxiliarFunction.imprimir(this.toastr,this.inscripcionService.reporte_constancia_regular(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
   }
 
   analitico_reporte(){
-    let aviso = this.toastr.warning('Preparando descarga', '',{
-      timeOut:15000,
-    });
-    this.inscripcionService.reporte_analitico(this.inscripcion.id).subscribe(data =>{
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Descarga lista');
-      var mediaType = 'application/pdf';
-      var blob = new Blob([data], {type: mediaType});
-      var filename = "constancia_alumno_regular_"+this.inscripcion.alumno.documento+".pdf";
-      saveAs(blob,filename)
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.inscripcionService.reporte_analitico(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
   }
 
   analitico_imprimir(){
-    let aviso = this.toastr.warning('Preparando descarga', '',{
-      timeOut:15000,
+    this.consultando = true;
+    AuxiliarFunction.imprimir(this.toastr,this.inscripcionService.reporte_analitico(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
-    this.inscripcionService.reporte_analitico(this.inscripcion.id).subscribe(data =>{
-      this.toastr.remove(aviso.toastId);
-      this.toastr.success('Archivo listo');
-      var blob = new Blob([data], {type: 'application/pdf'});
-      const blobUrl = URL.createObjectURL(blob);
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = blobUrl;
-      document.body.appendChild(iframe);
-      iframe.contentWindow.print();
+  }
+
+  cursadas_reporte(){
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.inscripcionService.reporte_cursadas(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
+    });
+  }
+
+  cursadas_imprimir(){
+    this.consultando = true;
+    AuxiliarFunction.imprimir(this.toastr,this.inscripcionService.reporte_cursadas(this.inscripcion.id)).then(()=>{
+      this.consultando = false;
+    }).catch( ()=>{
+      this.consultando = false;
     });
   }
 

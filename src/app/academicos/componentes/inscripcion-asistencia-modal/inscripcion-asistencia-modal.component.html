@@ -16,6 +16,7 @@
                   <th class="no-sort">Comision</th>
                   <th class="no-sort">Asistencia</th>
                   <th class="no-sort">Observaciones</th>
+                  <th class="no-sort"></th>
                 </tr>
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
@@ -25,6 +26,17 @@
                   <td>{{ item.asistencia.comision.nombre }}</td>
                   <td>{{ item.tipo.nombre }}</td>
                   <td>{{ item.observaciones }}</td>
+                  <td>
+                    <div class="btn-group pull-right" role="group">
+                      <button type="button" class="btn btn-sm btn-info" (click)="descargar(item)" tooltip="Constancia de Asistencia" [disabled]="consultando">
+                        <i class="fa fa-download"></i>
+                        DESCARGAR
+                      </button>
+                      <button type="button" class="btn btn-sm btn-secondary" (click)="imprimir(item)" tooltip="IMPRIMIR" [disabled]="consultando">
+                        <i class="fa fa-print"></i>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>

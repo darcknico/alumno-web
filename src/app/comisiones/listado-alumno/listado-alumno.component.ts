@@ -94,6 +94,13 @@ export class ListadoAlumnoComponent implements OnInit {
         { data: 'materia' },
         { data: 'anio' },
         { data: 'id_alumno' },
+        { 
+          data: 'examen_presnete_promedio' ,
+        },
+        { 
+          data: 'examen_nota_promedio' ,
+          width: '5%',
+        },
       ],
       columnDefs: [ {
         targets: 'no-sort',

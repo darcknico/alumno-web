@@ -42,6 +42,7 @@
                   <th>Nombre y Apellido</th>
                   <th>Documento</th>
                   <th>Estado</th>
+                  <th>Faltantes</th>
                   <th></th>
                 </tr>
               </thead>
@@ -56,6 +57,11 @@
                     <ng-container *ngIf="item.tipo_documento">{{item.tipo_documento.nombre}}:&nbsp;</ng-container>{{ item.documento }}
                   </td>
                   <td>{{item.tipo_estado?.nombre}}</td>
+                  <td>
+                    <div *ngFor="let tipo of item.archivos_faltantes">
+                      -{{tipo.nombre}}
+                    </div>
+                  </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="usuario">
                       <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">

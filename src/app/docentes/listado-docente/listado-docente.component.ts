@@ -11,6 +11,13 @@ import { TipoContrato } from '../../_models/tipo';
 import { TipoService } from '../../_services/tipo.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Carrera } from '../../_models/carrera';
+import { ReporteJobService } from '../../_services/reportejobs.service';
+import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
+import * as moment from 'moment';
+import { ReporteJob } from '../../_models/extra';
+import { MesaExamenMateriaDocenteService, FiltroMesaExamenMateriaDocente } from '../../_services/mesa_examen_materia_docente.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-listado-docente',
@@ -33,15 +40,26 @@ export class ListadoDocenteComponent implements OnInit {
     id_carrera:0,
     estado:null,
   };
+
+  formulario:FormGroup;
   constructor(
     private usuarioService:DocenteService,
     private carreraService:CarreraService,
     private sedeService:SedeService,
     private tipoService:TipoService,
+    private reportesJobsService:ReporteJobService,
+    private mesaExamenMateriaDocenteService:MesaExamenMateriaDocenteService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
-  ) { }
+    private fb: FormBuilder,
+    ) {
+      let hoy = moment();
+      this.formulario = this.fb.group({
+        fecha_inicial: [hoy.toDate(), Validators.required],
+        fecha_final: [hoy.add(7,'day').toDate(), Validators.required],
+      });
+    }
 
   suscribe;
   ngOnInit() {
@@ -105,6 +123,10 @@ export class ListadoDocenteComponent implements OnInit {
     };
   }
 
+  get f(){
+    return this.formulario.controls;
+  }
+
   nuevo(){
     this.router.navigate([this.resource,'nuevo']);
   }
@@ -120,6 +142,46 @@ export class ListadoDocenteComponent implements OnInit {
   refrescar(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
+    });
+  }
+
+  continuar(){
+    this.reportesJobsService.terminados().subscribe(response=>{
+      let restantes = response.total_count;
+      if(restantes>0){
+        const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger' });
+        (<DialogConfirmComponent>modal.content).onShow("ATENCION","Hay reportes en la cola que aun no terminan de generarse ¿Desea continuar de todas maneras?");
+        (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+            this.acta_masivo_confirmar('modal-danger');
+          }
+        });
+      } else {
+        this.acta_masivo_confirmar();
+      }
+    });
+    
+  }
+
+  private acta_masivo_confirmar(className:string='modal-info'){
+    let nombre = moment().format('DD-MM-YYYY') + '_notificacion_docente_';
+    const modal = this.modalService.show(DialogInputComponent,{class:className });
+    (<DialogInputComponent>modal.content).onShow(
+      "Notificacion de Mesas de Examen",
+      "Esta por generar un archivo comprimido con todas las notificaciones enviadas a los docentes, esto puede llevar su tiempo. Puede fijarse en Consultas->Reportes para ver el estado actual del mismo. A continuacion ingrese el nombre por el cual sera identificado.",
+      'text',
+      nombre);
+    (<DialogInputComponent>modal.content).onClose.subscribe(result => {
+      if (result.length>0) {
+        let registro = <ReporteJob>{};
+        registro.nombre = result;
+        let filtro = <FiltroMesaExamenMateriaDocente>{};
+        filtro.fecha_inicial = moment(this.f.fecha_inicial.value).format('YYYY-MM-DD');
+        filtro.fecha_final = moment(this.f.fecha_final.value).format('YYYY-MM-DD');
+        this.mesaExamenMateriaDocenteService.reporte_docente_masivo(filtro,registro).subscribe(response=>{
+          this.toastr.success('La generacion de reportes esta por comenzar', '');
+        });
+      }
     });
   }
 }

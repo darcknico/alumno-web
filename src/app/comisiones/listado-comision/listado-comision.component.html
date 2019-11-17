@@ -42,8 +42,8 @@
                         <th>Año</th>
                         <th>Carrera</th>
                         <th>Materia</th>
-                        <th>Numero</th>
-                        <th>Alumnos</th>
+                        <th class="text-center">Numero</th>
+                        <th class="text-center">Alumnos</th>
                         <th></th>
                       </tr>
                   </thead>
@@ -53,8 +53,8 @@
                       <td>{{ item.anio }}</td>
                       <td>{{ item.carrera.nombre }} ({{item.materia.plan_estudio.anio}})</td>
                       <td>{{ item.materia.nombre }} ({{ item.materia.codigo }})</td>
-                      <td>{{item.numero}}</td>
-                      <td>{{item.alumnos_cantidad}}</td>
+                      <td class="text-center">{{item.numero}}</td>
+                      <td class="text-center">{{item.alumnos_cantidad}}</td>
                       <td>
                         <div class="btn-group" dropdown placement="bottom right" container="body">
                           <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">

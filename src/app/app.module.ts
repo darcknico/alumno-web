@@ -145,6 +145,8 @@ import { DocenteMateriaService } from './_services/docente_materia.service';
 import { AulaService } from './_services/aula.service';
 import { ComisionHorarioService } from './_services/comision_horario.service';
 import { ObligacionService } from './_services/obligacion.service';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -193,7 +195,11 @@ export const customCurrencyMaskConfig = {
       requestFilters:[filter],
     }), 
     NgSelectModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
   ],
   declarations: [
     AppComponent,

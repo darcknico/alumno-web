@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Examen, ExamenAlumno, TipoExamen } from '../_models/examen';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { SedeService } from './sede.service';
  
 export interface FiltroExamen {
     search:string;
@@ -14,6 +16,8 @@ export interface FiltroExamen {
     id_carrera:number;
     id_materia:number;
     id_comision:number;
+    fecha_inicial:string;
+    fecha_final:string;
 }
 export interface ExamenAjax{
     items: Examen[];
@@ -25,29 +29,27 @@ export class ExamenService {
     id_sede:number;
     constructor(
         private http: HttpClient,
+        private sedeService:SedeService,
         ) { 
+        this.id_sede = this.sedeService.getIdSede();
+        this.sedeService.id_sede$.subscribe(id=>{
+            this.id_sede = id;
+        });
     }
 
     sede(id_sede:number){
         this.id_sede = id_sede;
     }
 
-    getAll(){
-        return this.http.get<Examen[]>(this.api + this.id_sede + '/examenes' );
+    getAll(filtro?:FiltroExamen){
+        return this.http.get<Examen[]>(this.api + this.id_sede + '/examenes',{
+            params: AuxiliarFunction.toParams(filtro),
+        } );
     }
 
     ajax(filtro:FiltroExamen):  Observable<ExamenAjax>{
         return this.http.get<ExamenAjax>(this.api + this.id_sede + '/examenes', {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_departamento: String(filtro.id_departamento),
-                id_carrera: String(filtro.id_carrera),
-                id_materia: String(filtro.id_materia),
-            }
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
 

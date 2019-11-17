@@ -98,4 +98,9 @@ export class MovimientoService {
             params: AuxiliarFunction.toParams(filtro),
         });
     }
+    estadisticas_mensual(filtro:FiltroMovimiento){
+        return this.http.get(this.api + this.id_sede + '/movimientos/estadisticas/mensual',{
+            params: AuxiliarFunction.toParams(filtro),
+        });
+    }
 }

@@ -88,6 +88,7 @@ export class MesaVerComponent implements OnInit {
             data: 'created_at',
             width: '5%', 
           },
+          { data: 'id_carrera' },{ data: 'id_plan_estudio' },{ data: 'id_materia' },{ data: 'fecha' },{ data: 'inscriptos' },{ data: 'cierre' },
         ],
         columnDefs: [ {
           targets: 'no-sort',
@@ -132,6 +133,7 @@ export class MesaVerComponent implements OnInit {
             data: 'created_at',
             width: '5%', 
           },
+          { data: 'id_carrera' },{ data: 'id_plan_estudio' },{ data: 'id_materia' },{ data: 'fecha' },{ data: 'inscriptos' },{ data: 'cierre' },
         ],
         columnDefs: [ {
           targets: 'no-sort',

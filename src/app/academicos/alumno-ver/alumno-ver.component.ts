@@ -62,7 +62,7 @@ export class AlumnoVerComponent implements OnInit {
       pageLength: 10,
       searching:false,
       columnDefs: [ {
-        targets: [4,5,6],
+        targets: [5,6,7],
         orderable: false
         },{
           targets: [0],

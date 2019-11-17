@@ -52,7 +52,7 @@ export class SedeService {
         return Number(localStorage.getItem('id_sede'));
     }
 
-    getSede(){
+    getSede():UsuarioSede{
         return JSON.parse(localStorage.getItem('sede'));
     }
 

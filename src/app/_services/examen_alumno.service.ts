@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Ajax } from '../_models/tipo';
@@ -58,6 +58,13 @@ export class ExamenAlumnoService {
     
     update(item:ExamenAlumno){
         return this.http.put<ExamenAlumno>([this.ruta,item.id].join('/'),item);
+    }
+
+    reporte_constancia(id:number):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>([this.ruta,id,'reportes/constancia'].join('/'),{
+            observe:'response',
+            responseType:'blob' as 'json',
+        });
     }
 
 }

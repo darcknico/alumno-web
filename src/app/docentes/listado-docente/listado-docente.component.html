@@ -125,5 +125,51 @@
     </div>
     <!--/.col-->
   </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Notificacion de Mesas de Examen - Masivo
+        </div>
+        <div class="card-body p-1">
+          <form [formGroup]="formulario" >
+            <div class="row">
+              <div class="form-group col-sm-4" >
+                  <label class="control-label">Fecha Inicial</label>
+                  <input bsDatepicker
+                  formControlName="fecha_inicial"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Inicio">
+              </div>
+              <div class="form-group col-sm-4" >
+                  <label class="control-label">Fecha Final</label>
+                  <input bsDatepicker
+                  formControlName="fecha_final"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Fin">
+              </div>
+          </div>
+          </form>
+          <div class="row">
+            <div class="col-12">
+              <p>Esto incluye el envio por correo al docente de la notificacion con el archivo, al email que tenga configurado en sus datos.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-block-xs-only m-1 btn-success"
+            type="submit"
+            color="accent"
+            (click)="continuar()"
+            [disabled]="!formulario.valid">
+            Generar Notificaciones
+            </button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
   <!--/.row-->
 </div>

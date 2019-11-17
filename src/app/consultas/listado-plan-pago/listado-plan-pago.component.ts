@@ -17,6 +17,8 @@ import { MateriaService } from '../../_services/materia.service';
 import { TipoMateriaLectivo } from '../../_models/materia';
 import { BecaService } from '../../_services/beca.service';
 import { Beca } from '../../_models/beca';
+import { InscripcionService } from '../../_services/inscripcion.service';
+import { TipoInscripcionEstado } from '../../_models/inscripcion';
 
 @Component({
   selector: 'app-listado-plan-pago',
@@ -31,6 +33,7 @@ export class ListadoPlanPagoComponent implements OnInit {
   carreras:Carrera[]=[];
   becas:Beca[]=[];
   tipos:TipoMateriaLectivo[]=[];
+  tipos_estado: TipoInscripcionEstado[];
   consultando:boolean = false;
 
   request = <FiltroPlanPago>{
@@ -41,6 +44,7 @@ export class ListadoPlanPagoComponent implements OnInit {
     deudores:0,
     id_tipo_materia_lectivo:0,
     anio:null,
+    id_tipo_inscripcion_estado:[1],
   };
   constructor(
     private planPagoService:PlanPagoService,
@@ -49,6 +53,7 @@ export class ListadoPlanPagoComponent implements OnInit {
     private carreraService:CarreraService,
     private materiaService:MateriaService,
     private becaService:BecaService,
+    private inscripcionService:InscripcionService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -78,6 +83,9 @@ export class ListadoPlanPagoComponent implements OnInit {
     });
     this.materiaService.tipos_lectivo().subscribe(response=>{
       this.tipos = response;
+    });
+    this.inscripcionService.tipos_estado().subscribe(response=>{
+      this.tipos_estado = response;
     });
 
     const that = this;

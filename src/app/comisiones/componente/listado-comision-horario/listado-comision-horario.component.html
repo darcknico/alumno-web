@@ -11,20 +11,22 @@
           </div>
           <div class="card-body p-1">
             <div class="table-responsive">
-              <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <table datatable [dtOptions]="dtOptions" class="table row-border hover compact" width="100%" *ngIf="dataSource">
                 <thead>
                   <tr>
                     <th>Dia</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
+                    <th>Nom.</th>
+                    <th class="text-center">Horario</th>
+                    <th class="text-center">Aula N°</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody *ngIf="dataSource?.length != 0">
                   <tr *ngFor="let item of dataSource">
                     <td>{{ item.dia.nombre }}</td>
-                    <td>{{ item.hora_inicial }}</td>
-                    <td>{{ item.hora_final }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td class="text-center">{{ item.hora_inicial }} - {{ item.hora_final }}</td>
+                    <td class="text-center">{{ item.aula?.numero }}</td>
                     <td>
                       <div class="btn-group" dropdown placement="bottom right" container="body">
                         <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">

@@ -7,6 +7,29 @@
   <div class="modal-body">
     <form [formGroup]="formulario" >
       <div class="row">
+        <div class="form-group col-sm-8">
+          <label class="control-label">Nombre / Descripción</label>
+          <input type="text" class="form-control" formControlName="nombre">
+        </div>
+        <div class="form-group col-sm-4">
+            <label class="control-label">Asis. Aut.</label>
+            <input type="checkbox" class="form-control" formControlName="asistencia">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="control-label">Aula</label>
+          <ng-select [items]="aulas"
+            [selectOnTab]="true"
+            placeholder="Seleccione el Aula"
+            formControlName="id_aula"
+            bindValue="id"
+            bindLabel="nombre"
+            [clearable]="true">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group col-sm-12">
           <label class="control-label">Dia</label>
           <ng-select [items]="dias"

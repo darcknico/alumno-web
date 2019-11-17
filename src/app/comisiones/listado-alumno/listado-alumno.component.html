@@ -41,7 +41,8 @@
                             <th class="no-sort">Materia</th>
                             <th class="no-sort">Año</th>
                             <th>Alumno</th>
-                            <th class="no-sort">A/E Presentes</th>
+                            <th class="no-sort text-center">A/E Presentes</th>
+                            <th class="no-sort text-center">P+R/TP</th>
                             </tr>
                         </thead>
                         <tbody *ngIf="dataSource?.length != 0">
@@ -51,7 +52,8 @@
                             <td>{{ item.comision.materia.nombre }}</td>
                             <td>{{ item.comision.anio }} </td>
                             <td>{{ item.alumno.apellido }} {{ item.alumno.nombre }}</td>
-                            <td>{{ item.asistencia_presente_promedio| number:'1.2-2':'es-AR' }}% / {{ item.examen_presente_promedio| number:'1.2-2':'es-AR' }}%</td>
+                            <td class="text-center">{{ item.asistencia_presente_promedio| number:'1.2-2':'es-AR' }}% / {{ item.examen_presente_promedio| number:'1.2-2':'es-AR' }}%</td>
+                            <td class="text-center">{{ item.examen_parcial_promedio| number:'1.2-2':'es-AR' }} / {{ item.examen_practico_promedio| number:'1.2-2':'es-AR' }}</td>
                             </tr>
                         </tbody>
                         <tbody *ngIf="dataSource?.length == 0">
@@ -70,6 +72,13 @@
                         <div class="col-12">
                             <p>
                             A/E Presente = Promedio de asistencias y examenes presentes 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                            P+R/TP = Promedio de los examenes de la comision. P+R = Parcial y Recuperatorio. TP = Trabajo Practico
                             </p>
                         </div>
                     </div>

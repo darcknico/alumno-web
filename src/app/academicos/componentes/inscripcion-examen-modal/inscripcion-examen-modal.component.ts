@@ -4,6 +4,9 @@ import { Inscripcion } from '../../../_models/inscripcion';
 import { Subject } from 'rxjs';
 import { InscripcionService } from '../../../_services/inscripcion.service';
 import { BsModalRef } from 'ngx-bootstrap';
+import { ExamenAlumnoService } from '../../../_services/examen_alumno.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuxiliarFunction } from '../../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-inscripcion-examen-modal',
@@ -18,7 +21,9 @@ export class InscripcionExamenModalComponent implements OnInit {
   public onClose: Subject<boolean>;
 
   constructor(
+    public service:ExamenAlumnoService,
     public inscripcionService:InscripcionService,
+    private toastr: ToastrService,
     public bsModalRef: BsModalRef,
   ) { 
     this.dtOptions = {
@@ -50,6 +55,14 @@ export class InscripcionExamenModalComponent implements OnInit {
   cancelar(){
     this.onClose.next(false);
     this.bsModalRef.hide();
+  }
+
+  descargar(item:ExamenAlumno){
+    AuxiliarFunction.descargar(this.toastr,this.service.reporte_constancia(item.id));
+  }
+
+  imprimir(item:ExamenAlumno){
+    AuxiliarFunction.imprimir(this.toastr,this.service.reporte_constancia(item.id));
   }
 
 }

@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ComisionService } from '../../_services/comision.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Comision } from '../../_models/comision';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { ExamenService } from '../../_services/examen.service';
+import { ExamenService, FiltroExamen } from '../../_services/examen.service';
 import { Examen, TipoExamen } from '../../_models/examen';
+import { CalendarEvent } from 'calendar-utils';
+import { ComisionExamenColors } from '../../_helpers/colors';
 
 @Component({
   selector: 'app-examen-nuevo',
@@ -14,12 +16,17 @@ import { Examen, TipoExamen } from '../../_models/examen';
   styleUrls: ['./examen-nuevo.component.scss']
 })
 export class ExamenNuevoComponent implements OnInit {
-
+  
+  events: CalendarEvent[] = [];
+  
   id_comision_examen:number = null;
   comision:Comision;
   formulario: FormGroup;
   tipos:TipoExamen[];
   consultando = false;
+  
+  filtro = <FiltroExamen>{};
+  dataSource:Examen[];
   constructor(
     private comisionService:ComisionService,
     private examenService:ExamenService,
@@ -38,12 +45,9 @@ export class ExamenNuevoComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.comisionService.sede(id_sede);
-    this.examenService.sede(id_sede);
-
     this.route.params.subscribe(params=>{
       let ids = params['id_comision'];
+      this.filtro.id_comision = ids;
       this.comisionService.getById(ids).subscribe(response=>{
         this.comision = response;
       });
@@ -58,7 +62,24 @@ export class ExamenNuevoComponent implements OnInit {
           this.f.observaciones.setValue(response.observaciones);
         });
       }
-      
+      this.examenService.getAll(this.filtro).subscribe(response=>{
+        this.dataSource = response;
+        this.events = [];
+        this.dataSource.forEach(examen=>{
+          let color = ComisionExamenColors.parcial;
+          if(examen.id_tipo_examen == 2){
+            color = ComisionExamenColors.recuperatorio;
+          } else if (examen.id_tipo_examen == 3){
+            color = ComisionExamenColors.practico;
+          }
+          this.events.push({
+            title:examen.nombre,
+            start:moment(examen.fecha).toDate(),
+            allDay:true,
+            color:color,
+          });
+        });
+      });
     });
 
     this.examenService.tipos().subscribe(response=>{
@@ -104,4 +125,6 @@ export class ExamenNuevoComponent implements OnInit {
   volver(){
     this.router.navigate(['/comisiones/'+this.comision.id+'/ver']);
   }
+
+  
 }

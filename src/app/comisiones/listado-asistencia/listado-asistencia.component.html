@@ -14,17 +14,21 @@
           <div class="card-header">
             <i class="fa fa-align-justify"></i> Asistencias
             <div class="card-header-actions">
-              <button class="btn btn-block btn-success" type="button" (click)="asistencia_nuevo()">Generar asistencia</button>
+              <button class="btn btn-sm btn-block btn-success" type="button" (click)="asistencia_nuevo()">Generar asistencia</button>
             </div>
           </div>
           <div class="card-body p-1">
+            <app-comision-asistencia-calendar-component
+              [view]="'month'"
+              [events]="events">
+            </app-comision-asistencia-calendar-component>
             <div class="table-responsive">
-              <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <table datatable [dtOptions]="dtOptions" class="table row-border hover compact" width="100%" *ngIf="dataSource">
                 <thead>
                   <tr>
                     <th>Fecha</th>
-                    <th>Cantidad</th>
-                    <th>Presentes</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Presentes</th>
                     <th>Responsable</th>
                     <th></th>
                   </tr>
@@ -32,20 +36,27 @@
                 <tbody *ngIf="dataSource?.length != 0">
                   <tr *ngFor="let item of dataSource" class="{{!item.estado?'bg-danger':''}}">
                     <td>{{ item.fecha | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ item.alumnos_cantidad }}</td>
-                    <td>{{ item.alumnos_cantidad_presente }}</td>
+                    <td class="text-center">{{ item.alumnos_cantidad }}</td>
+                    <td class="text-center">{{ item.alumnos_cantidad_presente }}</td>
                     <td>{{ item.responsable_apellido }} {{ item.responsable_nombre }}</td>
                     <td>
                       <div class="btn-group" dropdown placement="top right" container="body" *ngIf="item.estado">
-                        <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                           <span class="caret"></span>
                         </button>
                         <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                           <li role="menuitem">
-                            <a class="dropdown-item" (click)="asistencia(item)" href="javascript:void(0);">Alumnos</a>
+                            <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                              <i class="fa fa-trash"></i>
+                              Eliminar
+                            </a>
                           </li>
+                          <li class="divider dropdown-divider"></li>
                           <li role="menuitem">
-                            <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                            <a class="dropdown-item" (click)="asistencia(item)" href="javascript:void(0);">
+                              <i class="fa fa-edit"></i>
+                              Alumnos - Asistencia
+                            </a>
                           </li>
                         </ul>
                       </div>
@@ -65,7 +76,8 @@
           <div class="card-footer">
             <button class="btn btn-secondary btn-block-xs-only m-1"
               (click)="volver()">
-              Comision
+              <i class="fa fa-cog"></i>
+              Gestionar Comision
               </button>
           </div>
         </div>

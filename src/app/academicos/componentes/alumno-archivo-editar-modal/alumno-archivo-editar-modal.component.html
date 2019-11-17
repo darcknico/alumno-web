@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" >
+    Documentación
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Tipo de Documentacion</label>
+        <select 
+          formControlName="id_tipo_alumno_documentacion"
+          class="form-control" 
+          >
+          <option *ngFor="let item of tipo_documentacion" [value]="item.id" >{{item.nombre}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Observaciones (Opcional)</label>
+        <input
+          formControlName="observaciones"
+          type="text" 
+          class="form-control"
+          placeholder=" - ">
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="form-group col-sm-12">
+      <label class="control-label">Archivo Nuevo (Opcional)</label>
+      <input 
+        class="form-control"
+        (change)="onFileChange($event)"
+        type="file"
+        placeholder="Archivo"
+        #fileInput>
+    </div>
+  </div>
+  <div class="row" *ngIf="item">
+    <div class="form-group col-sm-12" *ngIf="item.nombre">
+      <input 
+        class="form-control"
+        readonly="readonly"
+        type="text"
+        placeholder="Nombre"
+        [value]="item.nombre">
+    </div>
+    <div class="form-group col-sm-12" *ngIf="item.url && [1,2].indexOf(f.id_tipo_alumno_documentacion.value) >= 0 ">
+      <img [src]="item.url" class="img-thumbnail" [alt]="item.nombre" width="200">
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    [disabled]="!formulario.valid"
+    type="button" 
+    class="btn btn-success" 
+    (click)="confirmar()">Guardar</button>
+</div>

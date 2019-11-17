@@ -61,19 +61,51 @@
                     {{ item.observaciones }}
                   </td>
                   <td>
-                    <button class="btn btn-danger btn-sm m-1" (click)="alumno_desasociar(item)" tooltip="Dar de baja">
-                      <span class="fa fa-trash"></span>
-                    </button>
-                    <button class="btn btn-danger btn-sm m-1" (click)="mesa_examen_materia(item)" tooltip="Ir a la mesa">
-                      <span class="fa fa-file"></span>
-                    </button>
-                    <br>
-                    <button class="btn btn-info btn-sm m-1" (click)="descargar(item)" tooltip="Descargar constancia">
-                      <span class="fa fa-download"></span>
-                    </button>
-                    <button class="btn btn-secondary btn-sm m-1" (click)="imprimir(item)" tooltip="Imprimir constancia">
-                      <span class="fa fa-print"></span>
-                    </button>
+                    <div class="btn-group" dropdown placement="bottom right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                      <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="mesa_examen_materia(item)" href="javascript:void(0);">
+                          <i class="fa fa-file"></i>
+                          Ir a la mesa
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="alumno_desasociar(item)" href="javascript:void(0);">
+                          <i class="fa fa-trash"></i>
+                          Dar de baja
+                          </a>
+                        </li>
+                        <li class="divider dropdown-divider"></li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="descargar(item)" href="javascript:void(0);">
+                            <i class="fa fa-save"></i>
+                            Const. Inscripción(Descargar)
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="imprimir(item)" href="javascript:void(0);">
+                            <i class="fa fa-print"></i>
+                            Const. Inscripción(Imprimir)
+                          </a>
+                        </li>
+                        <li class="divider dropdown-divider"></li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="descargar_asistencia(item)" href="javascript:void(0);">
+                            <i class="fa fa-save"></i>
+                            Const. Asistencia(Descargar)
+                          </a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" (click)="imprimir_asistencia(item)" href="javascript:void(0);">
+                            <i class="fa fa-print"></i>
+                            Const. Asistencia(Imprimir)
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               </tbody>

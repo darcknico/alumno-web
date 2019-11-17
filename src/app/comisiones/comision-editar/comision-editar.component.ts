@@ -71,6 +71,9 @@ export class ComisionEditarComponent implements OnInit {
       docentes:null,
       responsable_nombre: ['', Validators.required],
       responsable_apellido: ['', Validators.required],
+      clase_inicio:null,
+      clase_final:null,
+      asistencia:false,
     });
   }
 
@@ -162,6 +165,15 @@ export class ComisionEditarComponent implements OnInit {
         this.f.responsable_apellido.setValue(response.responsable_apellido);
         this.f.id_modalidad.setValue(response.id_modalidad);
         this.f.id_materia.setValue(response.id_materia);
+        this.f.asistencia.setValue(response.asistencia);
+        let clase_inicio = moment(response.clase_inicio);
+        if(clase_inicio.isValid()){
+          this.f.clase_inicio.setValue(clase_inicio.toDate());
+        }
+        let clase_final = moment(response.clase_final);
+        if(clase_final.isValid()){
+          this.f.clase_final.setValue(clase_final.toDate());
+        }
         if(response.id_usuario>0){
           this.usuario_seleccionado = true;
           this.usuario = response.responsable;
@@ -220,6 +232,15 @@ export class ComisionEditarComponent implements OnInit {
     item.responsable_apellido = this.f.responsable_apellido.value;
     item.id_modalidad = this.f.id_modalidad.value;
     item.docentes = this.f.docentes.value;
+    item.asistencia = this.f.asistencia.value;
+    let clase_inicio = moment(this.f.clase_inicio.value);
+    if(clase_inicio.isValid()){
+      item.clase_inicio = clase_inicio.format('YYYY-MM-DD');
+    }
+    let clase_final = moment(this.f.clase_final.value);
+    if(clase_final.isValid()){
+      item.clase_final = clase_final.format('YYYY-MM-DD');
+    }
 
     this.consultando = true;
     if(item.id>0){
@@ -312,6 +333,14 @@ export class ComisionEditarComponent implements OnInit {
     return a.id_usuario == b.id_usuario;
   }
 
+  buscarDocente(term: string, item: Docente){
+    term = term.toUpperCase();
+    let apellido = item.usuario.apellido.toUpperCase().indexOf(term) !== -1;
+    let nombre = item.usuario.nombre.toUpperCase().indexOf(term) !== -1;
+    let resultado = String(item.cuit).startsWith(term) || apellido || nombre;
+    return resultado;
+  }
+
   docenteRemovido(any){
     this.recomendaciones.forEach(docente=>{
       if(docente.id_usuario == any.value.id_usuario){
@@ -336,4 +365,9 @@ export class ComisionEditarComponent implements OnInit {
   volver(){
     this.router.navigate(['/comisiones']);
   }
+
+  gestionar(){
+    this.router.navigate(['/comisiones/'+this.id+'/ver']);
+  }
+
 }

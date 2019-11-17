@@ -6,6 +6,7 @@ import { Alumno, TipoCondicionAlumno } from "./alumno";
 import { Inscripcion } from "./inscripcion";
 import { Modalidad } from './modalidad';
 import { Dia } from './extra';
+import { Aula } from './aula';
 
 export interface Comision{
     id:number;
@@ -19,6 +20,9 @@ export interface Comision{
     responsable_nombre:string;
     responsable_apellido:string;
     id_modalidad:number;
+    clase_inicio:string;
+    clase_final:string;
+    asistencia:boolean;
     estado:boolean;
     created_at:Date;
     updated_at:Date;
@@ -72,8 +76,13 @@ export interface ComisionHorario{
     id_dia:number;
     hora_inicial:string;
     hora_final:string;
+    id_aula:number;
+    nombre:string;
+    asistencia:boolean;
     created_at:Date;
     updated_at:Date;
     comision:Comision;
     dia:Dia;
+    
+    aula:Aula;
 }

@@ -1,0 +1,49 @@
+<div class="row text-center">
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div
+        class="btn btn-primary"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="actualizar()"
+      >
+        Anterior
+      </div>
+      <div
+        class="btn btn-outline-secondary"
+        mwlCalendarToday
+        [(viewDate)]="viewDate"
+        (viewDateChange)="actualizar()"
+      >
+        Hoy
+      </div>
+      <div
+        class="btn btn-primary"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="actualizar()"
+      >
+        Siguiente
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h3>{{ viewDate | calendarDate: view + 'ViewTitle':'es-AR' }}</h3>
+  </div>
+</div>
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="CalendarView.Month"
+    [viewDate]="viewDate"
+    [events]="events"
+  >
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view
+    *ngSwitchCase="CalendarView.Week"
+    [viewDate]="viewDate"
+    [events]="eventsCalendar"
+  >
+  </mwl-calendar-week-view>
+</div>

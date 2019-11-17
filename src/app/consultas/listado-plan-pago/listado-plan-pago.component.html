@@ -23,7 +23,7 @@
                 <option *ngFor="let item of departamentos" [value]="item.id" >{{item.nombre}}</option>
               </select>
             </div>
-            <div class="form-group col-sm-3" >
+            <div class="form-group col-sm-2" >
               <label class="control-label">Tipo de Deudor</label>
               <select 
                 class="form-control" 
@@ -49,7 +49,19 @@
             <div class="form-group col-sm-2">
               <label class="control-label">Año</label>
               <input class="form-control" type="number" [(ngModel)]="request.anio" (keyup.enter)="refrescar()">
+            </div>
           </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label class="control-label">Estados</label>
+              <ng-select 
+                [multiple]="true" 
+                (ngModelChange)="refrescar()"
+                [(ngModel)]="request.id_tipo_inscripcion_estado"
+                >
+                <ng-option *ngFor="let item of tipos_estado" [value]="item.id" >{{item.nombre}}</ng-option>
+              </ng-select>
+            </div>
           </div>
           <div class="row">
             <div class="form-group col-sm-8">
@@ -78,7 +90,7 @@
             </div>
           </div>
           <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+            <table datatable [dtOptions]="dtOptions" class="table table-sm row-border hover" width="100%" >
               <thead>
                 <tr>
                   <th>Año</th>
@@ -97,6 +109,9 @@
                   <td>
                     <div *ngIf="item.inscripcion">
                       {{ item.inscripcion.alumno.nombre }} {{ item.inscripcion.alumno.apellido }}
+                      <div *ngIf="item.inscripcion.beca">
+                        ({{ item.inscripcion.beca.nombre }})
+                      </div>
                     </div>
                   </td>
                   <td>

@@ -39,12 +39,16 @@ export interface Alumno{
     archivos:AlumnoArchivo[];
     tipo_civil:TipoAlumnoCivil;
     tipo_estado:TipoAlumnoCivil;
+
+    archivos_subidos:TipoAlumnoDocumentacion[];
+    archivos_faltantes:TipoAlumnoDocumentacion[];
 }
 
 export interface AlumnoArchivo{
     id:number;
     nombre:string;
     id_tipo_alumno_documentacion:number;
+    observaciones:string;
     id_alumno:number;
     id_usuario:number;
     archivo:any;

@@ -7,6 +7,9 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { ComisionExamenColors } from '../../_helpers/colors';
+import * as moment from 'moment';
+import { CalendarEvent } from 'calendar-utils';
 
 @Component({
   selector: 'app-listado-examen',
@@ -15,6 +18,8 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
 })
 export class ListadoExamenComponent implements OnInit {
 
+  events: CalendarEvent[] = [];
+  
   comision:Comision;
 
   dtOptions: DataTables.Settings = {};
@@ -29,10 +34,6 @@ export class ListadoExamenComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let id_sede = +localStorage.getItem('id_sede');
-    this.comisionService.sede(id_sede);
-    this.examenService.sede(id_sede);
-
     this.dtOptions = {
       order:[[0,'desc']],
       language: {
@@ -40,6 +41,7 @@ export class ListadoExamenComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
       columnDefs: [ {
         targets: [4],
         orderable: false,
@@ -47,7 +49,7 @@ export class ListadoExamenComponent implements OnInit {
         },{
         targets: [3],
         orderable: false,
-        }, ]
+      }, ]
     };
 
     this.route.params.subscribe(params=>{
@@ -57,6 +59,21 @@ export class ListadoExamenComponent implements OnInit {
       });
       this.comisionService.examenes(ids).subscribe(response=>{
         this.dataSource = response;
+        this.events = [];
+        this.dataSource.forEach(examen=>{
+          let color = ComisionExamenColors.parcial;
+          if(examen.id_tipo_examen == 2){
+            color = ComisionExamenColors.recuperatorio;
+          } else if (examen.id_tipo_examen == 3){
+            color = ComisionExamenColors.practico;
+          }
+          this.events.push({
+            title:examen.nombre,
+            start:moment(examen.fecha).toDate(),
+            allDay:true,
+            color:color,
+          });
+        });
       });
     });
   }

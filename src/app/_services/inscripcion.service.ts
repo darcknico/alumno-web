@@ -40,17 +40,20 @@ export class InscripcionService {
         ) {
     }
  
+    get ruta(){
+        return this.api + this.id_sede + '/inscripciones';
+    }
 
     sede(id_sede:number){
         this.id_sede = id_sede;
     }
 
     getAll(){
-        return this.http.get<Inscripcion[]>(this.api + this.id_sede + '/inscripciones' );
+        return this.http.get<Inscripcion[]>(this.ruta );
     }
 
     ajax(filtro:FiltroInscripcion):  Observable<InscripcionAjax>{
-        return this.http.get<InscripcionAjax>(this.api + this.id_sede + '/inscripciones', {
+        return this.http.get<InscripcionAjax>(this.ruta, {
             params: AuxiliarFunction.toParams(filtro)
         });
     }
@@ -119,16 +122,36 @@ export class InscripcionService {
         return this.http.get<MesaExamenMateria[]>(this.api + this.id_sede + '/inscripciones/' +id_inscripcion+'/mesas/'+id_mesa_examen+'/materias/disponibles');
     }
 
-    reporte_ficha(id:number){
-        return this.http.get(this.api + this.id_sede + '/inscripciones/' + id +'/reportes/ficha',{responseType: 'blob'});
+    reporte_ficha(id:number):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>( [this.ruta,id,'reportes/ficha'].join('/'),
+        {
+            observe:'response',
+            responseType:'blob' as 'json',
+        });
     }
 
-    reporte_constancia_regular(id:number){
-        return this.http.get(this.api + this.id_sede + '/inscripciones/' + id +'/reportes/constancia',{responseType: 'blob'});
+    reporte_constancia_regular(id:number):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>( [this.ruta,id,'reportes/constancia'].join('/') ,
+        {
+            observe:'response',
+            responseType:'blob' as 'json',
+        });
     }
 
-    reporte_analitico(id:number){
-        return this.http.get(this.api + this.id_sede + '/inscripciones/' + id +'/reportes/analitico',{responseType: 'blob'});
+    reporte_analitico(id:number):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>( [this.ruta,id,'reportes/analitico'].join('/') ,
+        {
+            observe:'response',
+            responseType:'blob' as 'json',
+        });
+    }
+
+    reporte_cursadas(id:number):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>( [this.ruta,id,'reportes/cursadas'].join('/') ,
+        {
+            observe:'response',
+            responseType:'blob' as 'json',
+        });
     }
 
     exportar(filtro:FiltroInscripcion):Observable<HttpResponse<Blob>>{

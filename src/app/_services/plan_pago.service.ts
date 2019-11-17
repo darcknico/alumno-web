@@ -20,6 +20,7 @@ export interface FiltroPlanPago {
     deudores:number;
     id_tipo_materia_lectivo:number;
     anio:number;
+    id_tipo_inscripcion_estado:any;
 }
 export interface PlanPagoAjax{
     items: PlanPago[];

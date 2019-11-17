@@ -17,6 +17,12 @@
         </div>
         <div class="card-body">
           <form [formGroup]="formulario" >
+            <ng-container *ngIf="dataSourceHorarios.length>0">
+              <app-comision-asistencia-calendar-component *ngIf="recurringEvents"
+                [events]="events"
+                [calendar]="recurringEvents">
+              </app-comision-asistencia-calendar-component>
+            </ng-container>
             <div class="row">
               <div class="form-group col-sm-4">
                 <label class="control-label">Fecha (*)</label>

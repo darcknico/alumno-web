@@ -24,6 +24,11 @@ import { ListadoComisionDocenteModalComponent } from './componente/listado-comis
 import { ListadoComisionHorarioComponent } from './componente/listado-comision-horario/listado-comision-horario.component';
 import { ComisionHorarioEditarModalComponent } from './componente/comision-horario-editar-modal/comision-horario-editar-modal.component';
 import { ListadoHorarioComponent } from './listado-horario/listado-horario.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { ComisionExamenHelpComponent } from './componente/comision-examen-help/comision-examen-help.component';
+import { ComisionExamenCalendarComponent } from './componente/comision-examen-calendar/comision-examen-calendar.component';
+import { ComisionAsistenciaCalendarComponent } from './componente/comision-asistencia-calendar/comision-asistencia-calendar.component';
 
 @NgModule({
   imports: [
@@ -38,6 +43,7 @@ import { ListadoHorarioComponent } from './listado-horario/listado-horario.compo
     CollapseModule,
     TimepickerModule,
     ModalModule.forRoot(),
+    CalendarModule,
   ],
   declarations: [
     ListadoComisionComponent, 
@@ -56,7 +62,7 @@ import { ListadoHorarioComponent } from './listado-horario/listado-horario.compo
     ComisionAlumnoVerModalComponent, 
     ListadoComisionDocenteModalComponent, 
     ListadoComisionHorarioComponent, 
-    ComisionHorarioEditarModalComponent, ListadoHorarioComponent,
+    ComisionHorarioEditarModalComponent, ListadoHorarioComponent, ComisionExamenHelpComponent, ComisionExamenCalendarComponent, ComisionAsistenciaCalendarComponent,
   ],
   entryComponents:[
     ComisionAlumnoEditarModalComponent,

@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
 import { InscripcionService } from '../../../_services/inscripcion.service';
 import { AsistenciaAlumno } from '../../../_models/asistencia';
+import { AsistenciaAlumnoService } from '../../../_services/asistencia_alumno.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuxiliarFunction } from '../../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-inscripcion-asistencia-modal',
@@ -18,7 +21,9 @@ export class InscripcionAsistenciaModalComponent implements OnInit {
   public onClose: Subject<boolean>;
 
   constructor(
+    public service:AsistenciaAlumnoService,
     public inscripcionService:InscripcionService,
+    private toastr: ToastrService,
     public bsModalRef: BsModalRef,
   ) { 
     this.dtOptions = {
@@ -50,6 +55,14 @@ export class InscripcionAsistenciaModalComponent implements OnInit {
   cancelar(){
     this.onClose.next(false);
     this.bsModalRef.hide();
+  }
+
+  descargar(item:AsistenciaAlumno){
+    AuxiliarFunction.descargar(this.toastr,this.service.reporte_constancia(item.id));
+  }
+
+  imprimir(item:AsistenciaAlumno){
+    AuxiliarFunction.imprimir(this.toastr,this.service.reporte_constancia(item.id));
   }
 
 }

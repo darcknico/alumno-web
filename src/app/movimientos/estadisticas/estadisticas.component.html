@@ -2,6 +2,71 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
+        <div class="row d-print-none">
+          <div class="col-11">
+
+          </div>
+          <div class="col-1">
+              <button class="btn btn-sm btn-primary" printSectionId="print-section" ngxPrint>
+                <i class="fa fa-print"></i>
+              </button> 
+          </div>
+        </div>
+        <div class="card-body" id="print-section">
+          <div class="row" >
+            <div class="col-md-6" *ngIf="$planes | async as planes">
+              <h4>Total alumnos en "{{ sede.sede.nombre }}" es {{planes.total}} durante el {{ hoy.year() }}</h4>
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <td>PAGARON CUOTA AL CORRIENTE MES</td>
+                    <td>{{ planes.al_dia }} </td>
+                  </tr>
+                  <tr>
+                    <td>PAGARON OTROS MESES</td>
+                    <td>{{ planes.deuda_1_2 }} </td>
+                  </tr>
+                  <tr>
+                    <td>ADEUDAN HASTA 3 MESES</td>
+                    <td>{{ planes.deuda_3 }} </td>
+                  </tr>
+                  <tr>
+                    <td>ADEUDAN MAS DE 3 MESES</td>
+                    <td>{{ planes.deuda_3_mas }} </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-6" *ngIf="$mensual | async as mensual">
+              <h4>Total del mes {{ hoy.format('MMMM') }} ${{ mensual.total | number:'1.2-2':'es-AR' }} de una cantidad de {{mensual.cantidad}} movimientos</h4>
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <td>CUOTA</td>
+                    <td>${{ mensual.cuota_total | number:'1.2-2':'es-AR' }} </td>
+                    <td>{{ mensual.cuota_cantidad }} recibos</td>
+                  </tr>
+                  <tr>
+                    <td>MATRICULA</td>
+                    <td>${{ mensual.matricula_total | number:'1.2-2':'es-AR' }} </td>
+                    <td>{{ mensual.matricula_cantidad }} recibos</td>
+                  </tr>
+                  <tr>
+                    <td>OTROS</td>
+                    <td>${{ mensual.otros_total | number:'1.2-2':'es-AR' }} </td>
+                    <td>{{ mensual.otros_cantidad }} recibos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
         <div class="card-content">
           <p class="text-center">
             Filtro por fechas

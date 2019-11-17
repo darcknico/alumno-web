@@ -22,6 +22,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { AlumnoSedeService } from '../../_services/alumno_sede.service';
+import { AlumnoArchivoEditarModalComponent } from '../componentes/alumno-archivo-editar-modal/alumno-archivo-editar-modal.component';
 
 @Component({
   selector: 'app-alumno-editar',
@@ -41,6 +42,10 @@ export class AlumnoEditarComponent implements OnInit {
   formulario: FormGroup;
   usuario: FormGroup;
   archivos:AlumnoArchivo[]=[];
+  /**
+   * Documentacion Subida
+   */
+  archivos_subidos:TipoAlumnoDocumentacion[]=[];
 
   typeaheadLoading: boolean;
   typeaheadNoResults: boolean;
@@ -166,12 +171,15 @@ export class AlumnoEditarComponent implements OnInit {
             this.f.observaciones.setValue(response.observaciones);
             this.archivos = response.archivos;
             this.archivos.forEach(archivo=>{
-              this.alumnoService.archivo(archivo).subscribe(blob=>{
-                let urlCreator = window.URL;
-                archivo.url = this.sanitizer.bypassSecurityTrustUrl(urlCreator.createObjectURL(blob));
-              });
+              if(archivo.nombre){
+                this.alumnoService.archivo(archivo).subscribe(blob=>{
+                  let urlCreator = window.URL;
+                  archivo.url = this.sanitizer.bypassSecurityTrustUrl(urlCreator.createObjectURL(blob));
+                });
+              }
               return archivo;
             });
+            this.archivos_subidos = response.archivos_subidos;
         }))
       );
     }
@@ -256,7 +264,7 @@ export class AlumnoEditarComponent implements OnInit {
       });
     } else {
       const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
-      (<DialogConfirmComponent>modal.content).onShow("Dar de alta alumno","Esta por agregar el alumno con documento \""+item.documento+"\" a la sede actual.¿Desea continuar?");
+      (<DialogConfirmComponent>modal.content).onShow("Dar de alta alumno","Esta por agregar el alumno con el documento \""+item.documento+"\" a la sede actual.¿Desea continuar?");
       (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
         if (result === true) {
           this.alumnoService.register(item).subscribe(response=>{
@@ -268,10 +276,15 @@ export class AlumnoEditarComponent implements OnInit {
               this.toastr.warning('Subiendo Archivos', '');
             }
             this.archivos.forEach(data=>{
+              data.id_alumno = response.id;
               tasks.push(
-                this.alumnoService.archivoAlta(response.id,data.id_tipo_alumno_documentacion,data.archivo).pipe(
+                this.alumnoService.archivoAlta(data).pipe(
                   map(response => {
-                    this.toastr.success('Archivo '+data.nombre+' Agregado', '');
+                    if(data.nombre){
+                      this.toastr.success('Archivo '+data.nombre+' Agregado', '');
+                    } else {
+                      this.toastr.success('Archivo Agregado', '');
+                    }
                     this.archivos.find(item=>item.id==data.id).subido = true;
                   }))
               );
@@ -301,36 +314,6 @@ export class AlumnoEditarComponent implements OnInit {
    * ARCHIVOS
    */
 
-  onFileChange(event) {
-    if(event.target.files.length > 0) {
-      let file = event.target.files[0];
-      this.fileInput.nativeElement.value = "";
-      if(this.id>0){
-        this.alumnoService.archivoAlta(this.id,this.id_tipo_documentacion,file).subscribe(response => {
-          this.archivos.push(response);
-          this.toastr.success('Archivo Agregado', '');
-        });
-      } else {
-        if(this.id_tipo_documentacion>0){
-          let random = Math.floor(Math.random() * (999999 - 100000)) + 100000;
-          var archivo = <AlumnoArchivo>{};
-          archivo.id = random;
-          archivo.nombre = file.name;
-          archivo.archivo = file;
-          let urlCreator = window.URL;
-          archivo.url = this.sanitizer.bypassSecurityTrustUrl(urlCreator.createObjectURL(file));
-          archivo.subido = false;
-          archivo.id_tipo_alumno_documentacion = +this.id_tipo_documentacion;
-          archivo.tipo_documentacion = this.tipo_documentacion.find(data=>data.id == +this.id_tipo_documentacion);
-          this.archivos.push(archivo);
-        } else{
-          this.toastr.warning('Por Favor seleccione un Tipo de Documentacion', '');
-        }
-        
-      }
-    }
-  }
-
   descargar(item:AlumnoArchivo){
     this.toastr.success('Preparando Descarga', '');
     this.alumnoService.archivo(item).subscribe(data => saveAs(data,item.nombre));
@@ -340,18 +323,38 @@ export class AlumnoEditarComponent implements OnInit {
     return this.alumnoService.archivo(item);
   }
 
+  editar(item:AlumnoArchivo){
+    const modal = this.modalService.show(AlumnoArchivoEditarModalComponent,{class: 'modal-info'});
+    (<AlumnoArchivoEditarModalComponent>modal.content).onShow(item);
+    (<AlumnoArchivoEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.alumnoService.archivoEdita(item).subscribe(response => {
+          this.toastr.success('Archivo Editado', '');
+        });
+      }
+    });
+  }
+
   eliminar(item:AlumnoArchivo){
     if(this.id>0){
-      this.alumnoService.archivoBaja(item).subscribe(response=> {
-        this.toastr.success('Archivo Eliminado', '');
-        this.archivos = this.archivos.filter(data =>{
-          return !(data.id == item.id)
-        });
+      const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
+      (<DialogConfirmComponent>modal.content).onShow("Eliminar Documentacion","¿Esta seguro que desea eliminar el archivo?");
+      (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          this.alumnoService.archivoBaja(item).subscribe(response=> {
+            this.toastr.success('Archivo Eliminado', '');
+            this.archivos = this.archivos.filter(data =>{
+              return !(data.id == item.id)
+            });
+            this.tipo_actualizacion(item.tipo_documentacion);
+          });
+        }
       });
     } else {
       this.archivos = this.archivos.filter(data =>{
         return !(data.id == item.id)
       });
+      this.tipo_actualizacion(item.tipo_documentacion);
     }
   }
 
@@ -408,6 +411,83 @@ export class AlumnoEditarComponent implements OnInit {
     this.u.id_tipo_documento.setValue(this.id_tipo_documento_original);
     //this.usuario.updateValueAndValidity();
     this.usuario.setErrors(null);
+  }
+
+  async tipo_asociacion(event,item:TipoAlumnoDocumentacion){
+    if(event.target.checked){
+      this.archivos_subidos.push(item);
+      let archivo = <AlumnoArchivo>{};
+      archivo.id_tipo_alumno_documentacion = item.id;
+      const modal = this.modalService.show(AlumnoArchivoEditarModalComponent,{class: 'modal-success'});
+      (<AlumnoArchivoEditarModalComponent>modal.content).onShow(archivo);
+      (<AlumnoArchivoEditarModalComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          if(this.id>0){
+            archivo.id_alumno = this.id;
+            this.alumnoService.archivoAlta(archivo).subscribe(response => {
+              archivo.id = response.id;
+              this.archivos.push(archivo);
+              this.toastr.success('Archivo Agregado', '');
+            });
+          } else {
+              let random = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+              archivo.id = random;
+              archivo.subido = false;
+              archivo.tipo_documentacion = this.tipo_documentacion.find(data=>data.id == +archivo.id_tipo_alumno_documentacion);
+              this.archivos.push(archivo);
+          }
+        } else {
+          this.tipo_actualizacion(item);
+        }
+      });
+    } else {
+      this.tipo_actualizacion(item);
+    }
+  }
+
+  tipo_agregar(item:TipoAlumnoDocumentacion){
+    let archivo = <AlumnoArchivo>{};
+    archivo.id_tipo_alumno_documentacion = item.id;
+    const modal = this.modalService.show(AlumnoArchivoEditarModalComponent,{class: 'modal-success'});
+    (<AlumnoArchivoEditarModalComponent>modal.content).onShow(archivo);
+    (<AlumnoArchivoEditarModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        if(this.id>0){
+          archivo.id_alumno = this.id;
+          this.alumnoService.archivoAlta(archivo).subscribe(response => {
+            archivo.id = response.id;
+            this.archivos.push(archivo);
+            this.toastr.success('Archivo Agregado', '');
+          });
+        } else {
+            let random = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+            archivo.id = random;
+            archivo.subido = false;
+            archivo.tipo_documentacion = this.tipo_documentacion.find(data=>data.id == +archivo.id_tipo_alumno_documentacion);
+            this.archivos.push(archivo);
+        }
+      }
+    });
+  }
+
+  tipo_asociada(item:TipoAlumnoDocumentacion):boolean{
+    return this.archivos_subidos.filter(function( obj ) {
+      return obj.id == item.id;
+    }).length>0;
+  }
+
+  tipo_actualizacion(item:TipoAlumnoDocumentacion){
+    this.archivos_subidos = this.archivos_subidos.filter(tipo=>{
+      return tipo.id != item.id;
+    });
+    let existentes = this.archivos.filter(archivo => {
+      return item.id == archivo.id_tipo_alumno_documentacion;
+    });
+    setTimeout( () => {
+      if(existentes.length > 0){
+        this.archivos_subidos.push(item);
+      }
+    }, 5 );
   }
   
 }

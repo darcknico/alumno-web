@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de usuarios
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nuevo Usuario</button>
+            <button class="btn btn-block btn-sm btn-success" type="button" (click)="nuevo()">Agregar Nuevo Usuario</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -62,7 +62,7 @@
                   <td>{{item.tipo?.nombre}}</td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">

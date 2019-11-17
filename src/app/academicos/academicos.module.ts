@@ -38,6 +38,7 @@ import { MateriaVerComponent } from './materia-ver/materia-ver.component';
 import { MateriaDetalleComponent } from './componentes/materia-detalle/materia-detalle.component';
 import { ListadoMateriaComisionComponent } from './componentes/listado-materia-comision/listado-materia-comision.component';
 import { ListadoMateriaMesaExamenComponent } from './componentes/listado-materia-mesa-examen/listado-materia-mesa-examen.component';
+import { AlumnoArchivoEditarModalComponent } from './componentes/alumno-archivo-editar-modal/alumno-archivo-editar-modal.component';
 
 @NgModule({
   imports: [
@@ -85,6 +86,7 @@ import { ListadoMateriaMesaExamenComponent } from './componentes/listado-materia
     MateriaDetalleComponent,
     ListadoMateriaComisionComponent,
     ListadoMateriaMesaExamenComponent,
+    AlumnoArchivoEditarModalComponent,
   ],
   entryComponents: [
     TramiteNuevoModalComponent,
@@ -92,6 +94,7 @@ import { ListadoMateriaMesaExamenComponent } from './componentes/listado-materia
     ListadoComisionModalComponent,
     ListadoAlumnoSedeModalComponent,
     AlumnoVerModalComponent,
+    AlumnoArchivoEditarModalComponent,
   ],
   providers:[
     AlumnoCuotaGuard,

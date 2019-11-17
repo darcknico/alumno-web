@@ -111,49 +111,60 @@
     <div class="col-lg-4">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Documentacion
+          <i class="fa fa-align-justify"></i> Documentación/Reportes
         </div>
         <div class="card-body">
           <form [formGroup]="formulario" >
             <div class="row">
-              <div class="form-inline col-lg-12">
-                <div class="col-6">
-                    <label class="control-label">Ficha de inscripcion: </label>
-                </div>
-                <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-info" (click)="ficha_reporte()">
+              <div class="col-12">
+                <label class="control-label">
+                  Ficha Inscripción:
+                </label>
+                <div class="btn-group pull-right" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="ficha_reporte()" tooltip="Ficha de inscripción" [disabled]="consultando">
                     <i class="fa fa-download"></i>
                     DESCARGAR
                   </button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="ficha_imprimir()" tooltip="IMPRIMIR">
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="ficha_imprimir()" tooltip="IMPRIMIR" [disabled]="consultando">
                     <i class="fa fa-print"></i>
                   </button>
                 </div>
+                <hr class="m-1">
               </div>
-              <div class="form-inline col-lg-12">
-                <div class="col-6">
-                    <label class="control-label">Constancia regular: </label>
-                </div>
-                <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-info" (click)="constancia_reporte()">
+              <div class="col-12">
+                <label class="control-label">Const. Regular: </label>
+                <div class="btn-group pull-right" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="constancia_reporte()" tooltip="Constancia regular" [disabled]="consultando">
                     <i class="fa fa-download"></i>
                     DESCARGAR
                   </button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="constancia_imprimir()" tooltip="IMPRIMIR">
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="constancia_imprimir()" tooltip="IMPRIMIR" [disabled]="consultando">
                     <i class="fa fa-print"></i>
                   </button>
                 </div>
+                <hr class="m-1">
               </div>
-              <div class="form-inline col-lg-12">
-                <div class="col-6">
-                    <label class="control-label">Analitico: </label>
-                </div>
-                <div class="btn-group m-1" role="group">
-                  <button type="button" class="btn btn-sm btn-info" (click)="analitico_reporte()">
+              <div class="col-12">
+                <label class="control-label">Cert. Analitico: </label>
+                <div class="btn-group pull-right" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="analitico_reporte()" tooltip="Certificado Analitico" [disabled]="consultando">
                     <i class="fa fa-download"></i>
                     DESCARGAR
                   </button>
-                  <button type="button" class="btn btn-sm btn-secondary" (click)="analitico_imprimir()" tooltip="IMPRIMIR">
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="analitico_imprimir()" tooltip="IMPRIMIR" [disabled]="consultando">
+                    <i class="fa fa-print"></i>
+                  </button>
+                </div>
+                <hr class="m-1">
+              </div>
+              <div class="col-12">
+                <label class="control-label">Const. Cursadas: </label>
+                <div class="btn-group pull-right" role="group">
+                  <button type="button" class="btn btn-sm btn-info" (click)="cursadas_reporte()" tooltip="Constancia de materias Cursadas" [disabled]="consultando">
+                    <i class="fa fa-download"></i>
+                    DESCARGAR
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="cursadas_imprimir()" tooltip="IMPRIMIR" [disabled]="consultando">
                     <i class="fa fa-print"></i>
                   </button>
                 </div>

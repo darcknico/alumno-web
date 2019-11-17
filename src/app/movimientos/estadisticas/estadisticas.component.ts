@@ -2,6 +2,11 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MovimientoService, FiltroMovimiento } from '../../_services/movimiento.service';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
+import { AlumnoService } from '../../_services/alumno.service';
+import { SedeService } from '../../_services/sede.service';
+import { Sede } from '../../_models/sede';
+import { UsuarioSede } from '../../_models/usuario';
 
 @Component({
   selector: 'app-estadisticas',
@@ -9,12 +14,14 @@ import * as moment from 'moment';
   styleUrls: ['./estadisticas.component.scss']
 })
 export class EstadisticasComponent implements OnInit {
-
+  sede:UsuarioSede;
+  $planes:Observable<any>;
+  $mensual:Observable<any>;
   @ViewChild("ingresosDoughnutCanvas") ingresosDoughnutCanvas: ElementRef;
   @ViewChild("egresosDoughnutCanvas") egresosDoughnutCanvas: ElementRef;
   @ViewChild("barCanvas") barCanvas: ElementRef;
 
-  hoy = moment();
+  hoy;
   backgroundColor = [
     "rgba(255, 99, 132, 0.2)",
     "rgba(54, 162, 235, 0.2)",
@@ -30,13 +37,21 @@ export class EstadisticasComponent implements OnInit {
   };
   
   constructor(
+    private sedeService:SedeService,
+    private alumnoService:AlumnoService,
     private movimientoService:MovimientoService,
   ) { }
 
   ngOnInit() {
     moment.locale('es');
+    this.hoy = moment();
+    this.sede = this.sedeService.getSede();
+    this.$planes = this.alumnoService.estadisticas_planes();
     this.request.fecha_fin = this.hoy.format('YYYY-MM-DD');
     this.request.fecha_inicio = this.hoy.subtract(1,'months').format('YYYY-MM-DD');
+
+    this.request.id_tipo_egreso_ingreso = 1;
+    this.$mensual = this.movimientoService.estadisticas_mensual(this.request);
     this.refrescar();
   }
 

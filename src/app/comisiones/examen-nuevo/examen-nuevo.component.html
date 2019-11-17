@@ -1,11 +1,14 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
       <app-comision-detalle-component
         [comision]="comision"
         [collapsed]="true"
         *ngIf="comision">
       </app-comision-detalle-component>
+    </div>
+    <div class="col-lg-4">
+      <app-comision-examen-help-component></app-comision-examen-help-component>
     </div>
   </div>
   <div class="row">
@@ -16,6 +19,9 @@
           <small> Formulario</small>
         </div>
         <div class="card-body">
+          <app-comision-examen-calendar-component
+            [events]="events"
+          ></app-comision-examen-calendar-component>
           <form [formGroup]="formulario" >
             <div class="row">
               <div class="form-group col-sm-4">

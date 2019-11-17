@@ -8,6 +8,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { AulaService } from '../../../_services/aula.service';
+import { Aula } from '../../../_models/aula';
 
 @Component({
   selector: 'app-comision-horario-editar-modal',
@@ -20,8 +22,11 @@ export class ComisionHorarioEditarModalComponent implements OnInit {
   formulario:FormGroup;
   public onClose: Subject<boolean>;
 
+  aulas:Aula[];
+
   constructor(
     private service:ComisionHorarioService,
+    private aulaService:AulaService,
     private extra:ExtraService,
     public bsModalRef: BsModalRef,
     private fb:FormBuilder,
@@ -37,6 +42,9 @@ export class ComisionHorarioEditarModalComponent implements OnInit {
       id_dia:[1,[Validators.required]],
       hora_inicial:[hora_inicial,[Validators.required]],
       hora_final:[hora_final,[Validators.required]],
+      nombre:null,
+      id_aula:null,
+      asistencia:false,
     });
   }
 
@@ -44,6 +52,9 @@ export class ComisionHorarioEditarModalComponent implements OnInit {
     this.onClose = new Subject();
     this.extra.dias().subscribe(response=>{
       this.dias = response;
+    });
+    this.aulaService.getAll().subscribe(response=>{
+      this.aulas = response;
     });
   }
 
@@ -59,6 +70,9 @@ export class ComisionHorarioEditarModalComponent implements OnInit {
       this.f.id_dia.setValue(item.id_dia);
       this.f.hora_inicial.setValue(hora_inicial.toDate());
       this.f.hora_final.setValue(hora_final.toDate());
+      this.f.id_aula.setValue(item.id_aula);
+      this.f.nombre.setValue(item.nombre);
+      this.f.asistencia.setValue(item.asistencia);
     } else {
       this.item = <ComisionHorario>{};
       this.item.id = 0;
@@ -83,6 +97,10 @@ export class ComisionHorarioEditarModalComponent implements OnInit {
       this.toastr.warning('La hora final debe ser menor que la hora inicial.')
       return ;
     }
+    this.item.asistencia = this.f.asistencia.value;
+    this.item.nombre = this.f.nombre.value;
+    this.item.id_aula = this.f.id_aula.value;
+
     if(this.item.id>0){
       this.service.update(this.item).subscribe(response=>{
         this.toastr.success('Horario editado', '');

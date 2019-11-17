@@ -243,60 +243,80 @@
               </div>
             </div>
           </form>
+          <div class="row">
+            <div class="col text-center">
+              <hr>
+              <label class="control-label"><b>Documentación</b></label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label">Tipos:</label>
+            <div class="col-md-8 col-form-label">
+              <div class="form-check" *ngFor="let item of tipo_documentacion">
+                <input class="form-check-input" type="checkbox"
+                name="archivos[]"
+                [value]="item.id"
+                [checked]="tipo_asociada(item)"
+                (change)="tipo_asociacion($event,item)">
+                <label class="form-check-label" >
+                  {{ item.nombre }}
+                  <button *ngIf="tipo_asociada(item)"
+                    tooltip="Agregar"
+                    class="btn btn-sm btn-primary" 
+                    (click)="tipo_agregar(item)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </label>
+              </div>
+            </div>
+          </div>
           <div class="row" >
             <div class="col-sm-12">
-              <hr>
               <div class="row">
                 <div class="col-sm-6 {{archivo.subido?'bg-success':''}}" *ngFor="let archivo of archivos">
-                  <div class="form-group col-sm-6">
-                    <label class="control-label">{{archivo.tipo_documentacion.nombre}}</label>
+                  <div class="form-group col-sm-12">
+                    <label class="control-label">
+                      <ng-container *ngIf="archivo.tipo_documentacion">
+                        {{archivo.tipo_documentacion.nombre}}
+                      </ng-container>
+                      <ng-container *ngIf="archivo.observaciones">
+                       - {{archivo.observaciones}}
+                      </ng-container>
+                    </label>
                     <div class="row form-inline">
-                      <input 
+                      <input *ngIf="archivo.nombre"
                         class="form-control p-1"
                           readonly="readonly"
                           type="text"
                           placeholder="Nombre"
                           [value]="archivo.nombre">
                       <button 
+                        tooltip="Eliminar"
                         class="btn btn-sm btn-danger m-2" 
                         (click)="eliminar(archivo)" >
-                        Eliminar
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <button 
+                        tooltip="Editar"
+                        class="btn btn-sm btn-danger m-2" 
+                        (click)="editar(archivo)" >
+                        <i class="fa fa-edit"></i>
                       </button> 
-                      <button *ngIf="id>0"
+                      <button *ngIf="archivo.url"
+                        tooltip="Descargar"
                         class="btn btn-sm btn-primary m-2"  
                         (click)="descargar(archivo)" >
-                        Descargar
+                        <i class="fa fa-download"></i>
                       </button> 
                     </div>
                   </div>
-                  <div class="form-group col-sm-6" *ngIf="archivo.url && [1,2].indexOf(archivo.id_tipo_alumno_documentacion) >= 0 ">
+                  <div class="form-group col-sm-6" *ngIf="archivo.url && archivo.nombre && [1,2].indexOf(archivo.id_tipo_alumno_documentacion) >= 0 ">
                     <img [src]="archivo.url" class="img-thumbnail" [alt]="archivo.nombre" width="200">
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="form-group col-sm-6">
-              <label class="control-label">Archivo Nuevo</label>
-              <input 
-                class="form-control"
-                (change)="onFileChange($event)"
-                type="file"
-                placeholder="Archivo"
-                #fileInput>
-            </div>
-            <div class="form-group col-sm-6">
-              <label class="control-label">Tipo de Documentacion</label>
-              <select 
-                [(ngModel)]="id_tipo_documentacion"
-                class="form-control" 
-                >
-                <option *ngFor="let item of tipo_documentacion" [value]="item.id" >{{item.nombre}}</option>
-              </select>
-            </div>
-          </div>
-          
         </div>
         <div class="card-footer">
           <button class="btn btn-block-xs-only m-1 btn-success"

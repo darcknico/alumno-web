@@ -2,6 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+import { IDateAdapter } from '@rschedule/rschedule';
 
 export class AuxiliarFunction{
 
@@ -10,12 +11,20 @@ export class AuxiliarFunction{
         if(Array.isArray(modelo)){
             modelo.forEach(model=>{
                 for(let key in model){
-                    obj[key] = String(modelo[key]);
+                    if(Array.isArray(modelo[key])){
+                        obj[key] = modelo[key].toString();
+                    } else {
+                        obj[key] = String(modelo[key]);
+                    }
                 }
             });
         } else {
             for(let key in modelo){
-                obj[key] = String(modelo[key]);
+                if(Array.isArray(modelo[key])){
+                    obj[key] = modelo[key].toString();
+                } else {
+                    obj[key] = String(modelo[key]);
+                }
             }
         }
         return obj;
@@ -48,12 +57,16 @@ export class AuxiliarFunction{
 
     public static descargar(toastr:ToastrService,obs:Observable<HttpResponse<Blob>>){
         let aviso = toastr.warning('Preparando descarga', '',{
-            timeOut:15000,
+            timeOut:30000,
+        });
+        let suscription = aviso.onHidden.subscribe(()=>{
+            toastr.error('Si esta tardando mucho. Puede resultar de un error. En caso que siga persistiendo, comuniquese con el administrador.')
         });
         return obs.toPromise().then(response=>{
             var contentDisposition = response.headers.get('Content-Disposition');
             var contentType = response.headers.get('Content-Type');
             var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+            suscription.unsubscribe();
             toastr.remove(aviso.toastId);
             toastr.success('Descarga lista');
             var mediaType = contentType;
@@ -64,9 +77,13 @@ export class AuxiliarFunction{
     
     public static imprimir(toastr:ToastrService,obs:Observable<HttpResponse<Blob>>){
         let aviso = toastr.warning('Preparando descarga', '',{
-            timeOut:15000,
+            timeOut:30000,
+        });
+        let suscription = aviso.onHidden.subscribe(()=>{
+            toastr.error('Si esta tardando mucho. Puede resultar de un error. En caso que siga persistiendo, comuniquese con el administrador.')
         });
         return obs.toPromise().then(response=>{
+            suscription.unsubscribe();
             toastr.remove(aviso.toastId);
             toastr.success('Archivo listo');
             var blob = new Blob([response.body], {type: 'application/pdf'});
@@ -77,5 +94,33 @@ export class AuxiliarFunction{
             document.body.appendChild(iframe);
             iframe.contentWindow.print();
         });
+    }
+
+    public static IdDayToWeek(id_day:number):IDateAdapter.Weekday{
+        let week:IDateAdapter.Weekday = null;
+        switch(id_day){
+            case 1:
+                week = 'SU';
+                break;
+            case 2:
+                week = 'MO';
+                break;
+            case 3:
+                week = 'TU';
+                break;
+            case 4:
+                week = 'WE';
+                break;
+            case 5:
+                week = 'TH';
+                break;
+            case 6:
+                week = 'FR';
+                break;
+            case 7:
+                week = 'SA';
+                break;
+        }
+        return week;
     }
 }

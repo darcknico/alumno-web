@@ -60,9 +60,21 @@
                             </button>
                             <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                               <li role="menuitem">
-                                <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">Mas Información</a>
-                                <a class="dropdown-item" (click)="comision(item)" href="javascript:void(0);">Comision</a>
-                                <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                                <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                                  Mas Información
+                                </a>
+                              </li>
+                              <li role="menuitem">
+                                <a class="dropdown-item" (click)="comision(item)" href="javascript:void(0);">
+                                  <i class="fa fa-cog"></i>
+                                  Gestionar Comision
+                                </a>
+                              </li>
+                              <li role="menuitem">
+                                <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                                  <i class="fa fa-trash"></i>
+                                  Eliminar
+                                </a>
                               </li>
                             </ul>
                           </div>

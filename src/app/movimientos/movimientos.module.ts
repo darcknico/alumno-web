@@ -20,6 +20,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { MovimientoEditarModalComponent } from './movimiento-editar-modal/movimiento-editar-modal.component';
 import { DiariaNuevoComponent } from './diaria-nuevo/diaria-nuevo.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { EstadisticasComponent } from './estadisticas/estadisticas.component';
     BsDatepickerModule,
     NgxCurrencyModule,
     ModalModule.forRoot(),
+    NgxPrintModule,
   ],
   declarations: [
     ListadoMovimientoComponent, 

@@ -109,7 +109,7 @@ export class InscripcionComponent implements OnInit {
         { 
           data: 'created_at',
           width: '5%', 
-        }, { data: 'id_alumno' }, { data: 'id_carrera' },{ data: 'beca_nombre' },{ data: 'id_tipo_inscripcion_estado'},
+        }, { data: 'anio' }, { data: 'id_alumno' }, { data: 'id_carrera' },{ data: 'beca_nombre' },{ data: 'id_tipo_inscripcion_estado'},
       ],
       responsive:true,
     };

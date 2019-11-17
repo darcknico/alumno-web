@@ -145,4 +145,12 @@ export class MesaMateriaDocenteEditarModalComponent implements OnInit {
     return a.id_usuario == b.id_usuario;
   }
 
+  buscarDocente(term: string, item: Docente){
+    term = term.toUpperCase();
+    let apellido = item.usuario.apellido.toUpperCase().indexOf(term) !== -1;
+    let nombre = item.usuario.nombre.toUpperCase().indexOf(term) !== -1;
+    let resultado = String(item.cuit).startsWith(term) || apellido || nombre;
+    return resultado;
+  }
+
 }

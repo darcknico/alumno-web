@@ -6,6 +6,7 @@ import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { Ajax } from '../_models/tipo';
 import { Observable } from 'rxjs';
+import { ReporteJob } from '../_models/extra';
 
 export interface FiltroMesaExamenMateriaDocente {
     search:string;
@@ -77,5 +78,11 @@ export class MesaExamenMateriaDocenteService {
                 responseType:'blob' as 'json',
                 params:AuxiliarFunction.toParams(filtro),
             });
+    }
+
+    reporte_docente_masivo(filtro:FiltroMesaExamenMateriaDocente,item:ReporteJob){
+        return this.http.post<MesaExamenMateriaDocente>(this.ruta+'/reportes/masivo',item,{
+            params:AuxiliarFunction.toParams(filtro)
+        });
     }
 }

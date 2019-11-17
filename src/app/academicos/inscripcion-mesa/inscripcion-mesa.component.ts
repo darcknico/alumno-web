@@ -90,4 +90,12 @@ export class InscripcionMesaComponent implements OnInit {
   imprimir(item:MesaExamenMateriaAlumno){
     AuxiliarFunction.imprimir(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_constancia(item.id));
   }
+
+  descargar_asistencia(item:MesaExamenMateriaAlumno){
+    AuxiliarFunction.descargar(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_asistencia(item.id));
+  }
+
+  imprimir_asistencia(item:MesaExamenMateriaAlumno){
+    AuxiliarFunction.imprimir(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_asistencia(item.id));
+  }
 }

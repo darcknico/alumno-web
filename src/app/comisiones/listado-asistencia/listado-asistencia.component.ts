@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AsistenciaService } from '../../_services/asistencia.service';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { CalendarEvent } from 'calendar-utils';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-listado-asistencia',
@@ -14,6 +16,7 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
   styleUrls: ['./listado-asistencia.component.scss']
 })
 export class ListadoAsistenciaComponent implements OnInit {
+  events: CalendarEvent[] = [];
 
   comision:Comision;
 
@@ -40,6 +43,8 @@ export class ListadoAsistenciaComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
+      ordering:false,
       columnDefs: [ {
         targets: [4],
         orderable: false,
@@ -54,6 +59,14 @@ export class ListadoAsistenciaComponent implements OnInit {
       });
       this.comisionService.asistencias(ids).subscribe(response=>{
         this.dataSource = response;
+        this.events = [];
+        this.dataSource.forEach(asistencia=>{
+          this.events.push({
+            title:'Asistencia',
+            start:moment(asistencia.fecha).toDate(),
+            allDay:true,
+          });
+        });
       });
     });
   }

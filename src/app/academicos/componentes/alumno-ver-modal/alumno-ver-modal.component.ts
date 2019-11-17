@@ -41,10 +41,12 @@ export class AlumnoVerModalComponent implements OnInit {
       this.alumno = response;
       this.archivos = response.archivos;
       this.archivos.forEach(archivo=>{
-        this.service.archivo(archivo).subscribe(blob=>{
-          let urlCreator = window.URL;
-          archivo.url = this.sanitizer.bypassSecurityTrustUrl(urlCreator.createObjectURL(blob));
-        });
+        if(archivo.nombre){
+          this.service.archivo(archivo).subscribe(blob=>{
+            let urlCreator = window.URL;
+            archivo.url = this.sanitizer.bypassSecurityTrustUrl(urlCreator.createObjectURL(blob));
+          });
+        }
         return archivo;
       });
     });

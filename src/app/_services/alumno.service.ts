@@ -8,6 +8,7 @@ import { PlanPago } from '../_models/plan_pago';
 import { Obligacion } from '../_models/obligacion';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import * as moment from 'moment';
  
 export interface FiltroAlumno {
     search:string;
@@ -70,15 +71,20 @@ export class AlumnoService {
         return this.http.delete([this.ruta,id].join('/'));
     }
 
-    archivoAlta(id_alumno:number,id_tipo_alumno_archivo:number,archivo){
+    archivoAlta(archivo:AlumnoArchivo){
         let input = new FormData();
-        input.append('archivo', archivo);
-        input.append('id_tipo_alumno_documentacion', String(id_tipo_alumno_archivo));
-        return this.http.post<AlumnoArchivo>( [this.api,this.resource,id_alumno,'archivos'].join('/'), input);
+        input.append('archivo', archivo.archivo);
+        input.append('id_tipo_alumno_documentacion', String(archivo.id_tipo_alumno_documentacion));
+        input.append('observaciones', String(archivo.observaciones));
+        return this.http.post<AlumnoArchivo>( [this.api,this.resource,archivo.id_alumno,'archivos'].join('/'), input);
     }
 
     archivo(archivo:AlumnoArchivo){
         return this.http.get( [this.api,this.resource,archivo.id_alumno,'archivos',archivo.id].join('/'),{responseType: 'blob'});
+    }
+
+    archivoEdita(archivo:AlumnoArchivo){
+        return this.http.put( [this.api,this.resource,archivo.id_alumno,'archivos',archivo.id].join('/'),archivo);
     }
 
     archivoBaja(archivo:AlumnoArchivo){
@@ -123,8 +129,22 @@ export class AlumnoService {
         return this.http.get<Inscripcion[]>( [this.api,this.resource,id,'inscripciones'].join('/') );        
     }
 
-    estadisticas() {
-        return this.http.get([this.api,this.resource,'estadisticas'].join('/'));
+    estadisticas(id_sede:number = this.id_sede,fecha:moment.Moment = moment()) {
+        return this.http.get([this.api,this.resource,'estadisticas'].join('/'),{
+            params:{
+                id_sede:String(id_sede),
+                fecha:fecha.format('YYYY-MM-DD'),
+            }
+        });
+    }
+
+    estadisticas_planes(id_sede:number = this.id_sede,fecha:moment.Moment = moment()) {
+        return this.http.get([this.api,this.resource,'estadisticas/planes'].join('/'),{
+            params:{
+                id_sede:String(id_sede),
+                fecha:fecha.format('YYYY-MM-DD'),
+            }
+        });
     }
 
     exportar(filtro:FiltroAlumno){

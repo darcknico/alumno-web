@@ -54,7 +54,7 @@
     <div class="row">
       <div class="form-group col-sm-12" *ngIf="item?.id==0">
         <label class="control-label">Docente (*)</label>
-        <ng-select [items]="docentes" #docentesSelect [compareWith]="compararDocente"
+        <ng-select [items]="docentes" #docentesSelect [compareWith]="compararDocente" [searchFn]="buscarDocente"
           notFoundText="No se a encontrado al docente"
           (change)="docenteCambiado($event)"
           formControlName="id_usuario"

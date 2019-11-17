@@ -6,7 +6,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Sedes
           <div class="card-header-actions" *ngIf="[1].indexOf(usuario.id_tipo_usuario)>=0">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Sede</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Sede</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -28,15 +28,21 @@
                   <td>{{ item.ubicacion }}</td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="[1].indexOf(usuario.id_tipo_usuario)>=0">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);" >Editar</a>
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);" >
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                            <i class="fa fa-trash"></i>
+                            Eliminar
+                          </a>
                         </li>
                       </ul>
                     </div>

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Asistencia, AsistenciaAlumno, TipoAsistenciaAlumno } from '../_models/asistencia';
+import { SedeService } from './sede.service';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
  
 export interface FiltroAsistencia {
     search:string;
@@ -25,29 +27,27 @@ export class AsistenciaService {
     id_sede:number;
     constructor(
         private http: HttpClient,
+        private sedeService:SedeService,
         ) { 
+        this.id_sede = this.sedeService.getIdSede();
+        this.sedeService.id_sede$.subscribe(id=>{
+            this.id_sede = id;
+        });
     }
 
     sede(id_sede:number){
         this.id_sede = id_sede;
     }
 
-    getAll(){
-        return this.http.get<Asistencia[]>(this.api + this.id_sede + '/asistencias' );
+    getAll(filtro?:FiltroAsistencia){
+        return this.http.get<Asistencia[]>(this.api + this.id_sede + '/asistencias', {
+            params: AuxiliarFunction.toParams(filtro),
+        } );
     }
 
     ajax(filtro:FiltroAsistencia):  Observable<AsistenciaAjax>{
         return this.http.get<AsistenciaAjax>(this.api + this.id_sede + '/asistencias', {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_departamento: String(filtro.id_departamento),
-                id_carrera: String(filtro.id_carrera),
-                id_materia: String(filtro.id_materia),
-            }
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
 
