@@ -13,6 +13,11 @@ import { NovedadNuevoModalComponent } from './novedad-nuevo-modal/novedad-nuevo-
 import { DocumentoComponent } from './documento/documento.component';
 import { DocumentoNuevoModalComponent } from './documento-nuevo-modal/documento-nuevo-modal.component';
 import { DocumentoEditarComponent } from './documento-editar/documento-editar.component';
+import { ModalModule } from 'ngx-bootstrap';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ListadoDispositivoComponent } from './listado-dispositivo/listado-dispositivo.component';
+import { ListadoAsistenciaComponent } from './listado-asistencia/listado-asistencia.component';
+import { PasswordModalComponent } from './componentes/password-modal/password-modal.component';
 
 @NgModule({
   imports: [
@@ -23,6 +28,8 @@ import { DocumentoEditarComponent } from './documento-editar/documento-editar.co
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     NgSelectModule,
+    ModalModule.forRoot(),
+    CKEditorModule,
   ],
   declarations: [
     UsuarioComponent,
@@ -32,11 +39,15 @@ import { DocumentoEditarComponent } from './documento-editar/documento-editar.co
     NovedadNuevoModalComponent,
     DocumentoComponent,
     DocumentoNuevoModalComponent,
-    DocumentoEditarComponent
+    DocumentoEditarComponent,
+    ListadoDispositivoComponent,
+    ListadoAsistenciaComponent,
+    PasswordModalComponent,
   ],
   entryComponents: [
     NovedadNuevoModalComponent,
     DocumentoNuevoModalComponent,
+    PasswordModalComponent,
   ]
 })
 export class AdminModule { }

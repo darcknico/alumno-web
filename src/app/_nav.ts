@@ -22,6 +22,18 @@ export const navItems = [
         url: '/admin/documentos',
         icon: 'fa fa-info-circle',
         permisos: [1],
+      },
+      {
+        name: 'Dispositivos',
+        url: '/admin/dispositivos',
+        icon: 'fa fa-tablet',
+        permisos: [1],
+      },
+      {
+        name: 'Asistencias',
+        url: '/admin/asistencias',
+        icon: 'fa fa-calendar-check-o',
+        permisos: [1],
       }
     ]
   },

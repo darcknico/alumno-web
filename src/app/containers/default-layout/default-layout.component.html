@@ -20,20 +20,50 @@
   </ul>
   -->
   <ul class="nav navbar-nav ml-auto navbar-dark">
-    <!--
-    <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="javascript:void(0);"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
-    </li>
-    <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="javascript:void(0);"><i class="icon-list"></i></a>
-    </li>
-    -->
     <li class="nav-item">
       <a class="nav-link" href="javascript:void(0);" (click)="cambiar_sede()">
         <i class="icon-location-pin"></i>
       </a>
     </li>
-
+    <li class="nav-item dropdown" dropdown >
+      <a class="nav-link" data-toggle="dropdown" href="javascript:void(0);" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <i class="icon-bell"></i>
+        <span class="badge badge-pill badge-warning" *ngIf="cantidad_no_visto>0">{{cantidad_no_visto}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <ng-container *ngIf="novedades.length>0 else sinNovedades">
+          <div class="dropdown-header text-center">
+            <strong>
+              <ng-container *ngIf="cantidad_no_visto>0 else noCantidadNoVisto">
+                  Tienes {{cantidad_no_visto}} novedad(es) sin ver
+              </ng-container>
+              <ng-template #noCantidadNoVisto>Ultimas Novedades</ng-template>
+            </strong>
+          </div>
+          <a href="javascript:void(0);" *ngFor="let item of novedades" (click)="previa(item)" class="dropdown-item" >
+            <i class="icon-puzzle text-success"></i>
+            <p class="text-wrap"> {{ item.titulo }}</p> <div class="badge badge-primary" *ngIf="vistos(item)">NO VISTO</div>
+            <div class="small text-muted">{{ item.updated_at | date:'dd/MM/yy HH:mm'}}</div>
+            <div class="small text-muted text-truncate" style="max-width: 275px;">{{ item.descripcion}}</div>
+          </a>
+          <a class="dropdown-item text-center" href="javascript:void(0);" (click)="ver_novedades()">
+            <strong>Ver Todas la novedades</strong>
+          </a>
+        </ng-container>
+        <ng-template #sinNovedades>
+          <div class="dropdown-header text-center">
+            <strong>
+              No hay novedades
+            </strong>
+          </div>
+        </ng-template>
+      </div>
+    </li>
+    <!--
+    <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="javascript:void(0);"><i class="icon-list"></i></a>
+    </li>
+    -->
     <li class="nav-item dropdown" dropdown placement="bottom right">
       <a class="nav-link" data-toggle="dropdown" href="javascript:void(0);" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
         <img src="assets/img/avatars/default.png" class="img-avatar" alt="admin@admin.com"/>

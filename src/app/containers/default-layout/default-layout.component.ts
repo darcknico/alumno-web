@@ -7,6 +7,9 @@ import { UsuarioSedeModalComponent } from '../../modals/usuario-sede-modal/usuar
 import { BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { SedeService } from '../../_services/sede.service';
+import { NovedadSistemaService, FiltroNovedadSistema } from '../../_services/novedad_sistema.service';
+import { NovedadSistema, NovedadUsuario } from '../../_models/novedad';
+import { ListadoNovedadSistemaModalComponent } from '../../modals/listado-novedad-sistema-modal/listado-novedad-sistema-modal.component';
 
 export interface Children{
   name:string;
@@ -36,10 +39,14 @@ export class DefaultLayoutComponent implements OnInit {
 
   usuario:Usuario;
   sede:UsuarioSede;
-
+  filtroNovedadSistema:FiltroNovedadSistema = <FiltroNovedadSistema>{};
+  cantidad_no_visto:number;
+  novedades:NovedadSistema[] = [];
+  no_visto:NovedadUsuario[] = [];
   constructor(
     private sedeService:SedeService,
     private authenticationService:AuthenticationService,
+    private novedadSistemaService:NovedadSistemaService,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: BsModalService,
@@ -105,6 +112,14 @@ export class DefaultLayoutComponent implements OnInit {
       }
     });
   }
+  ver_novedades(){
+    const modal = this.modalService.show(ListadoNovedadSistemaModalComponent);
+    (<ListadoNovedadSistemaModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+
+      }
+    });
+  }
 
   private navegador(usuario){
     this.navItems = [];
@@ -128,5 +143,33 @@ export class DefaultLayoutComponent implements OnInit {
       }
       return item;
     });
-  };
+
+    this.filtroNovedadSistema.id_usuario = usuario.id;
+    this.filtroNovedadSistema.length = 7;
+    this.novedadSistemaService.getAll(this.filtroNovedadSistema).subscribe((response:any)=>{
+      this.no_visto = response.no_visto;
+      this.cantidad_no_visto = response.no_visto.length;
+      this.novedades = response.items;
+    });
+  }
+
+  previa(item:NovedadSistema){
+    var wnd = window.open("about:blank", "", "_blank,width = 600, height = 800");
+    this.novedadSistemaService.getById(item.id,this.usuario.id).subscribe(response=>{
+      this.no_visto = this.no_visto.filter(novedad=>novedad.id_novedad_sistema != item.id);
+      this.cantidad_no_visto = this.no_visto.length;
+      wnd.document.write(response.cuerpo);
+    });
+  }
+
+  vistos(item:NovedadSistema){
+    let val = false;
+    if(this.no_visto){
+      if(this.no_visto.find(usuario=>item.id==usuario.id_novedad_sistema)){
+        val = true;
+      }
+    }
+    
+    return val;
+  }
 }

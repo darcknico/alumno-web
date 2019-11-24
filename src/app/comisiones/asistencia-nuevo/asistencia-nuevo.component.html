@@ -20,7 +20,10 @@
             <ng-container *ngIf="dataSourceHorarios.length>0">
               <app-comision-asistencia-calendar-component *ngIf="recurringEvents"
                 [events]="events"
-                [calendar]="recurringEvents">
+                [calendar]="recurringEvents"
+                [dayStartHour]="dayStartHour"
+                [dayEndHour]="dayEndHour"
+                >
               </app-comision-asistencia-calendar-component>
             </ng-container>
             <div class="row">

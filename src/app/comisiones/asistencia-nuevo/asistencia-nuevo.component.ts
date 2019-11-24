@@ -31,6 +31,9 @@ export class AsistenciaNuevoComponent implements OnInit {
   filtroHorario=<FiltroComisionHorario>{};
   dataSource:Asistencia[];
   dataSourceHorarios:ComisionHorario[] = [];
+
+  dayStartHour:number;
+  dayEndHour:number;
   constructor(
     private comisionService:ComisionService,
     private asistenciaService:AsistenciaService,
@@ -77,10 +80,24 @@ export class AsistenciaNuevoComponent implements OnInit {
               clase_final = moment().set({year:this.comision.anio}).endOf('year');
             }
             let rules = [];
+            let primero = true;
             horarios.forEach(item=>{
               let week = AuxiliarFunction.IdDayToWeek(item.id_dia);
               let start = moment(item.hora_inicial,'HH:mm:ss');
-              let duration = moment(item.hora_final,'HH:mm:ss').diff(start,'second');
+              let end =  moment(item.hora_final,'HH:mm:ss');
+              if(primero){
+                primero = false;
+                this.dayStartHour = start.hour();
+                this.dayEndHour = end.hour();
+              } else {
+                if(this.dayStartHour>start.hour()){
+                  this.dayStartHour = start.hour();
+                }
+                if(this.dayEndHour<end.hour()){
+                this.dayEndHour = end.hour();
+                }
+              }
+              let duration = end.diff(start,'second');
               let inicio = clase_inicio.set({
                 hour:start.get('hour'),
                 minute:start.get('minute'),

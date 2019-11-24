@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Carrera } from '../../_models/carrera';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
+import { PasswordModalComponent } from '../componentes/password-modal/password-modal.component';
 
 @Component({
   selector: 'app-usuario',
@@ -90,17 +91,11 @@ export class UsuarioComponent implements OnInit {
   }
 
   contrasenia(item:Usuario){
-    const modal = this.modalService.show(DialogInputComponent);
-    (<DialogInputComponent>modal.content).onShow("Cambiar Contraseña","Contraseña");
-    (<DialogInputComponent>modal.content).onClose.subscribe(result => {
-      if (result.length>5) {
-        item.password = result;
-        this.usuarioService.password(item).subscribe(response=>{
-          this.toastr.warning('Contraseña Cambiada', '');
-          this.refrescar();
-        });
-      } else {
-        this.toastr.warning('Contraseña demasiado Corta', '');
+    const modal = this.modalService.show(PasswordModalComponent);
+    (<PasswordModalComponent>modal.content).onShow(item);
+    (<PasswordModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.refrescar();
       }
     });
   }

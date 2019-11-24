@@ -18,7 +18,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
   contenido:string = "";
   return:string = "";
   id;
-
+  item:any;
   constructor(
     private block:BlockUIService,
     private plantillaImagenService:PlantillaImagenService,
@@ -33,6 +33,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
         this.contenido = this.router.getCurrentNavigation().extras.state.contenido;
         this.id = this.router.getCurrentNavigation().extras.state.id;
         this.return = this.router.getCurrentNavigation().extras.state.return;
+        this.item = this.router.getCurrentNavigation().extras.state.item;
       }
     });
   }
@@ -182,7 +183,8 @@ export class TemplateComponent implements OnInit, OnDestroy {
     let contenido = '<style type="text/css" >'+css+'</style>'+html;
     let navigationExtras: NavigationExtras = {
       state: {
-        contenido:contenido, 
+        contenido:contenido,
+        item:this.item,
       }
     };
     this.router.navigate([this.return,this.id,'editar'],navigationExtras).then(()=>{

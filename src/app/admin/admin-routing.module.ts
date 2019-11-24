@@ -5,6 +5,9 @@ import { UsuarioEditarComponent } from './usuario-editar/usuario-editar.componen
 import { NovedadComponent } from './novedad/novedad.component';
 import { DocumentoComponent } from './documento/documento.component';
 import { DocumentoEditarComponent } from './documento-editar/documento-editar.component';
+import { NovedadEditarComponent } from './novedad-editar/novedad-editar.component';
+import { ListadoDispositivoComponent } from './listado-dispositivo/listado-dispositivo.component';
+import { ListadoAsistenciaComponent } from './listado-asistencia/listado-asistencia.component';
 
 
 const routes: Routes = [
@@ -50,7 +53,7 @@ const routes: Routes = [
       },
       {
         path: ':id_novedad_sistema/editar',
-        component: UsuarioEditarComponent,
+        component: NovedadEditarComponent,
         data: {
           title: 'Editar Novedad'
         }
@@ -74,6 +77,34 @@ const routes: Routes = [
         component: DocumentoEditarComponent,
         data: {
           title: 'Editar Documento'
+        }
+      },
+    ]
+  },{
+    path: 'dispositivos',
+    data: {
+      title: 'Dispositivos'
+    },
+    children: [
+      {
+        path: '',
+        component: ListadoDispositivoComponent,
+        data: {
+          title: 'Listado'
+        }
+      },
+    ]
+  },{
+    path: 'asistencias',
+    data: {
+      title: 'Asistencias'
+    },
+    children: [
+      {
+        path: '',
+        component: ListadoAsistenciaComponent,
+        data: {
+          title: 'Listado'
         }
       },
     ]

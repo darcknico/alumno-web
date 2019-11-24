@@ -51,6 +51,7 @@ export interface Usuario {
     n_password:string;
 
     archivos:UsuarioArchivo[];
+    notificacion:boolean;
 }
 
 export class Docente implements Usuario {
@@ -86,6 +87,7 @@ export class Docente implements Usuario {
     contratos:DocenteContrato[];
 
     usuario:Usuario;
+    notificacion: boolean;
 }
 
 export interface UsuarioArchivo{

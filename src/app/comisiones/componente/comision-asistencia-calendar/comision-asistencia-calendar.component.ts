@@ -33,6 +33,8 @@ export class ComisionAsistenciaCalendarComponent implements OnInit {
     }),
     dateAdapter: StandardDateAdapter,
   });
+  @Input() dayStartHour: number = 6;
+  @Input() dayEndHour: number = 23;
 
   eventsCalendar: CalendarEvent[];
 

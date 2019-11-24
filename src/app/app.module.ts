@@ -147,6 +147,9 @@ import { ComisionHorarioService } from './_services/comision_horario.service';
 import { ObligacionService } from './_services/obligacion.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { ListadoNovedadSistemaModalComponent } from './modals/listado-novedad-sistema-modal/listado-novedad-sistema-modal.component';
+import { AppDispositivoService } from './_services/app_dispositivo.service';
+import { AppAsistenciaService } from './_services/app_asistencia.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -227,6 +230,7 @@ export const customCurrencyMaskConfig = {
     NovedadModalComponent,
     TemplateComponent,
     DialogDateComponent,
+    ListadoNovedadSistemaModalComponent,
   ],
   providers: [
     AuthGuard,
@@ -272,6 +276,10 @@ export const customCurrencyMaskConfig = {
     AulaService,
     ObligacionService,
 
+    // APP
+    AppDispositivoService,
+    AppAsistenciaService,
+
     { provide: HTTP_INTERCEPTORS, useClass: PassportInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: LOCALE_ID, useValue: 'es-AR'},
@@ -295,6 +303,7 @@ export const customCurrencyMaskConfig = {
     ExamenAlumnoEditarModalComponent,
     InscripcionAsistenciaModalComponent,
     InscripcionExamenModalComponent,
+    ListadoNovedadSistemaModalComponent,
   ],
 })
 export class AppModule { 

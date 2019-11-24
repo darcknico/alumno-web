@@ -44,8 +44,7 @@ export class PlantillaNuevaModalComponent implements OnInit {
     item.descripcion = this.f.descripcion.value;
 
     this.service.register(item).subscribe(response=>{
-      this.toastr.success('Generando Movimiento', '');
-      this.toastr.success('Pago generado','');
+      this.toastr.success('Generando Plantilla', '');
       this.onClose.next(true);
       this.bsModalRef.hide();
       this.router.navigate(['/notificaciones/plantillas/'+response.id+'/editar']);

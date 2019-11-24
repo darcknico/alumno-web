@@ -12,9 +12,8 @@ export interface FiltroNovedadSistema{
     order:string;
     page:number;
     length:number;
+    id_usuario:number;
 }
-
-
 @Injectable()
 export class NovedadSistemaService {
 
@@ -36,8 +35,10 @@ export class NovedadSistemaService {
         return [this.api,this.id_sede,this.resource].join('/');
     }
 
-    getAll() {
-        return this.http.get<NovedadSistema[]>( [this.url].join('/') );
+    getAll(filtro:FiltroNovedadSistema=<FiltroNovedadSistema>{}) {
+        return this.http.get<NovedadSistema[]>( [this.url].join('/'),{
+            params:AuxiliarFunction.toParams(filtro),
+        } );
     }
 
     ajax(filtro:FiltroNovedadSistema) {
@@ -46,8 +47,12 @@ export class NovedadSistemaService {
         });
     }
  
-    getById(id: number) {
-        return this.http.get<NovedadSistema>([this.url,id].join('/'));
+    getById(id: number,id_usuario:number = 0) {
+        return this.http.get<NovedadSistema>([this.url,id].join('/'),{
+            params:{
+                id_usuario:String(id_usuario),
+            }
+        });
     }
  
     register(item: NovedadSistema) {
@@ -63,11 +68,11 @@ export class NovedadSistemaService {
     }
 
     mostrar(item: NovedadSistema){
-        return this.http.post<NovedadSistema>([this.url,item.id].join('/'), item);
+        return this.http.post<NovedadSistema>([this.url,item.id,'mostrar'].join('/'), item);
     }
 
     usuarios(id: number){
-        return this.http.get<NovedadUsuario[]>([this.url,id].join('/'));
+        return this.http.get<NovedadUsuario[]>([this.url,id,'usuarios'].join('/'));
     }
 
 }

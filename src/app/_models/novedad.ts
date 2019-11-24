@@ -20,7 +20,7 @@ export interface NovedadSistema{
 
 export interface NovedadUsuario{
     id:number;
-    id_novedad_usuario:number;
+    id_novedad_sistema:number;
     id_usuario:number;
     estado:boolean;
     created_at:string;
