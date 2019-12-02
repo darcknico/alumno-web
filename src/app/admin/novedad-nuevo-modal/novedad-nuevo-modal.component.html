@@ -8,28 +8,30 @@
   <div class="modal-body">
     <form [formGroup]="formulario" >
       <div class="row">
-        <div class="form-group col-sm-12 {{ f.titulo.touched && f.titulo.invalid?'was-validated':''}}">
+        <div class="form-group col-sm-12">
           <label class="control-label">Titulo (*)</label>
           <input
             formControlName="titulo"
             type="text" 
-            class="form-control">
-          <div *ngIf= "f.titulo.touched" class="invalid-feedback">
+            class="form-control {{ (f.titulo.touched || f.titulo.dirty)?(f.titulo.invalid ?'is-invalid':'is-valid'):''}}">
+          <div *ngIf= " (f.titulo.touched || f.titulo.dirty) && f.titulo.invalid " class="invalid-feedback">
             <span *ngIf="f.titulo.hasError('required')" class="help-block">
                 El titulo es requerido
+            </span>
+            <span *ngIf="f.titulo.hasError('maxLength')" class="help-block">
+                Maximo de 255 caracteres
             </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="form-group col-sm-12">
-          <label class="control-label">Descripcion</label>
-          <textarea 
+          <label class="control-label">Breve descripción</label>
+          <input 
             formControlName="descripcion"
             type="text" 
             class="form-control"
             placeholder="">
-            </textarea>
         </div>
       </div>
     </form>

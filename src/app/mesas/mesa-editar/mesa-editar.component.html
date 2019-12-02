@@ -48,6 +48,22 @@
                   placeholder="Nombre">
               </div>
             </div>
+            <div class="row">
+              <div class="col text-center">
+                <hr>
+                <label class="control-label"><b>Notificación a docentes previo a la fecha</b> (Opcional)</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-4">
+                <label class="control-label">Notificar por correo</label>
+                <input type="checkbox" class="form-control" formControlName="notificacion_email">
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">Notificar por App Movil</label>
+                <input type="checkbox" class="form-control" formControlName="notificacion_push">
+              </div>
+            </div>
           </form>
         </div>
         <div class="card-footer">

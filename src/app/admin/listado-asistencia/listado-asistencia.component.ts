@@ -13,7 +13,7 @@ export class ListadoAsistenciaComponent implements OnInit {
   @ViewChild(DataTableDirective)dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   
-  dataSource:AppAsistencia[];
+  dataSource:AppAsistencia[] = [];
   request = <FiltroAppAsistencia>{
     search:"",
     id_sede:0,
@@ -61,7 +61,7 @@ export class ListadoAsistenciaComponent implements OnInit {
         { 
           data: 'fecha',
           width: '5%', 
-        }, { data: 'apellido' }
+        }, { data: 'id_usuario' }
       ],
       columnDefs: [ {
         targets: 'no-sort',

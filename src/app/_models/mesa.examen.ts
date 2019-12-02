@@ -14,6 +14,8 @@ export interface MesaExamen{
     fecha_fin:string;
     numero:number;
     nombre:string;
+    notificacion_push: boolean,
+    notificacion_email: boolean,
     estado:boolean;
     created_at:Date;
     updated_at:Date;

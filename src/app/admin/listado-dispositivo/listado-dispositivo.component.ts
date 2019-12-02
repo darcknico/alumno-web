@@ -12,7 +12,7 @@ export class ListadoDispositivoComponent implements OnInit {
   @ViewChild(DataTableDirective)dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   
-  dataSource:UsuarioDispositivo[];
+  dataSource:UsuarioDispositivo[] = [];
   request = <FiltroAppDispositivo>{
     search:"",
   };
@@ -58,6 +58,15 @@ export class ListadoDispositivoComponent implements OnInit {
           data: 'created_at',
           width: '5%', 
         },
+        {
+          data:'id_usuario',
+        },
+        {
+          data:'device_model',
+        },
+        {
+          data:'manufacturer',
+        }
       ],
       columnDefs: [ {
         targets: 'no-sort',

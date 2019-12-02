@@ -322,4 +322,16 @@ export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
   constancia_imprimir(item:MesaExamen){
     AuxiliarFunction.imprimir(this.toastr,this.mesaExamenMateriaAlumnoService.reporte_constancia(item.id));
   }
+
+  actualizar_deuda(){
+    const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-primary'});
+    (<DialogConfirmComponent>modal.content).onShow("Actualizar Deudores","Para el año de la fecha del examen, fijandose en la deuda de los planes de pago por inscripto, de acuerdo al saldo a la fecha");
+    (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        this.mesaExamenMateriaService.actualizar(this.mesa_examen_materia.id).subscribe(response=>{
+          this.refrescar();
+        });
+      }
+    });
+  }
 }

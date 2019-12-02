@@ -125,6 +125,9 @@ export class MesaExamenMateriaService {
     check_out(item:MesaExamenMateria){
         return this.http.post(this.api + this.id_sede + this.endpoint +item.id+'/check_out', item);
     }
+    actualizar(id){
+        return this.http.get<MesaExamenMateria>(this.api + this.id_sede + this.endpoint +id+'/actualizar');
+    }
 
     reporte_acta(id_mesa_examen_materia:number,id_tipo_condicion_alumno:number=3) {
         return this.http.get(

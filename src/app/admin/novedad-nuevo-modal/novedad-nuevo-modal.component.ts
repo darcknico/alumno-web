@@ -25,8 +25,8 @@ export class NovedadNuevoModalComponent implements OnInit {
     private router: Router,
   ) { 
     this.formulario = this.fb.group({
-      titulo: [ '', Validators.required],
-      descripcion: '',
+      titulo: [ '', [Validators.required,Validators.maxLength(255)]],
+      descripcion: [ '', Validators.maxLength(255)],
     });
   }
 

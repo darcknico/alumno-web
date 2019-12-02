@@ -29,6 +29,8 @@ export class MesaNuevoComponent implements OnInit {
       fecha_fin: '',
       nombre:'',
       numero:'',
+      notificacion_push: [false, Validators.required],
+      notificacion_email: [false, Validators.required],
     });
     this.f.numero.disable();
   }
@@ -52,6 +54,8 @@ export class MesaNuevoComponent implements OnInit {
       item.fecha_fin = moment(this.f.fecha_fin.value).format('YYYY-MM-DD');
     }
     item.nombre = this.f.nombre.value;
+    item.notificacion_email = this.f.notificacion_email.value;
+    item.notificacion_push = this.f.notificacion_push.value;
 
     this.consultando = true;
     this.mesaExamenService.register(item).subscribe(resposne=>{

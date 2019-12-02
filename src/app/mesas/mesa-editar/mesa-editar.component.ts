@@ -40,6 +40,8 @@ export class MesaEditarComponent implements OnInit {
       fecha_fin: [hoy.toDate(), Validators.required],
       nombre:'',
       numero:'',
+      notificacion_push: [false, Validators.required],
+      notificacion_email: [false, Validators.required],
     });
     this.f.numero.disable();
   }
@@ -76,6 +78,8 @@ export class MesaEditarComponent implements OnInit {
         this.f.fecha_fin.setValue(moment(this.mesa_examen.fecha_fin).toDate());
         this.f.nombre.setValue(this.mesa_examen.nombre);
         this.f.numero.setValue(this.mesa_examen.numero);
+        this.f.notificacion_email.setValue(this.mesa_examen.notificacion_email);
+        this.f.notificacion_push.setValue(this.mesa_examen.notificacion_push);
       });
 
       this.mesaExamenService.materias(ids).subscribe(response=>{
@@ -96,6 +100,8 @@ export class MesaEditarComponent implements OnInit {
     item.id = this.mesa_examen.id;
     item.fecha_fin = moment(this.f.fecha_fin.value).format('YYYY-MM-DD');
     item.nombre = this.f.nombre.value;
+    item.notificacion_email = this.f.notificacion_email.value;
+    item.notificacion_push = this.f.notificacion_push.value;
 
     this.consultando = true;
     this.mesaExamenService.update(item).subscribe(resposne=>{
