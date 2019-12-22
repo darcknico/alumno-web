@@ -14,6 +14,7 @@ import { BecaService } from '../../_services/beca.service';
 import * as moment from 'moment';
 import { Location } from '@angular/common';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inscripcion-plan-nuevo',
@@ -29,6 +30,8 @@ export class InscripcionPlanNuevoComponent implements OnInit {
   formulario: FormGroup;
   plan_pago:PlanPago;
   error;
+  suscriptionAnio:Subscription;
+  suscriptionFecha:Subscription;
   constructor(
     private inscripcionService:InscripcionService,
     private planPagoService:PlanPagoService,
@@ -58,6 +61,9 @@ export class InscripcionPlanNuevoComponent implements OnInit {
       dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
       fecha: [fecha.toDate(), [Validators.required]],
     });
+
+    this.suscribirAnio();
+    this.suscribirFecha();
   }
 
   ngOnInit() {
@@ -216,6 +222,30 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     } else {
       this.f.beca_porcentaje.setValue(0);
     }
+  }
+
+  suscribirAnio(){
+    this.suscriptionAnio = this.f.anio.valueChanges.subscribe(value=>{
+      if(value && value>0){
+        let fecha = moment(this.f.fecha.value);
+        if(fecha.isValid()){
+          fecha.set('year',value);
+          this.suscriptionFecha.unsubscribe();
+          this.f.fecha.setValue(fecha.toDate());
+          this.suscribirFecha();
+        }
+      }
+    });
+  }
+  suscribirFecha(){
+    this.suscriptionFecha = this.f.fecha.valueChanges.subscribe(value=>{
+      let fecha = moment(value);
+      if(fecha.isValid){
+        this.suscriptionAnio.unsubscribe();
+        this.f.anio.setValue(fecha.get('year'));
+        this.suscribirAnio();
+      }
+    });
   }
 
 }

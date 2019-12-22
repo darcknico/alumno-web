@@ -37,8 +37,8 @@
                   <th>Materia</th>
                   <th>Libro</th>
                   <th>Folio</th>
-                  <th>Condicion</th>
-                  <th>Nota</th>
+                  <th>Cond./Nota</th>
+                  <th>Final</th>
                   <th>Observaciones</th>
                   <th></th>
                 </tr>
@@ -54,9 +54,12 @@
                     <ng-container *ngIf="item.condicion">
                       {{item.condicion.nombre}}
                     </ng-container>
+                    <div *ngIf="item.nota!=null">
+                      / {{ item.nota }} <ng-container *ngIf="item.nota_nombre">({{item.nota_nombre}})</ng-container>
+                    </div>
                   </td>
                   <td>
-                    {{ item.nota }} <br *ngIf="item.nota_nombre">({{item.nota_nombre}})</td>
+                    {{ item.nota_final }} <ng-container *ngIf="item.nota_final_nombre">({{item.nota_final_nombre}})</ng-container>
                   <td>
                     {{ item.observaciones }}
                   </td>

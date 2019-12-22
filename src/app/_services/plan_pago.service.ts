@@ -21,6 +21,9 @@ export interface FiltroPlanPago {
     id_tipo_materia_lectivo:number;
     anio:number;
     id_tipo_inscripcion_estado:any;
+    sin_cobranzas:boolean;
+    fecha_inicial:string;
+    fecha_final:string;
 }
 export interface PlanPagoAjax{
     items: PlanPago[];

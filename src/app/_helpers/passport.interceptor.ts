@@ -43,9 +43,12 @@ export class PassportInterceptor implements HttpInterceptor {
             
         } else {
             this.toastr.clear();
-            this.toastr.warning("Contacte al administrador del sistema","Ha ocurrido un error",{
-                timeOut:0,
-            });
+            if(err.status === 500){
+                this.toastr.warning("Contacte al administrador del sistema","Ha ocurrido un error",{
+                    timeOut:0,
+                });
+            }
+            
         }
         return observableThrowError(err);
     }

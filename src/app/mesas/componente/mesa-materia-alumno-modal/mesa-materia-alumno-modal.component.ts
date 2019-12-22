@@ -30,12 +30,12 @@ export class MesaMateriaAlumnoModalComponent implements OnInit {
     ) {
       this.formulario = this.fb.group({
         asistencia:  null,
-        nota: [ '', [Validators.required,Validators.min(0),Validators.max(10)]],
+        nota: [ '', [Validators.min(0),Validators.max(10)]],
         nota_nombre:'',
-        nota_final: [ '', [Validators.required,Validators.min(0),Validators.max(10)]],
+        nota_final: [ '', [Validators.min(0),Validators.max(10)]],
         nota_final_nombre: '',
         id_tipo_condicion_alumno: [ '', Validators.required],
-        observaciones: '',
+        observaciones: [ '', Validators.maxLength(255)],
         adeuda: false,
       });
     }

@@ -59,10 +59,14 @@ export class AuxiliarFunction{
         let aviso = toastr.warning('Preparando descarga', '',{
             timeOut:30000,
         });
+        let loading = true;
         let suscription = aviso.onHidden.subscribe(()=>{
-            toastr.error('Si esta tardando mucho. Puede resultar de un error. En caso que siga persistiendo, comuniquese con el administrador.')
+            if(loading){
+                toastr.error('Si esta tardando mucho. Puede resultar de un error. En caso que siga persistiendo, comuniquese con el administrador.')
+            }
         });
         return obs.toPromise().then(response=>{
+            loading = false;
             var contentDisposition = response.headers.get('Content-Disposition');
             var contentType = response.headers.get('Content-Type');
             var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
@@ -72,6 +76,8 @@ export class AuxiliarFunction{
             var mediaType = contentType;
             var blob = new Blob([response.body], {type: mediaType});
             saveAs(blob,filename)
+        },()=>{
+            loading = false;
         });
     }
     
@@ -79,10 +85,14 @@ export class AuxiliarFunction{
         let aviso = toastr.warning('Preparando descarga', '',{
             timeOut:30000,
         });
+        let loading = true;
         let suscription = aviso.onHidden.subscribe(()=>{
-            toastr.error('Si esta tardando mucho. Puede resultar de un error. En caso que siga persistiendo, comuniquese con el administrador.')
+            if(loading){
+                toastr.error('Si esta tardando mucho. Puede resultar de un error. En caso que siga persistiendo, comuniquese con el administrador.')
+            }
         });
         return obs.toPromise().then(response=>{
+            loading = false;
             suscription.unsubscribe();
             toastr.remove(aviso.toastId);
             toastr.success('Archivo listo');
@@ -93,6 +103,8 @@ export class AuxiliarFunction{
             iframe.src = blobUrl;
             document.body.appendChild(iframe);
             iframe.contentWindow.print();
+        },()=>{
+            loading = false;
         });
     }
 

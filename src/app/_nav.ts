@@ -222,6 +222,12 @@ export const navItems = [
         permisos: [1,2,4],
       },
       {
+        name: 'Cuentas sin cobranzas',
+        url: '/consultas/planes_pago_no',
+        icon: 'fa fa-credit-card-alt',
+        permisos: [1,2,4],
+      },
+      {
         name: 'Reportes',
         url: '/consultas/reportes',
         icon: 'fa fa-file',

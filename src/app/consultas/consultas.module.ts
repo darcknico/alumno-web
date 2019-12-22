@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListadoReporteComponent } from './listado-reporte/listado-reporte.component';
+import { ListadoNoPlanPagoComponent } from './listado-no-plan-pago/listado-no-plan-pago.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { ListadoReporteComponent } from './listado-reporte/listado-reporte.compo
   declarations: [
     ListadoPagoComponent, 
     ListadoPlanPagoComponent, 
-    ListadoReporteComponent,
+    ListadoReporteComponent, ListadoNoPlanPagoComponent,
   ]
 })
 export class ConsultasModule { }

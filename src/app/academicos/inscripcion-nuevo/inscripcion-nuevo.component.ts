@@ -20,6 +20,7 @@ import { Beca } from '../../_models/beca';
 import { Obligacion } from '../../_models/obligacion';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inscripcion-nuevo',
@@ -43,6 +44,8 @@ export class InscripcionNuevoComponent implements OnInit {
   id_modalidad:number;
   id_plan_estudio:number;
 
+  suscriptionAnio:Subscription;
+  suscriptionFecha:Subscription;
   constructor(
     private alumnoService:AlumnoService,
     private departamentoService:DepartamentoService,
@@ -56,7 +59,11 @@ export class InscripcionNuevoComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {
-    let anio = moment().get('year');
+    let hoy = moment();
+    let anio = hoy.get('year');
+    if(hoy.get('month')>5){
+      anio = anio + 1;
+    }
     let fecha = moment().set({
       'year':anio,
       'month':1,
@@ -73,6 +80,7 @@ export class InscripcionNuevoComponent implements OnInit {
       dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
       fecha: [fecha.toDate(), [Validators.required]],
     });
+    
   }
 
   ngOnInit() {
@@ -102,6 +110,9 @@ export class InscripcionNuevoComponent implements OnInit {
     this.departamentoService.getAll().subscribe(response=>{
       this.departamentos = response;
     });
+
+    this.suscribirAnio();
+    this.suscribirFecha();
   }
 
   seleccionar_departamento(event){
@@ -230,6 +241,30 @@ export class InscripcionNuevoComponent implements OnInit {
           this.toastr.success('Inscripcion Aceptada', '');
           this.router.navigate(['/academicos/inscripciones/'+response.id+'/ver']);
         });
+      }
+    });
+  }
+
+  suscribirAnio(){
+    this.suscriptionAnio = this.f.anio.valueChanges.subscribe(value=>{
+      if(value && value>0){
+        let fecha = moment(this.f.fecha.value);
+        if(fecha.isValid()){
+          fecha.set('year',value);
+          this.suscriptionFecha.unsubscribe();
+          this.f.fecha.setValue(fecha.toDate());
+          this.suscribirFecha();
+        }
+      }
+    });
+  }
+  suscribirFecha(){
+    this.suscriptionFecha = this.f.fecha.valueChanges.subscribe(value=>{
+      let fecha = moment(value);
+      if(fecha.isValid){
+        this.suscriptionAnio.unsubscribe();
+        this.f.anio.setValue(fecha.get('year'));
+        this.suscribirAnio();
       }
     });
   }

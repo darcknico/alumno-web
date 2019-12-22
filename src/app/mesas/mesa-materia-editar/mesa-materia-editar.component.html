@@ -12,7 +12,10 @@
     <div class="col-lg-6">
       <div class="card">
         <div class="card-header">
-          <strong>Mesa de examen - Materia</strong>
+          <strong>Mesa de examen - Materia</strong><br>
+          <div class="badge badge-danger" *ngIf="mesa_examen_materia?.usuario_check_out">
+            CERRADO: {{mesa_examen_materia.usuario_check_out.apellido}} {{mesa_examen_materia.usuario_check_out.nombre}} {{mesa_examen_materia.check_out | date:'dd/MM/yy HH:mm'}}
+          </div>
           <div class="card-header-actions">
             <button class="btn btn-info btn-sm btn-block-xs-only m-1"
               type="submit"
@@ -75,7 +78,7 @@
         </div>
       </div>  
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6 ">
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Docentes
@@ -263,10 +266,10 @@
                     </ng-template>
                   </td>
                   <td>
-                    <ng-container *ngIf="item.nota">
+                    <ng-container *ngIf="item.nota!=null">
                         Nota: {{ item.nota }} ({{ item.nota_nombre }})<br>
                     </ng-container>
-                    <ng-container *ngIf="item.nota">
+                    <ng-container *ngIf="item.nota_final!=null">
                       Final: {{ item.nota_final }} ({{ item.nota_final_nombre }})<br>
                     </ng-container>
                     <ng-container *ngIf="item.observaciones">
