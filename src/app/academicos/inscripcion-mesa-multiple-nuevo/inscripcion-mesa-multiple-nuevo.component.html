@@ -1,0 +1,275 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-6">
+      <app-componente-alumno-detalle 
+        [alumno]="inscripcion.alumno"
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-alumno-detalle>
+    </div>
+    <div class="col-lg-6">
+      <app-componente-carrera-detalle 
+        [plan_estudio]="inscripcion.plan_estudio" 
+        [carrera]="inscripcion.carrera" 
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-carrera-detalle>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div id="stepper1" class="bs-stepper">
+            <div class="bs-stepper-header">
+              <div class="step" data-target="#i1">
+                <button class="step-trigger">
+                  <span class="bs-stepper-circle">1</span>
+                  <span class="bs-stepper-label">Mesa de examen</span>
+                </button>
+              </div>
+              <div class="line"></div>
+              <div class="step" data-target="#i2">
+                <button class="step-trigger">
+                  <span class="bs-stepper-circle">2</span>
+                  <span class="bs-stepper-label">Examenes</span>
+                </button>
+              </div>
+              <div class="line"></div>
+              <div class="step" data-target="#i3">
+                <button class="step-trigger">
+                  <span class="bs-stepper-circle">3</span>
+                  <span class="bs-stepper-label">Confirmación</span>
+                </button>
+              </div>
+            </div>
+            <div class="bs-stepper-content">
+              <div id="i1" class="content">
+                <div class="row">
+                  <div class="form-group col-sm-12">
+                    <label class="control-label">Listado de mesas en donde se encuentran examenes con materias que dicte la carrera</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-4">
+                    <label class="control-label">Año</label>
+                    <ng-select [items]="anios"
+                        [selectOnTab]="true"
+                        (change)="refrescarMesas()"
+                        placeholder="Filtro por año"
+                        [(ngModel)]="anio"
+                        [clearable]="false">
+                    </ng-select>
+                  </div>
+                  <div class="form-group col-sm-8">
+                      <label class="control-label">Mesas de examen</label>
+                      <ng-select [items]="mesas"
+                          [selectOnTab]="true"
+                          bindValue="id"
+                          bindLabel="nombre"
+                          placeholder="Seleccione la mesa"
+                          [(ngModel)]="id_mesa_examen"
+                          [clearable]="false">
+                      </ng-select>
+                  </div>
+                </div>
+                <button [disabled]="id_mesa_examen==null"
+                  (click)="continuarPrimero()" 
+                  class="btn btn-primary m-1 btn-block-xs-only">CONTINUAR</button>
+              </div>
+              <div id="i2" class="content">
+                <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="materias">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Fecha y Hora</th>
+                        <th>Materia</th>
+                        <th>Ins.Previa</th>
+                        <th>Comision</th>
+                        <th class="no-sort">Condicion</th>
+                        <th class="no-sort">Nota</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="materias?.length != 0">
+                      <tr *ngFor="let item of materias">
+                        <td></td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ item.materia.nombre }}</td>
+                        <td>
+                          <ng-container *ngIf="item.inscripcion_ultima else sinPrevia">
+                            <span class="badge badge-primary" tooltip="{{item.inscripcion_ultima.mesa_examen_materia.mesa_examen.nombre}}">
+                              {{item.inscripcion_ultima.created_at | date:'d/M/y'}}
+                            </span>
+                            <ng-container *ngIf="item.inscripcion_ultima.condicion">
+                              {{item.inscripcion_ultima.condicion.nombre}}
+                            </ng-container>
+                            <ng-container *ngIf="item.inscripcion_ultima.nota_final_nombre">
+                              Nota:&nbsp;{{item.inscripcion_ultima.nota_final}}
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #sinPrevia>
+                            N/I
+                          </ng-template>
+                        </td>
+                        <td>
+                          <ng-container *ngIf="item.comision else sinComision">
+                            <span class="badge badge-primary" tooltip="Nº:{{item.comision.comision?.numero}}">
+                              Año:{{ item.comision.comision?.anio }}
+                            </span>
+                            <ng-container *ngIf="item.comision?.tipo">
+                              {{ item.comision.tipo.nombre}}
+                            </ng-container>
+                            <ng-container *ngIf="item.comision?.nota>=0">
+                              Nota:&nbsp;{{ item.comision?.nota}}
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #sinComision>
+                            N/A
+                          </ng-template>
+                        </td>
+                        <td>
+                          <select
+                            class="form-control condicionalidad">
+                            <option *ngFor="let item of condicionalidades" [value]="item.id">{{item.nombre}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="number" min="0" max="10" class="form-control nota" value="{{ item.nota_final }}" required>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <p>
+                      N/I: El alumno con su inscripcion, no presenta inscripciones previas con la materia.
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p>
+                      N/A: El alumno con su inscripcion, no presenta inscripcion en la comision realizada con la materia a seleccionar.
+                    </p>
+                  </div>
+                </div>
+                <button (click)="back()" class="btn btn-secondary m-1 btn-block-xs-only">VOLVER</button>
+                <button (click)="continuarSegundo()" class="btn btn-primary m-1 btn-block-xs-only">CONTINUAR</button>
+              </div>
+              <div id="i3" class="content">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card" *ngFor="let item of examenes">
+                      <div class="card-body" >
+                        <div class="row">
+                          <div class="col-md-12 text-center">
+                            Materia: <b>{{ item.mesa_examen_materia.materia.nombre}}</b>
+                          </div>
+                          <div class="col-md-6">
+                            Horario : {{ item.mesa_examen_materia.fecha | date:'dd/MM/yyyy HH:mm'}}
+                          </div>
+                          <div class="col-md-6">
+                            Ubicacion: {{ item.mesa_examen_materia.ubicacion }}
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="item.mesa_examen_materia.observaciones">
+                          <div class="col-md-12">
+                            Observaciones: {{ item.mesa_examen_materia.observaciones }}
+                          </div>
+                        </div>
+                        <ng-container *ngIf="item.mesa_examen_materia.comision as comision">
+                          <div class="row">
+                            <div class="col-md-6">
+                              Comision Año: {{ comision.comision.anio}}
+                            </div>
+                            <div class="col-md-6">
+                              Numero: {{ comision.comision.numero }}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              Condicion en la comision:
+                              <ng-container *ngIf="comision.tipo else sinTipo">
+                                {{ comision.tipo.nombre}}
+                              </ng-container>
+                              <ng-template #sinTipo>sin condicion declarada</ng-template>
+                            </div>
+                            <div class="col-md-6">
+                              Nota en la comision : {{ comision.nota}}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              Asistencia promedio: {{ comision.asistencia_presente_promedio | number:'1.2-2':'es-AR' }}%
+                            </div>
+                            <div class="col-md-6">
+                              Examen asistencia promedio: {{ comision.examen_presente_promedio | number:'1.2-2':'es-AR' }}%
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="comision.observaciones">
+                            <div class="col-md-12">
+                              Observaciones: {{ comision.observaciones }}
+                            </div>
+                          </div>
+                        </ng-container>
+                        <div class="row" *ngIf="item.mesa_examen_materia.inscripcion_ultima as inscripcion_ultima">
+                          <div class="col-12" *ngIf="inscripcion_ultima.mesa_examen_materia.mesa_examen">
+                            Mesa Previa: {{inscripcion_ultima.mesa_examen_materia.mesa_examen.nombre}}
+                          </div>
+                          <div class="col-6" *ngIf="inscripcion_ultima.condicion">
+                            Cond. Previa: {{inscripcion_ultima.condicion.nombre}}
+                          </div>
+                          <div class="col-6">
+                            Nota Previa: {{inscripcion_ultima.nota_final}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-inline col-sm-6">
+                            <h5 >
+                              Condicion de Inscripción: 
+                              <ng-container *ngIf="item.condicion else sinCondicion">
+                                <b>{{item.condicion.nombre}}</b>
+                              </ng-container>
+                              <ng-template #sinCondicion>
+                                sin condicion declarada
+                              </ng-template>
+                            </h5>
+                          </div>
+                          <div class="form-inline col-sm-6">
+                            <h5 class="control-label">Nota de Inscripción: <b>{{item.nota}}</b></h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="form-group col-12">
+                          <label class="control-label">¿El alumno presenta deuda? <b class="text-danger">(${{ deuda | number:'1.2-2':'es-AR' }})</b>&nbsp;</label>
+                          <input type="checkbox" [(ngModel)]="adeuda" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row text-center">
+                  <button (click)="back()" class="btn btn-secondary m-1 btn-block-xs-only">VOLVER</button>
+                  <button (click)="continuarTercero()" class="btn btn-danger m-1">CONFIRMAR</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <button (click)="volver()" class="btn btn-secondary m-1 btn-block-xs-only">Listado de examenes</button>
+  </div>
+</div>

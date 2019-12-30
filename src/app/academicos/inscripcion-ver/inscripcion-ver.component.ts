@@ -17,6 +17,9 @@ import { TramiteNuevoModalComponent } from '../componentes/tramite-nuevo-modal/t
 import { ListadoPagoInscripcionModalComponent } from '../componentes/listado-pago-inscripcion-modal/listado-pago-inscripcion-modal.component';
 import { Chart } from 'chart.js';
 import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
+import { InscripcionEgresadoModalComponent } from '../componentes/inscripcion-egresado-modal/inscripcion-egresado-modal.component';
+import { InscripcionAbandonadoModalComponent } from '../componentes/inscripcion-abandonado-modal/inscripcion-abandonado-modal.component';
+import dtLanguage from '../../_constants/dtLanguage';
 
 @Component({
   selector: 'app-inscripcion-ver',
@@ -27,7 +30,7 @@ export class InscripcionVerComponent implements OnInit {
   @ViewChild("rendimientosLineCanvas") rendimientosLineCanvas: any;
 
   id_sede:number;
-  inscripcion:Inscripcion;
+  inscripcion:Inscripcion = null;
   plan_pago:PlanPago;
 
   dtOptions: DataTables.Settings = {};
@@ -51,6 +54,26 @@ export class InscripcionVerComponent implements OnInit {
     this.formulario = this.fb.group({
       id_tipo_inscripcion_estado:[0,Validators.required],
     });
+    this.route.params.subscribe(query=>{
+      let id_inscripcion = query['id_inscripcion'];
+      let {extras} = this.router.getCurrentNavigation();
+      if(extras.state){
+        this.inscripcion = extras.state.inscripcion;
+        if(this.inscripcion.id != id_inscripcion){
+          this.inscripcion = null
+        }
+      }
+      if(id_inscripcion){
+        if(this.inscripcion == null){
+          this.inscripcionService.getById(+id_inscripcion).subscribe(response=>{
+            this.inscripcion = response;
+            this.iniciar();
+          });
+        } else {
+          this.iniciar();
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -61,37 +84,13 @@ export class InscripcionVerComponent implements OnInit {
       this.tipos_estado = response;
     });
     this.dtOptions = {
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
+      language: dtLanguage,
       paging:false,
       searching:false,
       lengthChange:false,
       info:false,
       ordering:false,
     };
-    this.route.params.subscribe(query=>{
-      let id_inscripcion = query['id_inscripcion'];
-      if(id_inscripcion){
-        this.inscripcionService.getById(+id_inscripcion).subscribe(response=>{
-          this.inscripcion = response;
-          this.obligaciones = [];
-          this.f.id_tipo_inscripcion_estado.setValue(response.id_tipo_inscripcion_estado);
-          this.actualizar();
-          let egreso = moment(this.inscripcion.fecha_egreso);
-          if(!egreso.isValid()){
-            egreso = moment();
-          }
-          let fin = egreso.get('year');
-          for (let index = this.inscripcion.anio; index <= fin; index++) {
-            this.anios.push(index);
-          }
-          this.anio = String(fin);
-          this.rendimientos();
-        });
-      }
-    });
-
     this.rendimientosLineCanvas = new Chart(this.rendimientosLineCanvas.nativeElement, {
       type: 'line',
       data: [[],[],[],[]],
@@ -155,6 +154,22 @@ export class InscripcionVerComponent implements OnInit {
     });
   }
 
+  iniciar(){
+    this.obligaciones = [];
+    this.f.id_tipo_inscripcion_estado.setValue(this.inscripcion.id_tipo_inscripcion_estado);
+    this.actualizar();
+    let egreso = moment(this.inscripcion.fecha_egreso);
+    if(!egreso.isValid()){
+      egreso = moment();
+    }
+    let fin = egreso.get('year');
+    for (let index = this.inscripcion.anio; index <= fin; index++) {
+      this.anios.push(index);
+    }
+    this.anio = String(fin);
+    this.rendimientos();
+  }
+
   get f(){
     return this.formulario.controls;
   }
@@ -163,6 +178,39 @@ export class InscripcionVerComponent implements OnInit {
     if(!this.formulario.valid){
       return;
     }
+    let modal;
+    switch(+this.f.id_tipo_inscripcion_estado.value){
+      case 1: //regular
+        this.cambiar_estado();
+        break;
+      case 2: //egresado
+        modal = this.modalService.show(InscripcionEgresadoModalComponent,{class: 'modal-info'});
+        (<InscripcionEgresadoModalComponent>modal.content).onShow(this.inscripcion);
+        (<InscripcionEgresadoModalComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+            this.inscripcion.id_tipo_inscripcion_estado = this.f.id_tipo_inscripcion_estado.value;
+            this.toastr.success('El estado de la inscripción fue cambiado con exito.');
+          } else {
+            this.f.id_tipo_inscripcion_estado.setValue(this.inscripcion.id_tipo_inscripcion_estado);
+          }
+        });
+        break;
+      case 3: //abandono
+        modal = this.modalService.show(InscripcionAbandonadoModalComponent,{class: 'modal-lg modal-danger'});
+        (<InscripcionAbandonadoModalComponent>modal.content).onShow(this.inscripcion);
+        (<InscripcionAbandonadoModalComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+            this.inscripcion.id_tipo_inscripcion_estado = this.f.id_tipo_inscripcion_estado.value;
+            this.toastr.success('El estado de la inscripción fue cambiado con exito.');
+          } else {
+            this.f.id_tipo_inscripcion_estado.setValue(this.inscripcion.id_tipo_inscripcion_estado);
+          }
+        });
+        break;
+    }
+  }
+
+  cambiar_estado(){
     this.inscripcion.id_tipo_inscripcion_estado = this.f.id_tipo_inscripcion_estado.value;
     this.inscripcionService.estado(this.inscripcion).subscribe(response=>{
       this.toastr.success('El estado de la inscripción fue cambiado con exito.');
@@ -194,7 +242,11 @@ export class InscripcionVerComponent implements OnInit {
   }
 
   plan_pago_editar(item:PlanPago){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/planes/'+item.id+'/editar']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/planes/'+item.id+'/editar'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   plan_pago_eliminar(item:PlanPago){
@@ -222,7 +274,11 @@ export class InscripcionVerComponent implements OnInit {
   }
 
   nuevo_plan(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/planes/nuevo']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/planes/nuevo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   ficha_reporte(){
@@ -370,7 +426,15 @@ export class InscripcionVerComponent implements OnInit {
   }
 
   editar(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/editar']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/editar'],{
+        state:{
+          inscripcion:this.inscripcion,
+        }
+    });
+  }
+
+  ver_alumno(){
+    this.router.navigate(['/academicos/alumnos/'+this.inscripcion.id_alumno+'/ver']);
   }
 
   nuevo_tramite(){
@@ -394,15 +458,55 @@ export class InscripcionVerComponent implements OnInit {
   }
 
   comisiones(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/comisiones']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/comisiones'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
+  }
+  comisiones_nuevo(){
+    this.router.navigate(['/comisiones/carreras/'+this.inscripcion.id_carrera],{
+      queryParams:{
+        id_inscripcion:this.inscripcion.id,
+      }
+    });
+  }
+  comisiones_masivo(){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/comisiones/masivo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   mesas_examenes(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
+  }
+  mesas_examenes_nuevo(){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas/nuevo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
+  }
+  mesas_examenes_masivo(){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas/masivo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   notas(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/notas']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/notas'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   rendimientos(){

@@ -30,24 +30,18 @@ export class InscripcionMesaComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {
-  }
-
-  ngOnInit() {
-    this.dtOptions = {
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
-      paging:false,
-      lengthChange:false,
-      info:false,
-      ordering:false,
-    };
     this.route.params.subscribe(query=>{
+      let {extras} = this.router.getCurrentNavigation();
+      if(extras.state){
+        this.inscripcion = extras.state.inscripcion;
+      }
       let ids = query['id_inscripcion'];
       if(ids){
-        this.inscripcionService.getById(ids).subscribe(response=>{
-          this.inscripcion = response;
-        });
+        if(!this.inscripcion){
+          this.inscripcionService.getById(ids).subscribe(response=>{
+            this.inscripcion = response;
+          });
+        }
         this.inscripcionService.mesas_examenes(ids).subscribe(response=>{
           this.dataSource = response;
         });
@@ -55,8 +49,35 @@ export class InscripcionMesaComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    this.dtOptions = {
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      ordering:false,
+    };
+  }
+
   nuevo(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas/nuevo']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas/nuevo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
+  }
+  masivo(){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/mesas/masivo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
+  }
+  volver(){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   alumno_desasociar(item:MesaExamenMateriaAlumno){

@@ -1,5 +1,5 @@
 <div class="card" *ngIf="alumno">
-  <div class="card-header">
+  <div class="card-header text-truncate">
     Alumno: <b>{{alumno.apellido}} {{alumno.nombre}}</b> <div *ngIf="alumno.codigo">({{alumno.codigo}})</div>
     <div class="card-header-actions">
       <a  (click)="isCollapsed = !isCollapsed"

@@ -18,6 +18,8 @@ import { FiltroComisionDocente, ComisionDocenteService } from '../../_services/c
 import { ComisionAlumnoService, FiltroComisionAlumno } from '../../_services/comision_alumno.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs';
+import dtLanguage from '../../_constants/dtLanguage';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-listado-comision',
@@ -35,6 +37,7 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
   dataSourceAlumno: ComisionAlumno[]= [];
   departamentos:Departamento[]=[];
   carreras:Carrera[]=[];
+  anios:any[]=[];
 
   request = <FiltroComision>{
     search:"",
@@ -63,6 +66,18 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {
+    let hoy = moment();
+    this.anios.push({
+      'label':'TODOS',
+      'value':0,
+    })
+    for (let index = 2018; index <= hoy.year()+1; index++) {
+      this.anios.push({
+        'label':index,
+        'value':index,
+      })
+    }
+    this.request.anio = hoy.year();
   }
 
   suscription:Subscription;
@@ -85,9 +100,7 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
 
     this.dtOptions = {
       order: [[ 0, "desc" ]],
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
+      language: dtLanguage,
       pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,
@@ -129,9 +142,7 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
     };
     this.dtOptionsDocente = {
       order: [[ 0, "desc" ]],
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
+      language: dtLanguage,
       pagingType: 'full_numbers',
       lengthMenu: [5],
       pageLength: 5,
@@ -170,9 +181,7 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
 
     this.dtOptionsAlumno = {
       order: [[ 0, "desc" ]],
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
+      language: dtLanguage,
       pagingType: 'full_numbers',
       lengthMenu: [5],
       pageLength: 5,

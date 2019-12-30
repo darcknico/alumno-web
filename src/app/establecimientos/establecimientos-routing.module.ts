@@ -9,6 +9,7 @@ import { ModalidadEditarComponent } from './modalidad-editar/modalidad-editar.co
 import { BecaComponent } from './beca/beca.component';
 import { BecaEditarComponent } from './beca-editar/beca-editar.component';
 import { AulaComponent } from './aula/aula.component';
+import { TipoInscripcionAbandonoComponent } from './tipo-inscripcion-abandono/tipo-inscripcion-abandono.component';
 
 
 const routes: Routes = [
@@ -100,6 +101,13 @@ const routes: Routes = [
         }
       }
     ]
-  }];
+  },{
+    path:'tipos-abandonos',
+    component: TipoInscripcionAbandonoComponent,
+    data: {
+      title: 'Tpos de Abandono'
+    }
+  }
+];
 
 export const routing: ModuleWithProviders = RouterModule.forChild(routes);

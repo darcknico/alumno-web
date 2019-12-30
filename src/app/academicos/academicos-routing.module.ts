@@ -19,6 +19,8 @@ import { AlumnoCuotaGuard } from '../_guards/alumno_cuota.guard';
 import { InscripcionCuotaGuard } from '../_guards/inscripcion_cuota.guard';
 import { ListadoMateriaComponent } from './listado-materia/listado-materia.component';
 import { MateriaVerComponent } from './materia-ver/materia-ver.component';
+import { InscripcionMesaMultipleNuevoComponent } from './inscripcion-mesa-multiple-nuevo/inscripcion-mesa-multiple-nuevo.component';
+import { InscripcionComisionMultipleNuevoComponent } from './inscripcion-comision-multiple-nuevo/inscripcion-comision-multiple-nuevo.component';
 
 const routes: Routes = [
   {
@@ -150,6 +152,12 @@ const routes: Routes = [
               title:'Comisiones asociadas a la Inscripcion'
             }
           },{
+            path:'comisiones/masivo',
+            component:InscripcionComisionMultipleNuevoComponent,
+            data:{
+              title:'Comisiones asociadas a la Inscripcion - Nuevo'
+            }
+          },{
             path:'mesas',
             component:InscripcionMesaComponent,
             data:{
@@ -158,6 +166,12 @@ const routes: Routes = [
           },{
             path:'mesas/nuevo',
             component:InscripcionMesaNuevoComponent,
+            data:{
+              title:'Mesas de examenes asociadas a la Inscripcion - Nuevo'
+            }
+          },{
+            path:'mesas/masivo',
+            component:InscripcionMesaMultipleNuevoComponent,
             data:{
               title:'Mesas de examenes asociadas a la Inscripcion - Nuevo'
             }

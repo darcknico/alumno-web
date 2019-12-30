@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">
+    Cambiar estado por EGRESADO
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Fecha de Egreso (*)</label>
+        <input bsDatepicker
+          formControlName="fecha_egreso"
+          type="text" 
+          class="form-control {{ f.fecha_egreso.invalid?'is-invalid':'is-valid'}}" >
+        <div *ngIf= " (f.fecha_egreso.touched || f.fecha_egreso.dirty) && f.fecha_egreso.invalid " class="invalid-feedback">
+          <span *ngIf="formulario.get('fecha_egreso').hasError('required')" class="help-block">
+            La fecha es requerido
+          </span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+  <button
+    type="button" 
+    class="btn btn-info" 
+    (click)="continuar()"
+    [disabled]="!formulario.valid">
+    Aceptar
+  </button>
+</div>

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routing } from './academicos-routing.module';
 import { DataTablesModule } from 'angular-datatables';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarreraComponent } from './carrera/carrera.component';
 import { CarreraEditarComponent } from './carrera-editar/carrera-editar.component';
 import { CarreraVerComponent } from './carrera-ver/carrera-ver.component';
@@ -11,7 +11,7 @@ import { PlanComponent } from './plan/plan.component';
 import { MateriaComponent } from './materia/materia.component';
 import { AlumnoComponent } from './alumno/alumno.component';
 import { AlumnoEditarComponent } from './alumno-editar/alumno-editar.component';
-import { TypeaheadModule, BsDatepickerModule, CollapseModule, TooltipModule, ModalModule } from 'ngx-bootstrap';
+import { TypeaheadModule, BsDatepickerModule, CollapseModule, TooltipModule, ModalModule,BsDropdownModule,AccordionModule } from 'ngx-bootstrap';
 import { InscripcionComponent } from './inscripcion/inscripcion.component';
 import { InscripcionNuevoComponent } from './inscripcion-nuevo/inscripcion-nuevo.component';
 import { AlumnoVerComponent } from './alumno-ver/alumno-ver.component';
@@ -39,6 +39,10 @@ import { MateriaDetalleComponent } from './componentes/materia-detalle/materia-d
 import { ListadoMateriaComisionComponent } from './componentes/listado-materia-comision/listado-materia-comision.component';
 import { ListadoMateriaMesaExamenComponent } from './componentes/listado-materia-mesa-examen/listado-materia-mesa-examen.component';
 import { AlumnoArchivoEditarModalComponent } from './componentes/alumno-archivo-editar-modal/alumno-archivo-editar-modal.component';
+import { InscripcionMesaMultipleNuevoComponent } from './inscripcion-mesa-multiple-nuevo/inscripcion-mesa-multiple-nuevo.component';
+import { InscripcionComisionMultipleNuevoComponent } from './inscripcion-comision-multiple-nuevo/inscripcion-comision-multiple-nuevo.component';
+import { InscripcionEgresadoModalComponent } from './componentes/inscripcion-egresado-modal/inscripcion-egresado-modal.component';
+import { InscripcionAbandonadoModalComponent } from './componentes/inscripcion-abandonado-modal/inscripcion-abandonado-modal.component';
 
 @NgModule({
   imports: [
@@ -55,6 +59,7 @@ import { AlumnoArchivoEditarModalComponent } from './componentes/alumno-archivo-
     NgSelectModule,
     NgxCurrencyModule,
     ModalModule.forRoot(),
+    AccordionModule.forRoot(),
   ],
   declarations: [
     CarreraComponent,
@@ -87,6 +92,10 @@ import { AlumnoArchivoEditarModalComponent } from './componentes/alumno-archivo-
     ListadoMateriaComisionComponent,
     ListadoMateriaMesaExamenComponent,
     AlumnoArchivoEditarModalComponent,
+    InscripcionMesaMultipleNuevoComponent,
+    InscripcionComisionMultipleNuevoComponent,
+    InscripcionEgresadoModalComponent,
+    InscripcionAbandonadoModalComponent,
   ],
   entryComponents: [
     TramiteNuevoModalComponent,
@@ -95,6 +104,8 @@ import { AlumnoArchivoEditarModalComponent } from './componentes/alumno-archivo-
     ListadoAlumnoSedeModalComponent,
     AlumnoVerModalComponent,
     AlumnoArchivoEditarModalComponent,
+    InscripcionEgresadoModalComponent,
+    InscripcionAbandonadoModalComponent,
   ],
   providers:[
     AlumnoCuotaGuard,

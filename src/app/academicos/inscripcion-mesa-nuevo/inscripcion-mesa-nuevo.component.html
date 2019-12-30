@@ -1,15 +1,13 @@
 <div class="animated fadeIn">
   <div class="row" >
-    <div class="col-lg-12">
+    <div class="col-lg-6">
       <app-componente-alumno-detalle 
         [alumno]="inscripcion.alumno"
         [collapsed]="true"
         *ngIf="inscripcion">
       </app-componente-alumno-detalle>
     </div>
-  </div>
-  <div class="row" >
-    <div class="col-lg-12">
+    <div class="col-lg-6">
       <app-componente-carrera-detalle 
         [plan_estudio]="inscripcion.plan_estudio" 
         [carrera]="inscripcion.carrera" 
@@ -107,7 +105,7 @@
                   <td>{{ item.alumnos_cantidad }}</td>
                   <td>
                     <ng-container *ngIf="item.comision else sinComision">
-                      Año:{{ item.comision.anio }} Nº:{{item.comision.numero}}
+                      Año:{{ item.comision.comision.anio }} Nº:{{item.comision.comision.numero}}
                     </ng-container>
                     <ng-template #sinComision>
                       N/A
@@ -162,8 +160,8 @@
                 Ubicacion: {{ mesa_examen_materia.ubicacion }}
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-4">
+            <div class="row" *ngIf="mesa_examen_materia.observaciones">
+              <div class="col-md-6">
                 Observaciones: {{ mesa_examen_materia.observaciones }}
               </div>
             </div>
@@ -172,31 +170,31 @@
                 <div class="col-12 text-center"><hr>Comision</div>
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   Año: {{ mesa_examen_materia.comision.comision.anio}}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   Numero: {{ mesa_examen_materia.comision.comision.numero }}
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   Condicion: {{ mesa_examen_materia.comision.tipo.nombre}}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   Nota : {{ mesa_examen_materia.comision.nota}}
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   Asistencia promedio: {{ mesa_examen_materia.comision.asistencia_presente_promedio | number:'1.2-2':'es-AR' }}%
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   Examen asistencia promedio: {{ mesa_examen_materia.comision.examen_presente_promedio | number:'1.2-2':'es-AR' }}%
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-4">
+              <div class="row" *ngIf="mesa_examen_materia.comision.observaciones">
+                <div class="col-md-12">
                   Observaciones: {{ mesa_examen_materia.comision.observaciones }}
                 </div>
               </div>
@@ -205,7 +203,7 @@
               <div class="col-12 text-center"><hr>Estado de la inscripcion</div>
             </div>
             <div class="row">
-              <div class="form-inline col-sm-3">
+              <div class="form-inline col-sm-4">
                 <label class="control-label">Condicion del alumno: </label>
                 <select
                   formControlName="id_tipo_condicion_alumno"
@@ -213,11 +211,11 @@
                   <option *ngFor="let item of condicionalidades" [value]="item.id">{{item.nombre}}</option>
                 </select>
               </div>
-              <div class="form-inline col-sm-3">
+              <div class="form-group col-sm-4">
                 <label class="control-label">Adeuda (${{ deuda | number:'1.2-2':'es-AR' }}):&nbsp;</label>
                 <input type="checkbox" formControlName="adeuda" class="form-control">
               </div>
-              <div class="form-inline col-sm-6">
+              <div class="form-inline col-sm-4">
                 <label class="control-label">Nota: </label>
                 <input type="number" formControlName="nota" class="form-control">
               </div>

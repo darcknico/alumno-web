@@ -6,6 +6,7 @@ import { Usuario } from "./usuario";
 import { PlanPago } from "./plan_pago";
 import { Beca } from "./beca";
 import { Modalidad } from "./modalidad";
+import { TipoInscripcionAbandono } from './tipo';
 
 export interface Inscripcion{
     id:number;
@@ -31,6 +32,7 @@ export interface Inscripcion{
     carrera:Carrera;
     plan_estudio:PlanEstudio;
     tipo_estado:TipoInscripcionEstado;
+    tipo_abandonos:InscripcionAbandono[];
     modalidad:Modalidad;
     usuario:Usuario;
     planes_pago:PlanPago[];
@@ -40,4 +42,18 @@ export interface Inscripcion{
 export interface TipoInscripcionEstado{
     id:number;
     nombre:string;
+}
+
+
+export interface InscripcionAbandono{
+    id:number;
+    id_inscripcion:number;
+    id_tipo_inscripcion_abandono:number;
+    id_usuario:number;
+    estado:boolean;
+    created_at:Date;
+    updated_at:Date;
+
+    inscripcion:Inscripcion;
+    tipo:TipoInscripcionAbandono;
 }

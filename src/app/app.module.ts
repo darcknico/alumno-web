@@ -36,8 +36,7 @@ import {
 import { AppRoutingModule } from './app.routing';
 
 // Import 3rd party components
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TabsModule } from 'ngx-bootstrap/tabs';
+import { BsDropdownModule, TabsModule, AccordionModule } from 'ngx-bootstrap'
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -150,6 +149,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ListadoNovedadSistemaModalComponent } from './modals/listado-novedad-sistema-modal/listado-novedad-sistema-modal.component';
 import { AppDispositivoService } from './_services/app_dispositivo.service';
 import { AppAsistenciaService } from './_services/app_asistencia.service';
+import { TipoInscripcionAbandonoService } from './_services/tipo_inscripcion_abandono.service.';
+import { InscripcionAbandonoService } from './_services/inscripcion_abandono.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -176,6 +177,7 @@ export const customCurrencyMaskConfig = {
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
+    AccordionModule.forRoot(),
     ChartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -275,6 +277,8 @@ export const customCurrencyMaskConfig = {
     HomeService,
     AulaService,
     ObligacionService,
+    TipoInscripcionAbandonoService,
+    InscripcionAbandonoService,
 
     // APP
     AppDispositivoService,

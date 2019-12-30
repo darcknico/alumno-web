@@ -1,0 +1,195 @@
+<div class="animated fadeIn">
+  <div class="row" >
+    <div class="col-lg-6">
+      <app-componente-alumno-detalle 
+        [alumno]="inscripcion.alumno"
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-alumno-detalle>
+    </div>
+    <div class="col-lg-6">
+      <app-componente-carrera-detalle 
+        [plan_estudio]="inscripcion.plan_estudio" 
+        [carrera]="inscripcion.carrera" 
+        [collapsed]="true"
+        *ngIf="inscripcion">
+      </app-componente-carrera-detalle>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div id="stepper1" class="bs-stepper">
+            <div class="bs-stepper-header">
+              <div class="step" data-target="#i1">
+                <button class="step-trigger">
+                  <span class="bs-stepper-circle">1</span>
+                  <span class="bs-stepper-label">Año</span>
+                </button>
+              </div>
+              <div class="line"></div>
+              <div class="step" data-target="#i2">
+                <button class="step-trigger">
+                  <span class="bs-stepper-circle">2</span>
+                  <span class="bs-stepper-label">Comisiones</span>
+                </button>
+              </div>
+              <div class="line"></div>
+              <div class="step" data-target="#i3">
+                <button class="step-trigger">
+                  <span class="bs-stepper-circle">3</span>
+                  <span class="bs-stepper-label">Confirmación</span>
+                </button>
+              </div>
+            </div>
+            <div class="bs-stepper-content">
+              <div id="i1" class="content">
+                <div class="row">
+                  <div class="form-group col-sm-12">
+                    <label class="control-label">Seleccione primero el año a filtrar las comisiones. Las comisiones en las que este inscriptas no aparecerán.</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label class="control-label">Año</label>
+                    <ng-select [items]="anios"
+                        [selectOnTab]="true"
+                        placeholder="Filtro por año"
+                        [(ngModel)]="anio"
+                        [clearable]="false">
+                    </ng-select>
+                  </div>
+                </div>
+                <button
+                  (click)="continuarPrimero()" 
+                  class="btn btn-primary m-1 btn-block-xs-only">CONTINUAR</button>
+              </div>
+              <div id="i2" class="content">
+                <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="comisiones">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Año</th>
+                        <th>Numero</th>
+                        <th>Materia</th>
+                        <th>Ins.Previa</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="comisiones?.length != 0">
+                      <tr *ngFor="let item of comisiones">
+                        <td></td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.anio }}</td>
+                        <td>{{ item.numero }}</td>
+                        <td>{{ item.materia.nombre }}</td>
+                        <td>
+                          <ng-container *ngIf="item.inscripcion_ultima else sinPrevia">
+                            <span class="badge badge-primary" tooltip="Numero: {{item.inscripcion_ultima.comision.numero}}">
+                              Año:&nbsp;{{item.inscripcion_ultima.comision.anio}}
+                            </span>
+                            <ng-container *ngIf="item.inscripcion_ultima.tipo">
+                              {{item.inscripcion_ultima.tipo.nombre}}
+                            </ng-container>
+                            <ng-container *ngIf="item.inscripcion_ultima.nota">
+                              Nota:&nbsp;{{item.inscripcion_ultima.nota}}
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #sinPrevia>
+                            N/I
+                          </ng-template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <p>
+                      N/I: El alumno con su inscripcion, no presenta inscripciones previas con la materia.
+                    </p>
+                  </div>
+                </div>
+                <button (click)="back()" class="btn btn-secondary m-1 btn-block-xs-only">VOLVER</button>
+                <button [disabled]="comisiones?.length == 0"
+                  (click)="continuarSegundo()" 
+                  class="btn btn-primary m-1 btn-block-xs-only">CONTINUAR</button>
+              </div>
+              <div id="i3" class="content">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card" *ngFor="let item of inscripciones">
+                      <div class="card-body" >
+                        <div class="row">
+                          <div class="col-md-12 text-center">
+                            Materia: <b>{{ item.comision.materia.nombre}}</b>
+                          </div>
+                          <div class="col-md-6">
+                            Año : {{ item.comision.anio}}
+                          </div>
+                          <div class="col-md-6">
+                            Numero: {{ item.comision.numero }}
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="item.comision.observaciones">
+                          <div class="col-md-12">
+                            Observaciones: {{ item.comision.observaciones }}
+                          </div>
+                        </div>
+                        <ng-container *ngIf="item.comision.inscripcion_ultima as inscripcion_ultima">
+                          <div class="row">
+                            <div class="col-md-6">
+                              Previa año : {{ inscripcion_ultima.comision.anio}}
+                            </div>
+                            <div class="col-md-6">
+                              Previa Numero: {{ inscripcion_ultima.comision.numero }}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              Previa condicion: 
+                              <ng-container *ngIf="inscripcion_ultima.tipo else sinTipo">
+                                {{ inscripcion_ultima.tipo.nombre}}
+                              </ng-container>
+                              <ng-template #sinTipo>sin condicion declarada</ng-template>
+                            </div>
+                            <div class="col-md-6">
+                              Nota previa en la comision : {{ inscripcion_ultima.nota}}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              Asistencia promedio: {{ inscripcion_ultima.asistencia_presente_promedio | number:'1.2-2':'es-AR' }}%
+                            </div>
+                            <div class="col-md-6">
+                              Examen asistencia promedio: {{ inscripcion_ultima.examen_presente_promedio | number:'1.2-2':'es-AR' }}%
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="inscripcion_ultima.observaciones">
+                            <div class="col-md-12">
+                              Observaciones: {{ inscripcion_ultima.observaciones }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row text-center">
+                  <button (click)="back()" class="btn btn-secondary m-1 btn-block-xs-only">VOLVER</button>
+                  <button (click)="continuarTercero()" class="btn btn-danger m-1">CONFIRMAR</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <button (click)="volver()" class="btn btn-secondary m-1 btn-block-xs-only">Listado de comisiones</button>
+  </div>
+</div>

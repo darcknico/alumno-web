@@ -34,26 +34,99 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-lg-12">
+      <button 
+        (click)="ver_alumno()"
+        class="btn btn-success btn-block-xs-only m-1">
+        <i class="fa fa-cog"></i>
+        Gestionar Alumno
+      </button>
+
+      <div class="btn-group btn-block-xs-only m-1" dropdown container="body">
+        <button 
+          (click)="comisiones()" 
+          type="button" 
+          class="btn btn-danger " 
+          tooltip="Listado de comisiones inscriptas">
+          Comisiones
+        </button>
+        <button 
+          tooltip="Inscribirse en una comision"
+          id="button-split" type="button" dropdownToggle class="btn btn-danger">
+                <i class="fa fa-plus"></i>
+        </button>
+        <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-split">
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="comisiones_masivo()" href="javascript:void(0);">
+              Multiple
+            </a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="comisiones_nuevo()" href="javascript:void(0);">
+              Simple
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="btn-group btn-block-xs-only m-1" dropdown container="body">
+        <button 
+          (click)="mesas_examenes()" 
+          type="button" 
+          class="btn btn-danger " 
+          tooltip="Listado de mesas de examenes inscriptas">
+          Mesas de examenes
+        </button>
+        <button 
+          tooltip="Inscribirse en una nueva mesa de examen"
+          id="button-split" type="button" dropdownToggle class="btn btn-danger">
+                <i class="fa fa-plus"></i>
+        </button>
+        <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-split">
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="mesas_examenes_masivo()" href="javascript:void(0);">
+              Multiple
+            </a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="mesas_examenes_nuevo()" href="javascript:void(0);">
+              Simple
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <button 
+        (click)="notas()"
+        class="btn btn-danger btn-block-xs-only m-1" tooltip="Listado de notas del sistema viejo">
+        Notas (Viejo)
+      </button>
+      <button 
+        (click)="nuevo_tramite()"
+        class="btn btn-info btn-block-xs-only m-1" tooltip="Generar un nuevo tramite">
+        Nuevo Tramite
+      </button>
+      <button 
+        (click)="pagos_inscripcion()" 
+        class="btn btn-info btn-block-xs-only m-1" tooltip="Listado de todos los pagos realizados">
+        Listado de Pagos
+      </button>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-lg-4">
       <div class="card" *ngIf="inscripcion">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Inscripcion
           <div class="card-header-actions">
-            <div class="btn-group" dropdown placement="bottom right" container="body">
-              <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
-                <span class="caret"></span> Acciones
-              </button>
-              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                <li role="menuitem">
-                  <a class="dropdown-item" (click)="editar()" href="javascript:void(0);">Editar</a>
-                  <a class="dropdown-item" (click)="nuevo_tramite()" href="javascript:void(0);">Nuevo Tramite</a>
-                  <a class="dropdown-item" (click)="pagos_inscripcion()" href="javascript:void(0);">Pagos</a>
-                  <a class="dropdown-item" (click)="comisiones()" href="javascript:void(0);">Comisiones</a>
-                  <a class="dropdown-item" (click)="mesas_examenes()" href="javascript:void(0);">Mesas de examen</a>
-                  <a class="dropdown-item" (click)="notas()" href="javascript:void(0);">Notas (Viejo)</a>
-                </li>
-              </ul>
-          </div>
+            <button 
+              (click)="editar()"
+              class="btn btn-success btn-sm">
+              <i class="fa fa-edit"></i>
+              Editar
+            </button>
           </div>
         </div>
         <div class="card-body">
@@ -81,7 +154,7 @@
     <div class="col-lg-4">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Cambiar estado
+          <i class="fa fa-align-justify"></i> Estado de la Inscripción
         </div>
         <div class="card-body">
           <form [formGroup]="formulario" >
@@ -103,7 +176,7 @@
             color="accent"
             (click)="continuar()"
             [disabled]="!formulario.valid">
-            Guardar estado
+            Cambiar estado
             </button>
         </div>
       </div>
@@ -255,9 +328,21 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Cuenta Corriente {{plan_pago.anio}} en CURSO
           <div class="card-header-actions">
-            <button class="btn btn-info btn-sm" type="button" (click)="plan_pago_ver()">MAS INFORMACION</button>
-            <button class="btn btn-info btn-sm" type="button" (click)="pagos()">VER PAGOS</button>
-            <button class="btn btn-danger btn-sm" type="button" (click)="nuevo_pago()">NUEVO PAGO</button>
+            <button 
+              tooltip="Ver los pagos realizados en la cuenta corriente"
+              class="btn btn-info btn-sm m-1" 
+              type="button" 
+              (click)="pagos()">VER PAGOS</button>
+            <button
+              tooltip="Generar nuevo pago para la cuenta corriente"
+              class="btn btn-info btn-sm m-1" 
+              type="button" 
+              (click)="nuevo_pago()">NUEVO PAGO</button>
+            <button 
+              tooltip="ir a la cuenta corriente"
+              class="btn btn-danger btn-sm m-1" 
+              type="button" 
+              (click)="plan_pago_ver()">MAS INFORMACION</button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -296,7 +381,11 @@
           </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-danger" type="button" (click)="rearmar()">REARMAR</button>
+          <button 
+            tooltip="Vuelve a calcular intereses/pagos/movimientos en las cuotas"
+            class="btn btn-danger" 
+            type="button" 
+            (click)="rearmar()">REARMAR</button>
         </div>
       </div>
     </div>

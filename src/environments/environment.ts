@@ -9,4 +9,5 @@ export const environment = {
   apiUrl: 'http://alumno-rest.proyectosinformaticos.com.ar/api/',
   //apiUrl: 'http://ariasdesaavedra.edu.ar/sistema/alumno-rest/public/api/',
   //apiUrl: 'http://34.226.235.220/alumno-rest/public/index.php/api/',
+  key_token:'key_alumno_token_auth',
 };

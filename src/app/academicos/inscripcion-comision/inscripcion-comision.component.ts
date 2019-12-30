@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { InscripcionAsistenciaModalComponent } from '../componentes/inscripcion-asistencia-modal/inscripcion-asistencia-modal.component';
 import { InscripcionExamenModalComponent } from '../componentes/inscripcion-examen-modal/inscripcion-examen-modal.component';
+import dtLanguage from '../../_constants/dtLanguage';
+import { ComisionAlumnoService, FiltroComisionAlumno } from '../../_services/comision_alumno.service';
 
 @Component({
   selector: 'app-inscripcion-comision',
@@ -18,39 +20,46 @@ export class InscripcionComisionComponent implements OnInit {
 
   dtOptions: DataTables.Settings = {};
   dataSource:ComisionAlumno[];
+  request:FiltroComisionAlumno=<FiltroComisionAlumno>{
+    id_inscripcion:0,
+  }
 
   constructor(
+    private service:ComisionAlumnoService,
     private inscripcionService:InscripcionService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
     ) {
-  }
-
-  ngOnInit() {
-    this.id_sede = +localStorage.getItem('id_sede');
-    this.inscripcionService.sede(this.id_sede);
-    this.dtOptions = {
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
-      paging:false,
-      searching:false,
-      lengthChange:false,
-      info:false,
-      ordering:false,
-    };
     this.route.params.subscribe(query=>{
       let ids = query['id_inscripcion'];
+      let {extras} = this.router.getCurrentNavigation();
+      if(extras.state){
+        this.inscripcion = extras.state.inscripcion;
+        if(this.inscripcion.id != ids){
+          this.inscripcion = null;
+        }
+      }
       if(ids){
-        this.inscripcionService.getById(ids).subscribe(response=>{
-          this.inscripcion = response;
-        });
-        this.inscripcionService.comisiones(ids).subscribe(response=>{
+        if(!this.inscripcion){
+          this.inscripcionService.getById(ids).subscribe(response=>{
+            this.inscripcion = response;
+          });
+        }
+        this.request.id_inscripcion = ids;
+        this.service.getAll(this.request).subscribe(response=>{
           this.dataSource = response;
         })
       }
     });
+  }
+
+  ngOnInit() {
+    this.dtOptions = {
+      language: dtLanguage,
+      searching:false,
+      ordering:false,
+    };
   }
 
   nuevo(){
@@ -60,13 +69,24 @@ export class InscripcionComisionComponent implements OnInit {
       }
     });
   }
+  masivo(){
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/comisiones/masivo'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
+  }
 
   comision(item:ComisionAlumno){
     this.router.navigate(['/comisiones/'+item.id_comision+'/ver']);
   }
 
   volver(){
-    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/ver']);
+    this.router.navigate(['/academicos/inscripciones/'+this.inscripcion.id+'/ver'],{
+      state:{
+        inscripcion:this.inscripcion,
+      }
+    });
   }
 
   asistencias(){

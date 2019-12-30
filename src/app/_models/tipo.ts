@@ -17,3 +17,9 @@ export interface TipoDocenteCargo{
     id:number;
     nombre:string;
 }
+
+export interface TipoInscripcionAbandono{
+    id:number;
+    nombre:string;
+    descripcion:string;
+}

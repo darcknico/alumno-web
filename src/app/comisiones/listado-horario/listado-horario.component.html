@@ -51,7 +51,7 @@
                         <thead>
                             <tr>
                               <th>Fecha</th>
-                              <th class="no-sort">Nº</th>
+                              <th class="no-sort">Comision</th>
                               <th>Dia</th>
                               <th>Desde</th>
                               <th>Hasta</th>
@@ -62,7 +62,7 @@
                         <tbody *ngIf="dataSource?.length != 0">
                             <tr *ngFor="let item of dataSource" >
                               <td>{{ item.created_at | date:'dd/MM/yy' }}</td>
-                              <td>{{ item.comision.numero }} </td>
+                              <td>Año:&nbsp;{{item.comision.anio}} Nº:&nbsp;{{item.comision.numero}}</td>
                               <td>{{ item.dia.nombre }} </td>
                               <td>{{ item.hora_inicial }} </td>
                               <td>{{ item.hora_final }} </td>

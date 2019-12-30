@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
  
 @Injectable()
 export class AuthenticationService {
+    key_token:string = environment.key_token;
     api:string = environment.apiUrl;
     usuario$ = new Subject<Usuario>();
     token$ = new Subject<string>();
@@ -18,7 +19,7 @@ export class AuthenticationService {
         return this.http.post<any>(this.api+'login', { email: email, password: password })
             .pipe(map(user => {
                 if (user && user.token) {
-                    localStorage.setItem('token', user.token);
+                    this.setToken(user.token);
                     localStorage.setItem('usuario', JSON.stringify(user));
                     this.usuario$.next(user);
                     this.token$.next(user.token);
@@ -31,7 +32,7 @@ export class AuthenticationService {
         return this.http.post<any>(this.api+'register',usuario)
             .pipe(map(user => {
                 if (user && user.token) {
-                    localStorage.setItem('token', user.token);
+                    this.setToken(user.token);
                     localStorage.setItem('usuario', JSON.stringify(user));
                     this.usuario$.next(user);
                 }
@@ -48,7 +49,7 @@ export class AuthenticationService {
         return this.http.post<any>(this.api+'usuario/password',item)
             .pipe(map(user => {
                 if (user && user.token) {
-                    localStorage.setItem('token', user.token);
+                    this.setToken(user.token);
                     this.actualizar();
                 }
                 return user;
@@ -59,7 +60,7 @@ export class AuthenticationService {
     logout() {
         return this.http.post<any>(this.api+'logout', {})
             .pipe(map(user => {
-                localStorage.removeItem('token');
+                localStorage.removeItem(this.key_token);
                 localStorage.removeItem('usuario');
                 localStorage.removeItem('sede');
             }));
@@ -82,15 +83,19 @@ export class AuthenticationService {
     }
 
     isAuthenticated():boolean{
-        return Boolean(localStorage.getItem('token'));
+        return Boolean(localStorage.getItem(this.key_token));
     }
 
     getToken(){
-        return 'Bearer '+localStorage.getItem('token');
+        return 'Bearer '+localStorage.getItem(this.key_token);
     }
 
     iniciar(){
-        let token = localStorage.getItem('token');
+        let token = localStorage.getItem(this.key_token);
         this.token$.next(token);
+    }
+
+    private setToken(token){
+        localStorage.setItem(this.key_token, token);
     }
 }

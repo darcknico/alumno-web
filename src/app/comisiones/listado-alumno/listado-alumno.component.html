@@ -39,7 +39,7 @@
                             <th>Fecha</th>
                             <th>Nº</th>
                             <th class="no-sort">Materia</th>
-                            <th class="no-sort">Año</th>
+                            <th class="no-sort">Comision</th>
                             <th>Alumno</th>
                             <th class="no-sort text-center">A/E Presentes</th>
                             <th class="no-sort text-center">P+R/TP</th>
@@ -50,7 +50,7 @@
                             <td>{{ item.created_at | date:'dd/MM/yy' }}</td>
                             <td>{{ item.comision.numero }} </td>
                             <td>{{ item.comision.materia.nombre }}</td>
-                            <td>{{ item.comision.anio }} </td>
+                            <td>Año:&nbsp;{{item.comision.anio}} Nº:&nbsp;{{item.comision.numero}}</td>
                             <td>{{ item.alumno.apellido }} {{ item.alumno.nombre }}</td>
                             <td class="text-center">{{ item.asistencia_presente_promedio| number:'1.2-2':'es-AR' }}% / {{ item.examen_presente_promedio| number:'1.2-2':'es-AR' }}%</td>
                             <td class="text-center">{{ item.examen_parcial_promedio| number:'1.2-2':'es-AR' }} / {{ item.examen_practico_promedio| number:'1.2-2':'es-AR' }}</td>

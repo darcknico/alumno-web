@@ -17,6 +17,7 @@ import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-s
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AlumnoVerModalComponent } from '../componentes/alumno-ver-modal/alumno-ver-modal.component';
 import { SedeService } from '../../_services/sede.service';
+import dtLanguage from '../../_constants/dtLanguage';
 
 @Component({
   selector: 'app-alumno',
@@ -75,9 +76,7 @@ export class AlumnoComponent implements OnInit {
 
     this.dtOptions = {
       order: [[ 0, "desc" ]],
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
+      language: dtLanguage,
       pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,
@@ -115,9 +114,7 @@ export class AlumnoComponent implements OnInit {
     };
     this.dtOptionsBaja = {
       order: [[ 0, "desc" ]],
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
+      language: dtLanguage,
       pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,

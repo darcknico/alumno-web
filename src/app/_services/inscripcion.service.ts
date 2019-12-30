@@ -105,13 +105,20 @@ export class InscripcionService {
     planes_pago(id:number) {
         return this.http.get<PlanPago[]>(this.api + this.id_sede + '/inscripciones/'+id+'/planes_pago');
     }
-
+    /*
     comisiones(id:number) {
         return this.http.get<ComisionAlumno[]>(this.api + this.id_sede + '/inscripciones/' +id+'/comisiones');
     }
+    */
 
-    mesas_examenes_disponibles(id:number) {
-        return this.http.get<MesaExamen[]>(this.api + this.id_sede + '/inscripciones/' +id+'/mesas/disponibles');
+    mesas_examenes_disponibles(id:number,anio:number=null) {
+        let query = {};
+        if(anio>0){
+            query['anio'] = String(anio);
+        }
+        return this.http.get<MesaExamen[]>(this.api + this.id_sede + '/inscripciones/' +id+'/mesas/disponibles',{
+            params:query
+        });
     }
 
     mesas_examenes(id:number) {

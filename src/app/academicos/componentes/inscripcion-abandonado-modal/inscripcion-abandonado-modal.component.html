@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">
+    Cambiar estado por ABANDONADO
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" *ngIf="item">
+  <accordion [isAnimated]="true" [closeOthers]="true" >
+    <accordion-group *ngFor="let tipo of tipos" [panelClass]="'item-accordion'">
+      <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+        <div class="row">
+          <div class="col-2">
+            <input type="checkbox"
+            class="form-control"
+            name="asociados[]"
+            [value]="tipo.id"
+            [checked]="tipo_asociada(tipo)"
+            (change)="tipo_asociacion($event,tipo)">
+          </div>
+          <div class="col-10 text-left">
+            <h5>{{tipo.nombre}}</h5>
+          </div>
+        </div>
+      </button>
+      {{tipo.descripcion}}
+    </accordion-group>
+  </accordion>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+  <button
+    type="button" 
+    class="btn btn-info" 
+    (click)="continuar()">
+    Aceptar
+  </button>
+</div>

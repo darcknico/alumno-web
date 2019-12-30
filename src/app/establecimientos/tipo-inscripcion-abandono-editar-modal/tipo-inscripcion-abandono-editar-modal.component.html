@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Tipo de abandono</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formulario" >
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Nombre</label>
+        <input
+          formControlName="nombre"
+          type="text" 
+          class="form-control {{ (f.nombre.touched || f.nombre.dirty)?(f.nombre.invalid?'is-invalid':'is-valid'):''}} "
+          placeholder=" ">
+        <div *ngIf= "f.nombre.invalid " class="invalid-feedback">
+          <span *ngIf="f.nombre.hasError('required')" class="help-block">
+            El nombre es requerido
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label class="control-label">Descripción</label>
+        <textarea
+          formControlName="descripcion"
+          type="text" 
+          class="form-control "
+          placeholder=" "></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button 
+    [disabled]="!formulario.valid"
+    type="button" 
+    class="btn btn-primary" 
+    (click)="confirmar()">
+    Guardar
+  </button>
+</div>

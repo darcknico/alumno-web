@@ -19,6 +19,7 @@ export interface FiltroComisionAlumno {
     id_materia:number;
     id_comision:number;
     id_alumno:number;
+    id_inscripcion:number;
     anio:number;
 }
 
@@ -42,8 +43,10 @@ export class ComisionAlumnoService {
         });
     }
 
-    getAll(){
-        return this.http.get<ComisionAlumno[]>(this.ruta );
+    getAll(filtro:FiltroComisionAlumno=null){
+        return this.http.get<ComisionAlumno[]>(this.ruta,{
+            params:AuxiliarFunction.toParams(filtro),
+        } );
     }
 
     ajax(filtro:FiltroComisionAlumno):  Observable<Ajax<ComisionAlumno>>{

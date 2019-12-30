@@ -39,7 +39,7 @@
                           <th>Fecha </th>
                           <th>Carrera</th>
                           <th>Materia</th>
-                          <th>Numero</th>
+                          <th>Comision</th>
                           <th>Cantidad</th>
                           <th>Presentes</th>
                           <th></th>
@@ -50,7 +50,7 @@
                         <td>{{ item.fecha | date:'dd/MM/yyyy' }}</td>
                         <td>{{ item.comision.carrera.nombre_corto }})</td>
                         <td>{{ item.comision.materia.nombre }} ({{ item.comision.materia.codigo }})</td>
-                        <td>{{item.comision.numero}}</td>
+                        <td>Año:&nbsp;{{item.comision.anio}} Nº:&nbsp;{{item.comision.numero}}</td>
                         <td>{{item.alumnos_cantidad}}</td>
                         <td>{{item.alumnos_cantidad_presente}}</td>
                         <td>

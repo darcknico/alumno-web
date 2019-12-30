@@ -68,6 +68,11 @@ export const navItems = [
         url: '/establecimientos/becas',
         icon: 'icon-settings'
       },
+      {
+        name: 'Tpos de Abandono',
+        url: '/establecimientos/tipos-abandonos',
+        icon: 'fa fa-exclamation-circle'
+      },
       
     ]
   },

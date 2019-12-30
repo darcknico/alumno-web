@@ -7,6 +7,7 @@ import { Alumno } from '../_models/alumno';
 import { Asistencia } from '../_models/asistencia';
 import { Examen } from '../_models/examen';
 import { SedeService } from './sede.service';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
  
 export interface FiltroComision {
     search:string;
@@ -17,6 +18,7 @@ export interface FiltroComision {
     id_departamento:number;
     id_carrera:number;
     id_materia:number;
+    anio:number;
 }
 export interface ComisionAjax{
     items: Comision[];
@@ -46,16 +48,7 @@ export class ComisionService {
 
     ajax(filtro:FiltroComision):  Observable<ComisionAjax>{
         return this.http.get<ComisionAjax>(this.api + this.id_sede + '/comisiones', {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_departamento: String(filtro.id_departamento),
-                id_carrera: String(filtro.id_carrera),
-                id_materia: String(filtro.id_materia),
-            }
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
 
@@ -114,8 +107,14 @@ export class ComisionService {
         return this.http.get<Examen[]>(this.api + this.id_sede + '/comisiones/' +id_comision+'/examenes');
     }
 
-    carreras(id:number) {
-        return this.http.get<Comision[]>(this.api + this.id_sede + '/comisiones/carreras/' +id);
+    carreras(id_carrera:number,params:{anio:number,id_inscripcion:number}=null) {
+        let query = {};
+        if(params){
+            query = AuxiliarFunction.toParams(params);
+        }
+        return this.http.get<Comision[]>(this.api + this.id_sede + '/comisiones/carreras/' +id_carrera,{
+            params:query
+        });
     }
 
     materias(id:number) {

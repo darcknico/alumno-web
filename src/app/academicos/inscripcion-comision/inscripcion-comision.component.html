@@ -1,15 +1,13 @@
 <div class="animated fadeIn">
   <div class="row" >
-    <div class="col-lg-12">
+    <div class="col-lg-6">
       <app-componente-alumno-detalle 
         [alumno]="inscripcion.alumno"
         [collapsed]="true"
         *ngIf="inscripcion">
       </app-componente-alumno-detalle>
     </div>
-  </div>
-  <div class="row" >
-    <div class="col-lg-12">
+    <div class="col-lg-6">
       <app-componente-carrera-detalle 
         [plan_estudio]="inscripcion.plan_estudio" 
         [carrera]="inscripcion.carrera" 
@@ -24,7 +22,23 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Comisiones inscriptas
           <div class="card-header-actions">
-            <button class="btn btn-block btn-sm btn-success" type="button" (click)="nuevo()">Inscribir a nueva comision</button>
+            <div class="btn-group" dropdown placement="top right" container="body">
+              <button dropdownToggle type="button" class="btn btn-sm btn-danger dropdown-toggle">
+                Inscripcion&nbsp;a&nbsp;Comision&nbsp;<i class="icon-settings"></i>
+              </button>
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                <li role="menuitem">
+                  <a class="dropdown-item" (click)="masivo()" href="javascript:void(0);">
+                    Multiple
+                  </a>
+                </li>
+                <li role="menuitem">
+                  <a class="dropdown-item" (click)="nuevo()" href="javascript:void(0);">
+                    Simple
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="card-body p-1">
@@ -77,7 +91,7 @@
           <button class="btn btn-block-xs-only btn-sm btn-secondary m-1"
             type="submit"
             (click)="volver()">
-            Administrar Inscripción
+            <i class="fa fa-cog"></i> Gestionar Inscripción
             </button>
           <button class="btn btn-block-xs-only btn-sm btn-primary m-1"
             type="submit"
