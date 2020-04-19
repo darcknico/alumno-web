@@ -7,7 +7,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { CarreraService } from '../../_services/carrera.service';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BecaService } from '../../_services/beca.service';
 import { Beca } from '../../_models/beca';
@@ -15,6 +15,9 @@ import { Beca } from '../../_models/beca';
 import * as moment from 'moment';
 import { SedeService } from '../../_services/sede.service';
 import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
+import { TipoMateriaLectivo } from '../../_models/materia';
+import { MateriaService } from '../../_services/materia.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-inscripcion',
@@ -22,7 +25,7 @@ import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
   styleUrls: ['./inscripcion.component.scss']
 })
 export class InscripcionComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Inscripcion[] = [];
   departamentos:Departamento[]=[];
@@ -30,6 +33,7 @@ export class InscripcionComponent implements OnInit {
   becas:Beca[]=[];
   tipos_estado:TipoInscripcionEstado[]=[];
   consultando:boolean = false;
+  tipos:TipoMateriaLectivo[]=[];
 
   request = <FiltroInscripcion>{
     search:"",
@@ -39,14 +43,18 @@ export class InscripcionComponent implements OnInit {
     id_carrera:0,
     anio_inicial:0,
     anio_final:0,
+    id_periodo_lectivo:0,
+    porcentaje_aprobados_inicial:0,
+    porcentaje_aprobados_final:0,
   };
 
   constructor(
     private inscripcionService:InscripcionService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private becaService:BecaService,
+    private materiaService:MateriaService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -77,6 +85,9 @@ export class InscripcionComponent implements OnInit {
       item.nombre = "TODOS";
       this.becas.push(item);
       this.becas = this.becas.reverse();
+    });
+    this.materiaService.tipos_lectivo().subscribe(response=>{
+      this.tipos = response;
     });
     const that = this;
 
@@ -109,7 +120,12 @@ export class InscripcionComponent implements OnInit {
         { 
           data: 'created_at',
           width: '5%', 
-        }, { data: 'anio' }, { data: 'id_alumno' }, { data: 'id_carrera' },{ data: 'beca_nombre' },{ data: 'id_tipo_inscripcion_estado'},
+        }, { data: 'anio' },
+        { data: 'id_alumno' },
+        { data: 'id_carrera' },
+        { data: 'beca_nombre' },
+        { data: 'id_tipo_inscripcion_estado'},
+        { data: 'porcentaje_aprobados'},
       ],
       responsive:true,
     };

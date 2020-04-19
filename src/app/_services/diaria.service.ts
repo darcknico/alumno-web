@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Diaria } from '../_models/diaria';
 import { SedeService } from './sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
 
 export interface FiltroDiaria {
     search:string;
@@ -24,7 +25,7 @@ export class DiariaService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sede: SedeService,
+        private sede: SedeProvider,
         ) { 
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id=>{

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SedeService } from '../../_services/sede.service';
 import { Sede } from '../../_models/sede';
 import { DataTableDirective } from 'angular-datatables';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Carrera } from '../../_models/carrera';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
@@ -19,7 +19,7 @@ import { PasswordModalComponent } from '../componentes/password-modal/password-m
 })
 export class UsuarioComponent implements OnInit {
   
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   usuarios: Usuario[] = [];
   sedes:Sede[]=[];

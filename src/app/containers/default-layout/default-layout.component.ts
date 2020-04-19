@@ -4,12 +4,13 @@ import { AuthenticationService } from '../../_services/authentication.service';
 import { Usuario, UsuarioSede } from '../../_models/usuario';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UsuarioSedeModalComponent } from '../../modals/usuario-sede-modal/usuario-sede-modal.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { SedeService } from '../../_services/sede.service';
 import { NovedadSistemaService, FiltroNovedadSistema } from '../../_services/novedad_sistema.service';
 import { NovedadSistema, NovedadUsuario } from '../../_models/novedad';
 import { ListadoNovedadSistemaModalComponent } from '../../modals/listado-novedad-sistema-modal/listado-novedad-sistema-modal.component';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 export interface Children{
   name:string;
@@ -44,7 +45,7 @@ export class DefaultLayoutComponent implements OnInit {
   novedades:NovedadSistema[] = [];
   no_visto:NovedadUsuario[] = [];
   constructor(
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private authenticationService:AuthenticationService,
     private novedadSistemaService:NovedadSistemaService,
     private router: Router,

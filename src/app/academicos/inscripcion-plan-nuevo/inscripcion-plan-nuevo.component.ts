@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import { Inscripcion } from '../../_models/inscripcion';

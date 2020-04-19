@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Asistencia } from '../../_models/asistencia';
 import { Comision } from '../../_models/comision';
 import { ComisionService } from '../../_services/comision.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AsistenciaService } from '../../_services/asistencia.service';

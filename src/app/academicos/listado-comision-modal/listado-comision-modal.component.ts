@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ComisionService, FiltroComision } from '../../_services/comision.service';
 import { SedeService } from '../../_services/sede.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Materia } from '../../_models/materia';
 import { Router } from '@angular/router';
 import { Comision } from '../../_models/comision';
 import { DataTableDirective } from 'angular-datatables';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-comision-modal',
@@ -18,7 +19,7 @@ export class ListadoComisionModalComponent implements OnInit {
   public onClose: Subject<boolean>;
   materia:Materia;
 
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Comision[] = [];
 
@@ -31,7 +32,7 @@ export class ListadoComisionModalComponent implements OnInit {
 
   constructor(
     private service:ComisionService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     public bsModalRef: BsModalRef,
     private router: Router,
   ) { }

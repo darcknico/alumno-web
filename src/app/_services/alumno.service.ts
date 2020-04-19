@@ -9,6 +9,7 @@ import { Obligacion } from '../_models/obligacion';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import * as moment from 'moment';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroAlumno {
     search:string;
@@ -37,7 +38,7 @@ export class AlumnoService {
 
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) {
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id_sede => {

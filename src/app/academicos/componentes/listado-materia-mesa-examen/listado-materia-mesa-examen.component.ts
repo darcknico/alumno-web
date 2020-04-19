@@ -13,7 +13,7 @@ import * as moment from "moment";
 })
 export class ListadoMateriaMesaExamenComponent implements OnInit {
   @Input('item') item:Materia=null;
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
 
   dataSource:MesaExamenMateria[]=[];
   dtOptions: DataTables.Settings = {};

@@ -3,6 +3,7 @@ import { FiltroAppAsistencia, AppAsistenciaService } from '../../_services/app_a
 import { AppAsistencia } from '../../_models/app';
 import { SedeService } from '../../_services/sede.service';
 import { DataTableDirective } from 'angular-datatables';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-asistencia',
@@ -10,7 +11,7 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrls: ['./listado-asistencia.component.scss']
 })
 export class ListadoAsistenciaComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   
   dataSource:AppAsistencia[] = [];
@@ -20,7 +21,7 @@ export class ListadoAsistenciaComponent implements OnInit {
   };
   constructor(
     private service:AppAsistenciaService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
   ) { }
 
   suscribe;

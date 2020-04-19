@@ -8,6 +8,7 @@ import { Asistencia } from '../_models/asistencia';
 import { Examen } from '../_models/examen';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroComision {
     search:string;
@@ -30,7 +31,7 @@ export class ComisionService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sedeService: SedeService,
+        private sedeService: SedeProvider,
         ) {
         this.id_sede = this.sedeService.getIdSede();
         this.sedeService.id_sede$.subscribe(id=>{
@@ -123,5 +124,14 @@ export class ComisionService {
 
     reporte(id:number){
         return this.http.get(this.api + this.id_sede + '/comisiones/'+id+'/reporte',{responseType: 'blob'});
+    }
+
+    masivo_previa(filtro:FiltroComision){
+        return this.http.get(this.api + this.id_sede + '/comisiones/masivo',{
+            params: AuxiliarFunction.toParams(filtro),
+        });
+    }
+    masivo_asociar(data){
+        return this.http.post(this.api + this.id_sede + '/comisiones/masivo',data);
     }
 }

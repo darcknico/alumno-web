@@ -14,7 +14,7 @@ import { MateriaService } from '../../_services/materia.service';
 import { BecaService } from '../../_services/beca.service';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 import * as moment from 'moment';
@@ -25,7 +25,7 @@ import * as moment from 'moment';
   styleUrls: ['./listado-no-plan-pago.component.scss']
 })
 export class ListadoNoPlanPagoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: PlanPago[] = [];
   departamentos:Departamento[]=[];

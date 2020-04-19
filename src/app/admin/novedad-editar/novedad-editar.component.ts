@@ -3,7 +3,7 @@ import { NovedadSistemaService } from '../../_services/novedad_sistema.service';
 import { NovedadSistema } from '../../_models/novedad';
 import { NavigationExtras, ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 

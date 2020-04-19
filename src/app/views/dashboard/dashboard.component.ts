@@ -28,9 +28,9 @@ export class DashboardComponent implements OnInit {
   ultimas:Diaria[];
   usuario:Usuario;
 
-  @ViewChild("barCanvas") barCanvas: ElementRef;
-  @ViewChild("doughnutCanvas") doughnutCanvas: ElementRef;
-  @ViewChild("lineCanvas") lineCanvas: ElementRef;
+  @ViewChild("barCanvas",{static:false}) barCanvas: ElementRef;
+  @ViewChild("doughnutCanvas",{static:false}) doughnutCanvas: ElementRef;
+  @ViewChild("lineCanvas",{static:false}) lineCanvas: ElementRef;
 
   private barChart: Chart;
   private doughnutChart: Chart;
@@ -133,12 +133,13 @@ export class DashboardComponent implements OnInit {
               label: function(tooltipItems, data) {
                 let value = data.datasets[0].data[tooltipItems.index];
                 let str;
-                if (parseInt(value) >= 1000) {
+                if (Number(value) >= 1000) {
                     str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 } else {
                   str = '$' + value;
                 }
-                return moment(data.labels[tooltipItems.index]).format('dddd') + ' ' + str;
+                let fecha = data.labels[tooltipItems.index];
+                return moment(fecha.toString()).format('dddd') + ' ' + str;
               }
             }
           },
@@ -148,7 +149,7 @@ export class DashboardComponent implements OnInit {
                 ticks: {
                   beginAtZero: true,
                   callback: function(value, index, values) {
-                    if (parseInt(value) >= 1000) {
+                    if (Number(value) >= 1000) {
                        return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     } else {
                        return '$' + value;
@@ -260,12 +261,13 @@ export class DashboardComponent implements OnInit {
               label: function(tooltipItems, data) {
                 let value = data.datasets[0].data[tooltipItems.index];
                 let str;
-                if (parseInt(value) >= 1000) {
+                if (Number(value) >= 1000) {
                     str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 } else {
                   str = '$' + value;
                 }
-                return moment(data.labels[tooltipItems.index]).format('MMMM YYYY') + ' ' + str;
+                let fecha = data.labels[tooltipItems.index];
+                return moment(fecha.toString()).format('MMMM YYYY') + ' ' + str;
               }
             }
           },
@@ -275,7 +277,7 @@ export class DashboardComponent implements OnInit {
                 ticks: {
                   beginAtZero: true,
                   callback: function(value, index, values) {
-                    if (parseInt(value) >= 1000) {
+                    if (Number(value) >= 1000) {
                        return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     } else {
                        return '$' + value;

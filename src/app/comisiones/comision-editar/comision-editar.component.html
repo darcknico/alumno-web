@@ -27,7 +27,7 @@
                 <input 
                   required
                   formControlName="numero"
-                  type="text" 
+                  type="number" 
                   class="form-control {{ (f.numero.touched || f.numero.dirty)?(f.numero.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Numero de la comision">
                 <div *ngIf= " (f.numero.touched || f.numero.dirty) && f.numero.invalid " class="invalid-feedback">

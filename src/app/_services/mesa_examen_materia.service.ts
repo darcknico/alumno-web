@@ -6,6 +6,7 @@ import { MesaExamenMateria, MesaExamenMateriaAlumno, MesaExamenMateriaDocente } 
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { ReporteJob } from '../_models/extra';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroMesaExamenMateria {
     search:string;
@@ -35,7 +36,7 @@ export class MesaExamenMateriaService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sedeService:SedeService,
+        private sedeService:SedeProvider,
         ) {
         this.id_sede = this.sedeService.getIdSede();
         this.sedeService.id_sede$.subscribe(id=>{

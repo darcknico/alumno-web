@@ -37,7 +37,7 @@
                     <select class="form-control"
                       (change)="cambiar_asistencia($event,item)"
                       [(ngModel)]="item.id_tipo_asistencia_alumno">
-                      <option value="1" disabled>Seleccionar...</option>
+                      <option value="0" disabled>Seleccionar...</option>
                       <option *ngFor="let tipo of tipos_asistencia" [value]="tipo.id">{{tipo.nombre}}</option>
                     </select>
                   </td>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ObligacionService } from '../../../_services/obligacion.service';
 import { ObligacionPago, Obligacion } from '../../../_models/obligacion';
 import { Subject } from 'rxjs';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 

@@ -3,7 +3,7 @@ import { ExamenAlumno } from '../../../_models/examen';
 import { Inscripcion } from '../../../_models/inscripcion';
 import { Subject } from 'rxjs';
 import { InscripcionService } from '../../../_services/inscripcion.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ExamenAlumnoService } from '../../../_services/examen_alumno.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuxiliarFunction } from '../../../_helpers/auxiliar.function';

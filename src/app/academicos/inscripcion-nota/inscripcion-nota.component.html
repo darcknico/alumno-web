@@ -24,9 +24,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Notas de examenes
           <div class="card-header-actions">
-            <button type="button" class="btn btn-sm btn-primary" (click)="analitico_reporte()" [disabled]="consultando">DESCARGAR</button>
-            <button type="button" class="btn btn-sm btn-secondary" (click)="analitico_imprimir()" [disabled]="consultando">IMPRIMIR</button>
-            <button class="btn btn-success btn-sm" type="button" (click)="agregar()">Agregar nota</button>
+            <button class="btn btn-outline-success btn-sm" type="button" (click)="agregar()">
+              <i class="fa fa-plus"></i>
+              Agregar nota
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -79,6 +80,16 @@
             </table>
           </div>
         </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-info m-1" (click)="analitico_reporte()" [disabled]="consultando">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            DESCARGAR
+          </button>
+          <button type="button" class="btn btn-sm btn-info m-1" (click)="analitico_imprimir()" [disabled]="consultando">
+            <i class="fa fa-print"></i>
+            IMPRIMIR
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -88,7 +99,10 @@
         <div class="card-header">
           Importación masiva
           <div class="card-header-actions">
-            <button class="btn btn-success btn-sm" type="button" (click)="importar_ejemplo()">Formato de importacion</button>
+            <button class="btn btn-outline-success btn-sm" type="button" (click)="importar_ejemplo()">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              Formato para Importación
+            </button>
           </div>
         </div>
         <div class="card-body">

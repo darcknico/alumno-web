@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Inscripcion } from '../../_models/inscripcion';
 import { AlumnoMateriaNota } from '../../_models/mesa.examen';
@@ -25,7 +25,7 @@ export class InscripcionNotaComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dataSource:AlumnoMateriaNota[];
   
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
   file:any=null;
   importacionDataSource:any;
   erroresDataSource:any;
@@ -66,7 +66,7 @@ export class InscripcionNotaComponent implements OnInit {
   }
 
   agregar(){
-    const modal = this.modalService.show(AlumnoMateriaNotaModalComponent);
+    const modal = this.modalService.show(AlumnoMateriaNotaModalComponent,{class:'modal-lg'});
     (<AlumnoMateriaNotaModalComponent>modal.content).onShow(this.inscripcion);
     (<AlumnoMateriaNotaModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
@@ -76,7 +76,7 @@ export class InscripcionNotaComponent implements OnInit {
   }
 
   editar(item:AlumnoMateriaNota){
-    const modal = this.modalService.show(AlumnoMateriaNotaModalComponent);
+    const modal = this.modalService.show(AlumnoMateriaNotaModalComponent,{class:'modal-lg'});
     (<AlumnoMateriaNotaModalComponent>modal.content).onShow(this.inscripcion,item);
     (<AlumnoMateriaNotaModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {

@@ -7,7 +7,6 @@ import { ComisionEditarComponent } from './comision-editar/comision-editar.compo
 import { ComisionVerComponent } from './comision-ver/comision-ver.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { BsDatepickerModule, BsDropdownModule, CollapseModule, ModalModule, TimepickerModule } from 'ngx-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { ComisionDetalleComponent } from './componente/comision-detalle/comision-detalle.component';
 import { ListadoAsistenciaComponent } from './listado-asistencia/listado-asistencia.component';
@@ -29,6 +28,12 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ComisionExamenHelpComponent } from './componente/comision-examen-help/comision-examen-help.component';
 import { ComisionExamenCalendarComponent } from './componente/comision-examen-calendar/comision-examen-calendar.component';
 import { ComisionAsistenciaCalendarComponent } from './componente/comision-asistencia-calendar/comision-asistencia-calendar.component';
+import { ComisionMultipleNuevoComponent } from './comision-multiple-nuevo/comision-multiple-nuevo.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   imports: [
@@ -62,7 +67,7 @@ import { ComisionAsistenciaCalendarComponent } from './componente/comision-asist
     ComisionAlumnoVerModalComponent, 
     ListadoComisionDocenteModalComponent, 
     ListadoComisionHorarioComponent, 
-    ComisionHorarioEditarModalComponent, ListadoHorarioComponent, ComisionExamenHelpComponent, ComisionExamenCalendarComponent, ComisionAsistenciaCalendarComponent,
+    ComisionHorarioEditarModalComponent, ListadoHorarioComponent, ComisionExamenHelpComponent, ComisionExamenCalendarComponent, ComisionAsistenciaCalendarComponent, ComisionMultipleNuevoComponent,
   ],
   entryComponents:[
     ComisionAlumnoEditarModalComponent,

@@ -14,7 +14,7 @@ import { BecaComponent } from './beca/beca.component';
 import { BecaEditarComponent } from './beca-editar/beca-editar.component';
 import { AulaComponent } from './aula/aula.component';
 import { AulaEditarModalComponent } from './aula-editar-modal/aula-editar-modal.component';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TipoInscripcionAbandonoComponent } from './tipo-inscripcion-abandono/tipo-inscripcion-abandono.component';
 import { TipoInscripcionAbandonoEditarModalComponent } from './tipo-inscripcion-abandono-editar-modal/tipo-inscripcion-abandono-editar-modal.component';
 

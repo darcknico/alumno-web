@@ -3,7 +3,7 @@ import { PlanEstudio } from '../../_models/plan_estudio';
 import { Materia } from '../../_models/materia';
 import { MateriaService } from '../../_services/materia.service';
 import { MateriaEditarComponent } from '../materia-editar/materia-editar.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { MateriaCorrelativaModalComponent } from '../../modals/materia-correlativa-modal/materia-correlativa-modal.component';

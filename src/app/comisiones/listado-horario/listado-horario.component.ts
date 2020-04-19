@@ -7,7 +7,7 @@ import { Carrera } from '../../_models/carrera';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Dia } from '../../_models/extra';
 import { ExtraService } from '../../_services/extra.service';
@@ -18,7 +18,7 @@ import { ExtraService } from '../../_services/extra.service';
   styleUrls: ['./listado-horario.component.scss']
 })
 export class ListadoHorarioComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: ComisionHorario[] = [];
   departamentos:Departamento[]=[];

@@ -64,7 +64,10 @@
                 </div>
                 <button
                   (click)="continuarPrimero()" 
-                  class="btn btn-primary m-1 btn-block-xs-only">CONTINUAR</button>
+                  class="btn btn-primary m-1 btn-block-xs-only">
+                  CONTINUAR
+                  <i class="fa fa-chevron-right"></i>
+                </button>
               </div>
               <div id="i2" class="content">
                 <div class="table-responsive">
@@ -113,10 +116,23 @@
                     </p>
                   </div>
                 </div>
-                <button (click)="back()" class="btn btn-secondary m-1 btn-block-xs-only">VOLVER</button>
+                <button (click)="back()" class="btn btn-light m-1 btn-block-xs-only">
+                  <i class="fa fa-chevron-left"></i>
+                  VOLVER
+                </button>
                 <button [disabled]="comisiones?.length == 0"
                   (click)="continuarSegundo()" 
-                  class="btn btn-primary m-1 btn-block-xs-only">CONTINUAR</button>
+                  class="btn btn-primary m-1 btn-block-xs-only">
+                  CONTINUAR
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+                <ng-container *ngIf="comisiones?.length == 0">
+                  <small class="font-italic">
+                    <i class="fa fa-exclamation-circle"></i>
+                    No tiene seleccionado alguna comision
+                  </small>
+                </ng-container>
+                
               </div>
               <div id="i3" class="content">
                 <div class="row">
@@ -179,8 +195,14 @@
                   </div>
                 </div>
                 <div class="row text-center">
-                  <button (click)="back()" class="btn btn-secondary m-1 btn-block-xs-only">VOLVER</button>
-                  <button (click)="continuarTercero()" class="btn btn-danger m-1">CONFIRMAR</button>
+                  <button (click)="back()" class="btn btn-light m-1 btn-block-xs-only">
+                    <i class="fa fa-chevron-left"></i>
+                    VOLVER
+                  </button>
+                  <button (click)="continuarTercero()" class="btn btn-danger m-1">
+                    <i class="fa fa-check"></i>
+                    CONFIRMÓ INSCRIPCIÓN A LAS COMISIONES
+                  </button>
                 </div>
               </div>
             </div>
@@ -190,6 +212,9 @@
     </div>
   </div>
   <div class="row">
-    <button (click)="volver()" class="btn btn-secondary m-1 btn-block-xs-only">Listado de comisiones</button>
+    <button (click)="volver()" class="btn btn-light m-1 btn-block-xs-only">
+      <i class="fa fa-chevron-left"></i>
+      VOLVER AL LISTADO DE COMISIONES
+    </button>
   </div>
 </div>

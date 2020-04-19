@@ -3,7 +3,7 @@ import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { PlantillaService } from '../../_services/plantilla.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Plantilla, PlantillaArchivo } from '../../_models/plantilla';
@@ -33,7 +33,7 @@ export class PlantillaEditarComponent implements OnInit, AfterViewInit {
   };
 
   archivos:PlantillaArchivo[]=[];
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
 
   constructor(
     private plantillaService:PlantillaService,

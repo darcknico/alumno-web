@@ -6,7 +6,7 @@ import { PlanPago } from '../../../_models/plan_pago';
 import { map} from 'rxjs/operators';
 import * as moment from "moment";
 import { ObligacionVerModalComponent } from '../obligacion-ver-modal/obligacion-ver-modal.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-cuenta-corriente-component',
@@ -44,7 +44,7 @@ export class CuentaCorrienteComponent implements OnInit {
   id_ultimo:number = 0 ;
   actualizar(){
     this.planPagoService.cuenta_corriente(this.plan_pago.id).pipe(
-      map(data=>{
+      map((data:any)=>{
         if(data.length>0){
           let acum = 0;
           let fechaUltimo = moment(data[0].fecha_vencimiento);

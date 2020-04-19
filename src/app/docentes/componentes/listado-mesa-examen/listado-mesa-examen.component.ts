@@ -16,7 +16,7 @@ import { BlockUIService,BLOCKUI_DEFAULT } from 'ng-block-ui';
 })
 export class ListadoMesaExamenComponent implements OnInit {
   @Input('item') item:Docente=null;
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   consultando:boolean = false;
 
   dataSource:MesaExamenMateriaDocente[]=[];

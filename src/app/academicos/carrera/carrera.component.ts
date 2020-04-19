@@ -3,12 +3,13 @@ import { Carrera } from '../../_models/carrera';
 import { CarreraService, FiltroCarrera } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Departamento } from '../../_models/departamento';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-carrera',
@@ -16,7 +17,7 @@ import { SedeService } from '../../_services/sede.service';
   styleUrls: ['./carrera.component.scss']
 })
 export class CarreraComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Carrera[] = [];
 
@@ -30,7 +31,7 @@ export class CarreraComponent implements OnInit {
   constructor(
     private carreraService:CarreraService,
     private departamentoService:DepartamentoService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,

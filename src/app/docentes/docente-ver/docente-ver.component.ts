@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DocenteService } from '../../_services/docente.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Docente } from '../../_models/usuario';
 
 @Component({

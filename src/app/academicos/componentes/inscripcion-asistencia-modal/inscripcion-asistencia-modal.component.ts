@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Inscripcion } from '../../../_models/inscripcion';
 import { Subject } from 'rxjs';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { InscripcionService } from '../../../_services/inscripcion.service';
 import { AsistenciaAlumno } from '../../../_models/asistencia';
 import { AsistenciaAlumnoService } from '../../../_services/asistencia_alumno.service';

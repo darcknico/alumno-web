@@ -3,7 +3,7 @@ import { Movimiento, FormaPago, TipoMovimiento } from '../../_models/movimiento'
 import { MovimientoService, FiltroMovimiento } from '../../_services/movimiento.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 
@@ -19,7 +19,7 @@ import { TipoMovimientoService } from '../../_services/tipo_movimiento.service';
   styleUrls: ['./listado-movimiento.component.scss']
 })
 export class ListadoMovimientoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Movimiento[] = [];
   formas:FormaPago[]=[];

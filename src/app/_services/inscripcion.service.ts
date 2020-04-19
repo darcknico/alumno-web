@@ -25,6 +25,10 @@ export interface FiltroInscripcion {
     anio_final:number;
     fecha_inicial:string;
     fecha_final:string;
+    id_alumno:number;
+    id_periodo_lectivo:number;
+    porcentaje_aprobados_inicial:number;
+    porcentaje_aprobados_final:number;
 }
 export interface InscripcionAjax{
     items: Inscripcion[];
@@ -48,8 +52,10 @@ export class InscripcionService {
         this.id_sede = id_sede;
     }
 
-    getAll(){
-        return this.http.get<Inscripcion[]>(this.ruta );
+    getAll(filtro:FiltroInscripcion=null){
+        return this.http.get<Inscripcion[]>(this.ruta, {
+            params: AuxiliarFunction.toParams(filtro)
+        } );
     }
 
     ajax(filtro:FiltroInscripcion):  Observable<InscripcionAjax>{

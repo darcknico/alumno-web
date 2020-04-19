@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Examen, ExamenAlumno, TipoExamen } from '../_models/examen';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroExamen {
     search:string;
@@ -29,7 +30,7 @@ export class ExamenService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sedeService:SedeService,
+        private sedeService:SedeProvider,
         ) { 
         this.id_sede = this.sedeService.getIdSede();
         this.sedeService.id_sede$.subscribe(id=>{

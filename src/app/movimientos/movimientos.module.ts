@@ -9,7 +9,9 @@ import { DiariaDetalleComponent } from './componentes/diaria-detalle/diaria-deta
 import { ListadoDiariaComponent } from './listado-diaria/listado-diaria.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, BsDatepickerModule, ModalModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { MovimientoService } from '../_services/movimiento.service';
 import { DiariaComponent } from './diaria/diaria.component';
 import { DiariaService } from '../_services/diaria.service';

@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import { MovimientoService } from '../../_services/movimiento.service';
 import { TipoMovimientoService } from '../../_services/tipo_movimiento.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as moment from 'moment';

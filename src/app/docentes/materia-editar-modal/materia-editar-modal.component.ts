@@ -9,13 +9,14 @@ import { Materia } from '../../_models/materia';
 import { CarreraService } from '../../_services/carrera.service';
 import { PlanService } from '../../_services/plan.service';
 import { MateriaService } from '../../_services/materia.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { SedeService } from '../../_services/sede.service';
 import * as moment from 'moment';
 import { TipoService } from '../../_services/tipo.service';
 import { TipoDocenteCargo } from '../../_models/tipo';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-materia-editar-modal',
@@ -42,7 +43,7 @@ export class MateriaEditarModalComponent implements OnInit {
     private tipos:TipoService,
     private carreraService:CarreraService,
     private planService:PlanService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private materiaService:MateriaService,
     public bsModalRef: BsModalRef,
     private fb: FormBuilder,

@@ -6,6 +6,7 @@ import { Ajax } from '../_models/tipo';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
 import { ComisionHorario } from '../_models/comision';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroComisionHorario {
     search:string;
@@ -34,7 +35,7 @@ export class ComisionHorarioService {
 
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) {
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id_sede => {

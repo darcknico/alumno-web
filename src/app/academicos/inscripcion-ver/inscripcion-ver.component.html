@@ -101,16 +101,19 @@
       <button 
         (click)="notas()"
         class="btn btn-danger btn-block-xs-only m-1" tooltip="Listado de notas del sistema viejo">
+        <i class="fa fa-cog"></i>
         Notas (Viejo)
       </button>
       <button 
         (click)="nuevo_tramite()"
         class="btn btn-info btn-block-xs-only m-1" tooltip="Generar un nuevo tramite">
+        <i class="fa fa-window-restore" aria-hidden="true"></i>
         Nuevo Tramite
       </button>
       <button 
         (click)="pagos_inscripcion()" 
         class="btn btn-info btn-block-xs-only m-1" tooltip="Listado de todos los pagos realizados">
+        <i class="fa fa-window-restore" aria-hidden="true"></i>
         Listado de Pagos
       </button>
     </div>
@@ -123,7 +126,7 @@
           <div class="card-header-actions">
             <button 
               (click)="editar()"
-              class="btn btn-success btn-sm">
+              class="btn btn-outline-success btn-sm">
               <i class="fa fa-edit"></i>
               Editar
             </button>
@@ -171,12 +174,13 @@
           </form>
         </div>
         <div class="card-footer">
-          <button class="btn btn-sm btn-block-xs-only m-1 btn-success"
+          <button class="btn btn-sm btn-block-xs-only m-1 btn-outline-success"
             type="submit"
             color="accent"
             (click)="continuar()"
             [disabled]="!formulario.valid">
-            Cambiar estado
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+            CAMBIAR ESTADO
             </button>
         </div>
       </div>
@@ -254,7 +258,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Planes de Pago
           <div class="card-header-actions">
-            <button class="btn btn-sm btn-danger" type="button" (click)="nuevo_plan()">GENERAR PLAN</button>
+            <button class="btn btn-sm btn-outline-danger" type="button" (click)="nuevo_plan()">
+              <i class="fa fa-cog"></i>
+              GENERAR NUEVO PLAN DE PAGOS
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -330,19 +337,28 @@
           <div class="card-header-actions">
             <button 
               tooltip="Ver los pagos realizados en la cuenta corriente"
-              class="btn btn-info btn-sm m-1" 
+              class="btn btn-outline-info btn-sm m-1" 
               type="button" 
-              (click)="pagos()">VER PAGOS</button>
+              (click)="pagos()">
+              <i class="fa fa-window-restore" aria-hidden="true"></i>
+              VER PAGOS
+            </button>
             <button
               tooltip="Generar nuevo pago para la cuenta corriente"
-              class="btn btn-info btn-sm m-1" 
+              class="btn btn-outline-info btn-sm m-1" 
               type="button" 
-              (click)="nuevo_pago()">NUEVO PAGO</button>
+              (click)="nuevo_pago()">
+              <i class="fa fa-window-restore" aria-hidden="true"></i>
+                NUEVO PAGO
+            </button>
             <button 
               tooltip="ir a la cuenta corriente"
               class="btn btn-danger btn-sm m-1" 
               type="button" 
-              (click)="plan_pago_ver()">MAS INFORMACION</button>
+              (click)="plan_pago_ver()">
+              <i class="fa fa-cog"></i>
+              MAS INFORMACIÓN
+            </button>
           </div>
         </div>
         <div class="card-body p-1">

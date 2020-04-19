@@ -5,6 +5,7 @@ import { Movimiento, FormaPago, TipoComprobante } from '../_models/movimiento';
 import { Observable } from 'rxjs';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
 
 export interface FiltroMovimiento {
     search:string;
@@ -30,7 +31,7 @@ export class MovimientoService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sedeService:SedeService,
+        private sedeService:SedeProvider,
         ) {
         this.id_sede = this.sedeService.getIdSede();
         this.sedeService.id_sede$.subscribe( id=>{

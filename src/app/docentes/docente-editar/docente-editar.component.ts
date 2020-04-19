@@ -20,8 +20,9 @@ import { saveAs } from 'file-saver';
 import { FiltroDocenteMateria, DocenteMateriaService } from '../../_services/docente_materia.service';
 import { DataTableDirective } from 'angular-datatables';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { MateriaEditarModalComponent } from '../materia-editar-modal/materia-editar-modal.component';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-docente-editar',
@@ -42,9 +43,9 @@ export class DocenteEditarComponent implements OnInit {
   hoy;
 
   archivos:UsuarioArchivo[]=[];
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
   consultando:boolean = false;
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: DocenteMateria[] = [];
   request = <FiltroDocenteMateria>{
@@ -56,6 +57,7 @@ export class DocenteEditarComponent implements OnInit {
     private tipoService:TipoService,
     private usuarioService:UsuarioService,
     private sedeService:SedeService,
+    private sede:SedeProvider,
     private extraService:ExtraService,
     private docenteMateriaService:DocenteMateriaService,
     private route: ActivatedRoute,
@@ -88,7 +90,7 @@ export class DocenteEditarComponent implements OnInit {
 
   suscribe;
   ngOnInit() {
-    this.request.id_sede = this.sedeService.getIdSede();
+    this.request.id_sede = this.sede.getIdSede();
     this.route.params.subscribe(params=>{
       let ids_usuario = params['id'];
       if(ids_usuario==null){

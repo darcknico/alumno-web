@@ -7,13 +7,16 @@ import { DocenteEditarComponent } from './docente-editar/docente-editar.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables';
-import { BsDatepickerModule, TooltipModule, ModalModule, CollapseModule } from 'ngx-bootstrap';
 import { MateriaEditarModalComponent } from './materia-editar-modal/materia-editar-modal.component';
 import { ListadoDocenteMateriaComponent } from './listado-docente-materia/listado-docente-materia.component';
 import { DocenteVerComponent } from './docente-ver/docente-ver.component';
 import { ListadoComisionesComponent } from './componentes/listado-comisiones/listado-comisiones.component';
 import { ListadoMesaExamenComponent } from './componentes/listado-mesa-examen/listado-mesa-examen.component';
 import { DocenteDetalleComponent } from './componentes/docente-detalle/docente-detalle.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   declarations: [

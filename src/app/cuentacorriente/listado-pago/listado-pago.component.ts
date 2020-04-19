@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pago } from '../../_models/pago';
 import { PagoService } from '../../_services/pago.service';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

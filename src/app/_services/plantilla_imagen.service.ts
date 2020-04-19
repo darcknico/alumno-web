@@ -5,6 +5,7 @@ import { PlantillaImagen } from '../_models/plantilla';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
 import { Ajax } from '../_models/tipo';
+import { SedeProvider } from '../_providers/sede.provider';
 
 export interface FiltroPlantillaImagen{
     search:string;
@@ -23,7 +24,7 @@ export class PlantillaImagenService {
     id_sede:number;
 
     constructor(
-        private sede:SedeService,
+        private sede:SedeProvider,
         private http: HttpClient,
         ) {
         this.id_sede = this.sede.getIdSede();

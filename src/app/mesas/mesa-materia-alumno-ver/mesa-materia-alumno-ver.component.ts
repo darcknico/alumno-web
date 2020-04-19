@@ -3,7 +3,7 @@ import { MesaExamen, MesaExamenMateriaAlumno, MesaExamenMateria } from '../../_m
 import { MesaExamenMateriaService } from '../../_services/mesa_examen_materia.service';
 import { MesaExamenService } from '../../_services/mesa_examen.service';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
@@ -18,7 +18,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./mesa-materia-alumno-ver.component.scss']
 })
 export class MesaMateriaAlumnoVerComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   
   mesa_examen:MesaExamen;
   mesa_examen_materia:MesaExamenMateria;
@@ -28,7 +28,7 @@ export class MesaMateriaAlumnoVerComponent implements OnInit {
   formulario: FormGroup;
   fecha_inicio:Date;
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
   file:any=null;
   importacionDataSource:any;
   erroresDataSource:any;

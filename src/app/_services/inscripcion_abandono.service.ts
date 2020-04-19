@@ -5,6 +5,7 @@ import { Inscripcion, InscripcionAbandono } from '../_models/inscripcion';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
 import { Ajax } from '../_models/tipo';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroInscripcionAbandono {
     search:string;
@@ -29,7 +30,7 @@ export class InscripcionAbandonoService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) {
         this.id_sede = sede.getIdSede();
         this.sede.id_sede$.subscribe(id=>{

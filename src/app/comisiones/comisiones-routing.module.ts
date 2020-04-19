@@ -12,6 +12,7 @@ import { ExamenNuevoComponent } from './examen-nuevo/examen-nuevo.component';
 import { ListadoExamenComponent } from './listado-examen/listado-examen.component';
 import { ListadoAlumnoComponent } from './listado-alumno/listado-alumno.component';
 import { ListadoHorarioComponent } from './listado-horario/listado-horario.component';
+import { ComisionMultipleNuevoComponent } from './comision-multiple-nuevo/comision-multiple-nuevo.component';
 
 const routes: Routes = [
 {
@@ -55,6 +56,12 @@ const routes: Routes = [
     },{
       path:'nuevo',
       component:ComisionEditarComponent,
+      data:{
+        title:'Nuevo',
+      },
+    },{
+      path:'nuevo/masivo',
+      component:ComisionMultipleNuevoComponent,
       data:{
         title:'Nuevo',
       },

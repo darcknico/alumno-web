@@ -8,6 +8,11 @@
         </div>
         <div class="card-body">
           <form [formGroup]="formulario" >
+            <div class="row">
+              <div class="col text-center">
+                <label class="control-label"><b>DATOS PERSONALES</b></label>
+              </div>
+            </div>
             <div class="row" formGroupName="usuario">
               <div class="form-group col-sm-2 col-4">
                 <label class="control-label">Tipo</label>
@@ -145,6 +150,12 @@
               </div>
             </div>
             <div class="row">
+              <div class="col text-center">
+                <hr>
+                <label class="control-label"><b>INFORMACIÓN DE CONTACTO</b></label>
+              </div>
+            </div>
+            <div class="row">
               <div class="form-group col-sm-5">
                 <label class="control-label">Correo Electronico</label>
                 <input 
@@ -166,6 +177,12 @@
                   formControlName="celular"
                   type="text" 
                   class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-center">
+                <hr>
+                <label class="control-label"><b>RESIDENCIA</b></label>
               </div>
             </div>
             <div class="row">
@@ -234,6 +251,12 @@
               </div>
             </div>
             <div class="row">
+              <div class="col text-center">
+                <hr>
+                <label class="control-label"><b>DATOS ADICIONALES</b> (Opcional)</label>
+              </div>
+            </div>
+            <div class="row">
               <div class="form-group col-12">
                 <label class="control-label">Observaciones</label>
                 <input 
@@ -246,7 +269,7 @@
           <div class="row">
             <div class="col text-center">
               <hr>
-              <label class="control-label"><b>Documentación</b></label>
+              <label class="control-label"><b>DOCUMENTACIÓN</b></label>
             </div>
           </div>
           <div class="form-group row">
@@ -319,19 +342,29 @@
           </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-block-xs-only m-1 btn-success"
+          <button class="btn btn-block-xs-only m-1 btn-outline-success"
             type="submit"
             color="accent"
             (click)="continuar()"
             [disabled]="consultando"
             [disabled]="!formulario.valid">
-            Guardar Cambios
-            </button>
-          <button class="btn btn-block-xs-only m-1 btn-secondary"
+            <ng-container *ngIf="id==0 else isEditButton">
+              <i class="fa fa-plus"></i>
+              GUARDAR NUEVO ALUMNO
+            </ng-container>
+            <ng-template #isEditButton>
+              <i class="fa fa-edit"></i>
+              EDITAR ALUMNO
+            </ng-template>
+          </button>
+          <button class="btn btn-block-xs-only m-1 btn-light"
             [disabled]="consultando"
             (click)="volver()">
-            Volver
+            CANCELAR
             </button>
+          <ng-container *ngIf="!formulario.valid">
+            <small class="text-right font-italic">Existen campos que debe completar primero</small>
+          </ng-container>
         </div>
       </div>  
     </div>

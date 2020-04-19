@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ComisionAlumno } from '../../_models/comision';
 import { Subject } from 'rxjs';
 import { ComisionAlumnoService } from '../../_services/comision_alumno.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ExamenAlumno } from '../../_models/examen';
 import { AsistenciaAlumno } from '../../_models/asistencia';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class ComisionAlumnoVerModalComponent implements OnInit {
 
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   asistenciaDataSource:AsistenciaAlumno[]=[];
   examenDataSource:ExamenAlumno[]=[];
   alumno: ComisionAlumno;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TipoInscripcionAbandonoService } from '../../_services/tipo_inscripcion_abandono.service.';
 import { TipoInscripcionAbandono } from '../../_models/tipo';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { TipoInscripcionAbandonoEditarModalComponent } from '../tipo-inscripcion-abandono-editar-modal/tipo-inscripcion-abandono-editar-modal.component';

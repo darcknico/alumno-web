@@ -8,9 +8,10 @@ import { Carrera } from '../../_models/carrera';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-examen',
@@ -18,7 +19,7 @@ import { SedeService } from '../../_services/sede.service';
   styleUrls: ['./listado-examen.component.scss']
 })
 export class ListadoExamenComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Examen[] = [];
   departamentos:Departamento[]=[];
@@ -33,7 +34,7 @@ export class ListadoExamenComponent implements OnInit {
 
   constructor(
     private examenService:ExamenService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private router: Router,

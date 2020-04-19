@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { AlumnoService } from '../../../_services/alumno.service';
 import { TipoAlumnoDocumentacion, AlumnoArchivo } from '../../../_models/alumno';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -16,7 +16,7 @@ export class AlumnoArchivoEditarModalComponent implements OnInit {
   public onClose: Subject<boolean>;
   formulario: FormGroup;
   tipo_documentacion:TipoAlumnoDocumentacion[]=[];
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
   item:AlumnoArchivo;
 
   constructor(

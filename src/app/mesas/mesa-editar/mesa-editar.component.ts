@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { CarreraService } from '../../_services/carrera.service';
 import { Carrera } from '../../_models/carrera';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 
 @Component({

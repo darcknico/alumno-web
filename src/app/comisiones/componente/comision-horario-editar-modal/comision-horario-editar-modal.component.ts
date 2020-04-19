@@ -3,7 +3,7 @@ import { ExtraService } from '../../../_services/extra.service';
 import { Dia } from '../../../_models/extra';
 import { ComisionHorarioService } from '../../../_services/comision_horario.service';
 import { ComisionHorario } from '../../../_models/comision';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';

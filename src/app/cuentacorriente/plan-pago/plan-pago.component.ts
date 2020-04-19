@@ -3,7 +3,7 @@ import { PlanPago } from '../../_models/plan_pago';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 

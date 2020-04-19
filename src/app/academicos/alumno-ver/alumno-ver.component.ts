@@ -7,9 +7,9 @@ import { FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Inscripcion } from '../../_models/inscripcion';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { InscripcionService } from '../../_services/inscripcion.service';
+import { InscripcionService, FiltroInscripcion } from '../../_services/inscripcion.service';
 import { Usuario } from '../../_models/usuario';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
@@ -88,9 +88,12 @@ export class AlumnoVerComponent implements OnInit {
     this.alumnoService.getById(this.id_alumno).subscribe(response=>{
       this.alumno = response;
     });
-    this.alumnoService.inscripciones(this.id_alumno).subscribe(response=>{
+    let filtro = <FiltroInscripcion>{};
+    filtro.id_alumno = this.id_alumno;
+    this.inscripcionService.getAll(filtro).subscribe(response=>{
       this.dataSource = response;
     });
+    
   }
 
   ver(item:Inscripcion){

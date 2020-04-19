@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Alumno, AlumnoArchivo } from '../../../_models/alumno';
 import { AlumnoService } from '../../../_services/alumno.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';

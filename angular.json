@@ -43,7 +43,8 @@
               "node_modules/datatables.net-select/js/dataTables.select.js",
               "node_modules/@ckeditor/ckeditor5-build-classic/build/translations/es.js",
               "node_modules/grapesjs/dist/grapes.min.js",
-              "node_modules/grapesjs-preset-newsletter/dist/grapesjs-preset-newsletter.min.js"
+              "node_modules/grapesjs-preset-newsletter/dist/grapesjs-preset-newsletter.min.js",
+              "node_modules/pusher-js/dist/web/pusher.min.js"
             ]
           },
           "configurations": {

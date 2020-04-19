@@ -4,10 +4,15 @@ import { routing } from './alumnos-routing.module';
 
 import { ListadoAuditoriaComponent } from './listado-auditoria/listado-auditoria.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, TypeaheadModule, TooltipModule, BsDatepickerModule, CollapseModule, ModalModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { DataTablesModule } from 'angular-datatables';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [ListadoAuditoriaComponent],

@@ -4,7 +4,7 @@ import { TipoInscripcionAbandono } from '../../_models/tipo';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-tipo-inscripcion-abandono-editar-modal',

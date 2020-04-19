@@ -7,7 +7,7 @@ import { ComisionService } from '../../_services/comision.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 
 
@@ -17,7 +17,7 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
   styleUrls: ['./listado-alumno-disponible.component.scss']
 })
 export class ListadoAlumnoDisponibleComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
 
   comision:Comision;
   consultando:boolean=false;

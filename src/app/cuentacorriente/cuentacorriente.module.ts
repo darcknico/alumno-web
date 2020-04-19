@@ -10,7 +10,6 @@ import { PlanPagoTableroComponent } from './componente/plan-pago-tablero/plan-pa
 import { CuentaCorrienteComponent } from './componente/cuenta-corriente/cuenta-corriente.component';
 import { ObligacionSiguienteComponent } from './componente/obligacion-siguiente/obligacion-siguiente.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, BsDatepickerModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { PagoMatriculaComponent } from './pago-matricula/pago-matricula.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ListadoCuotaComponent } from './listado-cuota/listado-cuota.component';
@@ -19,6 +18,10 @@ import { PagoReciboComponent } from './pago-recibo/pago-recibo.component';
 import { PlanPagoDetalleComponent } from './componente/plan-pago-detalle/plan-pago-detalle.component';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { ObligacionVerModalComponent } from './componente/obligacion-ver-modal/obligacion-ver-modal.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [

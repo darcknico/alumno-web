@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Diaria } from '../../_models/diaria';
 import { DialogDateComponent } from '../../_generic/dialog-date/dialog-date.component';
 import * as moment from 'moment';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

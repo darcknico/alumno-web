@@ -3,7 +3,7 @@ import { Pago } from '../../_models/pago';
 import { PlanPago } from '../../_models/plan_pago';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { PagoService } from '../../_services/pago.service';
 import { ObligacionPago } from '../../_models/obligacion';

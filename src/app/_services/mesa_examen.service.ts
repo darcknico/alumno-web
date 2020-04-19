@@ -8,6 +8,7 @@ import { Ajax } from '../_models/tipo';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { FiltroMesaExamenMateria } from './mesa_examen_materia.service';
 import { SedeService } from './sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroMesaExamen {
     search:string;
@@ -15,6 +16,8 @@ export interface FiltroMesaExamen {
     order:string;
     start:number;
     length:number;
+
+    anio:number;
 }
 
 @Injectable()
@@ -26,7 +29,7 @@ export class MesaExamenService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) {
         this.id_sede = sede.getIdSede();
         this.sede.id_sede$.subscribe(id=>{

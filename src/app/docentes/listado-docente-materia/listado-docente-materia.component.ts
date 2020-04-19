@@ -5,7 +5,7 @@ import { Sede } from '../../_models/sede';
 import { DataTableDirective } from 'angular-datatables';
 import { SedeService } from '../../_services/sede.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Departamento } from '../../_models/departamento';
@@ -17,6 +17,7 @@ import { MateriaService } from '../../_services/materia.service';
 import { Materia } from '../../_models/materia';
 import { TipoDocenteCargo } from '../../_models/tipo';
 import { TipoService } from '../../_services/tipo.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-docente-materia',
@@ -25,7 +26,7 @@ import { TipoService } from '../../_services/tipo.service';
 })
 export class ListadoDocenteMateriaComponent implements OnInit {
   resource:string = 'docentes';
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: DocenteMateria[] = [];
   sedes:Sede[]=[];
@@ -48,6 +49,7 @@ export class ListadoDocenteMateriaComponent implements OnInit {
     private carreraService:CarreraService,
     private planService:PlanService,
     private sedeService:SedeService,
+    private sede:SedeProvider,
     private materiaService:MateriaService,
     private departamentoService:DepartamentoService,
     private tipos:TipoService,
@@ -58,7 +60,7 @@ export class ListadoDocenteMateriaComponent implements OnInit {
 
   suscribe;
   ngOnInit() {
-    this.request.id_sede = this.sedeService.getIdSede();
+    this.request.id_sede = this.sede.getIdSede();
     this.sedeService.getAll().subscribe(response => {
       this.sedes = response;
     });

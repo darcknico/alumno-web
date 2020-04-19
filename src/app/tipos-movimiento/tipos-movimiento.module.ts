@@ -6,7 +6,7 @@ import { ListadoTipoMovimientoComponent } from './listado-tipo-movimiento/listad
 import { TipoMovimientoEditarComponent } from './tipo-movimiento-editar/tipo-movimiento-editar.component';
 import { TipoMovimientoService } from '../_services/tipo_movimiento.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({

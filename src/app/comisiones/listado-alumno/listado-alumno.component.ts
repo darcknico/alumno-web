@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../_services/authentication.service';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListadoAlumnoComponent implements OnInit {
   usuario:Usuario;
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: ComisionAlumno[] = [];
   departamentos:Departamento[]=[];

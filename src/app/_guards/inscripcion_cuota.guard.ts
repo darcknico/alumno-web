@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { take } from 'rxjs/operators';
 import { SedeService } from '../_services/sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
  
 @Injectable()
 export class InscripcionCuotaGuard implements CanActivate {
@@ -13,7 +14,7 @@ export class InscripcionCuotaGuard implements CanActivate {
     id_sede:number;
     constructor(
         private inscripcionService: InscripcionService,
-        private sedeService:SedeService,
+        private sedeService:SedeProvider,
         private toastr: ToastrService,
         private router: Router
         ) { 

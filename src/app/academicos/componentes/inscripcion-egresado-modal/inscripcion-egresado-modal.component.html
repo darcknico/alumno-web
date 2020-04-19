@@ -25,12 +25,16 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+  <button type="button" class="btn btn-light" (click)="cancelar()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    CANCELAR
+  </button>
   <button
     type="button" 
-    class="btn btn-info" 
+    class="btn btn-primary" 
     (click)="continuar()"
     [disabled]="!formulario.valid">
-    Aceptar
+    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+    GUARDAR ESTADO
   </button>
 </div>

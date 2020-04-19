@@ -13,7 +13,7 @@ import { NovedadNuevoModalComponent } from './novedad-nuevo-modal/novedad-nuevo-
 import { DocumentoComponent } from './documento/documento.component';
 import { DocumentoNuevoModalComponent } from './documento-nuevo-modal/documento-nuevo-modal.component';
 import { DocumentoEditarComponent } from './documento-editar/documento-editar.component';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ListadoDispositivoComponent } from './listado-dispositivo/listado-dispositivo.component';
 import { ListadoAsistenciaComponent } from './listado-asistencia/listado-asistencia.component';

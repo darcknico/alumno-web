@@ -3,7 +3,7 @@ import { MesaExamen, MesaExamenMateria, MesaExamenMateriaAlumno } from '../../_m
 import { Inscripcion } from '../../_models/inscripcion';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { MesaExamenMateriaService } from '../../_services/mesa_examen_materia.service';
 import { TipoCondicionAlumno } from '../../_models/alumno';

@@ -12,7 +12,6 @@
             <label class="control-label">Importe (*)</label>
             <input currencyMask
               required
-              (input)="onEditar()"
               formControlName="monto"
               type="text" 
               class="form-control">
@@ -29,7 +28,6 @@
             <label class="control-label">Fecha</label>
             <input bsDatepicker
               required
-              (bsValueChange)="onEditar()"
               formControlName="fecha"
               type="text" 
               class="form-control" 
@@ -41,9 +39,15 @@
             </div>
           </div>
           <div class="form-check d-inline m-3 mt-3">
-            <input class="form-check-input" type="checkbox" formControlName="bonificar_intereses">
+            <input class="form-check-input" type="checkbox" formControlName="bonificar_cuotas">
             <label class="form-check-label" for="defaultCheck1">
               Aplicar a Interes
+            </label>
+          </div>
+          <div class="form-check d-inline m-3 mt-3">
+            <input class="form-check-input" type="checkbox" formControlName="bonificar_cuotas">
+            <label class="form-check-label" for="defaultCheck1">
+              Bonificar cuota
             </label>
           </div>
           <button 

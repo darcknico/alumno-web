@@ -8,7 +8,9 @@ import { ListadoExamenComponent } from './listado-examen/listado-examen.componen
 import { ExamenAlumnoEditarModalComponent } from './componentes/examen-alumno-editar-modal/examen-alumno-editar-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
-import { BsDropdownModule, CollapseModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({

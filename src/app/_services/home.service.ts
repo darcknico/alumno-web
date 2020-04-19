@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { SedeProvider } from '../_providers/sede.provider';
 
 @Injectable()
 export class HomeService {
@@ -10,7 +11,7 @@ export class HomeService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) { 
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id_sede => {

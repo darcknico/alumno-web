@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Comision, ComisionDocente } from '../../../_models/comision';
 import { ComisionService } from '../../../_services/comision.service';
 import { Subject } from 'rxjs';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 

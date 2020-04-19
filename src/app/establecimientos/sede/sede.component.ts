@@ -3,7 +3,7 @@ import { Sede } from '../../_models/sede';
 import { SedeService } from '../../_services/sede.service';
 import { Router } from '@angular/router';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Usuario } from '../../_models/usuario';
 import { AuthenticationService } from '../../_services/authentication.service';

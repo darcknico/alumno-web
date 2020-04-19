@@ -63,6 +63,7 @@ export class AuthenticationService {
                 localStorage.removeItem(this.key_token);
                 localStorage.removeItem('usuario');
                 localStorage.removeItem('sede');
+                this.token$.next(null);
             }));
             
     }
@@ -72,7 +73,7 @@ export class AuthenticationService {
     }
 
     actualizar(){
-        this.http.get(this.api+'detalle').subscribe((response:Usuario)=>{
+        return this.http.get(this.api+'detalle').toPromise().then((response:Usuario)=>{
             this.usuario$.next(response);
             localStorage.setItem('usuario', JSON.stringify(response));
         });

@@ -3,7 +3,7 @@ import { PlantillaService } from '../../_services/plantilla.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs/internal/Subject';
 import { Plantilla } from '../../_models/plantilla';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 

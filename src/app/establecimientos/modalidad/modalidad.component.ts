@@ -3,7 +3,7 @@ import { Modalidad } from '../../_models/modalidad';
 import { ModalidadService } from '../../_services/modalidad.service';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

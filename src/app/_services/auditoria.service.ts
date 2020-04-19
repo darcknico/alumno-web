@@ -7,6 +7,7 @@ import { Ajax } from '../_models/tipo';
 import { Auditoria } from '../_models/extra';
 import { Alumno } from '../_models/alumno';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroAuditoria {
     search:string;
@@ -22,7 +23,7 @@ export class AuditoriaService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sede: SedeService,
+        private sede: SedeProvider,
         ) { 
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id=>{

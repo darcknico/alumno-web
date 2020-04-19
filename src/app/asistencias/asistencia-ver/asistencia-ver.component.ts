@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Asistencia, AsistenciaAlumno, TipoAsistenciaAlumno } from '../../_models/asistencia';
 import { AsistenciaService } from '../../_services/asistencia.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -22,7 +22,7 @@ export class AsistenciaVerComponent implements OnInit {
   dataSource:AsistenciaAlumno[];
   tipos_asistencia:TipoAsistenciaAlumno[]=[]; 
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
   file:any=null;
   importacionDataSource:any;
   erroresDataSource:any;

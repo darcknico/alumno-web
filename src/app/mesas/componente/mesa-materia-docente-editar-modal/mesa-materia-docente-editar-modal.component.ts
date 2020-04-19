@@ -7,11 +7,12 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { DocenteService, FiltroDocente } from '../../../_services/docente.service';
 import { SedeService } from '../../../_services/sede.service';
 import { Docente, DocenteMateria } from '../../../_models/usuario';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { TipoMesaDocente } from '../../../_models/tipo';
 import { DocenteMateriaService, FiltroDocenteMateria } from '../../../_services/docente_materia.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { SedeProvider } from '../../../_providers/sede.provider';
 
 @Component({
   selector: 'app-mesa-materia-docente-editar-modal',
@@ -19,7 +20,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
   styleUrls: ['./mesa-materia-docente-editar-modal.component.scss']
 })
 export class MesaMateriaDocenteEditarModalComponent implements OnInit {
-  @ViewChild('docentesSelect')docentesSelect: NgSelectComponent;
+  @ViewChild('docentesSelect',{static:false})docentesSelect: NgSelectComponent;
 
   public onClose: Subject<boolean>;
   formulario: FormGroup;
@@ -32,7 +33,7 @@ export class MesaMateriaDocenteEditarModalComponent implements OnInit {
   constructor(
     public service:MesaExamenMateriaDocenteService,
     private docenteService:DocenteService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private tiposService:TipoService,
     private docenteMateriaService:DocenteMateriaService,
     public bsModalRef: BsModalRef,

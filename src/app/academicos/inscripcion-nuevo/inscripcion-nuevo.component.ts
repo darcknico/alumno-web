@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlumnoService } from '../../_services/alumno.service';
 import { ExtraService } from '../../_services/extra.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Alumno } from '../../_models/alumno';
-import { CarreraService } from '../../_services/carrera.service';
+import { CarreraService, FiltroCarrera } from '../../_services/carrera.service';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Departamento } from '../../_models/departamento';
 import { Carrera } from '../../_models/carrera';
@@ -13,7 +13,7 @@ import { PlanService } from '../../_services/plan.service';
 import { PlanEstudio } from '../../_models/plan_estudio';
 import { Inscripcion } from '../../_models/inscripcion';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { PlanPago } from '../../_models/plan_pago';
 import { BecaService } from '../../_services/beca.service';
 import { Beca } from '../../_models/beca';
@@ -21,6 +21,7 @@ import { Obligacion } from '../../_models/obligacion';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-inscripcion-nuevo',
@@ -28,6 +29,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./inscripcion-nuevo.component.scss']
 })
 export class InscripcionNuevoComponent implements OnInit {
+  @ViewChild('carreraSelect',{static:false})carreraSelect: NgSelectComponent;
 
   dataSource:Obligacion[]=[];
   dtOptions: DataTables.Settings = {};
@@ -41,6 +43,7 @@ export class InscripcionNuevoComponent implements OnInit {
   alumno:Alumno;
   carrera:Carrera;
   id_departamento:number=0;
+  id_carrera:number;
   id_modalidad:number;
   id_plan_estudio:number;
 
@@ -118,15 +121,19 @@ export class InscripcionNuevoComponent implements OnInit {
   seleccionar_departamento(event){
     this.id_departamento = event.target.value;
     this.carrera = null;
+    this.id_carrera = null;
+    let filtro = <FiltroCarrera>{};
+    filtro.id_departamento = this.id_departamento;
     if(this.id_departamento>0){
-      this.carreraService._getAll(this.id_departamento).subscribe(response=>{
+      this.carreraService.getAll(filtro).subscribe(response=>{
         this.carreras = response;
+        this.carreraSelect.focus();
       });
     }
   }
 
   seleccionar_carrera(event){
-    let id_carrera = event.target.value;
+    let id_carrera = event.id;
     this.plan_estudio = null;
     this.id_plan_estudio = null;
     if(id_carrera>0){

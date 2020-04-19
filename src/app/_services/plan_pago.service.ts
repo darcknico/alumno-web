@@ -7,6 +7,7 @@ import { Pago } from '../_models/pago';
 import { Obligacion } from '../_models/obligacion';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
+import { SedeProvider } from '../_providers/sede.provider';
 
 export interface FiltroPlanPago {
     search:string;
@@ -43,7 +44,7 @@ export class PlanPagoService {
 
     constructor(
         private http: HttpClient,
-        private sede: SedeService,
+        private sede: SedeProvider,
         ) {
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id=>{

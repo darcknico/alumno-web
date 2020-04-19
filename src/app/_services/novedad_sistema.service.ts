@@ -5,6 +5,7 @@ import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
 import { Ajax } from '../_models/tipo';
 import { NovedadSistema, NovedadUsuario } from '../_models/novedad';
+import { SedeProvider } from '../_providers/sede.provider';
 
 export interface FiltroNovedadSistema{
     search:string;
@@ -22,7 +23,7 @@ export class NovedadSistemaService {
     id_sede:number;
 
     constructor(
-        private sede:SedeService,
+        private sede:SedeProvider,
         private http: HttpClient,
         ) {
         this.id_sede = this.sede.getIdSede();

@@ -5,7 +5,7 @@ import { FiltroAlumno, AlumnoService } from '../../_services/alumno.service';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { AlumnoVerModalComponent } from '../componentes/alumno-ver-modal/alumno-ver-modal.component';
 import { SedeService } from '../../_services/sede.service';
 import dtLanguage from '../../_constants/dtLanguage';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-alumno',
@@ -25,8 +26,8 @@ import dtLanguage from '../../_constants/dtLanguage';
   styleUrls: ['./alumno.component.scss']
 })
 export class AlumnoComponent implements OnInit {
-  @ViewChild('alta', {read: DataTableDirective}) alta: DataTableDirective;
-  @ViewChild('baja', {read: DataTableDirective}) baja: DataTableDirective;
+  @ViewChild('alta', {read: DataTableDirective,static:false}) alta: DataTableDirective;
+  @ViewChild('baja', {read: DataTableDirective,static:false}) baja: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dtOptionsBaja: DataTables.Settings = {};
   dataSource: Alumno[] = [];
@@ -52,7 +53,7 @@ export class AlumnoComponent implements OnInit {
     private alumnoService:AlumnoService,
     private authenticationService:AuthenticationService,
     private departamentoService:DepartamentoService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/
 import { DataTableDirective } from 'angular-datatables';
 import { MesaExamen, MesaExamenMateria } from '../../_models/mesa.examen';
 import { MesaExamenService } from '../../_services/mesa_examen.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Carrera } from '../../_models/carrera';
@@ -213,6 +213,19 @@ export class MesaVerComponent implements OnInit {
 
   volver(){
     this.router.navigate(['/mesas']);
+  }
+
+  actas(item:MesaExamenMateria){
+    this.router.navigate(['/mesas/materias'],{
+      queryParams:{
+        id_mesa_examen:this.mesa_examen.id,
+        id_carrera:item.id_carrera,
+      },
+      state:{
+        mesa_examen:this.mesa_examen,
+        materia:item.materia,
+      }
+    });
   }
 
 }

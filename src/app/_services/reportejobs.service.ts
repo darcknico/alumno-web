@@ -6,6 +6,7 @@ import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { Ajax } from '../_models/tipo';
 import { ReporteJob } from '../_models/extra';
 import { SedeService } from './sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroReporteJob {
     search:string;
@@ -26,7 +27,7 @@ export class ReporteJobService {
 
     constructor(
         private http: HttpClient,
-        private sede: SedeService,
+        private sede: SedeProvider,
         ) {
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id=>{

@@ -8,7 +8,7 @@ import { DataTableDirective } from 'angular-datatables';
 
 import * as moment from 'moment';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { MesaMateriaAlumnoModalComponent } from '../componente/mesa-materia-alumno-modal/mesa-materia-alumno-modal.component';
 import { MesaMateriaEditarModalComponent } from '../componente/mesa-materia-editar-modal/mesa-materia-editar-modal.component';
 import { MesaMateriaDocenteEditarModalComponent } from '../componente/mesa-materia-docente-editar-modal/mesa-materia-docente-editar-modal.component';
@@ -55,7 +55,7 @@ export class MesaMateriaEditarComponent implements OnInit,OnDestroy {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
       },
       pagingType: 'full_numbers',
-      pageLength: 10,
+      pageLength: 25,
       columns: [
         { 
           data: 'created_at',

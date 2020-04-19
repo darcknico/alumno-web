@@ -2,13 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MesaExamenService, FiltroMesaExamen } from '../../_services/mesa_examen.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
 import { MesaExamen } from '../../_models/mesa.examen';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Subscription } from 'rxjs';
 import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-listado-mesa',
@@ -16,12 +17,14 @@ import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
   styleUrls: ['./listado-mesa.component.scss']
 })
 export class ListadoMesaComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: MesaExamen[] = [];
+  anios:any[]=[];
 
   request = <FiltroMesaExamen>{
     search:"",
+    anio:0,
   };
   constructor(
     private mesaExamenService:MesaExamenService,
@@ -29,7 +32,20 @@ export class ListadoMesaComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    let hoy = moment();
+    this.anios.push({
+      'label':'TODOS',
+      'value':0,
+    })
+    for (let index = 2018; index <= hoy.year()+1; index++) {
+      this.anios.push({
+        'label':index,
+        'value':index,
+      })
+    }
+    this.request.anio = hoy.year();
+  }
   
   subscription:Subscription;
 

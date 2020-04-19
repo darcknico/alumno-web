@@ -3,7 +3,7 @@ import { Examen, ExamenAlumno } from '../../_models/examen';
 import { ExamenService } from '../../_services/examen.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExamenAlumnoEditarModalComponent } from '../componentes/examen-alumno-editar-modal/examen-alumno-editar-modal.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

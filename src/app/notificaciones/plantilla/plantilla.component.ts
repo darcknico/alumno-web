@@ -3,7 +3,7 @@ import { PlantillaService } from '../../_services/plantilla.service';
 import { Plantilla } from '../../_models/plantilla';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
 import { PlantillaNuevaModalComponent } from '../plantilla-nueva-modal/plantilla-nueva-modal.component';

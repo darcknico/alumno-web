@@ -6,6 +6,7 @@ import { Ajax } from '../_models/tipo';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
 import { Aula } from '../_models/aula';
+import { SedeProvider } from '../_providers/sede.provider';
  
 export interface FiltroAula {
     search:string;
@@ -27,7 +28,7 @@ export class AulaService {
 
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) {
         this.id_sede = this.sede.getIdSede();
         this.sede.id_sede$.subscribe(id_sede => {

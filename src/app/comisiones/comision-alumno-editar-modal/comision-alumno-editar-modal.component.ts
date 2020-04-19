@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComisionAlumno } from '../../_models/comision';
 import { Subject } from 'rxjs';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ComisionAlumnoService } from '../../_services/comision_alumno.service';
 import { TipoCondicionAlumno } from '../../_models/alumno';

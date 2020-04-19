@@ -3,7 +3,7 @@ import { Comision, ComisionHorario } from '../../../_models/comision';
 import { ComisionHorarioService, FiltroComisionHorario } from '../../../_services/comision_horario.service';
 import { ComisionHorarioEditarModalComponent } from '../comision-horario-editar-modal/comision-horario-editar-modal.component';
 import { DialogConfirmComponent } from '../../../_generic/dialog-confirm/dialog-confirm.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

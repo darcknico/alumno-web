@@ -4,7 +4,7 @@ import { ComisionService } from '../../_services/comision.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Alumno } from '../../_models/alumno';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { ComisionAlumnoEditarModalComponent } from '../comision-alumno-editar-modal/comision-alumno-editar-modal.component';
 import { ComisionAlumnoVerModalComponent } from '../comision-alumno-ver-modal/comision-alumno-ver-modal.component';

@@ -6,7 +6,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Alumno } from '../../_models/alumno';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 
@@ -16,7 +16,7 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
   styleUrls: ['./listado-diaria.component.scss']
 })
 export class ListadoDiariaComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Diaria[] = [];
 
@@ -42,6 +42,7 @@ export class ListadoDiariaComponent implements OnInit {
       },
       pagingType: 'full_numbers',
       pageLength: 10,
+      searching:false,
       serverSide: true,
       processing: true,
       ajax: (dataTablesParameters: any, callback) => {

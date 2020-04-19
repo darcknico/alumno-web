@@ -36,8 +36,14 @@ import {
 import { AppRoutingModule } from './app.routing';
 
 // Import 3rd party components
-import { BsDropdownModule, TabsModule, AccordionModule } from 'ngx-bootstrap'
-import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { BsDatepickerModule, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { ChartsModule } from 'ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { HTTP_INTERCEPTORS, HttpClientModule,HttpRequest } from '@angular/common/http';
@@ -46,7 +52,6 @@ import { AuthGuard } from './_guards/auth.guard';
 import { DataTablesModule } from 'angular-datatables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { TypeaheadModule, BsDatepickerModule, BsLocaleService, CollapseModule, TimepickerModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
@@ -151,6 +156,8 @@ import { AppDispositivoService } from './_services/app_dispositivo.service';
 import { AppAsistenciaService } from './_services/app_asistencia.service';
 import { TipoInscripcionAbandonoService } from './_services/tipo_inscripcion_abandono.service.';
 import { InscripcionAbandonoService } from './_services/inscripcion_abandono.service';
+import { SedeProvider } from './_providers/sede.provider';
+import { PusherProvider } from './_providers/pusher.provider';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -240,6 +247,7 @@ export const customCurrencyMaskConfig = {
     AuthenticationService,
     ExtraService,
     UsuarioService,
+    SedeProvider,
     SedeService,
     DepartamentoService,
     ModalidadService,
@@ -279,6 +287,7 @@ export const customCurrencyMaskConfig = {
     ObligacionService,
     TipoInscripcionAbandonoService,
     InscripcionAbandonoService,
+    PusherProvider,
 
     // APP
     AppDispositivoService,

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InscripcionService } from '../../../_services/inscripcion.service';
 import { Subject } from 'rxjs';
 import { Inscripcion } from '../../../_models/inscripcion';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Pago } from '../../../_models/pago';
 import { Router } from '@angular/router';

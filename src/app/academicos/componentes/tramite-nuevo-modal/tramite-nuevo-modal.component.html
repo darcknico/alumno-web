@@ -1,6 +1,6 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Nuevo Pago</h4>
+    <h4 class="modal-title pull-left">Pagar Nuevo Tramite</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -102,10 +102,16 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+    <button type="button" class="btn btn-light" (click)="cancelar()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+      CERRAR
+    </button>
     <button
       type="button" 
       class="btn btn-success" 
-      (click)="confirmar()">REALIZAR PAGO</button>
+      (click)="confirmar()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      GUARDAR PAGO DEL TRAMITE
+    </button>
   </div>
 </div>

@@ -8,7 +8,7 @@ import { AuthenticationService } from '../../_services/authentication.service';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Usuario } from '../../_models/usuario';
@@ -20,13 +20,14 @@ import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs';
 import dtLanguage from '../../_constants/dtLanguage';
 import * as moment from "moment";
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-comision',
   templateUrl: './listado-comision.component.html',
   styleUrls: ['./listado-comision.component.scss']
 })
-export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ListadoComisionComponent implements OnInit {
   usuario:Usuario;
   @ViewChildren(DataTableDirective) dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings = {};
@@ -53,12 +54,12 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
     search:"",
   }
 
-  dtTrigger: Subject<any> = new Subject();
+  //dtTrigger: Subject<any> = new Subject();
   constructor(
     private comisionService:ComisionService,
     private comisionDocenteService:ComisionDocenteService,
     private comisionAlumnoService:ComisionAlumnoService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private authenticationService:AuthenticationService,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
@@ -221,13 +222,6 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
 
   }
 
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-  ngAfterViewInit(): void{
-    this.dtTrigger.next();
-  }
-
   ver(item:Comision){
     this.router.navigate(['/comisiones/'+item.id+'/ver']);
   }
@@ -252,6 +246,10 @@ export class ListadoComisionComponent implements OnInit, OnDestroy, AfterViewIni
 
   nuevo(){
     this.router.navigate(['/comisiones/nuevo']);
+  }
+  masivo(){
+    this.toastr.warning('EN CONSTRUCCION', 'Ultima actualizacion 13/2/20');
+    //this.router.navigate(['/comisiones/nuevo/masivo']);
   }
 
   editar(item:Comision){

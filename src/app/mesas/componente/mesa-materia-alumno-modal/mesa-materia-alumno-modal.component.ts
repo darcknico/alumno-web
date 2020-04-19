@@ -3,7 +3,7 @@ import { TipoCondicionAlumno } from '../../../_models/alumno';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MesaExamenMateriaAlumno } from '../../../_models/mesa.examen';
 import { Subject } from 'rxjs';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { MesaExamenMateriaAlumnoService } from '../../../_services/mesa_examen_materia_alumno.service';
 import { AlumnoService } from '../../../_services/alumno.service';

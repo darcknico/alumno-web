@@ -3,7 +3,7 @@ import { Examen } from '../../_models/examen';
 import { ExamenService } from '../../_services/examen.service';
 import { Comision } from '../../_models/comision';
 import { ComisionService } from '../../_services/comision.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';

@@ -6,149 +6,188 @@
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Listado de Inscripciones
                     <div class="card-header-actions">
-                        <button [disabled]="consultando"
-                            class="btn btn-sm btn-info m-1" 
-                            type="button" (click)="exportar()">Exportar tabla</button>
+                        
                     </div>
                 </div>
                 <div class="card-body p-1">
-                <div class="row">
-                    <div class="form-group col-sm-3">
-                        <label class="control-label">Departamento</label>
-                        <select 
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <label class="control-label">Departamento</label>
+                            <select 
+                                class="form-control" 
+                                (change)="refrescar()"
+                                [(ngModel)]="request.id_departamento"
+                                >
+                                <option value="0">TODOS</option>
+                                <option *ngFor="let item of departamentos" [value]="item.id" >{{item.nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="control-label">Tipo Estado</label>
+                            <select 
+                                class="form-control"
+                                (change)="refrescar()"
+                                [(ngModel)]="request.id_tipo_inscripcion_estado"
+                                >
+                                <option value="0">TODOS</option>
+                                <option *ngFor="let item of tipos_estado" [value]="item.id" >{{item.nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="control-label">Beca</label>
+                            <ng-select [items]="becas"
+                                [selectOnTab]="true"
+                                bindValue="id"
+                                bindLabel="nombre"
+                                (ngModelChange)="refrescar()"
+                                placeholder="Seleccione la Beca"
+                                [(ngModel)]="request.id_beca"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">Carrera</label>
+                            <ng-select [items]="carreras"
+                                [selectOnTab]="true"
+                                bindValue="id"
+                                bindLabel="nombre"
+                                (ngModelChange)="refrescar()"
+                                placeholder="Seleccione la Carrera"
+                                [(ngModel)]="request.id_carrera"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-2">
+                            <label class="control-label">Año desde</label>
+                            <input class="form-control" type="number" [(ngModel)]="request.anio_inicial" (keyup.enter)="refrescar()">
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label class="control-label">Año hasta</label>
+                            <input class="form-control" type="number" [(ngModel)]="request.anio_final" (keyup.enter)="refrescar()">
+                        </div>
+                        <div class="form-group col-sm-4" >
+                            <label class="control-label">Alta Inicio</label>
+                            <input bsDatepicker
+                            (bsValueChange)="fecha_inicio($event)"
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Inicio">
+                        </div>
+                        <div class="form-group col-sm-4" >
+                            <label class="control-label">Alta Fin</label>
+                            <input bsDatepicker
+                            (bsValueChange)="fecha_fin($event)"
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Fin">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-2">
+                            <label class="control-label">%/Apro desde</label>
+                            <input class="form-control" type="number" min="0" max="100" [(ngModel)]="request.porcentaje_aprobados_inicial" (keyup.enter)="refrescar()">
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label class="control-label">%/Apro hasta</label>
+                            <input class="form-control" type="number" min="0" max="100"
+                            [(ngModel)]="request.porcentaje_aprobados_final" (keyup.enter)="refrescar()">
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="control-label">Periodo Lectivo</label>
+                            <select 
                             class="form-control" 
                             (change)="refrescar()"
-                            [(ngModel)]="request.id_departamento"
+                            [(ngModel)]="request.id_periodo_lectivo"
                             >
                             <option value="0">TODOS</option>
-                            <option *ngFor="let item of departamentos" [value]="item.id" >{{item.nombre}}</option>
-                        </select>
+                            <option *ngFor="let item of tipos" [value]="item.id" >{{item.nombre}}</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group col-sm-3">
-                        <label class="control-label">Tipo Estado</label>
-                        <select 
-                            class="form-control"
-                            (change)="refrescar()"
-                            [(ngModel)]="request.id_tipo_inscripcion_estado"
-                            >
-                            <option value="0">TODOS</option>
-                            <option *ngFor="let item of tipos_estado" [value]="item.id" >{{item.nombre}}</option>
-                        </select>
+                    <div class="table-responsive">
+                        <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
+                        <thead>
+                            <tr>
+                            <th>Agregado</th>
+                            <th>Año</th>
+                            <th>Alumno</th>
+                            <th>Carrera</th>
+                            <th>Beca</th>
+                            <th>Estado</th>
+                            <th>%/Apro</th>
+                            <th></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="dataSource?.length != 0">
+                            <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
+                            <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ item.anio }}</td>
+                            <td>{{ item.alumno.nombre }} {{ item.alumno.apellido }} {{item.alumno.tipo_documento.nombre}}:{{item.alumno.documento}}</td>
+                            <td>
+                                <p tooltip="{{ item.carrera.departamento.nombre}} - {{ item.carrera.nombre }} - {{item.plan_estudio.anio}}">
+                                    {{ item.carrera.nombre_corto }} - {{item.plan_estudio.anio}}
+                                </p>
+                            </td>
+                            <td>{{item.beca_nombre}}</td>
+                            <td>{{item.tipo_estado?.nombre}}</td>
+                            <td class="text-center">
+                                {{item.porcentaje_aprobados | number:'1.2-2'}}%
+                            </td>
+                            <td>
+                                <div class="btn-group" dropdown placement="bottom right" container="body">
+                                    <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                                    <span class="caret"></span>
+                                    </button>
+                                    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li role="menuitem">
+                                            <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                                                <i class="fa fa-cog"></i>
+                                                Gestionar
+                                            </a>
+                                        </li>
+                                        <li role="menuitem">
+                                            <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                                                <i class="fa fa-edit"></i>
+                                                Editar
+                                            </a>
+                                        </li>
+                                        <li class="divider dropdown-divider"></li>
+                                        <li role="menuitem">
+                                            <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);">Comisiones</a>
+                                        </li>
+                                        <li role="menuitem">
+                                            <a class="dropdown-item" (click)="mesas_examenes(item)" href="javascript:void(0);">Mesas de examen</a>
+                                        </li>
+                                        <li role="menuitem">
+                                            <a class="dropdown-item" (click)="notas(item)" href="javascript:void(0);">Notas (Viejo)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="dataSource?.length == 0">
+                            <tr>
+                            <td colspan="3" class="no-data-available">No hay inscripciones</td>
+                            </tr>
+                        </tbody>
+                        </table>
                     </div>
-                    <div class="form-group col-sm-3">
-                        <label class="control-label">Beca</label>
-                        <ng-select [items]="becas"
-                            [selectOnTab]="true"
-                            bindValue="id"
-                            bindLabel="nombre"
-                            (ngModelChange)="refrescar()"
-                            placeholder="Seleccione la Beca"
-                            [(ngModel)]="request.id_beca"
-                            [clearable]="false">
-                        </ng-select>
-                    </div>
+                    <p>
+                        %/Apro: Porcentaje de la carrera aprobada
+                    </p>
                 </div>
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <label class="control-label">Carrera</label>
-                        <ng-select [items]="carreras"
-                            [selectOnTab]="true"
-                            bindValue="id"
-                            bindLabel="nombre"
-                            (ngModelChange)="refrescar()"
-                            placeholder="Seleccione la Carrera"
-                            [(ngModel)]="request.id_carrera"
-                            [clearable]="false">
-                        </ng-select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-2">
-                        <label class="control-label">Año desde</label>
-                        <input class="form-control" type="number" [(ngModel)]="request.anio_inicial" (keyup.enter)="refrescar()">
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <label class="control-label">Año hasta</label>
-                        <input class="form-control" type="number" [(ngModel)]="request.anio_final" (keyup.enter)="refrescar()">
-                    </div>
-                    <div class="form-group col-sm-4" >
-                        <label class="control-label">Alta Inicio</label>
-                        <input bsDatepicker
-                        (bsValueChange)="fecha_inicio($event)"
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Inicio">
-                    </div>
-                    <div class="form-group col-sm-4" >
-                        <label class="control-label">Alta Fin</label>
-                        <input bsDatepicker
-                        (bsValueChange)="fecha_fin($event)"
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Fin">
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" >
-                    <thead>
-                        <tr>
-                        <th>Agregado</th>
-                        <th>Año</th>
-                        <th>Alumno</th>
-                        <th>Carrera</th>
-                        <th>Beca</th>
-                        <th>Estado</th>
-                        <th></th>
-                        </tr>
-                    </thead>
-                    <tbody *ngIf="dataSource?.length != 0">
-                        <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
-                        <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
-                        <td>{{ item.anio }}</td>
-                        <td>{{ item.alumno.nombre }} {{ item.alumno.apellido }} {{item.alumno.tipo_documento.nombre}}:{{item.alumno.documento}}</td>
-                        <td>{{ item.carrera.departamento.nombre}} {{ item.carrera.nombre }} {{item.plan_estudio.anio}}</td>
-                        <td>{{item.beca_nombre}}</td>
-                        <td>{{item.tipo_estado?.nombre}}</td>
-                        <td>
-                            <div class="btn-group" dropdown placement="bottom right" container="body">
-                                <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
-                                  <span class="caret"></span>
-                                </button>
-                                <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
-                                            <i class="fa fa-cog"></i>
-                                            Gestionar
-                                        </a>
-                                    </li>
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
-                                            <i class="fa fa-edit"></i>
-                                            Editar
-                                        </a>
-                                    </li>
-                                    <li class="divider dropdown-divider"></li>
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" (click)="comisiones(item)" href="javascript:void(0);">Comisiones</a>
-                                    </li>
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" (click)="mesas_examenes(item)" href="javascript:void(0);">Mesas de examen</a>
-                                    </li>
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" (click)="notas(item)" href="javascript:void(0);">Notas (Viejo)</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                        </tr>
-                    </tbody>
-                    <tbody *ngIf="dataSource?.length == 0">
-                        <tr>
-                        <td colspan="3" class="no-data-available">No hay inscripciones</td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
+                <div class="card-footer">
+                    <button [disabled]="consultando"
+                            class="btn btn-outline-info m-1" 
+                            type="button" (click)="exportar()">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                        EXPORTAR TABLA
+                    </button>
                 </div>
             </div>
         </div>

@@ -35,6 +35,7 @@ export interface Pago{
     inscripcion:Inscripcion;
     
     bonificar_intereses:boolean;
+    bonificar_cuotas:boolean;
 }
 
 export interface TipoPago{

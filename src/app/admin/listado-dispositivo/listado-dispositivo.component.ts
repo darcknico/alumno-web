@@ -9,7 +9,7 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrls: ['./listado-dispositivo.component.scss']
 })
 export class ListadoDispositivoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   
   dataSource:UsuarioDispositivo[] = [];

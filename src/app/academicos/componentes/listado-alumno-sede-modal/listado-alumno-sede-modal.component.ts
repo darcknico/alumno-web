@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlumnoService } from '../../../_services/alumno.service';
 import { AlumnoSede, Alumno } from '../../../_models/alumno';
 import { Subject } from 'rxjs/internal/Subject';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 

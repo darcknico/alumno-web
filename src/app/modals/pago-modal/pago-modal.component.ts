@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlanPagoService } from '../../_services/plan_pago.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Pago } from '../../_models/pago';
 import { Subject } from 'rxjs';
 import { PlanPago } from '../../_models/plan_pago';

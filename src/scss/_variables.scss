@@ -6,7 +6,7 @@
 
 // CoreUI Variables
 
-$body-bg:    $gray-900;
+$body-bg:    $gray-200;
 $body-color: $gray-600;
 
 // stylelint-disable
@@ -49,15 +49,15 @@ $sidebar-minimized-width:             50px !default;
 $sidebar-minimized-height:            $sidebar-minimized-width !default;
 $sidebar-compact-width:               150px !default;
 $sidebar-compact-height:              $sidebar-compact-width !default;
-$sidebar-color:                       #fff !default;
-$sidebar-bg:                          #CB132F !default;
+$sidebar-color:                       rgb(41, 38, 38) !default;
+$sidebar-bg:                          rgb(245, 244, 244) !default;
 $sidebar-borders:                     none !default;
 $mobile-sidebar-width:                220px !default;
 
 // Sidebar Header
 
 $sidebar-header-height:               auto !default;
-$sidebar-header-bg:                  #52002C !default;
+$sidebar-header-bg:                   darken($sidebar-bg,30%)!default;
 $sidebar-header-padding-y:            .75rem !default;
 $sidebar-header-padding-x:            1rem !default;
 
@@ -70,35 +70,35 @@ $sidebar-form-placeholder-color:      rgba(255,255,255,.7) !default;
 
 // Sidebar Navigation
 
-$sidebar-nav-color:                   #fff !default;
+$sidebar-nav-color:                   darken($sidebar-color,50%) !default;
 $sidebar-nav-title-padding-y:         .75rem !default;
 $sidebar-nav-title-padding-x:         1rem !default;
 $sidebar-nav-title-color:             $gray-200 !default;
 $sidebar-nav-link-padding-y:          .75rem !default;
 $sidebar-nav-link-padding-x:          1rem !default;
-$sidebar-nav-link-color:              #fff !default;
+$sidebar-nav-link-color:              darken($sidebar-color,50%) !default;
 $sidebar-nav-link-bg:                 transparent !default;
-$sidebar-nav-link-icon-color:         $gray-200 !default;
+$sidebar-nav-link-icon-color:         #CB132F !default;
 $sidebar-nav-link-borders:            0 !default;
 
-$sidebar-nav-link-hover-color:        #fff !default;
-$sidebar-nav-link-hover-bg:           #C43235 !default;
-$sidebar-nav-link-hover-icon-color:   $gray-200 !default;
+$sidebar-nav-link-hover-color:        #CB132F !default;
+$sidebar-nav-link-hover-bg:           lighten($sidebar-bg,5%) !default;
+$sidebar-nav-link-hover-icon-color:   #CB132F !default;
 $sidebar-nav-link-hover-borders:      0 !default;
 
-$sidebar-nav-link-active-color:       #fff !default;
+$sidebar-nav-link-active-color:       darken($sidebar-color,50%) !default;
 $sidebar-nav-link-active-bg:          lighten($sidebar-bg, 5%) !default;
-$sidebar-nav-link-active-icon-color:  $gray-500 !default;
+$sidebar-nav-link-active-icon-color:  #CB132F !default;
 $sidebar-nav-link-active-borders:     0 !default;
 
-$sidebar-nav-link-disabled-color:       darken(#fff, 30%) !default;
-$sidebar-nav-link-disabled-bg:          $sidebar-bg !default;
+$sidebar-nav-link-disabled-color:       darken($sidebar-color,50%) !default;
+$sidebar-nav-link-disabled-bg:          lighten($sidebar-bg, 5%) !default;
 $sidebar-nav-link-disabled-icon-color:  $sidebar-nav-link-icon-color !default;
 $sidebar-nav-link-disabled-borders:     0 !default;
 
-$sidebar-nav-dropdown-color:          #fff !default;
-$sidebar-nav-dropdown-bg:             rgba(0,0,0,.2) !default;
-$sidebar-nav-dropdown-borders:        0 !default;
+$sidebar-nav-dropdown-color:          darken($sidebar-color,50%) !default;
+$sidebar-nav-dropdown-bg:             lighten($sidebar-bg, 5%) !default;
+$sidebar-nav-dropdown-borders:        10px !default;
 $sidebar-nav-dropdown-indicator-color:$gray-600 !default;
 $sidebar-nav-dropdown-indicator:      str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-nav-dropdown-indicator-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E"), "#", "%23") !default;
 $sidebar-nav-dropdown-indicator-hover-color:$sidebar-nav-link-hover-color;
@@ -107,7 +107,7 @@ $sidebar-nav-dropdown-indicator-hover:str-replace(url("data:image/svg+xml;charse
 // Sidebar Footer
 
 $sidebar-footer-height:               auto !default;
-$sidebar-footer-bg:                   rgba(0,0,0,.2) !default;
+$sidebar-footer-bg:                   $sidebar-bg !default;
 $sidebar-footer-padding-y:            .75rem !default;
 $sidebar-footer-padding-x:            1rem !default;
 $sidebar-footer-borders:              0 !default;
@@ -115,11 +115,11 @@ $sidebar-footer-borders:              0 !default;
 // Sidebar Minimizer
 
 $sidebar-minimizer-height:            50px !default;
-$sidebar-minimizer-bg:                rgba(0,0,0,.2) !default;
+$sidebar-minimizer-bg:                #CB132F !default;
 $sidebar-minimizer-borders:           0 !default;
 $sidebar-minimizer-indicator-color:   $gray-600 !default;
 $sidebar-minimizer-indicator:         str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-minimizer-indicator-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E"), "#", "%23") !default;
-$sidebar-minimizer-hover-bg:          rgba(0,0,0,.3) !default;
+$sidebar-minimizer-hover-bg:          lighten(#CB132F,10%) !default;
 $sidebar-minimizer-hover-indicator-color:$sidebar-nav-link-hover-color !default;
 $sidebar-minimizer-hover-indicator:   str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-minimizer-hover-indicator-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E"), "#", "%23") !default;
 

@@ -7,7 +7,7 @@ import { Carrera } from '../../_models/carrera';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 import * as moment from 'moment';
@@ -26,7 +26,7 @@ import { TipoInscripcionEstado } from '../../_models/inscripcion';
   styleUrls: ['./listado-plan-pago.component.scss']
 })
 export class ListadoPlanPagoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: PlanPago[] = [];
   departamentos:Departamento[]=[];

@@ -3,7 +3,7 @@ import { NovedadSistemaService } from '../../_services/novedad_sistema.service';
 import { NovedadSistema } from '../../_models/novedad';
 import { Subject } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 

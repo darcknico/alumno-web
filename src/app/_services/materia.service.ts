@@ -36,8 +36,10 @@ export class MateriaService {
         ) {
     }
 
-    getAll() {
-        return this.http.get<Materia[]>(this.api);
+    getAll(filtro:FiltroMateria=null) {
+        return this.http.get<Materia[]>(this.api,{
+            params: AuxiliarFunction.toParams(filtro)
+        });
     }
 
     ajax(filtro:FiltroMateria):  Observable<MateriaAjax>{

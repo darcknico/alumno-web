@@ -7,6 +7,7 @@ import { AlumnoService } from '../../_services/alumno.service';
 import { SedeService } from '../../_services/sede.service';
 import { Sede } from '../../_models/sede';
 import { UsuarioSede } from '../../_models/usuario';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-estadisticas',
@@ -17,9 +18,9 @@ export class EstadisticasComponent implements OnInit {
   sede:UsuarioSede;
   $planes:Observable<any>;
   $mensual:Observable<any>;
-  @ViewChild("ingresosDoughnutCanvas") ingresosDoughnutCanvas: ElementRef;
-  @ViewChild("egresosDoughnutCanvas") egresosDoughnutCanvas: ElementRef;
-  @ViewChild("barCanvas") barCanvas: ElementRef;
+  @ViewChild("ingresosDoughnutCanvas",{static:false}) ingresosDoughnutCanvas: any;
+  @ViewChild("egresosDoughnutCanvas",{static:false}) egresosDoughnutCanvas: any;
+  @ViewChild("barCanvas",{static:false}) barCanvas: any;
 
   hoy;
   backgroundColor = [
@@ -37,7 +38,7 @@ export class EstadisticasComponent implements OnInit {
   };
   
   constructor(
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private alumnoService:AlumnoService,
     private movimientoService:MovimientoService,
   ) { }
@@ -95,7 +96,7 @@ export class EstadisticasComponent implements OnInit {
               label: function(tooltipItems, data) {
                 let value = data.datasets[0].data[tooltipItems.index];
                 let str;
-                if (parseInt(value) >= 1000) {
+                if (Number(value) >= 1000) {
                     str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 } else {
                   str = '$' + value;
@@ -145,7 +146,7 @@ export class EstadisticasComponent implements OnInit {
               label: function(tooltipItems, data) {
                 let value = data.datasets[0].data[tooltipItems.index];
                 let str;
-                if (parseInt(value) >= 1000) {
+                if (Number(value) >= 1000) {
                     str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 } else {
                   str = '$' + value;
@@ -193,12 +194,13 @@ export class EstadisticasComponent implements OnInit {
               label: function(tooltipItems, data) {
                 let value = data.datasets[0].data[tooltipItems.index];
                 let str;
-                if (parseInt(value) >= 1000) {
+                if (Number(value) >= 1000) {
                     str = '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 } else {
                   str = '$' + value;
                 }
-                return moment(data.labels[tooltipItems.index]).format('DD/MM') + ' ' + str;
+                let fecha = data.labels[tooltipItems.index];
+                return moment(fecha.toString()).format('DD/MM') + ' ' + str;
               }
             }
           },
@@ -208,7 +210,7 @@ export class EstadisticasComponent implements OnInit {
                 ticks: {
                   beginAtZero: true,
                   callback: function(value, index, values) {
-                    if (parseInt(value) >= 1000) {
+                    if (Number(value) >= 1000) {
                        return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     } else {
                        return '$' + value;

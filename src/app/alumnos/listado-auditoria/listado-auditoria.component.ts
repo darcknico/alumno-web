@@ -5,6 +5,7 @@ import { FiltroAuditoria, AuditoriaService } from '../../_services/auditoria.ser
 import { Router } from '@angular/router';
 import { AlumnoSedeService, FiltroAlumnoSede } from '../../_services/alumno_sede.service';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-auditoria',
@@ -29,7 +30,7 @@ export class ListadoAuditoriaComponent implements OnInit {
   constructor(
     private service:AuditoriaService,
     private alumnoSedeService:AlumnoSedeService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private router: Router,
   ) { }
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TipoMovimiento } from '../_models/movimiento';
 import { SedeService } from './sede.service';
+import { SedeProvider } from '../_providers/sede.provider';
  
 @Injectable()
 export class TipoMovimientoService {
@@ -10,7 +11,7 @@ export class TipoMovimientoService {
     id_sede:number;
     constructor(
         private http: HttpClient,
-        private sedeService:SedeService,
+        private sedeService:SedeProvider,
         ) { 
         this.id_sede = this.sedeService.getIdSede();
         this.sedeService.id_sede$.subscribe(id=>{

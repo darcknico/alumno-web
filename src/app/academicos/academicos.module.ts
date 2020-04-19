@@ -11,7 +11,6 @@ import { PlanComponent } from './plan/plan.component';
 import { MateriaComponent } from './materia/materia.component';
 import { AlumnoComponent } from './alumno/alumno.component';
 import { AlumnoEditarComponent } from './alumno-editar/alumno-editar.component';
-import { TypeaheadModule, BsDatepickerModule, CollapseModule, TooltipModule, ModalModule,BsDropdownModule,AccordionModule } from 'ngx-bootstrap';
 import { InscripcionComponent } from './inscripcion/inscripcion.component';
 import { InscripcionNuevoComponent } from './inscripcion-nuevo/inscripcion-nuevo.component';
 import { AlumnoVerComponent } from './alumno-ver/alumno-ver.component';
@@ -43,6 +42,14 @@ import { InscripcionMesaMultipleNuevoComponent } from './inscripcion-mesa-multip
 import { InscripcionComisionMultipleNuevoComponent } from './inscripcion-comision-multiple-nuevo/inscripcion-comision-multiple-nuevo.component';
 import { InscripcionEgresadoModalComponent } from './componentes/inscripcion-egresado-modal/inscripcion-egresado-modal.component';
 import { InscripcionAbandonadoModalComponent } from './componentes/inscripcion-abandonado-modal/inscripcion-abandonado-modal.component';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 @NgModule({
   imports: [
@@ -60,6 +67,7 @@ import { InscripcionAbandonadoModalComponent } from './componentes/inscripcion-a
     NgxCurrencyModule,
     ModalModule.forRoot(),
     AccordionModule.forRoot(),
+    PopoverModule.forRoot()
   ],
   declarations: [
     CarreraComponent,

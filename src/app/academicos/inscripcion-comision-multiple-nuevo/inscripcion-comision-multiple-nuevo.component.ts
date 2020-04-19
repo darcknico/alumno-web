@@ -4,7 +4,7 @@ import { Inscripcion } from '../../_models/inscripcion';
 import Stepper from 'bs-stepper';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BlockUIService, BLOCKUI_DEFAULT } from 'ng-block-ui';
 import * as moment from 'moment';
@@ -19,8 +19,8 @@ import dtLanguage from '../../_constants/dtLanguage';
   styleUrls: ['./inscripcion-comision-multiple-nuevo.component.scss']
 })
 export class InscripcionComisionMultipleNuevoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
+  dtOptions: any = {};
   index:number=1;
   id_mesa_examen:number=null;
   inscripcion:Inscripcion;

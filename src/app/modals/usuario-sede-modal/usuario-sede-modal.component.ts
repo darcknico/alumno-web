@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SedeService } from '../../_services/sede.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Sede } from '../../_models/sede';
 import { Subject } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { UsuarioService } from '../../_services/usuario.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-usuario-sede-modal',
@@ -22,11 +23,12 @@ export class UsuarioSedeModalComponent implements OnInit {
   constructor(
     private authenticationService:AuthenticationService,
     private usuarioService:UsuarioService,
+    private sede:SedeProvider,
     public sedeService:SedeService,
     public bsModalRef: BsModalRef,
     private fb: FormBuilder,
     ) {
-      this.id_sede = this.sedeService.getIdSede();
+      this.id_sede = this.sede.getIdSede();
       this.formulario = this.fb.group({
         id_sede: [ this.id_sede , [Validators.required]],
       });

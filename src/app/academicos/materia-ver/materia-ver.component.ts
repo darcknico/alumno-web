@@ -3,9 +3,10 @@ import { MateriaService } from '../../_services/materia.service';
 import { Materia } from '../../_models/materia';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { SedeService } from '../../_services/sede.service';
 import * as moment from "moment";
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-materia-ver',
@@ -20,7 +21,7 @@ export class MateriaVerComponent implements OnInit {
   anio;
   constructor(
     private service:MateriaService,
-    private sede:SedeService,
+    private sede:SedeProvider,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MateriaService } from '../../../_services/materia.service';
 import { Inscripcion } from '../../../_models/inscripcion';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { InscripcionService } from '../../../_services/inscripcion.service';
@@ -19,6 +19,7 @@ import { AlumnoService } from '../../../_services/alumno.service';
 })
 export class AlumnoMateriaNotaModalComponent implements OnInit {
 
+  id:number = 0;
   public onClose: Subject<boolean>;
   formulario: FormGroup;
   inscripcion: Inscripcion;
@@ -56,6 +57,7 @@ export class AlumnoMateriaNotaModalComponent implements OnInit {
     if(this.alumno_materia_nota==null){
       this.titulo="Nota Nueva";
     } else {
+      this.id = this.alumno_materia_nota.id;
       this.titulo="Nota Editar";
       this.f.id_materia.setValue(alumno_materia_nota.id_materia);
       this.f.nota.setValue(alumno_materia_nota.nota);

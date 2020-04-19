@@ -7,6 +7,7 @@ import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { Ajax } from '../_models/tipo';
 import { Observable } from 'rxjs';
 import { ReporteJob } from '../_models/extra';
+import { SedeProvider } from '../_providers/sede.provider';
 
 export interface FiltroMesaExamenMateriaDocente {
     search:string;
@@ -31,7 +32,7 @@ export class MesaExamenMateriaDocenteService {
     resource:string = 'mesas/materias/docentes';
     constructor(
         private http: HttpClient,
-        private sede:SedeService,
+        private sede:SedeProvider,
         ) {
             this.id_sede = this.sede.getIdSede();
             this.sede.id_sede$.subscribe(id=>{

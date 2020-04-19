@@ -25,7 +25,7 @@ import { DocenteMateriaService, FiltroDocenteMateria } from '../../_services/doc
   styleUrls: ['./comision-editar.component.scss']
 })
 export class ComisionEditarComponent implements OnInit {
-  @ViewChild('docentesSelect')docentesSelect: NgSelectComponent;
+  @ViewChild('docentesSelect',{static:false})docentesSelect: NgSelectComponent;
   id_carrera:number;
 
   titulo:string;

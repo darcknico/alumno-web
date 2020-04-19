@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Notificacion } from '../../_models/notificacion';
 import { NotificacionService } from '../../_services/notificacion.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 

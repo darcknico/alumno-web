@@ -3,6 +3,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { AuthenticationService } from './_services/authentication.service';
 import { SedeService } from './_services/sede.service';
+import { SedeProvider } from './_providers/sede.provider';
+import { PusherProvider } from './_providers/pusher.provider';
 
 @Component({
   // tslint:disable-next-line
@@ -14,6 +16,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private auth:AuthenticationService,
     private sedeService:SedeService,
+    private sede:SedeProvider,
+    private pusher:PusherProvider,
     ) {
     setTheme('bs4');
   }
@@ -27,8 +31,12 @@ export class AppComponent implements OnInit {
     });
 
     this.auth.token$.subscribe(_=>{
-      this.auth.actualizar();
-      this.sedeService.actualizar();
+      Promise.all([
+        this.auth.actualizar(),
+        this.sedeService.actualizar()
+      ]).then(()=>{
+        this.pusher.iniciar().then(()=>{});
+      })
     });
 
     this.auth.iniciar();

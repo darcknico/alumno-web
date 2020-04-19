@@ -3,9 +3,10 @@ import { TipoMovimientoService } from '../../_services/tipo_movimiento.service';
 import { TipoMovimiento } from '../../_models/movimiento';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-tipo-movimiento',
@@ -19,7 +20,7 @@ export class ListadoTipoMovimientoComponent implements OnInit {
 
   constructor(
     private tipoMovimientoService:TipoMovimientoService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,

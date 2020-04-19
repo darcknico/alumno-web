@@ -36,6 +36,10 @@ export interface Comision{
     docentes:ComisionDocente[];
     usuario_baja:Usuario;
     usuario_alta:Usuario;
+
+    docentes_previos:boolean;
+    docentes_asignados:boolean;
+    horarios_previos:boolean;
 }
 
 export interface ComisionAlumno{

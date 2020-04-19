@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Comision, ComisionAlumno } from '../../_models/comision';
 import { Carrera } from '../../_models/carrera';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { Inscripcion } from '../../_models/inscripcion';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PlanPagoService } from '../../_services/plan_pago.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import * as moment from 'moment';
 import 'moment/min/locales';
 import { Obligacion } from '../../_models/obligacion';
@@ -42,6 +42,7 @@ export class ObligacionPagarModalComponent implements OnInit {
       fecha: [ moment().toDate(), Validators.required],
       descripcion: 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),
       bonificar_intereses:false,
+      bonificar_cuotas:true,
       id_forma_pago:[null,Validators.required],
       cheque_numero: '',
       cheque_banco: '',
@@ -49,6 +50,10 @@ export class ObligacionPagarModalComponent implements OnInit {
       cheque_vencimiento: '',
       numero_oficial:'',
     });
+
+    this.formulario.valueChanges.subscribe(()=>{
+      this.onEditar();
+    })
 
     this.dtOptions = {
       language: {
@@ -87,6 +92,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     item.fecha = moment(this.f.fecha.value).format('YYYY-MM-DD HH:mm:ss');
     item.monto = this.f.monto.value;
     item.bonificar_intereses = this.f.bonificar_intereses.value;
+    item.bonificar_cuotas = this.f.bonificar_cuotas.value;
     this.planPagoService.pagarPreparar(item).subscribe((response:any)=>{
       this.editado = false;
       this.dataSource = response.detalles.filter(item=>item.monto>0);
@@ -111,6 +117,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     pago.monto = this.f.monto.value;
     pago.descripcion = this.f.descripcion.value;
     pago.bonificar_intereses = !this.f.bonificar_intereses.value;
+    pago.bonificar_cuotas = this.f.bonificar_cuotas.value;
     pago.numero_oficial = this.f.numero_oficial.value;
 
     this.movimientoService.ingreso(movimiento).subscribe(response=>{

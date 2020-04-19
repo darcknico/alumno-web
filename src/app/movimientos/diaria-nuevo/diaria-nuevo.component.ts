@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DiariaService } from '../../_services/diaria.service';
 import { Diaria } from '../../_models/diaria';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';

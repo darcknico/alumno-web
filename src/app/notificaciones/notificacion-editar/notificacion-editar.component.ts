@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { Plantilla } from '../../_models/plantilla';
 import { DialogInputComponent } from '../../_generic/dialog-input/dialog-input.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Departamento } from '../../_models/departamento';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';

@@ -12,26 +12,30 @@
         </div>
         <div class="card-body">
           <div class="row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-12">
               <label class="control-label">Departamento</label>
               <select 
                 class="form-control"
+                [(ngModel)]="id_departamento"
                 (change)="seleccionar_departamento($event)"
                 >
                 <option selected="true" disabled="disabled">Selecciones un Departamento</option> 
                 <option *ngFor="let item of departamentos" [value]="item.id">{{item.nombre}}</option>
               </select>
             </div>
-            <div class="form-group col-sm-6">
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
               <label class="control-label">Carrera</label>
-              <select 
-                class="form-control"
-                (change)="seleccionar_carrera($event)"
-                [disabled]="id_departamento==0"
-                >
-                <option selected="true" disabled="disabled">Selecciones una Carrera</option> 
-                <option *ngFor="let item of carreras" [value]="item.id">{{item.nombre}}</option>
-              </select>
+              <ng-select [items]="carreras" #carreraSelect
+                  [(ngModel)]="id_carrera"
+                  [selectOnTab]="true"
+                  bindValue="id"
+                  bindLabel="nombre"
+                  (change)="seleccionar_carrera($event)"
+                  placeholder="Seleccione la Carrera"
+                  [clearable]="false">
+              </ng-select>
             </div>
           </div>
           <div class="row" *ngIf="carrera">
@@ -72,9 +76,13 @@
     <div class="col-lg-12" >
       <div class="card animated fadeIn" *ngIf="plan_estudio && carrera">
         <div class="card-header">
-          Plan de Pagos
+          <strong>Plan de Pagos</strong>
+          <small> Formulario</small>
           <div class="card-header-actions">
-            <button class="btn btn-block btn-primary" type="button" (click)="cambiar_carrera()">Cambiar Carrera</button>
+            <button class="btn btn-sm btn-block btn-outline-primary" type="button" (click)="cambiar_carrera()">
+              <i class="fa fa-retweet"></i>
+              Cambiar Carrera Seleccionada
+            </button>
           </div>
         </div>
         <div class="card-body">
@@ -257,7 +265,9 @@
             type="button" 
             [disabled]="!formulario.valid"
             (click)="inscribir()"
-            >Finalizar Inscripcion</button>
+            >
+            <strong>FINALIZAR NUEVA INSCRIPCIÓN Y CREAR PLAN DE PAGOS</strong>
+          </button>
         </div>
       </div>
     </div>

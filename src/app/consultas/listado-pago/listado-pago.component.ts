@@ -5,7 +5,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Departamento } from '../../_models/departamento';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Pago, TipoPago } from '../../_models/pago';
 import { Carrera } from '../../_models/carrera';
@@ -14,6 +14,7 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
 import * as moment from 'moment';
 import { saveAs } from 'file-saver';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-pago',
@@ -21,7 +22,7 @@ import { SedeService } from '../../_services/sede.service';
   styleUrls: ['./listado-pago.component.scss']
 })
 export class ListadoPagoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Pago[] = [];
   departamentos:Departamento[]=[];
@@ -38,7 +39,7 @@ export class ListadoPagoComponent implements OnInit {
   };
   constructor(
     private pagoService:PagoService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private router: Router,

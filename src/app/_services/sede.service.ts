@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Sede } from '../_models/sede';
-import { Subject } from 'rxjs';
 import { UsuarioSede } from '../_models/usuario';
+import { SedeProvider } from '../_providers/sede.provider';
  
 @Injectable()
 export class SedeService {
 
-    sede$ = new Subject<UsuarioSede>();
-    id_sede$ = new Subject<number>();
     api:string = environment.apiUrl;
 
-    constructor(private http: HttpClient) {;
+    constructor(
+        private http: HttpClient,
+        private sede: SedeProvider,
+        ) {;
     }
  
 
@@ -38,28 +39,14 @@ export class SedeService {
 
     seleccionar(id:number){
         return this.http.post<UsuarioSede>(this.api + 'sedes/'+ id +'/seleccionar',{}).subscribe(response=>{
-            this.setSede(response);
+            this.sede.setSede(response);
         });
     }
 
     actualizar(){
-        return this.http.get<UsuarioSede>(this.api + 'sedes/seleccionar').subscribe(response=>{
-            this.setSede(response);
-        });;
+        return this.http.get<UsuarioSede>(this.api + 'sedes/seleccionar').toPromise().then(response=>{
+            this.sede.setSede(response);
+        });
     }
 
-    getIdSede():number{
-        return Number(localStorage.getItem('id_sede'));
-    }
-
-    getSede():UsuarioSede{
-        return JSON.parse(localStorage.getItem('sede'));
-    }
-
-    private setSede(sede:UsuarioSede){
-        localStorage.setItem('sede',JSON.stringify(sede));
-        localStorage.setItem('id_sede',String(sede.id_sede));
-        this.sede$.next(sede);
-        this.id_sede$.next(sede.id_sede);
-    }
 }

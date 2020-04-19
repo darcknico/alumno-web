@@ -3,7 +3,7 @@ import { InscripcionService } from '../../_services/inscripcion.service';
 import { MesaExamenMateriaService } from '../../_services/mesa_examen_materia.service';
 import { MesaExamenMateriaAlumnoService } from '../../_services/mesa_examen_materia_alumno.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Inscripcion } from '../../_models/inscripcion';
 import Stepper from 'bs-stepper';
@@ -22,8 +22,8 @@ import dtLanguage from '../../_constants/dtLanguage';
   styleUrls: ['./inscripcion-mesa-multiple-nuevo.component.scss']
 })
 export class InscripcionMesaMultipleNuevoComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
+  dtOptions: any = {};
   index:number=1;
   id_mesa_examen:number=null;
   inscripcion:Inscripcion;

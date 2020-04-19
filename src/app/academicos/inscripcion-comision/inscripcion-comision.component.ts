@@ -3,7 +3,7 @@ import { ComisionAlumno } from '../../_models/comision';
 import { Inscripcion } from '../../_models/inscripcion';
 import { InscripcionService } from '../../_services/inscripcion.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { InscripcionAsistenciaModalComponent } from '../componentes/inscripcion-asistencia-modal/inscripcion-asistencia-modal.component';
 import { InscripcionExamenModalComponent } from '../componentes/inscripcion-examen-modal/inscripcion-examen-modal.component';
 import dtLanguage from '../../_constants/dtLanguage';

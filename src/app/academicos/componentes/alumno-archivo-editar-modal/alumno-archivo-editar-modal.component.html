@@ -56,10 +56,16 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button type="button" class="btn btn-light" (click)="cancelar()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    CERRAR
+  </button>
   <button 
     [disabled]="!formulario.valid"
     type="button" 
     class="btn btn-success" 
-    (click)="confirmar()">Guardar</button>
+    (click)="confirmar()">
+    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+    GUARDAR
+  </button>
 </div>

@@ -5,9 +5,15 @@
 
 export const environment = {
   production: false,
-  //apiUrl: 'http://127.0.0.1:8000/api/',
-  apiUrl: 'http://alumno-rest.proyectosinformaticos.com.ar/api/',
+  apiUrl: 'http://127.0.0.1:8000/api/',
+  //apiUrl: 'http://alumno-rest.proyectosinformaticos.com.ar/api/',
   //apiUrl: 'http://ariasdesaavedra.edu.ar/sistema/alumno-rest/public/api/',
   //apiUrl: 'http://34.226.235.220/alumno-rest/public/index.php/api/',
+  url:'http://127.0.0.1:4200/api/',
+  api: 'http://127.0.0.1:8000/',
   key_token:'key_alumno_token_auth',
+  pusher: {
+    key: '97d9a8f4bdc2ccd85c60',
+    cluster: 'us2',
+  },
 };

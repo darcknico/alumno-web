@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Carrera } from '../../_models/carrera';
 import { PlanEstudio } from '../../_models/plan_estudio';
 import { PlanService } from '../../_services/plan.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { PlanEditarComponent } from '../plan-editar/plan-editar.component';

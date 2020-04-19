@@ -5,7 +5,7 @@ import { Materia, TipoMateriaRegimen, TipoMateriaLectivo } from '../../_models/m
 import { Departamento } from '../../_models/departamento';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { CarreraService } from '../../_services/carrera.service';
 import { Carrera } from '../../_models/carrera';
@@ -16,7 +16,7 @@ import { Carrera } from '../../_models/carrera';
   styleUrls: ['./listado-materia.component.scss']
 })
 export class ListadoMateriaComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Materia[] = [];
   carreras:Carrera[]=[];

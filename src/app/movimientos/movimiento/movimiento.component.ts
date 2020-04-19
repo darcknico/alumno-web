@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MovimientoService } from '../../_services/movimiento.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { FormaPago, TipoMovimiento, Movimiento, TipoComprobante } from '../../_models/movimiento';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -9,6 +9,7 @@ import { TipoMovimientoService } from '../../_services/tipo_movimiento.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-movimiento',
@@ -26,7 +27,7 @@ export class MovimientoComponent implements OnInit {
 
   constructor(
     private movimientoService:MovimientoService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private tipoMovimientoService:TipoMovimientoService,
     private route: ActivatedRoute,
     private router: Router,

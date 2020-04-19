@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Carrera, CarreraModalidad } from '../_models/carrera';
 import { Observable } from 'rxjs';
 import { Comision } from '../_models/comision';
+import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 
 export interface FiltroCarrera {
     search:string;
@@ -30,21 +31,16 @@ export class CarreraService {
         ) {
     }
 
-    getAll() {
+    getAll(filtro:FiltroCarrera = null) {
         return this.http.get<Carrera[]>(
-            this.api + 'carreras');
+            this.api + 'carreras', {
+                params: AuxiliarFunction.toParams(filtro),
+            });
     }
 
     ajax(filtro:FiltroCarrera):  Observable<CarreraAjax>{
         return this.http.get<CarreraAjax>(this.api + 'carreras', {
-            params: {
-                search: filtro.search,
-                sort: filtro.sort,
-                order: filtro.order,
-                start: String(filtro.start),
-                length: String(filtro.length),
-                id_departamento: String(filtro.id_departamento),
-            }
+            params: AuxiliarFunction.toParams(filtro),
         });
     }
  
@@ -75,6 +71,7 @@ export class CarreraService {
         this.id_departamento = id_departamento;
     }
  
+    /*
     _getAll(id_departamento:number) {
         return this.http.get<Carrera[]>(
             this.api + 'departamentos/'+
@@ -86,6 +83,7 @@ export class CarreraService {
             this.api + 'departamentos/'+
             id_departamento + '/carreras', item);
     }
+    */
 
     modalidad_asociar(item:CarreraModalidad){
         return this.http.post<CarreraModalidad>(

@@ -7,7 +7,7 @@ import { Carrera } from '../../_models/carrera';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { MateriaService } from '../../_services/materia.service';
 import { Materia } from '../../_models/materia';
@@ -26,7 +26,7 @@ import { MesaExamenService } from '../../_services/mesa_examen.service';
   styleUrls: ['./listado-mesa-materia.component.scss']
 })
 export class ListadoMesaMateriaComponent implements OnInit, AfterViewInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: MesaExamenMateria[] = [];
   departamentos:Departamento[]=[];
@@ -41,6 +41,7 @@ export class ListadoMesaMateriaComponent implements OnInit, AfterViewInit {
   };
 
   mesa_examen:MesaExamen = null;
+  materia:Materia = null;
 
   constructor(
     private mesaExamenMateriaService:MesaExamenMateriaService,
@@ -56,11 +57,16 @@ export class ListadoMesaMateriaComponent implements OnInit, AfterViewInit {
   ) {
     this.route.queryParams.subscribe(params=>{
       let id_mesa_examen = params['id_mesa_examen'];
+      let id_carrera = params['id_carrera'];
       if(id_mesa_examen){
         this.request.id_mesa_examen = id_mesa_examen;
       }
+      if(id_carrera){
+        this.request.id_carrera = +id_carrera;
+      }
       if (this.router.getCurrentNavigation().extras.state) {
         this.mesa_examen = this.router.getCurrentNavigation().extras.state.mesa_examen;
+        this.materia = this.router.getCurrentNavigation().extras.state.materia;
       }
     });
   }
@@ -133,6 +139,11 @@ export class ListadoMesaMateriaComponent implements OnInit, AfterViewInit {
         this.mesaExamenService.getById(this.request.id_mesa_examen).subscribe(response=>{
           this.mesa_examen = response;
         });
+      }
+      if(this.materia){
+        this.dtElement.dtInstance.then(instance=>{
+          instance.search(this.materia.codigo).draw().ajax.reload();
+        })
       }
     }
   }

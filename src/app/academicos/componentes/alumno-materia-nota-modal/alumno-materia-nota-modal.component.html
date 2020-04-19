@@ -12,7 +12,9 @@
         <select
           class="form-control"
           formControlName="id_materia">
-          <option *ngFor="let item of materias" [value]="item.id">{{item.nombre}}</option>
+          <option *ngFor="let item of materias" [value]="item.id">
+            {{item.codigo}} - {{item.nombre}}
+          </option>
         </select>
       </div>
     </div>
@@ -96,10 +98,28 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <ng-container *ngIf="!formulario.valid">
+    <small class="font-italic">
+      <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+      Tiene campos con errores.
+    </small>
+  </ng-container>
+  <button type="button" class="btn btn-light" (click)="cancelar()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    CANCELAR
+  </button>
   <button 
     [disabled]="!formulario.valid"
     type="button" 
     class="btn btn-primary" 
-    (click)="confirmar()">Guardar</button>
+    (click)="confirmar()">
+    <ng-container *ngIf="id == 0 else isEdit">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      GUARDAR NOTA
+    </ng-container>
+    <ng-template #isEdit>
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+      EDITAR NOTA
+    </ng-template>
+  </button>  
 </div>

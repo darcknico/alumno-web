@@ -16,7 +16,6 @@
                 <label class="control-label">Importe (*)</label>
                 <input currencyMask
                   required
-                  (input)="onEditar()"
                   formControlName="monto"
                   type="text" 
                   class="form-control">
@@ -25,10 +24,9 @@
                 </span>
               </div>
               <div class="form-group col-sm-3" >
-                <label class="control-label">Fecha</label>
+                <label class="control-label">Fecha *</label>
                 <input bsDatepicker
                   required
-                  (bsValueChange)="onEditar()"
                   formControlName="fecha"
                   type="text" 
                   class="form-control" 
@@ -37,7 +35,13 @@
               <div class="form-check d-inline m-3 mt-4">
                 <input class="form-check-input" type="checkbox" formControlName="bonificar_intereses">
                 <label class="form-check-label" for="defaultCheck1">
-                  Aplicar a Interes
+                  Aplicar a Interes *
+                </label>
+              </div>
+              <div class="form-check d-inline m-3 mt-4">
+                <input class="form-check-input" type="checkbox" formControlName="bonificar_cuotas">
+                <label class="form-check-label" for="defaultCheck1">
+                  Bonificar cuota **
                 </label>
               </div>
               <button 
@@ -156,6 +160,16 @@
               type="button" 
               class="btn btn-success btn-block-xs-only m-1" 
               (click)="confirmar()">REALIZAR PAGO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <p>(*) Aplicar a intereses: el proceso de pago toma en cuenta los intereses, generados por las cuotas impagas, en el armado y distribución del monto.</p>
+          <p>(**) Bonificar cuota: dado la cuota, si la fecha de imputacion es menor a 5 dias antes del vencimiento y el monto es superior o igual al saldo de la cuota menos el monto bonficable (${{precios.bonificacion_monto|number:'1.2-2':'es-AR'}}). Entonces para esa cuota se crea una bonificacion.</p>
         </div>
       </div>
     </div>

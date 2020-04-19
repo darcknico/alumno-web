@@ -3,7 +3,7 @@ import { Materia, MateriaCorrelativa } from '../../_models/materia';
 import { MateriaService } from '../../_services/materia.service';
 import { Subject } from 'rxjs';
 import { PlanEstudio } from '../../_models/plan_estudio';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

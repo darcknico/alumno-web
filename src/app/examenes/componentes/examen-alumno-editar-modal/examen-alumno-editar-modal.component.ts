@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ExamenAlumno } from '../../../_models/examen';
 import { TipoAsistenciaAlumno } from '../../../_models/asistencia';
 import { AsistenciaService } from '../../../_services/asistencia.service';

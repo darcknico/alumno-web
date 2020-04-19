@@ -18,11 +18,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CustomValidator } from '../../validators/custom-validator';
 import { ValidateDocumentoUnique } from '../../validators/async-documento-unique.validator';
 import { SedeService } from '../../_services/sede.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ListadoAlumnoSedeModalComponent } from '../componentes/listado-alumno-sede-modal/listado-alumno-sede-modal.component';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { AlumnoSedeService } from '../../_services/alumno_sede.service';
 import { AlumnoArchivoEditarModalComponent } from '../componentes/alumno-archivo-editar-modal/alumno-archivo-editar-modal.component';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-alumno-editar',
@@ -50,7 +51,7 @@ export class AlumnoEditarComponent implements OnInit {
   typeaheadLoading: boolean;
   typeaheadNoResults: boolean;
   dataSource: Observable<Alumno>;
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput',{static:false}) fileInput: ElementRef;
 
   documento_original:number;
   id_tipo_documento_original:number;
@@ -58,7 +59,7 @@ export class AlumnoEditarComponent implements OnInit {
   constructor(
     private alumnoService:AlumnoService,
     private alumnoSedeService:AlumnoSedeService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private extraService:ExtraService,
     private route: ActivatedRoute,
     private router: Router,
@@ -143,7 +144,7 @@ export class AlumnoEditarComponent implements OnInit {
       this.usuario.disable();
       tasks.push(
         this.alumnoService.getById(this.id).pipe(
-          map(response=>{
+          map((response:any)=>{
             this.f.nombre.setValue(response.nombre);
             this.f.apellido.setValue(response.apellido);
             let fecha_nacimiento = moment(response.fecha_nacimiento);
@@ -185,26 +186,26 @@ export class AlumnoEditarComponent implements OnInit {
     }
     tasks.push(
       this.alumnoService.tipos_documentacion().pipe(
-        map(response=>{
+        map((response:any)=>{
           this.tipo_documentacion = response;
         }))
     );
     tasks.push(
       this.extraService.tipo_documento().pipe(
-        map(data=>{
-          this.tipo_documentos = data;
+        map((response:any)=>{
+          this.tipo_documentos = response;
         }))
     );
     tasks.push(
       this.extraService.provincias().pipe(
-        map(data=>{
-          this.provincias = data;
+        map((response:any)=>{
+          this.provincias = response;
         }))
     );
     tasks.push(
       this.alumnoService.tipos_civil().pipe(
-        map(data=>{
-          this.tipos_civil = data;
+        map((response:any)=>{
+          this.tipos_civil = response;
         }))
     );
     observableForkJoin(tasks).subscribe(response => {

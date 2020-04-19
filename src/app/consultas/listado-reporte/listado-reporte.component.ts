@@ -3,7 +3,7 @@ import { FiltroReporteJob, ReporteJobService } from '../../_services/reportejobs
 import { ReporteJob } from '../../_models/extra';
 import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
@@ -14,7 +14,7 @@ import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
   styleUrls: ['./listado-reporte.component.scss']
 })
 export class ListadoReporteComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: ReporteJob[] = [];
 

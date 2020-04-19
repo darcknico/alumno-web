@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TramiteService } from '../../../_services/tramite.service';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovimientoService } from '../../../_services/movimiento.service';

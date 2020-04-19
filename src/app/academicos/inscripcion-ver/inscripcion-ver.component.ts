@@ -3,7 +3,7 @@ import { InscripcionService } from '../../_services/inscripcion.service';
 import { Inscripcion, TipoInscripcionEstado } from '../../_models/inscripcion';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { PlanPago } from '../../_models/plan_pago';
 import { PlanPagoService } from '../../_services/plan_pago.service';
@@ -27,7 +27,7 @@ import dtLanguage from '../../_constants/dtLanguage';
   styleUrls: ['./inscripcion-ver.component.scss']
 })
 export class InscripcionVerComponent implements OnInit {
-  @ViewChild("rendimientosLineCanvas") rendimientosLineCanvas: any;
+  @ViewChild("rendimientosLineCanvas",{static:true}) rendimientosLineCanvas: any;
 
   id_sede:number;
   inscripcion:Inscripcion = null;
@@ -93,7 +93,6 @@ export class InscripcionVerComponent implements OnInit {
     };
     this.rendimientosLineCanvas = new Chart(this.rendimientosLineCanvas.nativeElement, {
       type: 'line',
-      data: [[],[],[],[]],
       options: {
         responsive: true,
         hover: {
@@ -133,12 +132,12 @@ export class InscripcionVerComponent implements OnInit {
               let value = data.datasets[0].data[tooltipItems.index];
               if(tooltipItems.datasetIndex == 0){
                 let cantidad = data.datasets[2].data[tooltipItems.index];
-                return 'Examen Prom.:' + parseFloat(value).toFixed(2) + ' Cant.:'+cantidad;
+                return 'Examen Prom.:' + Number(value).toFixed(2) + ' Cant.:'+cantidad;
               }
               value = data.datasets[1].data[tooltipItems.index];
               if(tooltipItems.datasetIndex == 1){
                 let cantidad = data.datasets[3].data[tooltipItems.index];
-                return 'Mesa de Examen Prom.:' + parseFloat(value).toFixed(2) +  ' Cant.:'+cantidad;
+                return 'Mesa de Examen Prom.:' + Number(value).toFixed(2) +  ' Cant.:'+cantidad;
               }
             }
           }
@@ -206,6 +205,9 @@ export class InscripcionVerComponent implements OnInit {
             this.f.id_tipo_inscripcion_estado.setValue(this.inscripcion.id_tipo_inscripcion_estado);
           }
         });
+        break;
+      default:
+        this.cambiar_estado();
         break;
     }
   }
@@ -368,7 +370,7 @@ export class InscripcionVerComponent implements OnInit {
         if(data.saldo_total>0 && !this.plan_pago && data.estado){
           this.plan_pago = data;
           this.planPagoService.cuenta_corriente(this.plan_pago.id).pipe(
-            map(data=>{
+            map((data:any)=>{
               if(data.length>0){
                 let acum = 0;
                 let fechaUltimo = moment(data[0].fecha_vencimiento);

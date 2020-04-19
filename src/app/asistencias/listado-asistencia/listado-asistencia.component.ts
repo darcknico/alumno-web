@@ -6,11 +6,12 @@ import { Carrera } from '../../_models/carrera';
 import { DepartamentoService } from '../../_services/departamento.service';
 import { CarreraService } from '../../_services/carrera.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
 import { Asistencia } from '../../_models/asistencia';
 import { SedeService } from '../../_services/sede.service';
+import { SedeProvider } from '../../_providers/sede.provider';
 
 @Component({
   selector: 'app-listado-asistencia',
@@ -18,7 +19,7 @@ import { SedeService } from '../../_services/sede.service';
   styleUrls: ['./listado-asistencia.component.scss']
 })
 export class ListadoAsistenciaComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dataSource: Asistencia[] = [];
   departamentos:Departamento[]=[];
@@ -33,7 +34,7 @@ export class ListadoAsistenciaComponent implements OnInit {
 
   constructor(
     private asistenciaService:AsistenciaService,
-    private sedeService:SedeService,
+    private sedeService:SedeProvider,
     private departamentoService:DepartamentoService,
     private carreraService:CarreraService,
     private router: Router,

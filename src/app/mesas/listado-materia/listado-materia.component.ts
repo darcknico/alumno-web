@@ -5,7 +5,7 @@ import { MesaExamenService } from '../../_services/mesa_examen.service';
 import { MesaExamen, MesaExamenMateria } from '../../_models/mesa.examen';
 import { Materia } from '../../_models/materia';
 import { DataTableDirective } from 'angular-datatables';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-confirm.component';
@@ -26,7 +26,7 @@ import { BlockUIService, BLOCKUI_DEFAULT } from 'ng-block-ui';
   styleUrls: ['./listado-materia.component.scss']
 })
 export class ListadoMateriaComponent implements OnInit {
-  @ViewChild(DataTableDirective)dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
 
   mesa_examen:MesaExamen;
   formulario: FormGroup;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MesaExamenMateria, MesaExamen } from '../../../_models/mesa.examen';
 import { Subject } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Carrera } from '../../../_models/carrera';
 import { PlanEstudio } from '../../../_models/plan_estudio';

@@ -1,0 +1,256 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-title">
+            Configuraciones
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-md-4 mb-3">
+              <label for="validationCustom01">Año</label>
+              <ng-select [items]="anios"
+                [selectOnTab]="true"
+                [(ngModel)]="anio"
+                placeholder="Seleccione la Carrera"
+                [clearable]="false">
+            </ng-select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationCustom01">Inicio de Clases</label>
+              <input bsDatepicker
+                [(ngModel)]="clase_inicio"
+                type="text" 
+                class="form-control" 
+                placeholder="Fecha">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationCustom02">Fin de Clases</label>
+              <input bsDatepicker
+                [(ngModel)]="clase_final"
+                type="text" 
+                class="form-control" 
+                placeholder="Fecha">
+            </div>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-control col-1" [(ngModel)]="asistencia">
+            <label class="form-check-label col-12" for="defaultCheck1">
+              Activar Automatización Asistencia.
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          Seleccione la forma
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <button class="btn btn-info btn-lg btn-block" [disabled]="porMateria" (click)="btnPorMateria()">
+                POR MATERIA
+              </button>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <button class="btn btn-info btn-lg btn-block" [disabled]="porFiltro" (click)="btnPorFiltro()">
+                POR FILTRO
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="porMateria">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Materias disponibles para generar las mesas de examen
+        </div>
+        <div class="card-body p-1">
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label class="control-label">Departamentos</label>
+              <ng-select [items]="departamentos"
+                  [selectOnTab]="true"
+                  bindValue="id"
+                  bindLabel="nombre"
+                  (change)="refrescar($event)"
+                  [(ngModel)]="id_departamento"
+                  placeholder="Seleccione el Departamento"
+                  [clearable]="false">
+              </ng-select>
+            </div>
+            <div class="form-group col-sm-6">
+              <label class="control-label">Carrera</label>
+              <ng-select [items]="carreras"
+                  [selectOnTab]="true"
+                  bindValue="id"
+                  bindLabel="nombre"
+                  (change)="refrescar($event)"
+                  [(ngModel)]="id_carrera"
+                  placeholder="Seleccione la Carrera"
+                  [clearable]="false">
+              </ng-select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>Plan</th>
+                  <th>Materia</th>
+                  <th>Modalidad</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource">
+                  <td></td>
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.plan_estudio.nombre }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td class="p-0 m-0 no-sort">
+                    <select class="form-control">
+                      <option value="0" disabled>Seleccionar...</option>
+                      <option *ngFor="let mod of modalidades" [value]="mod.id">{{mod.nombre}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <form [formGroup]="formulario">
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" formControlName="docentes_previos">
+              <label class="form-check-label" for="defaultCheck1">
+                Cargar docentes previos, si existe comision del año anterior con docentes asignados.
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" formControlName="docentes_asignados">
+              <label class="form-check-label" for="defaultCheck1">
+                Asociar docentes que esten asignados a la materia y sede. Filtrado con o sin fecha de asignacion.
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" formControlName="horarios_previos">
+              <label class="form-check-label" for="defaultCheck1">
+                Cargar los horarios previos, si existe comision del año anterior con horarios.
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-danger btn-block-xs-only m-1" *ngIf="dataSource"
+            (click)="asociar_materias()"
+            >Generar para las materias seleccionadas</button>
+          <button class="btn btn-secondary btn-block-xs-only m-1"
+            (click)="volver()">
+            Volver a la Mesa de examen
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="porFiltro">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Seleccione por el filtro
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <label class="control-label">Departamentos</label>
+              <ng-select [items]="departamentos"
+                  [selectOnTab]="true"
+                  bindValue="id"
+                  bindLabel="nombre"
+                  (change)="seleccionarDepartamento($event)"
+                  [(ngModel)]="id_departamento"
+                  placeholder="Seleccione el Departamento"
+                  [clearable]="false">
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <label class="control-label">Carreras</label>
+              <ng-select [items]="carreras"
+                  [selectOnTab]="true"
+                  bindValue="id"
+                  bindLabel="nombre"
+                  (change)="buscar($event)"
+                  [(ngModel)]="id_carrera"
+                  placeholder="Seleccione la Carrera"
+                  [clearable]="false">
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <ng-container *ngIf="previa | async as item; else buscando">
+                <div>
+                  Cantidad total de carreras seleccionadas: <b>{{item.total_carreras}}</b>
+                </div>
+                <div>
+                  Cantidad total de materias seleccionadas: <b>{{item.total_materias}}</b>                  
+                </div>
+                <div>
+                  Cantidad total de materias con comisiones previas: <b>{{item.total_previos}}</b>                  
+                </div>
+                <div>
+                  Cantidad total de materias con comisiones actuales: <b>{{item.total_existentes}}</b>                  
+                </div>
+              </ng-container>
+              <ng-template #buscando>
+                <div class="spinner-border text-primary" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <form [formGroup]="formulario">
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" formControlName="docentes_previos">
+              <label class="form-check-label" for="defaultCheck1">
+                Cargar docentes previos, si existe comision del año anterior con docentes asignados.
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" formControlName="docentes_asignados">
+              <label class="form-check-label" for="defaultCheck1">
+                Asociar docentes que esten asignados a la materia y sede. Filtrado con o sin fecha de asignacion.
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" formControlName="horarios_previos">
+              <label class="form-check-label" for="defaultCheck1">
+                Cargar los horarios previos, si existe comision del año anterior con horarios.
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-danger btn-block-xs-only m-1" *ngIf="resultado"
+            (click)="asociar_filtros()"
+            >Generar para el filtro seleccionado</button>
+          <button class="btn btn-secondary btn-block-xs-only m-1"
+            (click)="volver()">
+            Volver a la Mesa de examen
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

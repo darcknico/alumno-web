@@ -6,7 +6,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Alumnos
           <div class="card-header-actions">
-            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Nuevo Alumno</button>
+            <button class="btn btn-sm btn-block btn-outline-success" type="button" (click)="nuevo()">
+              <i class="fa fa-plus"></i>
+              Agregar Nuevo Alumno
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -58,9 +61,25 @@
                   </td>
                   <td>{{item.tipo_estado?.nombre}}</td>
                   <td>
-                    <div *ngFor="let tipo of item.archivos_faltantes">
-                      -{{tipo.nombre}}
-                    </div>
+                    <ng-container *ngIf="item.archivos_faltantes.length>1 else faltaUno">
+                      <ng-template #popTemplate>
+                        <ul class="list-group">
+                          <li class="list-group-item" *ngFor="let tipo of item.archivos_faltantes; let i = index;">
+                            {{ i + 1 }} - {{tipo.nombre}}
+                          </li>
+                        </ul>
+                      </ng-template>
+                      <button type="button" class="btn btn-sm py-0 btn-block btn-info"
+                        [outsideClick]="true"
+                        [popover]="popTemplate" popoverTitle="Faltantes">
+                        Mostrar {{ item.archivos_faltantes.length - 1 }}+
+                      </button>
+                    </ng-container>
+                    <ng-template #faltaUno>
+                      <div *ngFor="let tipo of item.archivos_faltantes ; let i = index">
+                        <small>{{ i + 1 }} - {{tipo.nombre}}</small>
+                      </div>
+                    </ng-template>
                   </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="usuario">
@@ -125,10 +144,11 @@
           </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-block-xs-only btn-info"
+          <button class="btn btn-block-xs-only btn-outline-info"
             type="button"
             color="accent"
             (click)="exportar()">
+            <i class="fa fa-file-excel-o"></i>
             Exportar
             </button>
         </div>
