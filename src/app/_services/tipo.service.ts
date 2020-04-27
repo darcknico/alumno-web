@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { TipoContrato, TipoMesaDocente, TipoDocenteCargo } from '../_models/tipo';
+import { TipoContrato, TipoMesaDocente, TipoDocenteCargo, TipoDocenteEstado } from '../_models/tipo';
  
 @Injectable()
 export class TipoService {
@@ -20,5 +20,9 @@ export class TipoService {
     }
     docentes_cargos(){
         return this.http.get<TipoDocenteCargo[]>([this.api,'docentes/cargos'].join('/'));
+    }
+
+    docentes_estados(){
+        return this.http.get<TipoDocenteEstado[]>([this.api,'docentes/estados'].join('/'));
     }
 }

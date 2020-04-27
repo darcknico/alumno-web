@@ -1,6 +1,6 @@
 import { TipoDocumento } from "./tipo_documento";
 import { Sede } from './sede';
-import { TipoContrato, TipoDocenteCargo } from './tipo';
+import { TipoContrato, TipoDocenteCargo, TipoDocenteEstado } from './tipo';
 import { Materia } from './materia';
 import { Carrera } from './carrera';
 
@@ -132,4 +132,19 @@ export interface DocenteContrato{
     estado:boolean;
     created_at:string;
     updated_at:string;
+}
+
+export interface DocenteEstado{
+    id:number;
+    id_usuario:number;
+    id_tipo_docente_estado:number;
+    fecha_inicial:string;
+    fecha_final:string;
+    observaciones:string;
+    archivo;
+
+    created_at:string;
+    updated_at:string;
+
+    tipo:TipoDocenteEstado;
 }

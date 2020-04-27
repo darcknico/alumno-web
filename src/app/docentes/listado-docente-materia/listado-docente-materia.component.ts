@@ -18,6 +18,7 @@ import { Materia } from '../../_models/materia';
 import { TipoDocenteCargo } from '../../_models/tipo';
 import { TipoService } from '../../_services/tipo.service';
 import { SedeProvider } from '../../_providers/sede.provider';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-listado-docente-materia',
@@ -44,6 +45,7 @@ export class ListadoDocenteMateriaComponent implements OnInit {
     id_materia:0,
     id_tipo_docente_cargo:0,
   };
+  consultando:boolean=false;
   constructor(
     private service:DocenteMateriaService,
     private carreraService:CarreraService,
@@ -178,6 +180,13 @@ export class ListadoDocenteMateriaComponent implements OnInit {
   refrescar(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
+    });
+  }
+
+  exportar(){
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.service.exportar(this.request)).then(()=>{
+      this.consultando = false;
     });
   }
 }

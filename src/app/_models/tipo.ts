@@ -23,3 +23,9 @@ export interface TipoInscripcionAbandono{
     nombre:string;
     descripcion:string;
 }
+
+export interface TipoDocenteEstado{
+    id:number;
+    nombre:string;
+    descripcion:string;
+}

@@ -58,6 +58,15 @@ export class ListadoComisionesComponent implements OnInit {
           data: 'created_at',
           width: '10%', 
         },
+        {
+          data: 'id_materia',
+        },
+        {
+          data: 'anio',
+        },
+        {
+          data: 'observaciones',
+        },
       ],
       columnDefs: [ {
         targets: 'no-sort',

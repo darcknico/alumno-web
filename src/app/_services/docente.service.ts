@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Ajax } from '../_models/tipo';
@@ -61,6 +61,14 @@ export class DocenteService {
 
     contrato_desasociar(item:DocenteContrato){
         return this.http.delete([this.api,item.id_usuario,'contratos',item.id_tipo_contrato].join('/'));
+    }
+
+    exportar(filtro:FiltroDocente):Observable<HttpResponse<Blob>>{
+        return this.http.get<Blob>([this.api,'exportar'].join('/'),{
+            observe:'response',
+            responseType:'blob' as 'json',
+            params:AuxiliarFunction.toParams(filtro),
+        });
     }
 
 }

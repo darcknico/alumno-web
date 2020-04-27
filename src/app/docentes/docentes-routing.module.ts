@@ -4,6 +4,7 @@ import { ListadoDocenteComponent } from './listado-docente/listado-docente.compo
 import { DocenteEditarComponent } from './docente-editar/docente-editar.component';
 import { ListadoDocenteMateriaComponent } from './listado-docente-materia/listado-docente-materia.component';
 import { DocenteVerComponent } from './docente-ver/docente-ver.component';
+import { ListadoDocenteEstadoComponent } from './listado-docente-estado/listado-docente-estado.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,13 @@ const routes: Routes = [
       title:'Asignaciones',
     },
     component:ListadoDocenteMateriaComponent,
+  },
+  {
+    path:'estados',
+    data:{
+      title:'Estados',
+    },
+    component:ListadoDocenteEstadoComponent,
   },
   {
     path:'',

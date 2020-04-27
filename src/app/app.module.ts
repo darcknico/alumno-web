@@ -158,6 +158,7 @@ import { TipoInscripcionAbandonoService } from './_services/tipo_inscripcion_aba
 import { InscripcionAbandonoService } from './_services/inscripcion_abandono.service';
 import { SedeProvider } from './_providers/sede.provider';
 import { PusherProvider } from './_providers/pusher.provider';
+import { DocenteEstadoService } from './_services/docente_estado.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -275,6 +276,7 @@ export const customCurrencyMaskConfig = {
     TipoService,
     DocenteService,
     DocenteMateriaService,
+    DocenteEstadoService,
     ExamenAlumnoService,
     AsistenciaAlumnoService,
     NovedadSistemaService,

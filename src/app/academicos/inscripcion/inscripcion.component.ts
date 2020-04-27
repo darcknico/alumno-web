@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { Inscripcion, TipoInscripcionEstado } from '../../_models/inscripcion';
 import { Departamento } from '../../_models/departamento';
 import { Carrera } from '../../_models/carrera';
@@ -18,6 +18,8 @@ import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 import { TipoMateriaLectivo } from '../../_models/materia';
 import { MateriaService } from '../../_services/materia.service';
 import { SedeProvider } from '../../_providers/sede.provider';
+import { BsDatepickerDirective } from 'ngx-bootstrap/datepicker';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inscripcion',
@@ -26,6 +28,7 @@ import { SedeProvider } from '../../_providers/sede.provider';
 })
 export class InscripcionComponent implements OnInit {
   @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
+  @ViewChildren(BsDatepickerDirective) datepickers: QueryList<BsDatepickerDirective>;
   dtOptions: DataTables.Settings = {};
   dataSource: Inscripcion[] = [];
   departamentos:Departamento[]=[];
@@ -34,7 +37,6 @@ export class InscripcionComponent implements OnInit {
   tipos_estado:TipoInscripcionEstado[]=[];
   consultando:boolean = false;
   tipos:TipoMateriaLectivo[]=[];
-
   request = <FiltroInscripcion>{
     search:"",
     id_departamento:0,
@@ -61,6 +63,7 @@ export class InscripcionComponent implements OnInit {
   ) {
   }
 
+  suscribe:Subscription;
   ngOnInit() {
     let id_sede = this.sedeService.getIdSede();
     this.inscripcionService.sede(id_sede);
@@ -90,7 +93,6 @@ export class InscripcionComponent implements OnInit {
       this.tipos = response;
     });
     const that = this;
-
     this.dtOptions = {
       order: [[ 0, "desc" ]],
       language: {
@@ -101,14 +103,19 @@ export class InscripcionComponent implements OnInit {
       serverSide: true,
       processing: true,
       ajax: (dataTablesParameters: any, callback) => {
+        if(this.suscribe){
+          this.suscribe.unsubscribe();
+          this.suscribe = null;
+        }
         that.request.start = dataTablesParameters.start;
         that.request.length = dataTablesParameters.length;
         that.request.order = dataTablesParameters.order[0].dir;
         that.request.search = dataTablesParameters.search.value;
         that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
-        this.inscripcionService.ajax(that.request).subscribe(resp => {
+        this.consultando = true;
+        this.suscribe = this.inscripcionService.ajax(that.request).subscribe(resp => {
             that.dataSource = resp.items;
-
+            this.consultando = false;
             callback({
               recordsTotal: resp.total_count,
               recordsFiltered: resp.total_count,
@@ -145,7 +152,7 @@ export class InscripcionComponent implements OnInit {
     } else {
       this.request.fecha_inicial = moment(event).format('YYYY-MM-DD');
     }
-    this.refrescar();
+    //this.refrescar();
   }
 
   fecha_fin(event){
@@ -154,7 +161,7 @@ export class InscripcionComponent implements OnInit {
     } else {
       this.request.fecha_final = moment(event).format('YYYY-MM-DD');
     }
-    this.refrescar();
+    //this.refrescar();
   }
 
   exportar(){
@@ -182,4 +189,26 @@ export class InscripcionComponent implements OnInit {
     this.router.navigate(['/academicos/inscripciones/'+item.id+'/notas']);
   }
 
+  /** FILTROS */
+  onQuitarFiltro(){
+    this.request.fecha_inicial = "";
+    this.request.fecha_final = "";
+    this.request.id_departamento = 0;
+    this.request.id_tipo_inscripcion_estado = 0;
+    this.request.id_beca = 0;
+    this.request.id_carrera = 0;
+    this.request.anio_inicial = 0;
+    this.request.anio_final = 0;
+    this.request.id_periodo_lectivo = 0;
+    this.request.porcentaje_aprobados_inicial = 0;
+    this.request.porcentaje_aprobados_final = 0;
+    this.datepickers.forEach(picker=>{
+      picker.bsValue = null
+    })
+    this.refrescar();
+  }
+
+  onPonerFiltro(){
+    this.refrescar();
+  }
 }

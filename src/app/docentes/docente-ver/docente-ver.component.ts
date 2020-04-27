@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DocenteService } from '../../_services/docente.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,8 +10,9 @@ import { Docente } from '../../_models/usuario';
   templateUrl: './docente-ver.component.html',
   styleUrls: ['./docente-ver.component.scss']
 })
-export class DocenteVerComponent implements OnInit {
+export class DocenteVerComponent implements OnInit,AfterViewInit {
 
+  id;
   docente:Docente;
 
   constructor(
@@ -20,14 +21,20 @@ export class DocenteVerComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService,
-  ) { }
+  ) {
+    this.route.params.subscribe(params=>{
+      this.id = +params['id'];
+      
+    });
+  }
 
   ngOnInit() {
-    this.route.params.subscribe(params=>{
-      let id = +params['id'];
-      this.service.getById(id).subscribe(response=>{
-        this.docente = response;
-      });
+    
+  }
+
+  ngAfterViewInit(){
+    this.service.getById(this.id).subscribe(response=>{
+      this.docente = response;
     });
   }
 

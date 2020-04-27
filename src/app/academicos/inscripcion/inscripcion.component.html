@@ -15,7 +15,6 @@
                             <label class="control-label">Departamento</label>
                             <select 
                                 class="form-control" 
-                                (change)="refrescar()"
                                 [(ngModel)]="request.id_departamento"
                                 >
                                 <option value="0">TODOS</option>
@@ -26,7 +25,6 @@
                             <label class="control-label">Tipo Estado</label>
                             <select 
                                 class="form-control"
-                                (change)="refrescar()"
                                 [(ngModel)]="request.id_tipo_inscripcion_estado"
                                 >
                                 <option value="0">TODOS</option>
@@ -39,7 +37,6 @@
                                 [selectOnTab]="true"
                                 bindValue="id"
                                 bindLabel="nombre"
-                                (ngModelChange)="refrescar()"
                                 placeholder="Seleccione la Beca"
                                 [(ngModel)]="request.id_beca"
                                 [clearable]="false">
@@ -53,7 +50,6 @@
                                 [selectOnTab]="true"
                                 bindValue="id"
                                 bindLabel="nombre"
-                                (ngModelChange)="refrescar()"
                                 placeholder="Seleccione la Carrera"
                                 [(ngModel)]="request.id_carrera"
                                 [clearable]="false">
@@ -63,15 +59,15 @@
                     <div class="row">
                         <div class="form-group col-sm-2">
                             <label class="control-label">Año desde</label>
-                            <input class="form-control" type="number" [(ngModel)]="request.anio_inicial" (keyup.enter)="refrescar()">
+                            <input class="form-control" type="number" [(ngModel)]="request.anio_inicial" >
                         </div>
                         <div class="form-group col-sm-2">
                             <label class="control-label">Año hasta</label>
-                            <input class="form-control" type="number" [(ngModel)]="request.anio_final" (keyup.enter)="refrescar()">
+                            <input class="form-control" type="number" [(ngModel)]="request.anio_final" >
                         </div>
                         <div class="form-group col-sm-4" >
                             <label class="control-label">Alta Inicio</label>
-                            <input bsDatepicker
+                            <input bsDatepicker #fecha_inicio_picker
                             (bsValueChange)="fecha_inicio($event)"
                             type="text" 
                             class="form-control" 
@@ -79,7 +75,7 @@
                         </div>
                         <div class="form-group col-sm-4" >
                             <label class="control-label">Alta Fin</label>
-                            <input bsDatepicker
+                            <input bsDatepicker #fecha_fin_picker
                             (bsValueChange)="fecha_fin($event)"
                             type="text" 
                             class="form-control" 
@@ -89,14 +85,14 @@
                     <div class="row">
                         <div class="form-group col-sm-2">
                             <label class="control-label">%/Apro desde</label>
-                            <input class="form-control" type="number" min="0" max="100" [(ngModel)]="request.porcentaje_aprobados_inicial" (keyup.enter)="refrescar()">
+                            <input class="form-control" type="number" min="0" max="100" [(ngModel)]="request.porcentaje_aprobados_inicial" >
                         </div>
                         <div class="form-group col-sm-2">
                             <label class="control-label">%/Apro hasta</label>
                             <input class="form-control" type="number" min="0" max="100"
-                            [(ngModel)]="request.porcentaje_aprobados_final" (keyup.enter)="refrescar()">
+                            [(ngModel)]="request.porcentaje_aprobados_final" >
                         </div>
-                        <div class="form-group col-sm-3">
+                        <div class="form-group col-sm-2">
                             <label class="control-label">Periodo Lectivo</label>
                             <select 
                             class="form-control" 
@@ -106,6 +102,22 @@
                             <option value="0">TODOS</option>
                             <option *ngFor="let item of tipos" [value]="item.id" >{{item.nombre}}</option>
                             </select>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-2 d-flex ">
+                            <button type="button" [disabled]="consultando"
+                                class="btn btn-block-xs-only btn-light btn-sm my-auto" (click)="onQuitarFiltro()">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                QUITAR FILTROS
+                            </button>
+                        </div>
+                        <div class="col-sm-2 d-flex ">
+                            <button type="button" [disabled]="consultando"
+                                class="btn btn-block-xs-only btn-danger btn-sm my-auto" (click)="onPonerFiltro()">
+                                <i class="fa fa-filter" aria-hidden="true"></i>
+                                APLICAR FILTROS
+                            </button>
                         </div>
                     </div>
                     <div class="table-responsive">

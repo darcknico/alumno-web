@@ -126,6 +126,12 @@
             </table>
           </div>
         </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-outline-info" type="button" (click)="exportar()" [disabled]="consultando">
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            EXPORTAR TABLA
+          </button>
+        </div>
       </div>
     </div>
     <!--/.col-->

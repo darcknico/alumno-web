@@ -6,7 +6,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Docentes
           <div class="card-header-actions">
-            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar docente</button>
+            <button class="btn btn-sm btn-block btn-outline-success" type="button" (click)="nuevo()">
+              <i class="fa fa-plus"></i>
+              Agregar docente
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -93,18 +96,25 @@
                     </ng-container>
                   </td>
                   <td>
-                    <button 
-                      class="btn btn-sm btn-primary"
-                      tooltip="Editar"
-                      (click)="editar(item)">
-                        <span class="fa fa-pencil" ></span>
-                    </button>
-                    <button 
-                      class="btn btn-sm btn-primary"
-                      tooltip="Ver"
-                      (click)="ver(item)">
-                        <span class="fa fa-eye" ></span>
-                    </button>
+                    <div class="btn-group" dropdown placement="bottom right" container="body">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                          <li role="menuitem">
+                              <a class="dropdown-item" (click)="ver(item)" href="javascript:void(0);">
+                                  <i class="fa fa-cog"></i>
+                                  Gestionar
+                              </a>
+                          </li>
+                          <li role="menuitem">
+                              <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                                  <i class="fa fa-edit"></i>
+                                  Editar
+                              </a>
+                          </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -120,6 +130,12 @@
               <p>N/H: No se encuentran habilitados para ingresar al sistema. Contacte al administrador para dar acceso.</p>
             </div>
           </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-outline-info" type="button" (click)="exportar()" [disabled]="consultando">
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            EXPORTAR TABLA
+          </button>
         </div>
       </div>
     </div>

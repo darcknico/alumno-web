@@ -1,4 +1,14 @@
 <div class="animated fadeIn">
+  <div class="row" *ngIf="docente">
+    <div class="col-lg-12">
+      <app-componente-listado-estado [id_docente]="id"></app-componente-listado-estado>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
+      <app-componente-docente-detalle [item]="docente" *ngIf="docente"></app-componente-docente-detalle>
+    </div>
+  </div>
   <div class="row" >
     <div class="col-lg-12">
       <app-componente-docente-detalle [item]="docente" *ngIf="docente"></app-componente-docente-detalle>

@@ -19,6 +19,7 @@ import { ReporteJob } from '../../_models/extra';
 import { MesaExamenMateriaDocenteService, FiltroMesaExamenMateriaDocente } from '../../_services/mesa_examen_materia_docente.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SedeProvider } from '../../_providers/sede.provider';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-listado-docente',
@@ -43,6 +44,7 @@ export class ListadoDocenteComponent implements OnInit {
   };
 
   formulario:FormGroup;
+  consultando:boolean = false;
   constructor(
     private usuarioService:DocenteService,
     private carreraService:CarreraService,
@@ -83,6 +85,7 @@ export class ListadoDocenteComponent implements OnInit {
     const that = this;
 
     this.dtOptions = {
+      order: [[ 1, "asc" ]],
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
       },
@@ -184,6 +187,13 @@ export class ListadoDocenteComponent implements OnInit {
           this.toastr.success('La generacion de reportes esta por comenzar', '');
         });
       }
+    });
+  }
+
+  exportar(){
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.usuarioService.exportar(this.request)).then(()=>{
+      this.consultando = false;
     });
   }
 }

@@ -17,6 +17,11 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { EstadoEditarModalComponent } from './estado-editar-modal/estado-editar-modal.component';
+import { ListadoDocenteEstadoComponent } from './listado-docente-estado/listado-docente-estado.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ListadoEstadoComponent } from './componentes/listado-estado/listado-estado.component';
+import { ngfModule } from "angular-file";
 
 @NgModule({
   declarations: [
@@ -27,7 +32,10 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     DocenteVerComponent,
     ListadoComisionesComponent,
     ListadoMesaExamenComponent,
-    DocenteDetalleComponent
+    DocenteDetalleComponent,
+    EstadoEditarModalComponent,
+    ListadoDocenteEstadoComponent,
+    ListadoEstadoComponent,
   ],
   imports: [
     CommonModule,
@@ -40,9 +48,12 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     CollapseModule,
+    BsDropdownModule,
+    ngfModule,
   ],
   entryComponents: [
     MateriaEditarModalComponent,
+    EstadoEditarModalComponent,
   ]
 })
 export class DocentesModule { }

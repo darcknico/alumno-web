@@ -1,0 +1,24 @@
+$icon-list: (
+    ("docentes_apartado")
+    ("docentes_asignaciones")
+    ("docentes_estados")
+    ("docentes_materias")
+    ("docentes")
+    ("recursos_humanos")
+);
+
+$class-prefix: "alumno-";
+$sprite-image-url: "images/sprite.png";
+$sprite-grid-size: 20px;
+
+@mixin icon-custom-alumno {
+    @each $icon in $icon-list {
+        $name: nth($icon, 1);
+    
+        i.#{$class-prefix}#{$name} {
+            height: 20px;
+            content: url('../assets/icon/#{$name}.svg');
+        }
+    }
+}
+@include icon-custom-alumno;

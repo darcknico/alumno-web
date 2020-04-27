@@ -77,20 +77,25 @@ export const navItems = [
     ]
   },
   {
-    name: 'Docentes',
+    name: 'Recursos Humanos',
     url: '/docentes',
-    icon: 'fa fa-users',
+    icon: 'alumno-recursos_humanos',
     permisos: [1,2,4],
     children:[
       {
-        name: 'Listado',
+        name: 'Docentes',
         url: '/docentes/listado',
-        icon: 'fa fa-users',
+        icon: 'alumno-docentes_apartado',
       },
       {
         name: 'Asignaciones',
         url: '/docentes/asignaciones',
-        icon: 'fa fa-list',
+        icon: 'alumno-docentes_asignaciones',
+      },
+      {
+        name: 'Estados',
+        url: '/docentes/estados',
+        icon: 'alumno-docentes_estados',
       },
     ]
   },

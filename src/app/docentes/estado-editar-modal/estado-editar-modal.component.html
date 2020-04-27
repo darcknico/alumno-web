@@ -1,0 +1,104 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Estado del Docente</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formulario" >
+      <div class="row">
+        <div class="form-group col-sm-8">
+          <label class="control-label">Estado</label>
+          <ng-select [items]="estados"
+            [selectOnTab]="true"
+            (change)="onSelectEstado($event)"
+            placeholder="Seleccione el estado"
+            formControlName="id_tipo_docente_estado"
+            bindValue="id"
+            bindLabel="nombre"
+            [clearable]="false">
+          </ng-select>
+        </div>
+      </div>
+      <!-- LICENCIA -->
+      <ng-container *ngIf="!item">
+        <div class="row" *ngIf="f.id_tipo_docente_estado.value == 4">
+          <div class="col-12 inline-block">
+              <div
+                ngfDrop
+                [selectable]     = "true"
+                [(validDrag)]    = "baseDropValid"
+                maxSize          = "‭25600"
+                class            = "well my-drop-zone"
+                [(file)]         = "archivo"
+                accept           = "*/*"
+                [class.invalid-drag] = "baseDropValid===false"
+                [class.valid-drag]   = "baseDropValid"
+              >
+                Seleccione o arrastre su <strong>archivo adjunto</strong> aquí.
+              </div>
+              <small>Tamaño maximo de archivo 25MB</small>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row" *ngIf="f.id_tipo_docente_estado.value == 4">
+          <div div class="form-group col-6">
+            <label class="control-label">Rango de licencia</label>
+            <input type="text"
+                  placeholder="Rango de licencia"
+                  class="form-control"
+                  formControlName="fechas"
+                  bsDaterangepicker>
+          </div>
+          <ng-container *ngIf="item==null">
+            <div class="form-group col-6">
+              <label class="control-label">Archivo adjunto</label>
+              <input class="form-control" placeholder="ARCHIVO" value="{{archivo?.name}}" readonly>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="item?.archivo">
+            <div class="form-group col-6">
+              <label class="control-label">Archivo adjunto</label>
+              <input class="form-control" placeholder="ARCHIVO" value="{{item.archivo}}" readonly>
+            </div>
+          </ng-container>
+      </div>
+      
+      <!-- JUBILACION -->
+      <div class="row" *ngIf="f.id_tipo_docente_estado.value == 3">
+        <div class="col-6 form-group">
+          <label class="control-label">Fecha de efectivación</label>
+          <input type="text"
+                placeholder="Fecha de efectivación"
+                class="form-control"
+                formControlName="fecha"
+                bsDatepicker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <textarea class="form-control" name="observaciones" id="observaciones" rows="3" formControlName="observaciones"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="cancelar()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+      CERRAR
+    </button>
+    <button 
+      [disabled]="!formulario.valid"
+      type="button" 
+      class="btn btn-primary" 
+      (click)="confirmar()">
+      <ng-container *ngIf="item">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        EDITAR ESTADO
+      </ng-container>
+      <ng-container *ngIf="!item">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+        REGISTRAR ESTADO
+      </ng-container>
+    </button>
+  </div>
