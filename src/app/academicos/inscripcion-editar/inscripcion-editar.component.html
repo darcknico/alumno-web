@@ -29,21 +29,35 @@
             <div class="row">
               <div class="form-group col-sm-4">
                 <label class="control-label">Año de inscripcion (*)</label>
-                <input 
-                  required
+                <input
                   formControlName="anio"
                   type="number" 
-                  class="form-control"
+                  class="form-control {{ (f.anio.touched || f.anio.dirty)?(f.anio.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="">
+                <div *ngIf= "f.anio.invalid " class="invalid-feedback">
+                  <span *ngIf="f.anio.hasError('required')" class="help-block">
+                    El año es requerido
+                  </span>
+                  <span *ngIf="f.anio.hasError('min') " class="help-block">
+                    Debe estar mayor que 1976
+                  </span>
+                  <span *ngIf="f.anio.hasError('max') " class="help-block">
+                    Debe estar menor que {{maxYear}}
+                  </span>
+                </div>
               </div>
               <div class="form-group col-lg-6">
                 <label class="control-label">Modalidad de cursada (*)</label>
-                <select 
-                  required
-                  class="form-control"
-                  formControlName="id_modalidad">
-                  <option *ngFor="let item of modalidades" [value]="item.id">{{item.nombre}}</option>
-                </select>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text"><i class="alumno-modalidades"></i></label>
+                  </div>
+                  <select 
+                    class="form-control"
+                    formControlName="id_modalidad">
+                    <option *ngFor="let item of modalidades" [value]="item.id">{{item.nombre}}</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="row">
@@ -58,12 +72,16 @@
               </div>
               <div class="form-group col-lg-6">
                 <label class="control-label">Beca (*)</label>
-                <select 
-                  required
-                  class="form-control"
-                  formControlName="id_beca">
-                  <option *ngFor="let item of becas" [value]="item.id">{{item.nombre}} <b>({{ item.porcentaje }}%)</b></option>
-                </select>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text"><i class="alumno-becas"></i></label>
+                  </div>
+                  <select
+                    class="form-control"
+                    formControlName="id_beca">
+                    <option *ngFor="let item of becas" [value]="item.id">{{item.nombre}} <b>({{ item.porcentaje }}%)</b></option>
+                  </select>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Fecha de Egreso</label>
@@ -79,10 +97,16 @@
                 <input
                   formControlName="observaciones"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.observaciones.touched || f.observaciones.dirty)?(f.observaciones.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="">
+                <div *ngIf= "f.observaciones.invalid " class="invalid-feedback">
+                  <span *ngIf="f.observaciones.hasError('maxLength')" class="help-block">
+                    La cantidad de caracteres debe ser menor que 191 caracteres.
+                  </span>
+                </div>
               </div>
             </div>
+            <br>
           </form>
         </div>
         <div class="card-footer">
@@ -91,6 +115,7 @@
             color="accent"
             (click)="continuar()"
             [disabled]="!formulario.valid">
+            <i class="fa fa-edit"></i>
             Guardar cambios
             </button>
           <button class="btn btn-block-xs-only btn-sm btn-secondary m-1"

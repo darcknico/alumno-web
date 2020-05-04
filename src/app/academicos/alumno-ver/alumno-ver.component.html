@@ -44,6 +44,8 @@
                   <th>Sede</th>
                   <th>Beca</th>
                   <th>Estado</th>
+                  <th>%/Apro</th>
+                  <th>P/L</th>
                   <th></th>
                 </tr>
               </thead>
@@ -52,10 +54,22 @@
                   <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
                   <td>{{ item.anio }}</td>
                   <td>{{ item.usuario.apellido }} {{item.usuario.nombre}}</td>
-                  <td>{{ item.carrera?.departamento?.nombre }} - {{item.carrera?.nombre}} - {{item.plan_estudio?.anio}}</td>
+                  <td>
+                    <p tooltip="{{ item.carrera.departamento.nombre}} - {{ item.carrera.nombre }} - {{item.plan_estudio.anio}}">
+                      {{ item.carrera.nombre_corto }} - {{item.plan_estudio.anio}}
+                    </p>
+                  </td>
                   <td>{{ item.sede?.nombre }}</td>
                   <td>{{ item.beca.nombre }}</td>
                   <td>{{ item.tipo_estado.nombre }}</td>
+                  <td class="text-center">
+                    {{item.porcentaje_aprobados | number:'1.2-2'}}%
+                  </td>
+                  <td class="text-center">
+                      <span *ngIf="item.periodo" tooltip="{{item.periodo.nombre}}">
+                          {{item.periodo.nombre_corto}}
+                      </span>
+                  </td>
                   <td>
                     <ng-container *ngIf="item.estado">
                         <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="id_sede == item.id_sede">
@@ -85,6 +99,12 @@
               </tbody>
             </table>
           </div>
+          <p>
+              %/Apro: Porcentaje de la carrera aprobada
+          </p>
+          <p>
+              P/L: Periodo/Año lectivo de la inscripcion
+          </p>
         </div>
       </div>
     </div>

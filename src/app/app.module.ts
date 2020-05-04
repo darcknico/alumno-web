@@ -159,6 +159,7 @@ import { InscripcionAbandonoService } from './_services/inscripcion_abandono.ser
 import { SedeProvider } from './_providers/sede.provider';
 import { PusherProvider } from './_providers/pusher.provider';
 import { DocenteEstadoService } from './_services/docente_estado.service';
+import { AlumnoDispositivoService } from './_services/alumno_dispositivo';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -256,6 +257,7 @@ export const customCurrencyMaskConfig = {
     PlanService,
     MateriaService,
     AlumnoService,
+    AlumnoDispositivoService,
     InscripcionService,
     PlanPagoService,
     PagoService,

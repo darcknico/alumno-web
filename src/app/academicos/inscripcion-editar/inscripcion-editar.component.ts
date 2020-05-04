@@ -27,6 +27,7 @@ export class InscripcionEditarComponent implements OnInit {
   planes_estudio:PlanEstudio[];
   modalidades:Modalidad[];
   becas:Beca[];
+  maxYear;
   constructor(
     private inscripcionService:InscripcionService,
     private planEstudioService:PlanService,
@@ -37,13 +38,14 @@ export class InscripcionEditarComponent implements OnInit {
     private fb: FormBuilder,
     private toastr: ToastrService,
   ) {
+    this.maxYear = moment().year() + 20;
     this.formulario = this.fb.group({
-      anio:[0,Validators.required],
-      id_plan_estudio:[0,Validators.required],
-      id_modalidad:[0,Validators.required],
-      id_beca:[0,Validators.required],
+      anio:[0,[Validators.required,Validators.min(1976),Validators.max(this.maxYear)]],
+      id_plan_estudio:[0,[Validators.required]],
+      id_modalidad:[0,[Validators.required]],
+      id_beca:[0,[Validators.required]],
       fecha_egreso:'',
-      observaciones:'',
+      observaciones:['',[Validators.maxLength(191)]],
     });
   }
 

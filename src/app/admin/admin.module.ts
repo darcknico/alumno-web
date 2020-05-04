@@ -18,6 +18,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ListadoDispositivoComponent } from './listado-dispositivo/listado-dispositivo.component';
 import { ListadoAsistenciaComponent } from './listado-asistencia/listado-asistencia.component';
 import { PasswordModalComponent } from './componentes/password-modal/password-modal.component';
+import { ListadoUsuarioDispositivoAjaxComponent } from './componentes/listado-usuario-dispositivo-ajax/listado-usuario-dispositivo-ajax.component';
+import { ListadoAlumnoDispositivoAjaxComponent } from './componentes/listado-alumno-dispositivo-ajax/listado-alumno-dispositivo-ajax.component';
 
 @NgModule({
   imports: [
@@ -43,6 +45,8 @@ import { PasswordModalComponent } from './componentes/password-modal/password-mo
     ListadoDispositivoComponent,
     ListadoAsistenciaComponent,
     PasswordModalComponent,
+    ListadoUsuarioDispositivoAjaxComponent,
+    ListadoAlumnoDispositivoAjaxComponent,
   ],
   entryComponents: [
     NovedadNuevoModalComponent,

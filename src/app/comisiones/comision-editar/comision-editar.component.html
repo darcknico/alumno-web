@@ -15,10 +15,16 @@
                   formControlName="anio"
                   type="number" 
                   class="form-control {{ f.anio.invalid?'is-invalid':'is-valid'}}"
-                  placeholder="2019">
+                  placeholder="YYYY">
                 <div *ngIf= " (f.anio.touched || f.anio.dirty) && f.anio.invalid " class="invalid-feedback">
                   <span *ngIf="formulario.get('anio').hasError('required')" class="help-block">
-                    El nombre es requerido
+                    El año es requerido
+                  </span>
+                  <span *ngIf="f.anio.hasError('min') " class="help-block">
+                    Debe estar mayor que 1976
+                  </span>
+                  <span *ngIf="f.anio.hasError('max') " class="help-block">
+                    Debe estar menor que {{maxYear}}
                   </span>
                 </div>
               </div>
@@ -33,6 +39,9 @@
                 <div *ngIf= " (f.numero.touched || f.numero.dirty) && f.numero.invalid " class="invalid-feedback">
                   <span *ngIf="formulario.get('numero').hasError('required')" class="help-block">
                     La identificacion es necesaria.
+                  </span>
+                  <span *ngIf="f.numero.hasError('min') " class="help-block">
+                    Debe estar mayor o igual que 1
                   </span>
                 </div>
               </div>

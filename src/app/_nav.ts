@@ -8,7 +8,7 @@ export const navItems = [
       {
         name: 'Usuarios',
         url: '/admin/usuarios',
-        icon: 'icon-user',
+        icon: 'alumno-administradores',
         permisos: [1],
       },
       {
@@ -26,13 +26,13 @@ export const navItems = [
       {
         name: 'Dispositivos',
         url: '/admin/dispositivos',
-        icon: 'fa fa-tablet',
+        icon: 'alumno-dispositivos',
         permisos: [1],
       },
       {
         name: 'Asistencias',
         url: '/admin/asistencias',
-        icon: 'fa fa-calendar-check-o',
+        icon: 'alumno-asistencias',
         permisos: [1],
       }
     ]
@@ -46,32 +46,32 @@ export const navItems = [
       {
         name: 'Sedes',
         url: '/establecimientos/sedes',
-        icon: 'fa fa-building-o'
+        icon: 'alumno-sedes'
       },
       {
         name: 'Departamentos',
         url: '/establecimientos/departamentos',
-        icon: 'fa fa-building'
+        icon: 'alumno-departamentos'
       },
       {
         name: 'Aulas',
         url: '/establecimientos/aulas',
-        icon: 'fa fa-building'
+        icon: 'alumno-aulas'
       },
       {
         name: 'Modalidades',
         url: '/establecimientos/modalidades',
-        icon: 'icon-settings'
+        icon: 'alumno-modalidades'
       },
       {
         name: 'Becas',
         url: '/establecimientos/becas',
-        icon: 'icon-settings'
+        icon: 'alumno-becas'
       },
       {
         name: 'Tpos de Abandono',
         url: '/establecimientos/tipos-abandonos',
-        icon: 'fa fa-exclamation-circle'
+        icon: 'alumno-alumnos_abandono'
       },
       
     ]
@@ -253,11 +253,11 @@ export const navItems = [
     class: 'mt-auto',
     variant: 'success'
   },
-  {
-    name: 'Try CoreUI PRO',
-    url: 'http://coreui.io/pro/angular/',
-    icon: 'icon-layers',
-    variant: 'danger'
-  }
   */
+  {
+    name: 'Documentacion',
+    url: 'http://api.sistema.ariasdesaavedra.edu.ar/documentacion',
+    icon: 'fa fa-question-circle',
+    variant: 'info'
+  }
 ];

@@ -46,6 +46,7 @@ export class ComisionEditarComponent implements OnInit {
   consultando = false;
   materia:Materia = null;
   carrera:Carrera = null;
+  maxYear;
   constructor(
     private comisionService:ComisionService,
     private carreraService:CarreraService,
@@ -61,9 +62,10 @@ export class ComisionEditarComponent implements OnInit {
     private toastr: ToastrService,
   ) { 
     let hoy = moment();
+    this.maxYear = moment().year() + 20;
     this.formulario = this.fb.group({
-      anio: [hoy.get('year'), Validators.required],
-      numero: ['', Validators.required],
+      anio: [hoy.get('year'), [Validators.required,Validators.min(1976),Validators.max(this.maxYear)]],
+      numero: [1, [Validators.required,Validators.min(1)]],
       id_carrera:'',
       id_plan_estudio:'',
       id_materia: ['', Validators.required],

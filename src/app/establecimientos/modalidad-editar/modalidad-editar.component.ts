@@ -25,8 +25,8 @@ export class ModalidadEditarComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     this.formulario = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: '',
+      nombre: ['', [Validators.required,Validators.maxLength(191)]],
+      descripcion: ['', Validators.maxLength(191)],
     });
   }
 

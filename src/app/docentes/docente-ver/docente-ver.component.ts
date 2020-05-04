@@ -38,4 +38,12 @@ export class DocenteVerComponent implements OnInit,AfterViewInit {
     });
   }
 
+  onChanged(event){
+    if(event){
+      this.service.getById(this.id).subscribe(response=>{
+        this.docente = response;
+      });
+    }
+  }
+
 }

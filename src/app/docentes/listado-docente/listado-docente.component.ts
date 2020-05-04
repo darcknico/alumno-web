@@ -117,7 +117,7 @@ export class ListadoDocenteComponent implements OnInit {
         { 
           data: 'cuit',
           width: '5%', 
-        }, { data: 'apellido' }, { data: 'titulo' },{ data: 'id_tipo_contrato'},
+        }, { data: 'apellido' }, { data: 'titulo' },{ data: 'id_tipo_contrato'},{data:'id_tipo_docente_estado'}
       ],
       columnDefs: [ {
         targets: 'no-sort',

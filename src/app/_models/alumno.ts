@@ -104,3 +104,16 @@ export interface AlumnoSede{
     sede:Sede;
     usuario:Usuario;
 }
+
+export interface AlumnoDispositivo{
+    id:number;
+    id_alumno:number;
+    device_id:string;
+    device_os:string;
+    device_model:string;
+    manufacturer:string;
+
+    created_at:string;
+    updated_at:string;
+    estado:string;
+}

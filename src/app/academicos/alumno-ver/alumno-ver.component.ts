@@ -62,7 +62,7 @@ export class AlumnoVerComponent implements OnInit {
       pageLength: 10,
       searching:false,
       columnDefs: [ {
-        targets: [5,6,7],
+        targets: [5,6,7,8,9],
         orderable: false
         },{
           targets: [0],
@@ -148,7 +148,7 @@ export class AlumnoVerComponent implements OnInit {
         this.alumnoService.password(this.alumno).subscribe(response=>{
           this.toastr.warning('Contraseña Cambiada', '');
         });
-      } else {
+      } else if(result.length>0) {
         this.toastr.warning('Contraseña demasiado Corta', '');
       }
     });

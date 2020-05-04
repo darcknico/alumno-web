@@ -6,7 +6,10 @@
           <div class="card-header">
             <i class="fa fa-align-justify"></i> Listado de Modalidades
             <div class="card-header-actions">
-              <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Modalidad</button>
+              <button class="btn btn-block btn-sm btn-success" type="button" (click)="nuevo()">
+                <i class="fa fa-plus"></i>
+                Registrar Nueva Modalidad
+              </button>
             </div>
           </div>
           <div class="card-body p-1">
@@ -27,15 +30,21 @@
                     <td>{{ item.descripcion }}</td>
                     <td>
                       <div class="btn-group" dropdown placement="bottom right" container="body">
-                        <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                        <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                           <span class="caret"></span>
                         </button>
                         <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                           <li role="menuitem">
-                            <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                            <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                              <i class="fa fa-edit"></i>
+                              Editar
+                            </a>
                           </li>
                           <li role="menuitem">
-                            <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                            <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                              <i class="fa fa-trash"></i>
+                              Eliminar
+                            </a>
                           </li>
                         </ul>
                       </div>

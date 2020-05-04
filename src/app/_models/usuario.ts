@@ -69,6 +69,7 @@ export class Docente implements Usuario {
     direccion_dpto?: any;
     documento?: any;
     id_tipo_documento: number;
+    id_tipo_docente_estado: number;
     id_tipo_usuario: number;
     id: number;
     tipo: TipoUsuario;
@@ -85,7 +86,8 @@ export class Docente implements Usuario {
     observaciones:number;
 
     contratos:DocenteContrato[];
-
+    tipo_estado:TipoDocenteEstado;
+    
     usuario:Usuario;
     notificacion: boolean;
 }

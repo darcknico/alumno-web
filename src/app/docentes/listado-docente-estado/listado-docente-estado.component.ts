@@ -11,6 +11,7 @@ import { TipoService } from '../../_services/tipo.service';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-listado-docente-estado',
@@ -111,6 +112,10 @@ export class ListadoDocenteEstadoComponent implements OnInit {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
     });
+  }
+
+  archivo(item:DocenteEstado){
+    AuxiliarFunction.descargar(this.toastr,this.service.archivo(item));
   }
 
 

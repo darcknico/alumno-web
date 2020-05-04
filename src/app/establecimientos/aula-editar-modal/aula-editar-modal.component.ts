@@ -26,7 +26,7 @@ export class AulaEditarModalComponent implements OnInit {
     ) { 
     this.formulario = this.fb.group({
       numero:[1,[Validators.min(0),Validators.required]],
-      nombre:[null],
+      nombre:['',Validators.maxLength(191)],
       capacidad:[0,[Validators.min(0),Validators.required]],
     });
   }

@@ -1,5 +1,12 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Aula</h4>
+  <h4 class="modal-title pull-left">
+    <ng-container *ngIf="item?.id>0">
+      Editar Aula
+    </ng-container>
+    <ng-container *ngIf="item?.id==0">
+      Registrar Aula
+    </ng-container>
+  </h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -53,10 +60,22 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+  <button type="button" class="btn btn-ligth" (click)="cancelar()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    CERRAR
+  </button>
   <button 
     [disabled]="!formulario.valid"
     type="button" 
     class="btn btn-primary" 
-    (click)="confirmar()">Guardar</button>
+    (click)="confirmar()">
+    <ng-container *ngIf="item?.id>0">
+      <i class="fa fa-edit"></i>
+      Guardar cambios
+    </ng-container>
+    <ng-container *ngIf="item?.id==0">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      Registrar nueva aula
+    </ng-container>
+  </button>
 </div>

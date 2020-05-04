@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UsuarioSede, Docente, UsuarioArchivo, DocenteMateria, DocenteContrato } from '../../_models/usuario';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { UsuarioSede, Docente, UsuarioArchivo, DocenteMateria, DocenteContrato, DocenteEstado } from '../../_models/usuario';
 import { Sede } from '../../_models/sede';
 import { TipoDocumento } from '../../_models/tipo_documento';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import { ExtraService } from '../../_services/extra.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ValidateEmailUnique } from '../../validators/async-email-unique.validator';
-import { TipoContrato } from '../../_models/tipo';
+import { TipoContrato, TipoDocenteEstado } from '../../_models/tipo';
 import { UsuarioService } from '../../_services/usuario.service';
 import { TipoService } from '../../_services/tipo.service';
 import * as moment from 'moment';
@@ -29,7 +29,7 @@ import { SedeProvider } from '../../_providers/sede.provider';
   templateUrl: './docente-editar.component.html',
   styleUrls: ['./docente-editar.component.scss']
 })
-export class DocenteEditarComponent implements OnInit {
+export class DocenteEditarComponent implements OnInit,AfterViewInit {
 
   resource:string = 'docentes';
   titulo:string;
@@ -39,6 +39,7 @@ export class DocenteEditarComponent implements OnInit {
   contratos_asociados:DocenteContrato[]=[];
   tipos:TipoContrato[];
   tipo_documentos:TipoDocumento[];
+  estados:TipoDocenteEstado[];
   formulario: FormGroup;
   hoy;
 
@@ -80,16 +81,13 @@ export class DocenteEditarComponent implements OnInit {
       direccion_dpto: '',
       documento: '',
       id_tipo_documento: 96,
+      id_tipo_docente_estado: 2,
       email: ['',Validators.required,ValidateEmailUnique.createValidator(this.usuarioService)],
 
       cuit:'',
       titulo:'',
       observaciones:'',
     });
-  }
-
-  suscribe;
-  ngOnInit() {
     this.request.id_sede = this.sede.getIdSede();
     this.route.params.subscribe(params=>{
       let ids_usuario = params['id'];
@@ -98,12 +96,6 @@ export class DocenteEditarComponent implements OnInit {
       } else {
         this.id = +ids_usuario;
       }
-      this.tipoService.contratos().subscribe(data=>{
-        this.tipos= data;
-      });
-      this.extraService.tipo_documento().subscribe(data=>{
-        this.tipo_documentos = data;
-      });
       if(this.id==0){
         this.titulo="Docente Nuevo";
       } else {
@@ -124,6 +116,7 @@ export class DocenteEditarComponent implements OnInit {
           this.f.direccion_dpto.setValue(response.usuario.direccion_dpto);
           this.f.documento.setValue(response.usuario.documento);
           this.f.id_tipo_documento.setValue(response.usuario.id_tipo_documento);
+          this.f.id_tipo_docente_estado.setValue(response.id_tipo_docente_estado);
           this.f.email.setValue(response.usuario.email);
           this.f.email.clearValidators();
           this.f.email.updateValueAndValidity();
@@ -148,63 +141,99 @@ export class DocenteEditarComponent implements OnInit {
           });
           
         });
+
+        this.iniciar();
       }
-      this.sedeService.getAll().subscribe(response=>{
-        this.sedes = response;
-      });
-      const that = this;
-      this.dtOptions = {
-        language: {
-          url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-        },
-        paging:true,
-        searching:false,
-        serverSide: true,
-        processing: true,
-        info:false,
-        ajax: (dataTablesParameters: any, callback) => {
-          if(this.suscribe){
-            this.suscribe.unsubscribe();
-            this.suscribe = null;
-          }
-          that.request.start = dataTablesParameters.start;
-          that.request.length = dataTablesParameters.length;
-          that.request.order = dataTablesParameters.order[0].dir;
-          that.request.search = dataTablesParameters.search.value;
-          that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
-          this.suscribe = this.docenteMateriaService.ajax(that.request).subscribe(resp => {
-              that.dataSource = resp.items;
-              callback({
-                recordsTotal: resp.total_count,
-                recordsFiltered: resp.total_count,
-                data: []
-              });
-            });
-        },
-        columns: [
-          { 
-            data: 'created_at',
-            width: '5%',
-          },
-          { 
-            data: 'id_materia',
-            width: '5%',
-          },
-          { 
-            data: 'materia',
-          },
-          { 
-            data: 'id_carrera',
-          },
-        ],
-        columnDefs: [ {
-          targets: 'no-sort',
-          orderable: false,
-          },
-        ],
-        responsive:true,
-      };
     });
+  }
+
+  suscribe;
+  ngOnInit() {
+
+    this.sedeService.getAll().subscribe(response=>{
+      this.sedes = response;
+    });
+    this.tipoService.contratos().subscribe(data=>{
+      this.tipos= data;
+    });
+    this.extraService.tipo_documento().subscribe(data=>{
+      this.tipo_documentos = data;
+    });
+    this.tipoService.docentes_estados().subscribe(response=>{
+      this.estados = response;
+    })
+  }
+  ngAfterViewInit(){
+    
+  }
+
+  iniciar(){
+    const that = this;
+    this.dtOptions = {
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      searching:false,
+      serverSide: true,
+      processing: true,
+      info:false,
+      ajax: (dataTablesParameters: any, callback) => {
+        if(this.suscribe){
+          this.suscribe.unsubscribe();
+          this.suscribe = null;
+        }
+        that.request.start = dataTablesParameters.start;
+        that.request.length = dataTablesParameters.length;
+        that.request.order = dataTablesParameters.order[0].dir;
+        that.request.search = dataTablesParameters.search.value;
+        that.request.sort = dataTablesParameters.columns[dataTablesParameters.order[0].column].data;
+        this.suscribe = this.docenteMateriaService.ajax(that.request).subscribe(resp => {
+            that.dataSource = resp.items;
+            callback({
+              recordsTotal: resp.total_count,
+              recordsFiltered: resp.total_count,
+              data: []
+            });
+          });
+      },
+      columns: [
+        { 
+          data: 'created_at',
+          width: '5%',
+        },
+        { 
+          data: 'id_materia',
+          width: '5%',
+          orderable:false,
+        },
+        { 
+          data: 'materia',
+          orderable:false,
+        },
+        { 
+          data: 'id_carrera',
+          orderable:false,
+        },
+        {
+          data: 'fecha_asignacion',
+          orderable:false,
+        },
+        {
+          data : 'cargo',
+          orderable:false,
+        },
+        {
+          data : 'horas_catedra',
+          orderable:false,
+        },
+      ],
+      columnDefs: [ {
+        targets: 'no-sort',
+        orderable: false,
+        },
+      ],
+      responsive:true,
+    };
   }
 
   get f(){
@@ -231,6 +260,7 @@ export class DocenteEditarComponent implements OnInit {
     item.direccion_dpto = this.f.direccion_dpto.value;
     item.documento = this.f.documento.value;
     item.id_tipo_documento = this.f.id_tipo_documento.value;
+    item.id_tipo_docente_estado = this.f.id_tipo_docente_estado.value;
     item.email = this.f.email.value;
     item.sedes = this.sedes_asociadas;
 

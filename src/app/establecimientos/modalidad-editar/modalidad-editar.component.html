@@ -33,15 +33,23 @@
           </form>
         </div>
         <div class="card-footer">
-          <button class="btn btn-block btn-success"
+          <button class="btn btn-block-xs-only m-1 btn-success" 
             type="submit"
             color="accent"
             (click)="continuar()"
             [disabled]="!formulario.valid">
-            Guardar Cambios
+            <ng-container *ngIf="id>0">
+              <i class="fa fa-edit"></i>
+              Guardar cambios
+            </ng-container>
+            <ng-container *ngIf="id==0">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              Registrar modalidad
+            </ng-container>
             </button>
-          <button class="btn btn-block"
+          <button class="btn btn-block-xs-only m-1"
             (click)="volver()">
+            <i class="fa fa-times" aria-hidden="true"></i>
             Volver
             </button>
         </div>

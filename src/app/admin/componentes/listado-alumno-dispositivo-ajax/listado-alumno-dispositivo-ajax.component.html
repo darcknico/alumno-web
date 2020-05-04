@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-header">
+        <i class="fa fa-align-justify"></i> Dispositivos de alumnos registrados
+    </div>
+    <div class="card-body p-1">
+        <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th class="no-sort">Apellido y Nombre</th>
+                        <th class="no-sort">Modelo</th>
+                        <th class="no-sort">Manofactura</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="dataSource?.length != 0">
+                    <tr *ngFor="let item of dataSource" >
+                        <td>
+                            {{ item.created_at | date:'dd/MM/yy' }}
+                        </td>
+                        <td>{{ item.alumno.apellido }} {{ item.alumno.nombre }}</td>
+                        <td>{{ item.device_model }}</td>
+                        <td>{{ item.manufacturer }}</td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="dataSource?.length == 0">
+                    <tr>
+                        <td colspan="4" class="no-data-available">No data!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

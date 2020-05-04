@@ -133,6 +133,7 @@ export class InscripcionComponent implements OnInit {
         { data: 'beca_nombre' },
         { data: 'id_tipo_inscripcion_estado'},
         { data: 'porcentaje_aprobados'},
+        { data: 'id_periodo_lectivo'},
       ],
       responsive:true,
     };

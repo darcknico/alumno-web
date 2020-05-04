@@ -77,6 +77,7 @@
                   <th>Apellido y Nombre</th>
                   <th class="no-sort">Titulo</th>
                   <th>Contratos</th>
+                  <th>Estado</th>
                   <th class="no-sort"></th>
                 </tr>
               </thead>
@@ -94,6 +95,9 @@
                         {{contrato.tipo.nombre}}
                       </div>
                     </ng-container>
+                  </td>
+                  <td>
+                    {{item.tipo_estado?.nombre}}
                   </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body">

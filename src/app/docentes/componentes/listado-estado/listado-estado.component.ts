@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { DocenteEstado } from '../../../_models/usuario';
 import { FiltroDocenteEstado, DocenteEstadoService } from '../../../_services/docente_estado.service';
@@ -15,6 +15,7 @@ import { AuxiliarFunction } from '../../../_helpers/auxiliar.function';
 })
 export class ListadoEstadoComponent implements OnInit {
   @Input('id_docente')id_docente:number=null;
+  @Output('onChanged')onChanged:EventEmitter<boolean> = new EventEmitter<boolean>();
 
   resource:string = 'docentes';
   @ViewChild(DataTableDirective,{static:false})dtElement: DataTableDirective;
@@ -100,6 +101,7 @@ export class ListadoEstadoComponent implements OnInit {
     (<EstadoEditarModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.refrescar();
+        this.onChanged.next(true);
       }
     });
   }
@@ -110,6 +112,7 @@ export class ListadoEstadoComponent implements OnInit {
     (<EstadoEditarModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.refrescar();
+        this.onChanged.next(true);
       }
     });
   }
@@ -122,6 +125,7 @@ export class ListadoEstadoComponent implements OnInit {
         this.service.delete(item.id).subscribe(response=>{
           this.toastr.success('Estado eliminado', '');
           this.refrescar();
+          this.onChanged.next(true);
         });
       }
     });

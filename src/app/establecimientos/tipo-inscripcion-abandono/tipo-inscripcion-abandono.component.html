@@ -6,7 +6,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Tipos de Abandono en la inscripcion
           <div class="card-header-actions">
-            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">Agregar Nuevo Tipo</button>
+            <button class="btn btn-sm btn-block btn-success" type="button" (click)="nuevo()">
+              <i class="fa fa-plus"></i>
+              Registrar Nuevo Tipo
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -32,10 +35,16 @@
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                            <i class="fa fa-trash"></i>
+                            Eliminar
+                          </a>
                         </li>
                       </ul>
                     </div>

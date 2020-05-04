@@ -131,6 +131,7 @@
                             <th>Beca</th>
                             <th>Estado</th>
                             <th>%/Apro</th>
+                            <th>P/L</th>
                             <th></th>
                             </tr>
                         </thead>
@@ -148,6 +149,11 @@
                             <td>{{item.tipo_estado?.nombre}}</td>
                             <td class="text-center">
                                 {{item.porcentaje_aprobados | number:'1.2-2'}}%
+                            </td>
+                            <td class="text-center">
+                                <span *ngIf="item.periodo" tooltip="{{item.periodo.nombre}}">
+                                    {{item.periodo.nombre_corto}}
+                                </span>
                             </td>
                             <td>
                                 <div class="btn-group" dropdown placement="bottom right" container="body">
@@ -191,6 +197,9 @@
                     </div>
                     <p>
                         %/Apro: Porcentaje de la carrera aprobada
+                    </p>
+                    <p>
+                        P/L: Periodo/Año lectivo de la inscripcion
                     </p>
                 </div>
                 <div class="card-footer">

@@ -66,11 +66,11 @@ export class TipoInscripcionAbandonoComponent implements OnInit {
 
   eliminar(item:TipoInscripcionAbandono){
     const modal = this.modalService.show(DialogConfirmComponent,{class: 'modal-danger'});
-    (<DialogConfirmComponent>modal.content).onShow("Eliminar Tipo de Inscripcion","");
+    (<DialogConfirmComponent>modal.content).onShow("Eliminar Tipo de Abandono","");
     (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
         this.service.delete(item.id).subscribe(response=>{
-          this.toastr.success('Modalidad beca', '');
+          this.toastr.success('Tipo de Abandono eliminado', '');
           this.refrescar();
         });
       }
