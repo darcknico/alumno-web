@@ -8,7 +8,7 @@
   <div class="modal-body">
     <form [formGroup]="formulario" >
       <div class="row">
-          <div class="form-group col-sm-3">
+          <div class="form-group col-sm-4">
             <label class="control-label">Importe (*)</label>
             <input currencyMask
               required
@@ -16,7 +16,7 @@
               type="text" 
               class="form-control">
           </div>
-          <div class="form-group col-sm-3" >
+          <div class="form-group col-sm-4" >
             <label class="control-label">Fecha</label>
             <input bsDatepicker
               required
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-4">
           <label class="control-label">Forma de Pago (*)</label>
           <select 
             class="form-control"
@@ -56,7 +56,7 @@
             <option *ngFor="let item of formas" [value]="item.id">{{item.nombre}}</option>
           </select>
         </div>
-        <div class="form-group col-sm-4">
+        <div class="form-group col-sm-5">
           <label class="control-label">Tipo de Comprobante</label>
           <ng-select [items]="comprobantes"
             [selectOnTab]="true"
@@ -108,14 +108,27 @@
               placeholder="Fecha del vencimiento del cheque">
           </div>
         </div>
+        <div class="row" *ngIf="formulario.get('id_forma_pago').value==6 || formulario.get('id_forma_pago').value==7">
+          <div class="form-group col-sm-6">
+            <label class="control-label">Numero de transacción</label>
+            <input 
+              formControlName="numero_transaccion"
+              type="text" 
+              class="form-control"
+              placeholder="Numero de transaccion">
+          </div>
+        </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
     <button 
       [disabled]="!formulario.valid"
       type="button" 
       class="btn btn-success" 
-      (click)="confirmar()">MODIFICAR</button>
+      (click)="confirmar()">
+      <i class="fa fa-edit"></i>
+      Guardar cambios
+    </button>
+    <button type="button" class="btn btn-ligth" (click)="cancelar()">CANCELAR</button>
   </div>
 </div>

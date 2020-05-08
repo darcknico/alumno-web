@@ -27,6 +27,7 @@ export class PagoComponent implements OnInit {
   editado:boolean=true;
   precios:PlanPagoPrecio;
 
+  isLoading:boolean = false;
   constructor(
     private planPagoService:PlanPagoService,
     private movimientoService:MovimientoService,
@@ -36,17 +37,19 @@ export class PagoComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     this.formulario = this.fb.group({
+      especial_covid:true,
       monto: [ 0, [Validators.required,Validators.min(1)]],
       fecha: [ moment().toDate(), Validators.required],
-      descripcion: 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),
+      descripcion: ['Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),Validators.maxLength(255)],
       bonificar_intereses:false,
       bonificar_cuotas:true,
       id_forma_pago:[1,Validators.required],
-      cheque_numero: '',
-      cheque_banco: '',
-      cheque_origen: '',
+      cheque_numero: ['',Validators.maxLength(255)],
+      cheque_banco: ['',Validators.maxLength(255)],
+      cheque_origen: ['',Validators.maxLength(255)],
       cheque_vencimiento: '',
-      numero_oficial:'',
+      numero_transaccion: ['',Validators.maxLength(255)],
+      numero_oficial:['',Validators.maxLength(255)],
     });
 
     this.formulario.valueChanges.subscribe(()=>{
@@ -94,6 +97,7 @@ export class PagoComponent implements OnInit {
     item.monto = this.f.monto.value;
     item.bonificar_intereses = !this.f.bonificar_intereses.value;
     item.bonificar_cuotas = this.f.bonificar_cuotas.value;
+    item.especial_covid = this.f.especial_covid.value;
     this.planPagoService.pagarPreparar(item).subscribe((response:any)=>{
       this.editado = false;
       this.dataSource = response.detalles.filter(item=>item.monto>0);
@@ -111,6 +115,7 @@ export class PagoComponent implements OnInit {
     movimiento.cheque_banco = this.f.cheque_banco.value;
     movimiento.cheque_origen = this.f.cheque_origen.value;
     movimiento.cheque_vencimiento = this.f.cheque_vencimiento.value;
+    movimiento.numero_transaccion = this.f.numero_transaccion.value;
 
     let pago = <Pago>{};
     pago.id_plan_pago = this.id;
@@ -120,13 +125,16 @@ export class PagoComponent implements OnInit {
     pago.bonificar_intereses = !this.f.bonificar_intereses.value;
     pago.bonificar_cuotas = this.f.bonificar_cuotas.value;
     pago.numero_oficial = this.f.numero_oficial.value;
+    pago.especial_covid = this.f.especial_covid.value;
 
+    this.isLoading = true;
     this.movimientoService.ingreso(movimiento).subscribe(response=>{
       this.toastr.success('Generando Movimiento', '');
       pago.id_movimiento = response.id;
       this.planPagoService.pagar(pago).subscribe((response:any)=>{
         this.toastr.success('Pago generado','');
         this.router.navigate(['/cuentacorriente/'+this.id+'/pagos/'+response.id+'/recibo']);
+        this.isLoading = false;
       });
     });
     
@@ -142,6 +150,6 @@ export class PagoComponent implements OnInit {
   }
 
   disablePagar():boolean{
-    return (this.dataSource?this.dataSource.length == 0:true) || this.editado;
+    return (this.dataSource?this.dataSource.length == 0:true) || this.editado || this.isLoading;
   }
 }

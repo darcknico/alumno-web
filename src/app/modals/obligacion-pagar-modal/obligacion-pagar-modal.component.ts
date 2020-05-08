@@ -38,17 +38,19 @@ export class ObligacionPagarModalComponent implements OnInit {
     private router: Router,
     ) {
     this.formulario = this.fb.group({
+      especial_covid:true,
       monto: [ 0, Validators.required],
       fecha: [ moment().toDate(), Validators.required],
       descripcion: 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),
       bonificar_intereses:false,
       bonificar_cuotas:true,
       id_forma_pago:[null,Validators.required],
-      cheque_numero: '',
-      cheque_banco: '',
-      cheque_origen: '',
+      cheque_numero: ['',Validators.maxLength(255)],
+      cheque_banco: ['',Validators.maxLength(255)],
+      cheque_origen: ['',Validators.maxLength(255)],
       cheque_vencimiento: '',
-      numero_oficial:'',
+      numero_transaccion: ['',Validators.maxLength(255)],
+      numero_oficial:['',Validators.maxLength(255)],
     });
 
     this.formulario.valueChanges.subscribe(()=>{
@@ -93,6 +95,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     item.monto = this.f.monto.value;
     item.bonificar_intereses = this.f.bonificar_intereses.value;
     item.bonificar_cuotas = this.f.bonificar_cuotas.value;
+    item.especial_covid = this.f.especial_covid.value;
     this.planPagoService.pagarPreparar(item).subscribe((response:any)=>{
       this.editado = false;
       this.dataSource = response.detalles.filter(item=>item.monto>0);
@@ -110,6 +113,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     movimiento.cheque_banco = this.f.cheque_banco.value;
     movimiento.cheque_origen = this.f.cheque_origen.value;
     movimiento.cheque_vencimiento = this.f.cheque_vencimiento.value;
+    movimiento.numero_transaccion = this.f.numero_transaccion.value;
 
     let pago = <Pago>{};
     pago.id_plan_pago = this.plan_pago.id;
@@ -119,6 +123,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     pago.bonificar_intereses = !this.f.bonificar_intereses.value;
     pago.bonificar_cuotas = this.f.bonificar_cuotas.value;
     pago.numero_oficial = this.f.numero_oficial.value;
+    pago.especial_covid = this.f.especial_covid.value;
 
     this.movimientoService.ingreso(movimiento).subscribe(response=>{
       this.toastr.success('Generando Movimiento', '');

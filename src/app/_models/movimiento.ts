@@ -16,6 +16,7 @@ export interface Movimiento{
     id_sede:number;
     id_tipo_egreso_ingreso:number;
     numero:string;
+    numero_transaccion:string;
     id_tipo_comprobante:number;
     estado:boolean;
     created_at:Date;

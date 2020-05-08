@@ -34,17 +34,18 @@ export class MovimientoEditarModalComponent implements OnInit {
     private fb: FormBuilder,
     ) {
     this.formulario = this.fb.group({
-      monto: '',
-      fecha: '',
-      descripcion: '',
+      monto: ['',Validators.required],
+      fecha: ['',Validators.required],
+      descripcion: ['',Validators.maxLength(255)],
       id_forma_pago:[null,Validators.required],
       id_tipo_comprobante:null,
       id_tipo_movimiento:[null,Validators.required],
-      cheque_numero: '',
-      cheque_banco: '',
-      cheque_origen: '',
+      cheque_numero: ['',Validators.maxLength(255)],
+      cheque_banco: ['',Validators.maxLength(255)],
+      cheque_origen: ['',Validators.maxLength(255)],
       cheque_vencimiento: '',
       numero:'',
+      numero_transaccion: ['',Validators.maxLength(255)],
     });
     this.f.monto.disable();
     this.f.fecha.disable();
@@ -70,6 +71,7 @@ export class MovimientoEditarModalComponent implements OnInit {
       this.f.cheque_vencimiento.setValue(cheque_vencimiento.toDate());
     }
     this.f.numero.setValue(movimiento.numero);
+    this.f.numero_transaccion.setValue(movimiento.numero_transaccion);
     this.movimientoService.sede(movimiento.id_sede);
     this.tipoMovimientoService.sede(movimiento.id_sede);
     this.movimientoService.formas().subscribe(response=>this.formas=response);
@@ -104,6 +106,7 @@ export class MovimientoEditarModalComponent implements OnInit {
     this.movimiento.cheque_origen = this.f.cheque_origen.value;
     this.movimiento.cheque_vencimiento = this.f.cheque_vencimiento.value;
     this.movimiento.numero = this.f.numero.value;
+    this.movimiento.numero_transaccion = this.f.numero_transaccion.value;
 
     this.movimientoService.update(this.movimiento).subscribe(response=>{
       this.toastr.success('Movimiento Editado', '');

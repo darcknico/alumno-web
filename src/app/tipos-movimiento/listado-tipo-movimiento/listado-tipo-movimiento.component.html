@@ -6,7 +6,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de tipos de movimiento
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Tipo Movimiento</button>
+            <button class="btn btn-block btn-sm btn-outline-success" type="button" (click)="nuevo()">
+              <i class="fa fa-plus"></i>
+              Registrar nuevo tipo de movimiento
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -29,7 +32,7 @@
                   <td>{{ item.id_tipo_egreso_ingreso==1?'Ingreso':'Egreso' }} </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body" *ngIf="item.id_sede>0">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">

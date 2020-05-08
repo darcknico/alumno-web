@@ -37,16 +37,17 @@ export class MovimientoComponent implements OnInit {
   ) {
     
     this.formulario = this.fb.group({
-      monto: [0, [Validators.required,Validators.min(0)]],
+      monto: [0, [Validators.required,Validators.min(1)]],
       fecha: [moment().toDate(), Validators.required],
       id_forma_pago: [null, Validators.required],
       id_tipo_movimiento: [null, Validators.required],
       descripcion: '',
-      cheque_numero: '',
-      cheque_banco: '',
-      cheque_origen: '',
+      cheque_numero: ['',Validators.maxLength(255)],
+      cheque_banco: ['',Validators.maxLength(255)],
+      cheque_origen: ['',Validators.maxLength(255)],
       cheque_vencimiento: '',
       numero: '',
+      numero_transaccion: ['',Validators.maxLength(255)],
       id_tipo_comprobante: null,
     });
   }
@@ -106,6 +107,7 @@ export class MovimientoComponent implements OnInit {
     item.cheque_origen = this.f.cheque_origen.value;
     item.cheque_vencimiento = this.f.cheque_vencimiento.value;
     item.numero = this.f.numero.value;
+    item.numero_transaccion = this.f.numero_transaccion.value;
     item.id_tipo_comprobante = this.f.id_tipo_comprobante.value;
     if(this.id_tipo_egreso_ingreso==1){
       this.movimientoService.ingreso(item).subscribe(response=>{

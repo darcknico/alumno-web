@@ -36,6 +36,7 @@ export interface Pago{
     
     bonificar_intereses:boolean;
     bonificar_cuotas:boolean;
+    especial_covid:boolean;
 }
 
 export interface TipoPago{
