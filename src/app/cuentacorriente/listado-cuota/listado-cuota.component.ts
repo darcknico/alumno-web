@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PlanPagoService } from '../../_services/plan_pago.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Obligacion } from '../../_models/obligacion';
+import { ObligacionVerModalComponent } from '../componente/obligacion-ver-modal/obligacion-ver-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-listado-cuota',
@@ -15,6 +17,7 @@ export class ListadoCuotaComponent implements OnInit {
 
   constructor(
     private planPagoService:PlanPagoService,
+    private modalService: BsModalService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -41,6 +44,16 @@ export class ListadoCuotaComponent implements OnInit {
 
   volver(){
     this.router.navigate(['/cuentacorriente/'+this.id+'/ver']);
+  }
+
+  ver(item:Obligacion){
+    const modal = this.modalService.show(ObligacionVerModalComponent,{class: 'modal-info'});
+    (<ObligacionVerModalComponent>modal.content).onShow(item);
+    (<ObligacionVerModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        
+      }
+    });
   }
 
 }

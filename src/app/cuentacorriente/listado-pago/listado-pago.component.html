@@ -33,25 +33,33 @@
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
                 <tr *ngFor="let item of dataSource" class="{{!item.estado?'bg-danger':''}}">
-                  <td>{{ item.fecha | date:'dd/MM/yyyy'}}</td>
+                  <td>
+                    <b tooltip="# {{item.numero}}">{{item.fecha | date:'dd/MM/yyyy'}}</b>
+                  </td>
                   <td>{{ item.descripcion}}</td>
                   <td>${{ item.monto | number:'1.2-2':'es-AR' }}</td>
                   <td>
                     {{item.tipo.nombre}}
                   </td>
-                  <td>{{ item.usuario.apellido}} {{ item.usuario.nombre}}</td>
+                  <td>
+                    {{ item.usuario.apellido}} {{ item.usuario.nombre}} <br>
+                    <small tooltip="U: {{item.updated_at | date:'dd/MM/yyyy HH:mm'}}">R: {{item.created_at | date:'dd/MM/yyyy HH:mm'}}</small>
+                  </td>
                   <td>
                     <button class="btn btn-sm btn-danger" type="button" (click)="eliminar(item)" *ngIf="item.estado">
                         <i class="fa fa-remove"></i>&nbsp;Eliminar</button>
                     <button class="btn btn-sm btn-info" type="button" (click)="eliminar(item)" *ngIf="!item.estado">
                       <i class="fa fa-remove"></i>&nbsp;Recuperar</button>
-                    <button class="btn btn-sm btn-info" type="button" (click)="recibo(item)">
+                    <button class="btn btn-sm btn-info" type="button" (click)="recibo(item)" tooltip="VER EL RECIBO">
                       <i class="fa fa-eye"></i>&nbsp;</button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <p>#: Numero de orden (por sede)</p>
+          <p>R: fecha de registro en el sistema</p>
+          <p>H: fecha de ultima modificación en el sistema</p>
         </div>
         <div class="card-footer">
           <button class="btn btn-info" type="button" (click)="volver()">VOLVER</button>
