@@ -6,7 +6,31 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" *ngIf="item">
+<div class="modal-body" *ngIf="inscripcion">
+  <form [formGroup]="formulario" >
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label class="control-label">Fecha (*)</label>
+            <input bsDatepicker
+                formControlName="fecha"
+                type="text" 
+                class="form-control {{ f.fecha.invalid?'is-invalid':'is-valid'}}" >
+            <div *ngIf= " (f.fecha.touched || f.fecha.dirty) && f.fecha.invalid " class="invalid-feedback">
+                <span *ngIf="f.fecha.hasError('required')" class="help-block">
+                La fecha es requerido
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-12">
+        <label class="control-label">Observaciones</label>
+        <textarea formControlName="observaciones" 
+            class="form-control {{ (f.observaciones.touched || f.observaciones.dirty)?(( f.observaciones.invalid )?'is-invalid':'is-valid'):''}}" 
+            rows="2"></textarea>
+        </div>
+    </div>
+  </form>
   <accordion [isAnimated]="true" [closeOthers]="true" >
     <accordion-group *ngFor="let tipo of tipos" [panelClass]="'item-accordion'">
       <button class="btn btn-link btn-block clearfix" accordion-heading type="button">

@@ -47,13 +47,13 @@
         </div>-->
       </div>
     </div><!--/.col-->
+    <!--
     <div class="col-sm-6 col-lg-3" *ngIf="[1,2,3].indexOf(usuario.id_tipo_usuario)>=0">
       <div class="card text-white bg-danger">
         <div class="card-body pb-0">
           <div class="text-value">${{estadisticas_plan_pago?.totales.total |number:'1.2':'es-AR'}}</div>
           <div>Saldo Total</div>
         </div>
-        <!--
         <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
           <canvas baseChart class="chart"
           [datasets]="barChart1Data"
@@ -62,9 +62,11 @@
           [colors]="barChart1Colours"
           [legend]="barChart1Legend"
           [chartType]="barChart1Type"></canvas>
-        </div>-->
+        </div>
+        
       </div>
     </div>
+    -->
   </div>
   <div class="row">
     <div class="col-md-12">
@@ -118,6 +120,7 @@
                     <strong class="h4">{{estadisticas_carrera?.totales_hoy.total}}</strong>
                   </div>
                 </div>
+                <!--
                 <div class="col-sm-6" *ngIf="[1,2,3].indexOf(usuario.id_tipo_usuario)>=0">
                   <div class="callout callout-success">
                     <small class="text-muted">Pendiente de cobro</small>
@@ -125,6 +128,7 @@
                     <strong class="h4">${{estadisticas_plan_pago?.totales_hoy.total |number:'1.2':'es-AR'}}</strong>
                   </div>
                 </div>
+                -->
               </div>
               <hr class="mt-0">
             </div>

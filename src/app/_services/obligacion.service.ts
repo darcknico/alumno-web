@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Ajax } from '../_models/tipo';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
-import { Obligacion } from '../_models/obligacion';
+import { Obligacion, PaymentMercadoPago } from '../_models/obligacion';
  
 export interface FiltroObligacion {
     search:string;
@@ -55,4 +55,10 @@ export class ObligacionService {
         return this.http.delete([this.api,id].join('/'));
     }
 
+    mercadopago(item:PaymentMercadoPago){
+        return this.http.post<PaymentMercadoPago>([this.api,item.id_obligacion,'mercadopago'].join('/'),item);
+    }
+    mercadopagoEliminar(item:PaymentMercadoPago){
+        return this.http.delete<PaymentMercadoPago>([this.api,item.id_obligacion,'mercadopago'].join('/'));
+    }
 }

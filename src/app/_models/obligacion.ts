@@ -1,6 +1,7 @@
 import { Usuario } from "./usuario";
 import { PlanPago } from "./plan_pago";
 import { Pago } from "./pago";
+import { Inscripcion } from './inscripcion';
 
 export interface Obligacion{
     id:number;
@@ -27,6 +28,8 @@ export interface Obligacion{
     interes:Obligacion;
     obligacion:Obligacion;
     intereses:ObligacionInteres[];
+    inscripcion:Inscripcion;
+    mercadopago:PaymentMercadoPago;
 }
 
 export interface TipoObligacion{
@@ -63,4 +66,21 @@ export interface ObligacionInteres{
     updated_at:Date;
 
     obligacion:Obligacion;
+}
+
+export interface PaymentMercadoPago{
+    id:number;
+    id_obligacion:number;
+    id_inscripcion:number;
+    preference_id:string;
+    preference_url:string;
+    email:string;
+    monto:number;
+    payment_id:string;
+    payment_status:string;
+    fecha_pagado:string;
+    observaciones:string;
+    estado:boolean;
+    created_at:Date;
+    updated_at:Date;
 }

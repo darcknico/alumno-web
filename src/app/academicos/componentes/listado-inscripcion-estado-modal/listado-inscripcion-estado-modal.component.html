@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Historial de estados</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body text-center">
+    <div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
+            <thead>
+                <tr>
+                <th class="no-sort">Registrado</th>
+                <th class="no-sort">Fecha</th>
+                <th class="no-sort">Observaciones</th>
+                <th class="no-sort">Anterior</th>
+                <th class="no-sort">Actual</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="dataSource?.length != 0">
+                <tr *ngFor="let item of dataSource" >
+                    <td>{{ item.created_at | date:'dd/MM/yyyy'}}</td>
+                    <td>{{ item.fecha | date:'dd/MM/yyyy'}}</td>
+                    <td>{{ item.observaciones}}</td>
+                    <td>{{ item.anterior.nombre}}</td>
+                    <td>{{ item.actual.nombre}}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="cancelar()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    CERRAR
+    </button>
+</div>

@@ -20,6 +20,8 @@ import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 import { InscripcionEgresadoModalComponent } from '../componentes/inscripcion-egresado-modal/inscripcion-egresado-modal.component';
 import { InscripcionAbandonadoModalComponent } from '../componentes/inscripcion-abandonado-modal/inscripcion-abandonado-modal.component';
 import dtLanguage from '../../_constants/dtLanguage';
+import { ListadoInscripcionEstadoModalComponent } from '../componentes/listado-inscripcion-estado-modal/listado-inscripcion-estado-modal.component';
+import { InscripcionEstadoModalComponent } from '../componentes/inscripcion-estado-modal/inscripcion-estado-modal.component';
 
 @Component({
   selector: 'app-inscripcion-ver',
@@ -178,9 +180,20 @@ export class InscripcionVerComponent implements OnInit {
       return;
     }
     let modal;
-    switch(+this.f.id_tipo_inscripcion_estado.value){
+    const id_tipo_inscripcion_estado:number = Number(this.f.id_tipo_inscripcion_estado.value);
+    let tipo_inscripcion = this.tipos_estado.find(t=>t.id == id_tipo_inscripcion_estado);
+    switch(id_tipo_inscripcion_estado){
       case 1: //regular
-        this.cambiar_estado();
+        modal = this.modalService.show(InscripcionEstadoModalComponent,{class: 'modal-lg modal-danger'});
+        (<InscripcionEstadoModalComponent>modal.content).onShow(this.inscripcion,tipo_inscripcion);
+        (<InscripcionEstadoModalComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+            this.inscripcion.id_tipo_inscripcion_estado = this.f.id_tipo_inscripcion_estado.value;
+            this.toastr.success('El estado de la inscripción fue cambiado con exito.');
+          } else {
+            this.f.id_tipo_inscripcion_estado.setValue(this.inscripcion.id_tipo_inscripcion_estado);
+          }
+        });
         break;
       case 2: //egresado
         modal = this.modalService.show(InscripcionEgresadoModalComponent,{class: 'modal-info'});
@@ -207,7 +220,16 @@ export class InscripcionVerComponent implements OnInit {
         });
         break;
       default:
-        this.cambiar_estado();
+        modal = this.modalService.show(InscripcionEstadoModalComponent,{class: 'modal-lg modal-danger'});
+        (<InscripcionEstadoModalComponent>modal.content).onShow(this.inscripcion,tipo_inscripcion);
+        (<InscripcionEstadoModalComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+            this.inscripcion.id_tipo_inscripcion_estado = this.f.id_tipo_inscripcion_estado.value;
+            this.toastr.success('El estado de la inscripción fue cambiado con exito.');
+          } else {
+            this.f.id_tipo_inscripcion_estado.setValue(this.inscripcion.id_tipo_inscripcion_estado);
+          }
+        });
         break;
     }
   }
@@ -355,6 +377,13 @@ export class InscripcionVerComponent implements OnInit {
     });
   }
 
+  onClickInscripcionEstado(){
+    const modal = this.modalService.show(ListadoInscripcionEstadoModalComponent,{class: 'modal-lg modal-danger'});
+    (<ListadoInscripcionEstadoModalComponent>modal.content).onShow(this.inscripcion);
+    (<ListadoInscripcionEstadoModalComponent>modal.content).onClose.subscribe(result => {
+      
+    });
+  }
 
   /**
    * TABLA

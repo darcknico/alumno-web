@@ -29,7 +29,87 @@
       <p>Concepto: {{item.descripcion}}</p>
     </div>
   </div>
-  <h2 class="pl-2">Pagos</h2>
+  <h2 class="pl-2">
+    Pagos
+    <button type="button" class="btn btn-info btn-sm" 
+      (click)="abrirFormularioMercadoPago()" 
+      *ngIf="!item.mercadopago && !isFormularioMercadoPago && item.id_tipo_obligacion == 1 && item.saldo>0">
+      GENERAR MERCADOPAGO
+    </button>
+  </h2>
+  <form [formGroup]="formulario" *ngIf="isFormularioMercadoPago" class="mx-5 my-2">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="text-center">Formulario para generar preferencia con MERCADOPAGO</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-3">
+        <label class="control-label">Monto</label>
+        <input 
+          formControlName="monto"
+          type="number" 
+          class="form-control {{ (f.monto.touched || f.monto.dirty)?(( f.monto.invalid )?'is-invalid':'is-valid'):''}}">
+        <div *ngIf= " f.monto.touched || f.monto.dirty " class="invalid-feedback">
+          <span *ngIf="f.monto.hasError('required')" class="help-block">
+            El monto es requerido
+          </span>
+          <span *ngIf="f.monto.hasError('min')" class="help-block">
+            El monto debe ser mayor que cero
+          </span>
+        </div>
+      </div>
+      <div class="form-group col-sm-9">
+        <label class="control-label">Correo Electronico</label>
+        <input 
+          formControlName="email"
+          type="email" 
+          class="form-control {{ (f.email.touched || f.email.dirty)?(( f.email.invalid )?'is-invalid':'is-valid'):''}}"
+          placeholder="prueba@prueba.com">
+        <div *ngIf= " f.email.touched || f.email.dirty " class="invalid-feedback">
+          <span *ngIf="f.email.hasError('required')" class="help-block">
+            El email es requerido
+          </span>
+          <span *ngIf="f.monto.hasError('min')" class="help-block">
+            El email debe ser valido
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-12">
+        <label class="control-label">Observaciones</label>
+        <textarea formControlName="observaciones" 
+          class="form-control {{ (f.observaciones.touched || f.observaciones.dirty)?(( f.observaciones.invalid )?'is-invalid':'is-valid'):''}}" 
+          rows="2"></textarea>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="generarPreferenciaMercadoPago()" [disabled]="!formulario.valid">GENERAR PREFERENCIA</button>
+  </form>
+  <div class="card text-white mx-5 my-2 bg-secondary" *ngIf="item.mercadopago">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="card-title mb-0">Preferencia de MERCADO PAGO</h5>
+        <button ngxClipboard type="button" class="btn btn-sm btn-success" [cbContent]="item.mercadopago.preference_url" (cbOnSuccess)="copied($event)">LINK DE PAGO</button>
+      </div>
+      <p class="card-text" *ngIf="item.mercadopago.fecha_pagado">
+        Fecha de imputación: <b>{{item.mercadopago.fecha_pagado | date:'dd/MM/yyyy'}}</b>
+      </p>
+      <p class="card-text">
+        Fecha de creacion: {{item.mercadopago.created_at | date:'dd/MM/yyyy'}}<br>
+        Monto a cobrar: ${{item.mercadopago.monto | number:'1.2-2':'es-AR'}}<br>
+        Observaciones: {{item.mercadopago.observaciones }}<br>
+        Enviado a: {{item.mercadopago.email}}
+      </p>
+      <p class="card-text">Estado: 
+        <b *ngIf="!item.mercadopago.payment_status">No ha seleccionado ningun medio de pago</b>
+        <b *ngIf="item.mercadopago.payment_status">{{ item.mercadopago.payment_status }}</b>
+      </p>
+      <!--
+      <button type="button" class="btn btn-sm btn-danger" (click)="eliminarPreferenciaMercadoPago()" [disabled]="consultando">DESCARTAR PREFERENCIA</button>
+      -->
+    </div>
+  </div>
   <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" class="table row-border hover" width="100%" *ngIf="dataSource">
       <thead>

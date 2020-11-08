@@ -172,6 +172,11 @@
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Estado de la Inscripción
+          <div class="card-header-actions">
+            <button class="btn btn-sm btn-outline-info" type="button" (click)="onClickInscripcionEstado()">
+              LISTADO
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <form [formGroup]="formulario" >
@@ -391,7 +396,18 @@
               <tbody *ngIf="obligaciones?.length != 0">
                 <tr *ngFor="let item of obligaciones" class="{{id_ultimo==item.id?'ultimo':''}}">
                   <td>{{ item.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ item.descripcion}}</td>
+                  <td>
+                    {{ item.descripcion}}
+                    <ng-container *ngIf="item.mercadopago">
+                      <span class="badge badge-primary">mercadopago</span>
+                      <ng-container *ngIf="item.mercadopago.payment_status else sinPreferencia">
+                        <span class="badge badge-info">{{item.mercadopago.payment_status}}</span>
+                      </ng-container>
+                      <ng-template #sinPreferencia>
+                        <span class="badge badge-danger">S/P</span>
+                      </ng-template>
+                    </ng-container>
+                  </td>
                   <td>
                     <div *ngIf="[1,2,10].indexOf(item.id_tipo_obligacion) >= 0">
                       ${{ item.monto | number:'1.2-2':'es-AR' }}
@@ -409,6 +425,12 @@
               </tbody>
             </table>
           </div>
+          <p>
+            mercadopago: Cuota con preferencia de pago creada
+          </p>
+          <p>
+            S/P: Sin metodo de pago elegido en la preferencia
+          </p>
         </div>
         <div class="card-footer">
           <button 

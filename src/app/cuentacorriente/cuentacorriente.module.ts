@@ -22,6 +22,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     NgxCurrencyModule,
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
+    ClipboardModule,
   ],
   declarations: [
     PlanPagoComponent, 

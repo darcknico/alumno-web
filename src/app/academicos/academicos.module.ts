@@ -50,6 +50,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { ListadoInscripcionEstadoModalComponent } from './componentes/listado-inscripcion-estado-modal/listado-inscripcion-estado-modal.component';
+import { InscripcionEstadoModalComponent } from './componentes/inscripcion-estado-modal/inscripcion-estado-modal.component';
 
 @NgModule({
   imports: [
@@ -104,6 +106,8 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     InscripcionComisionMultipleNuevoComponent,
     InscripcionEgresadoModalComponent,
     InscripcionAbandonadoModalComponent,
+    ListadoInscripcionEstadoModalComponent,
+    InscripcionEstadoModalComponent,
   ],
   entryComponents: [
     TramiteNuevoModalComponent,
@@ -114,6 +118,8 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     AlumnoArchivoEditarModalComponent,
     InscripcionEgresadoModalComponent,
     InscripcionAbandonadoModalComponent,
+    ListadoInscripcionEstadoModalComponent,
+    InscripcionEstadoModalComponent,
   ],
   providers:[
     AlumnoCuotaGuard,

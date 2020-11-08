@@ -27,14 +27,15 @@ export class SedeEditarComponent implements OnInit {
   ) {
     this.formulario = this.fb.group({
       nombre: ['', Validators.required],
-      ubicacion: '',
-      localidad: '',
+      ubicacion: ['',[Validators.maxLength(191)]],
+      localidad: ['',[Validators.maxLength(191)]],
       codigo_postal: '',
-      direccion:'',
-      telefono:'',
-      celular:'',
+      direccion:['',[Validators.maxLength(191)]],
+      telefono:['',[Validators.maxLength(191)]],
+      celular:['',[Validators.maxLength(191)]],
       email: ['',Validators.email],
       punto_venta:'',
+      mercadopago:false,
     });
   }
 
@@ -60,6 +61,7 @@ export class SedeEditarComponent implements OnInit {
           this.f.celular.setValue(response.celular);
           this.f.email.setValue(response.email);
           this.f.punto_venta.setValue(response.punto_venta);
+          this.f.mercadopago.setValue(response.mercadopago);
         });
       }
     });
@@ -85,6 +87,7 @@ export class SedeEditarComponent implements OnInit {
     item.celular = this.f.celular.value;
     item.email = this.f.email.value;
     item.punto_venta = this.f.punto_venta.value;
+    item.mercadopago = this.f.mercadopago.value;
     if(this.id>0){
       this.sedeService.update(item).subscribe(response=>{
         this.toastr.success('Sede Editada', '');

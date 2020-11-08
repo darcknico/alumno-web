@@ -25,9 +25,10 @@ export class BecaEditarComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     this.formulario = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: '',
-      porcentaje: ['', Validators.required],
+      nombre: ['', [Validators.required,Validators.maxLength(191)]],
+      descripcion: ['',[Validators.maxLength(191)]],
+      porcentaje: [0, [Validators.required,Validators.min(0),Validators.max(100)]],
+      porcentaje_matricula: [0,[Validators.required,Validators.min(0),Validators.max(100)]],
     });
   }
 
@@ -47,6 +48,7 @@ export class BecaEditarComponent implements OnInit {
           this.f.nombre.setValue(response.nombre);
           this.f.descripcion.setValue(response.descripcion);
           this.f.porcentaje.setValue(response.porcentaje);
+          this.f.porcentaje_matricula.setValue(response.porcentaje_matricula);
         });
       }
     });
@@ -66,6 +68,7 @@ export class BecaEditarComponent implements OnInit {
     item.nombre = this.f.nombre.value;
     item.descripcion = this.f.descripcion.value;
     item.porcentaje = this.f.porcentaje.value;
+    item.porcentaje_matricula = this.f.porcentaje_matricula.value;
     if(this.id>0){
       this.becaService.update(item).subscribe(response=>{
         this.toastr.success('Beca Editado', '');

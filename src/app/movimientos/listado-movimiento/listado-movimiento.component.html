@@ -95,6 +95,9 @@
                   <td>
                     <span *ngIf="item.descripcion">Descripcion:{{ item.descripcion}}</span>
                     <span *ngIf="item.tipo_comprobante">({{item.tipo_comprobante.nombre}} {{item.numero}})</span>
+                    <span *ngIf="item.pago">
+                      R:{{item.pago.numero_oficial}}
+                    </span>
                   </td>
                   <td>${{ item.monto | number:'1.2-2':'es-AR'}}</td>
                   <td class="m-0">

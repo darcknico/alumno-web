@@ -89,11 +89,11 @@ export class CuentaCorrienteComponent implements OnInit {
     });
   }
   ver(item:Obligacion){
-    const modal = this.modalService.show(ObligacionVerModalComponent,{class: 'modal-info'});
+    const modal = this.modalService.show(ObligacionVerModalComponent,{class: 'modal-lg modal-info'});
     (<ObligacionVerModalComponent>modal.content).onShow(item);
     (<ObligacionVerModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
-        
+        this.actualizar();
       }
     });
   }

@@ -22,7 +22,18 @@
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
                 <tr *ngFor="let item of dataSource" class="{{id_ultimo==item.id?'ultimo':''}}">
-                  <td>{{ item.descripcion }}</td>
+                  <td>
+                    {{ item.descripcion }}
+                    <ng-container *ngIf="item.mercadopago">
+                      <span class="badge badge-primary">mercadopago</span>
+                      <ng-container *ngIf="item.mercadopago.payment_status else sinPreferencia">
+                        <span class="badge badge-info">{{item.mercadopago.payment_status}}</span>
+                      </ng-container>
+                      <ng-template #sinPreferencia>
+                        <span class="badge badge-danger">S/P</span>
+                      </ng-template>
+                    </ng-container>
+                  </td>
                   <td>{{ item.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
                   <td>
                       ${{ item.monto | number:'1.2-2':'es-AR' }}
@@ -61,6 +72,12 @@
               </tbody>
             </table>
           </div>
+          <p>
+            mercadopago: Cuota con preferencia de pago creada
+          </p>
+          <p>
+            S/P: Sin metodo de pago elegido en la preferencia
+          </p>
         </div>
         <div class="card-footer">
           <button class="btn btn-info" type="button" (click)="volver()">VOLVER</button>

@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Inscripcion, InscripcionEstado } from '../../../_models/inscripcion';
 import { Subject } from 'rxjs';
+import { Inscripcion, InscripcionEstado, TipoInscripcionEstado } from '../../../_models/inscripcion';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { InscripcionService } from '../../../_services/inscripcion.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import * as moment from "moment";
-import { InscripcionService } from '../../../_services/inscripcion.service';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-inscripcion-egresado-modal',
-  templateUrl: './inscripcion-egresado-modal.component.html',
-  styleUrls: ['./inscripcion-egresado-modal.component.scss']
+  selector: 'app-inscripcion-estado-modal',
+  templateUrl: './inscripcion-estado-modal.component.html',
+  styleUrls: ['./inscripcion-estado-modal.component.scss']
 })
-export class InscripcionEgresadoModalComponent implements OnInit {
+export class InscripcionEstadoModalComponent implements OnInit {
 
   public onClose: Subject<boolean>;
   inscripcion:Inscripcion;
   formulario:FormGroup;
+  tipo_inscripcion_estado:TipoInscripcionEstado;
 
   constructor(
     private inscripcionService:InscripcionService,
@@ -31,8 +32,8 @@ export class InscripcionEgresadoModalComponent implements OnInit {
   ) { 
     let hoy = moment();
     this.formulario = this.fb.group({
-      fecha_egreso:[hoy.toDate(),Validators.required],
-      observaciones:[''],
+      fecha:[hoy.toDate(),Validators.required],
+      observaciones:'',
     });
   }
 
@@ -43,8 +44,9 @@ export class InscripcionEgresadoModalComponent implements OnInit {
     return this.formulario.controls;
   }
 
-  onShow(item:Inscripcion){
-    this.inscripcion = item;
+  onShow(inscripcion:Inscripcion,tipo_inscripcion_estado:TipoInscripcionEstado){
+    this.inscripcion = inscripcion;
+    this.tipo_inscripcion_estado = tipo_inscripcion_estado;
   }
 
   continuar(){
@@ -54,10 +56,9 @@ export class InscripcionEgresadoModalComponent implements OnInit {
     let item = <InscripcionEstado>{};
     item.id = this.inscripcion.id
     item.id_inscripcion = this.inscripcion.id
-    item.id_tipo_inscripcion_estado = 2;
-    item.fecha_egreso = moment(this.f.fecha_egreso.value).format('YYYY-MM-DD');
+    item.id_tipo_inscripcion_estado = this.tipo_inscripcion_estado.id;
+    item.fecha = moment(this.f.fecha.value).format('YYYY-MM-DD');
     item.observaciones = this.f.observaciones.value;
-
     this.inscripcionService.estado(item).subscribe(response=>{
       this.onClose.next(true);
       this.bsModalRef.hide();
@@ -68,6 +69,4 @@ export class InscripcionEgresadoModalComponent implements OnInit {
     this.onClose.next(false);
     this.bsModalRef.hide();
   }
-
-
 }

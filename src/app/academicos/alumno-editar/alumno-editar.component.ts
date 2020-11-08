@@ -83,7 +83,7 @@ export class AlumnoEditarComponent implements OnInit {
         } else {
           this.consultando = false;
         }
-        console.log('favoriteLocations validation status: ' + status);
+        //console.log('favoriteLocations validation status: ' + status);
         }
         ,
       error => {
@@ -91,25 +91,25 @@ export class AlumnoEditarComponent implements OnInit {
       },
     );
     this.formulario = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: '',
+      nombre: ['', [Validators.required,Validators.maxLength(191)]],
+      apellido: ['', [Validators.maxLength(191)]],
       fecha_nacimiento: null,
       sexo: '',
-      telefono: '',
-      celular: '',
+      telefono: ['', [Validators.maxLength(191)]],
+      celular: ['', [Validators.maxLength(191)]],
       email: ['', [CustomValidator.emailValidator]],
       id_provincia:14,
-      localidad:'',
+      localidad:['', [Validators.maxLength(191)]],
       codigo_postal:'',
-      domicilio: '',
+      domicilio: ['', [Validators.maxLength(191)]],
       numero: '',
       piso: '',
       depto: '',
       usuario:this.usuario,
       id_tipo_alumno_civil: '',
-      ciudad_nacimiento: '',
-      nacionalidad: '',
-      observaciones: '',
+      ciudad_nacimiento: ['', [Validators.maxLength(191)]],
+      nacionalidad: ['', [Validators.maxLength(191)]],
+      observaciones: ['', [Validators.maxLength(191)]],
     });
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.f.localidad.value);

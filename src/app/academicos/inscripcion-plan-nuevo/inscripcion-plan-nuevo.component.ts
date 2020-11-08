@@ -57,6 +57,8 @@ export class InscripcionPlanNuevoComponent implements OnInit {
       interes_monto: [0, [Validators.required,Validators.min(0)]],
       id_beca:null,
       beca_porcentaje:[0,Validators.min(0)],
+      beca_porcentaje_matricula:[0,Validators.min(0)],
+      
       cuota_cantidad: [10, [Validators.required,Validators.min(0)]],
       dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
       fecha: [fecha.toDate(), [Validators.required]],
@@ -89,7 +91,13 @@ export class InscripcionPlanNuevoComponent implements OnInit {
         this.inscripcionService.getById(ids).subscribe(response=>{
           this.inscripcion = response;
           this.f.id_beca.setValue(this.inscripcion.id_beca);
-          this.f.beca_porcentaje.setValue(this.inscripcion.beca_porcentaje);
+          if(this.inscripcion.beca){
+            this.f.beca_porcentaje.setValue(this.inscripcion.beca.porcentaje);
+            this.f.beca_porcentaje_matricula.setValue(this.inscripcion.beca.porcentaje_matricula);
+          } else {
+            this.f.beca_porcentaje.setValue(this.inscripcion.beca_porcentaje);
+            this.f.beca_porcentaje_matricula.setValue(this.inscripcion.beca_porcentaje_matricula);
+          }
         });
       }
     });
@@ -135,6 +143,7 @@ export class InscripcionPlanNuevoComponent implements OnInit {
   vista_previa(){
     let plan_pago = <PlanPago>{};
     plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
+    plan_pago.beca_porcentaje_matricula = this.f.beca_porcentaje_matricula.value;
     plan_pago.anio = this.f.anio.value;
     plan_pago.matricula_monto = this.f.matricula_monto.value;
     plan_pago.cuota_monto = this.f.cuota_monto.value;
@@ -161,6 +170,7 @@ export class InscripcionPlanNuevoComponent implements OnInit {
     plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
     plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
     plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
+    plan_pago.beca_porcentaje_matricula = this.f.beca_porcentaje_matricula.value;
     let fecha = moment(this.f.fecha.value);
     if(fecha.isValid()){
       plan_pago.fecha = fecha.format('YYYY-MM-DD');
@@ -218,9 +228,11 @@ export class InscripcionPlanNuevoComponent implements OnInit {
       let beca = this.becas.find(data=>data.id == id);
       if(beca){
         this.f.beca_porcentaje.setValue(beca.porcentaje);
+        this.f.beca_porcentaje_matricula.setValue(beca.porcentaje);
       }
     } else {
       this.f.beca_porcentaje.setValue(0);
+      this.f.beca_porcentaje_matricula.setValue(0);
     }
   }
 

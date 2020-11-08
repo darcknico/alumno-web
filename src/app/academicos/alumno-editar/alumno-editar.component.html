@@ -83,7 +83,7 @@
                   required
                   formControlName="nombre"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.nombre.touched || f.nombre.dirty)?(( f.nombre.invalid )?'is-invalid':'is-valid'):''}}"
                   placeholder="Nombre">
                 <div *ngIf= "f.nombre.touched && f.nombre.invalid" class="invalid-feedback">
                   <span *ngIf="f.nombre.hasError('required')" class="help-block">
@@ -97,7 +97,7 @@
                   required
                   formControlName="apellido"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.apellido.touched || f.apellido.dirty)?(( f.apellido.invalid )?'is-invalid':'is-valid'):''}}"
                   placeholder="Apellido">
                   <div *ngIf= "f.apellido.touched && f.apellido.invalid" class="invalid-feedback">
                     <span *ngIf="f.apellido.hasError('required')" class="help-block">
@@ -120,14 +120,14 @@
                 <input 
                   formControlName="ciudad_nacimiento"
                   type="text" 
-                  class="form-control">
+                  class="form-control {{ (f.ciudad_nacimiento.touched || f.ciudad_nacimiento.dirty)?(( f.ciudad_nacimiento.invalid )?'is-invalid':'is-valid'):''}}">
               </div>
               <div class="form-group col-6">
                 <label class="control-label">Nacionalidad</label>
                 <input 
                   formControlName="nacionalidad"
                   type="text" 
-                  class="form-control">
+                  class="form-control {{ (f.nacionalidad.touched || f.nacionalidad.dirty)?(( f.nacionalidad.invalid )?'is-invalid':'is-valid'):''}}">
               </div>
             </div>
             <div class="row">
@@ -161,22 +161,22 @@
                 <input 
                   formControlName="email"
                   type="email" 
-                  class="form-control"
+                  class="form-control {{ (f.email.touched || f.email.dirty)?(( f.email.invalid )?'is-invalid':'is-valid'):''}}"
                   placeholder="prueba@prueba.com">
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Telefono</label>
                 <input 
                   formControlName="telefono"
-                  type="text" 
-                  class="form-control">
+                  type="number" 
+                  class="form-control {{ (f.telefono.touched || f.telefono.dirty)?(( f.telefono.invalid )?'is-invalid':'is-valid'):''}}">
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Celular</label>
                 <input 
                   formControlName="celular"
-                  type="text" 
-                  class="form-control">
+                  type="number" 
+                  class="form-control {{ (f.celular.touched || f.celular.dirty)?(( f.celular.invalid )?'is-invalid':'is-valid'):''}}">
               </div>
             </div>
             <div class="row">
@@ -259,10 +259,9 @@
             <div class="row">
               <div class="form-group col-12">
                 <label class="control-label">Observaciones</label>
-                <input 
-                  formControlName="observaciones"
-                  type="text" 
-                  class="form-control">
+                <textarea formControlName="observaciones" 
+                  class="form-control {{ (f.observaciones.touched || f.observaciones.dirty)?(( f.observaciones.invalid )?'is-invalid':'is-valid'):''}}" 
+                  rows="2"></textarea>
               </div>
             </div>
           </form>

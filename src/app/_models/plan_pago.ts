@@ -39,6 +39,7 @@ export interface PlanPago{
     id_beca:number;
     beca_nombre:string;
     beca_porcentaje:number;
+    beca_porcentaje_matricula:number;
 }
 
 export interface PlanPagoPrecio{

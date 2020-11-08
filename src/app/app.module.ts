@@ -58,6 +58,7 @@ import { esLocale } from 'ngx-bootstrap/locale';
 defineLocale('es', esLocale);
 import localeEsAR from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAR, 'es-AR');
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { UsuarioSedeModalComponent } from './modals/usuario-sede-modal/usuario-sede-modal.component';
 import { DialogConfirmComponent } from './_generic/dialog-confirm/dialog-confirm.component';
@@ -160,6 +161,7 @@ import { SedeProvider } from './_providers/sede.provider';
 import { PusherProvider } from './_providers/pusher.provider';
 import { DocenteEstadoService } from './_services/docente_estado.service';
 import { AlumnoDispositivoService } from './_services/alumno_dispositivo';
+import { InscripcionEstadoService } from './_services/inscripcion_estado.service';
 
 export const customCurrencyMaskConfig = {
     align: "left",
@@ -214,6 +216,7 @@ export const customCurrencyMaskConfig = {
       provide: DateAdapter,
       useFactory: adapterFactory
     }),
+    ClipboardModule,
   ],
   declarations: [
     AppComponent,
@@ -291,6 +294,7 @@ export const customCurrencyMaskConfig = {
     ObligacionService,
     TipoInscripcionAbandonoService,
     InscripcionAbandonoService,
+    InscripcionEstadoService,
     PusherProvider,
 
     // APP

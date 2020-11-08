@@ -36,9 +36,7 @@ export class ListadoCuotaComponent implements OnInit {
 
     this.route.params.subscribe(params=>{
       this.id = +params['id_plan_pago'];
-      this.planPagoService.cuotas(this.id).subscribe(response=>{
-        this.dataSource = response;
-      });
+      this.actualizar();
     });
   }
 
@@ -46,12 +44,18 @@ export class ListadoCuotaComponent implements OnInit {
     this.router.navigate(['/cuentacorriente/'+this.id+'/ver']);
   }
 
+  actualizar(){
+    this.planPagoService.cuotas(this.id).subscribe(response=>{
+      this.dataSource = response;
+    });
+  }
+
   ver(item:Obligacion){
-    const modal = this.modalService.show(ObligacionVerModalComponent,{class: 'modal-info'});
+    const modal = this.modalService.show(ObligacionVerModalComponent,{class: 'modal-lg modal-info'});
     (<ObligacionVerModalComponent>modal.content).onShow(item);
     (<ObligacionVerModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
-        
+        this.actualizar();
       }
     });
   }

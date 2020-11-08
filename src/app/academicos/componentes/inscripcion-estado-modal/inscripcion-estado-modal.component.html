@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">
+    Cambiar estado por <b *ngIf="tipo_inscripcion_estado">{{tipo_inscripcion_estado.nombre}}</b>
+    </h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="formulario" >
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label">Fecha (*)</label>
+                <input bsDatepicker
+                    formControlName="fecha"
+                    type="text" 
+                    class="form-control {{ f.fecha.invalid?'is-invalid':'is-valid'}}" >
+                <div *ngIf= " (f.fecha.touched || f.fecha.dirty) && f.fecha.invalid " class="invalid-feedback">
+                    <span *ngIf="f.fecha.hasError('required')" class="help-block">
+                    La fecha es requerido
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-12">
+            <label class="control-label">Observaciones</label>
+            <textarea formControlName="observaciones" 
+                class="form-control {{ (f.observaciones.touched || f.observaciones.dirty)?(( f.observaciones.invalid )?'is-invalid':'is-valid'):''}}" 
+                rows="2"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="cancelar()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    CANCELAR
+    </button>
+    <button
+    type="button" 
+    class="btn btn-primary" 
+    (click)="continuar()"
+    [disabled]="!formulario.valid">
+    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+    GUARDAR ESTADO
+    </button>
+</div>

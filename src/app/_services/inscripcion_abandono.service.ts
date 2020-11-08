@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Inscripcion, InscripcionAbandono } from '../_models/inscripcion';
+import { Inscripcion, InscripcionAbandono, InscripcionEstado } from '../_models/inscripcion';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeService } from './sede.service';
 import { Ajax } from '../_models/tipo';
@@ -53,7 +53,7 @@ export class InscripcionAbandonoService {
         } );
     }
 
-    register(inscripcion:Inscripcion){
+    register(inscripcion:(Inscripcion|InscripcionEstado)){
         return this.http.post([this.ruta,inscripcion.id,'abandonos'].join('/'),
             inscripcion
         );

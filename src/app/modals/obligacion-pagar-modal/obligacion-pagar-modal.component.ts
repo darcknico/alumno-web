@@ -29,6 +29,7 @@ export class ObligacionPagarModalComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   editado:boolean=true;
 
+  isLoading:boolean = false;
   constructor(
     private planPagoService:PlanPagoService,
     private movimientoService:MovimientoService,
@@ -39,6 +40,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     ) {
     this.formulario = this.fb.group({
       especial_covid:true,
+      especial_ahora_estudiantes:false,
       monto: [ 0, Validators.required],
       fecha: [ moment().toDate(), Validators.required],
       descripcion: 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),
@@ -75,6 +77,23 @@ export class ObligacionPagarModalComponent implements OnInit {
 
   ngOnInit() {
     this.onClose = new Subject();
+
+    this.f.especial_ahora_estudiantes.valueChanges.subscribe(val=>{
+      if(val){
+        this.f.monto.setValue(3500,{emitEvent:false});
+        this.f.especial_covid.setValue(false,{emitEvent:false});
+        this.f.id_forma_pago.setValue(3);
+        this.f.id_forma_pago.disable();
+      } else {
+        this.f.id_forma_pago.enable();
+      }
+    });
+    this.f.especial_covid.valueChanges.subscribe(val=>{
+      if(val){
+        this.f.especial_ahora_estudiantes.setValue(false,{emitEvent:false});
+        this.f.id_forma_pago.enable();
+      }
+    });
   }
 
   onShow(plan_pago:PlanPago,id_sede:number){
@@ -96,9 +115,14 @@ export class ObligacionPagarModalComponent implements OnInit {
     item.bonificar_intereses = this.f.bonificar_intereses.value;
     item.bonificar_cuotas = this.f.bonificar_cuotas.value;
     item.especial_covid = this.f.especial_covid.value;
+    item.especial_ahora_estudiantes = this.f.especial_ahora_estudiantes.value;
+    this.isLoading = true;
     this.planPagoService.pagarPreparar(item).subscribe((response:any)=>{
+      this.isLoading = false;
       this.editado = false;
       this.dataSource = response.detalles.filter(item=>item.monto>0);
+    },()=>{
+      this.isLoading = false;
     });
   }
 
@@ -124,7 +148,9 @@ export class ObligacionPagarModalComponent implements OnInit {
     pago.bonificar_cuotas = this.f.bonificar_cuotas.value;
     pago.numero_oficial = this.f.numero_oficial.value;
     pago.especial_covid = this.f.especial_covid.value;
+    pago.especial_ahora_estudiantes = this.f.especial_ahora_estudiantes.value;
 
+    this.isLoading = true;
     this.movimientoService.ingreso(movimiento).subscribe(response=>{
       this.toastr.success('Generando Movimiento', '');
       pago.id_movimiento = response.id;
@@ -133,7 +159,11 @@ export class ObligacionPagarModalComponent implements OnInit {
         this.onClose.next(false);
         this.bsModalRef.hide();
         this.router.navigate(['/cuentacorriente/'+this.plan_pago.id+'/pagos/'+_pago.id+'/recibo']);
+      },()=>{
+        this.isLoading = false;
       });
+    },()=>{
+      this.isLoading = false;
     });
   }
 
@@ -147,6 +177,6 @@ export class ObligacionPagarModalComponent implements OnInit {
   }
 
   disablePagar():boolean{
-    return (this.dataSource?this.dataSource.length == 0:true) || this.editado;
+    return (this.dataSource?this.dataSource.length == 0:true) || this.editado || this.isLoading;
   }
 }

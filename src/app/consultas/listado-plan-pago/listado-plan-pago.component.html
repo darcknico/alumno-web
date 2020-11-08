@@ -16,7 +16,7 @@
               <label class="control-label">Departamento</label>
               <select 
                 class="form-control" 
-                (change)="refrescar()"
+                (change)="canFilter = true"
                 [(ngModel)]="request.id_departamento"
                 >
                 <option value="0">TODOS</option>
@@ -27,7 +27,7 @@
               <label class="control-label">Tipo de Deudor</label>
               <select 
                 class="form-control" 
-                (change)="refrescar()"
+                (change)="canFilter = true"
                 [(ngModel)]="request.deudores"
                 >
                 <option value="0">TODOS</option>
@@ -39,7 +39,7 @@
               <label class="control-label">Periodo Lectivo</label>
               <select 
                 class="form-control" 
-                (change)="refrescar()"
+                (change)="canFilter = true"
                 [(ngModel)]="request.id_tipo_materia_lectivo"
                 >
                 <option value="0">TODOS</option>
@@ -48,7 +48,7 @@
             </div>
             <div class="form-group col-sm-2">
               <label class="control-label">Año</label>
-              <input class="form-control" type="number" [(ngModel)]="request.anio" (keyup.enter)="refrescar()">
+              <input class="form-control" type="number" [(ngModel)]="request.anio" (input)="canFilter = true" min=2018>
             </div>
           </div>
           <div class="row">
@@ -56,7 +56,7 @@
               <label class="control-label">Estados</label>
               <ng-select 
                 [multiple]="true" 
-                (ngModelChange)="refrescar()"
+                (ngModelChange)="canFilter = true"
                 [(ngModel)]="request.id_tipo_inscripcion_estado"
                 >
                 <ng-option *ngFor="let item of tipos_estado" [value]="item.id" >{{item.nombre}}</ng-option>
@@ -70,7 +70,7 @@
                     [selectOnTab]="true"
                     bindValue="id"
                     bindLabel="nombre"
-                    (ngModelChange)="refrescar()"
+                    (ngModelChange)="canFilter = true"
                     placeholder="Seleccione la Carrera"
                     [(ngModel)]="request.id_carrera"
                     [clearable]="false">
@@ -82,11 +82,16 @@
                     [selectOnTab]="true"
                     bindValue="id"
                     bindLabel="nombre"
-                    (ngModelChange)="refrescar()"
+                    (ngModelChange)="canFilter = true"
                     placeholder="Seleccione la Beca"
                     [(ngModel)]="request.id_beca"
                     [clearable]="false">
                 </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="button" class="btn btn-info my-2" [disabled]="!canFilter || consultando" (click)="refrescar()">FILTRAR</button>
             </div>
           </div>
           <div class="table-responsive">
@@ -105,22 +110,42 @@
               </thead>
               <tbody *ngIf="dataSource?.length != 0">
                 <tr *ngFor="let item of dataSource" class="{{item.estado==0?'bg-danger':''}}">
-                  <td>{{ item.anio }}</td>
                   <td>
-                    <div *ngIf="item.inscripcion">
-                      {{ item.inscripcion.alumno.nombre }} {{ item.inscripcion.alumno.apellido }}
-                      <div *ngIf="item.inscripcion.beca">
+                    <small>
+                      {{ item.anio }}
+                    </small>
+                  </td>
+                  <td>
+                    <small *ngIf="item.inscripcion">
+                      {{ item.inscripcion.alumno.nombre }} {{ item.inscripcion.alumno.apellido }}<br/>
+                      <i *ngIf="item.inscripcion.beca">
                         ({{ item.inscripcion.beca.nombre }})
-                      </div>
-                    </div>
+                      </i>
+                    </small>
                   </td>
                   <td>
-                    {{item.inscripcion.carrera.nombre}}
+                    <small>{{item.inscripcion.carrera.nombre}} <br/><b>({{item.inscripcion.plan_estudio.anio}})</b></small>
                   </td>
-                  <td>${{item.cuota_total | number:'1.2-2':'es-AR'}}</td>
-                  <td>${{item.pagado | number:'1.2-2':'es-AR'}}</td>
-                  <td>${{item.saldo_total | number:'1.2-2':'es-AR'}}</td>
-                  <td>${{item.saldo_hoy | number:'1.2-2':'es-AR'}}</td>
+                  <td>
+                    <small>
+                      ${{item.cuota_total | number:'1.2-2':'es-AR'}}
+                    </small>
+                  </td>
+                  <td>
+                    <small>
+                      ${{item.pagado | number:'1.2-2':'es-AR'}}
+                    </small>
+                  </td>
+                  <td>
+                    <small>
+                      ${{item.saldo_total | number:'1.2-2':'es-AR'}}
+                    </small>
+                  </td>
+                  <td>
+                    <small>
+                      ${{item.saldo_hoy | number:'1.2-2':'es-AR'}}
+                    </small>
+                  </td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body">
                       <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">

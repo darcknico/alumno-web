@@ -15,9 +15,16 @@
               <div class="col-12">
                 <div class="alert alert-danger" role="alert">
                   <div class="form-check d-inline m-3 mt-4">
-                    <input class="form-check-input" type="checkbox" formControlName="especial_covid">
+                    <input class="form-check-input" type="checkbox" formControlName="especial_covid" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                       PAGO ESPECIAL COVID (El monto por cuota baja a $3.000 como maximo)
+                    </label>
+                  </div>
+                  <br/>
+                  <div class="form-check d-inline m-3 mt-4">
+                    <input class="form-check-input" type="checkbox" formControlName="especial_ahora_estudiantes" id="defaultCheck2">
+                    <label class="form-check-label" for="defaultCheck2">
+                      Ahora estudiantes (Bonificando todos el interes generado de las cuotas a pagar)
                     </label>
                   </div>
                 </div>
@@ -44,13 +51,13 @@
                   class="form-control" 
                   placeholder="Fecha">
               </div>
-              <div class="form-check d-inline m-3 mt-4" *ngIf="!f.especial_covid.value">
+              <div class="form-check d-inline m-3 mt-4" *ngIf="!f.especial_covid.value && !f.especial_ahora_estudiantes.value">
                 <input class="form-check-input" type="checkbox" formControlName="bonificar_intereses">
                 <label class="form-check-label" for="defaultCheck1">
                   Aplicar a Interes *
                 </label>
               </div>
-              <div class="form-check d-inline m-3 mt-4" *ngIf="!f.especial_covid.value">
+              <div class="form-check d-inline m-3 mt-4" *ngIf="!f.especial_covid.value && !f.especial_ahora_estudiantes.value">
                 <input class="form-check-input" type="checkbox" formControlName="bonificar_cuotas">
                 <label class="form-check-label" for="defaultCheck1">
                   Bonificar cuota **
@@ -69,8 +76,13 @@
                 <input 
                   formControlName="descripcion"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.descripcion.touched || f.descripcion.dirty)?(f.descripcion.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Descripcion">
+                <div *ngIf= "f.descripcion.invalid " class="invalid-feedback">
+                  <span *ngIf="f.descripcion.hasError('maxLength')" class="help-block">
+                    El campo no debe tener mas de 255 caracteres
+                  </span>
+                </div>
               </div>
             </div>
             <div class="row">
@@ -87,7 +99,12 @@
                 <input 
                   formControlName="numero_oficial"
                   type="text" 
-                  class="form-control">
+                  class="form-control {{ (f.numero_oficial.touched || f.numero_oficial.dirty)?(f.numero_oficial.invalid?'is-invalid':'is-valid'):''}}">
+                <div *ngIf= "f.numero_oficial.invalid " class="invalid-feedback">
+                  <span *ngIf="f.numero_oficial.hasError('maxLength')" class="help-block">
+                    El campo no debe tener mas de 255 caracteres
+                  </span>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="formulario.get('id_forma_pago').value==2">
@@ -96,24 +113,39 @@
                 <input 
                   formControlName="cheque_numero"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.cheque_numero.touched || f.cheque_numero.dirty)?(f.cheque_numero.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Numero del cheque">
+                <div *ngIf= "f.cheque_numero.invalid " class="invalid-feedback">
+                  <span *ngIf="f.cheque_numero.hasError('maxLength')" class="help-block">
+                    El campo no debe tener mas de 255 caracteres
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Origen</label>
                 <input 
                   formControlName="cheque_origen"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.cheque_origen.touched || f.cheque_origen.dirty)?(f.cheque_origen.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Origen del cheque">
+                <div *ngIf= "f.cheque_origen.invalid " class="invalid-feedback">
+                  <span *ngIf="f.cheque_origen.hasError('maxLength')" class="help-block">
+                    El campo no debe tener mas de 255 caracteres
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Banco</label>
                 <input 
                   formControlName="cheque_banco"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.cheque_banco.touched || f.cheque_banco.dirty)?(f.cheque_banco.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Banco del cheque">
+                <div *ngIf= "f.cheque_banco.invalid " class="invalid-feedback">
+                  <span *ngIf="f.cheque_banco.hasError('maxLength')" class="help-block">
+                    El campo no debe tener mas de 255 caracteres
+                  </span>
+                </div>
               </div>
               <div class="form-group col-sm-3">
                 <label class="control-label">Fecha vencimiento</label>

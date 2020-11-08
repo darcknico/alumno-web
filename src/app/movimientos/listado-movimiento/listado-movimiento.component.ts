@@ -104,14 +104,14 @@ export class ListadoMovimientoComponent implements OnInit {
       columns: [
         { 
           data: 'fecha',
-          width: '5%', 
+          width: '30px', 
         }, { 
           data: 'id_forma_pago',
           width: '15%', 
         }, { data: 'descripcion' },{ data: 'monto'},
         {
           data: 'actions',
-          width: '5%',
+          width: '15px',
         }
       ],
       columnDefs: [ {

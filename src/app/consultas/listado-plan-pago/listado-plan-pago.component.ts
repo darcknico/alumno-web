@@ -46,6 +46,8 @@ export class ListadoPlanPagoComponent implements OnInit {
     anio:null,
     id_tipo_inscripcion_estado:[1],
   };
+
+  canFilter:boolean = false;
   constructor(
     private planPagoService:PlanPagoService,
     private sedeService:SedeService,
@@ -117,8 +119,33 @@ export class ListadoPlanPagoComponent implements OnInit {
       columns: [
         { 
           data: 'anio',
-          width: '5%', 
-        }, { data: 'alumno' }, { data: 'carrera' },{ data: 'cuota_total'},{ data: 'pagado'},{ data: 'saldo_total'},{ data: 'saldo_hoy'},
+          width: '45px', 
+        },
+        { 
+          data: 'alumno',
+          width: '145px',
+        }, 
+        { data: 'carrera' },
+        { 
+          data: 'cuota_total',
+          width: '65px',
+        },
+        { 
+          data: 'pagado',
+          width: '65px',
+        },
+        { 
+          data: 'saldo_total',
+          width: '65px',
+        },
+        { 
+          data: 'saldo_hoy',
+          width: '65px',
+        },
+        {
+          data: 'id',
+          width: '15px',
+        }
       ],
       columnDefs: [ {
         targets: 'no-sort',
@@ -133,7 +160,10 @@ export class ListadoPlanPagoComponent implements OnInit {
   }
 
   refrescar(): void {
+    this.consultando = true;
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      this.canFilter = false;
+      this.consultando = false;
       dtInstance.ajax.reload();
     });
   }

@@ -21,6 +21,7 @@ export interface Inscripcion{
     id_beca:number;
     beca_nombre:string;
     beca_porcentaje:number;
+    beca_porcentaje_matricula:number;
     estado:boolean;
     created_at:Date;
     updated_at:Date;
@@ -56,4 +57,23 @@ export interface InscripcionAbandono{
 
     inscripcion:Inscripcion;
     tipo:TipoInscripcionAbandono;
+}
+
+export interface InscripcionEstado{
+    id:number;
+    id_inscripcion:number;
+    id_tipo_inscripcion_estado:number;
+    anterior_id_tipo_inscripcion_estado:number;
+    fecha:string;
+    observaciones:string;
+    id_usuario:number;
+    created_at:Date;
+    updated_at:Date;
+
+    inscripcion:Inscripcion;
+    anterior:TipoInscripcionEstado;
+    actual:TipoInscripcionEstado;
+
+    fecha_egreso:string;
+    tipo_abandonos:any;
 }

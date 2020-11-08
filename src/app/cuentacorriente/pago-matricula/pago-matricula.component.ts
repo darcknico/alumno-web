@@ -34,12 +34,13 @@ export class PagoMatriculaComponent implements OnInit {
     this.formulario = this.fb.group({
       monto: [ 0, [Validators.required,Validators.min(1)]],
       fecha: [ moment().toDate(), Validators.required],
-      descripcion: 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),
+      descripcion: ['Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),[Validators.maxLength(255)]],
       id_forma_pago:[1,Validators.required],
-      cheque_numero: '',
-      cheque_banco: '',
-      cheque_origen: '',
-      cheque_vencimiento: '',
+      cheque_numero: ['',Validators.maxLength(255)],
+      cheque_banco: ['',Validators.maxLength(255)],
+      cheque_origen: ['',Validators.maxLength(255)],
+      cheque_vencimiento: ['',Validators.maxLength(255)],
+      numero_oficial:['',Validators.maxLength(255)],
     });
   }
 
@@ -65,7 +66,7 @@ export class PagoMatriculaComponent implements OnInit {
     movimiento.monto = this.f.monto.value;
     movimiento.fecha = moment(this.f.fecha.value).format('YYYY-MM-DD HH:mm:ss');
     movimiento.id_forma_pago = this.f.id_forma_pago.value;
-    movimiento.id_tipo_movimiento = 1;
+    movimiento.id_tipo_movimiento = 2;
     movimiento.descripcion = this.f.descripcion.value;
     movimiento.cheque_numero = this.f.cheque_numero.value;
     movimiento.cheque_banco = this.f.cheque_banco.value;
@@ -77,6 +78,7 @@ export class PagoMatriculaComponent implements OnInit {
     pago.fecha = moment(this.f.fecha.value).format('YYYY-MM-DD HH:mm:ss');
     pago.monto = this.f.monto.value;
     pago.descripcion = this.f.descripcion.value;
+    pago.numero_oficial = this.f.numero_oficial.value;
 
     if(this.obligacion.saldo<pago.monto){
       this.toastr.error('El monto a pagar es mayor al saldo de la matricula');

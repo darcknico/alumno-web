@@ -79,6 +79,7 @@ export class InscripcionNuevoComponent implements OnInit {
       interes_monto: [0, [Validators.required,Validators.min(0)]],
       id_beca:[1,Validators.required],
       beca_porcentaje:[0,Validators.min(0)],
+      beca_porcentaje_matricula:[0,Validators.min(0)],
       cuota_cantidad: [10, [Validators.required,Validators.min(0)]],
       dias_vencimiento: [9, [Validators.required,Validators.min(0)]],
       fecha: [fecha.toDate(), [Validators.required]],
@@ -160,9 +161,11 @@ export class InscripcionNuevoComponent implements OnInit {
       let beca = this.becas.find(data=>data.id == id);
       if(beca){
         this.f.beca_porcentaje.setValue(beca.porcentaje);
+        this.f.beca_porcentaje_matricula.setValue(beca.porcentaje_matricula);
       }
     } else {
       this.f.beca_porcentaje.setValue(0);
+      this.f.beca_porcentaje_matricula.setValue(0);
     }
   }
 
@@ -195,6 +198,7 @@ export class InscripcionNuevoComponent implements OnInit {
     plan_pago.matricula_monto = this.f.matricula_monto.value;
     plan_pago.cuota_monto = this.f.cuota_monto.value;
     plan_pago.beca_porcentaje = this.f.beca_porcentaje.value;
+    plan_pago.beca_porcentaje_matricula = this.f.beca_porcentaje_matricula.value;
     plan_pago.cuota_cantidad = this.f.cuota_cantidad.value;
     plan_pago.dias_vencimiento = this.f.dias_vencimiento.value;
     let fecha = moment(this.f.fecha.value);
@@ -220,11 +224,13 @@ export class InscripcionNuevoComponent implements OnInit {
         inscripcion.id_beca = this.f.id_beca.value;
         inscripcion.beca_nombre = beca.nombre;
         inscripcion.beca_porcentaje = this.f.beca_porcentaje.value;
+        inscripcion.beca_porcentaje_matricula = this.f.beca_porcentaje_matricula.value;
       }
     } else {
       inscripcion.id_beca = 1;
       inscripcion.beca_nombre = "Ninguna";
       inscripcion.beca_porcentaje = 0;
+      inscripcion.beca_porcentaje_matricula = 0;
     }
 
     let plan_pago = <PlanPago>{};

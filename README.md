@@ -1,5 +1,41 @@
 # Changelog
+
+## [1.4.1] - 2020-11-08
+
+### Modificado
+- Formulario de nuevo pago. Vista Cuenta Corriente y Gestinar una Inscripción. Nueva opcion "Ahora Estudiantes"
+
+## [1.4.0] - 2020-09-04
+
+### Agregado
+- Formulario de generacion de preferencia de pago por MERCADO PAGO en el detalle de una obligación
+
+### Modificado
+- Vista en Inscripcion
+- Vista en Cuenta Corriente -> Ver / Listado de Cuotas
+
+## [1.3.1] - 2020-08-17
+
+### Agregado
+- Fecha y Observaciones al cambiar estado de una inscripcion
+
+### Modificado
+- Vista en Consultas -> Cuenta Corrientes
+
+## [1.3.0] - 2020-07-25
+
+### Agregado
+- Exportacion a excel de las becas
+- Agregado descuento por matricula en las becas
+
+### Modificado
+- Formulario de becas
+- Listado de Becas
+- Formulario de nueva inscripcion
+- Formulario de nuevo/editar plan de pago
+
 ## [1.2.4] - 2020-06-26
+
 ### Modificado
 - En cuentas corrientes, vista de listados de pagos, vista de listado de cuotas.
 

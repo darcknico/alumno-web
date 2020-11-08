@@ -6,7 +6,10 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Listado de Becas
           <div class="card-header-actions">
-            <button class="btn btn-block btn-success" type="button" (click)="nuevo()">Agregar Nueva Beca</button>
+            <button class="btn btn-block btn-sm btn-success" type="button" (click)="nuevo()">
+              <i class="fa fa-plus"></i>
+              Agregar Nueva Beca
+            </button>
           </div>
         </div>
         <div class="card-body p-1">
@@ -16,8 +19,8 @@
                 <tr>
                   <th>Agregado</th>
                   <th>Nombre</th>
-                  <th>Descripcion</th>
-                  <th>Beneficio</th>
+                  <th>D/Cuota</th>
+                  <th>D/Matricula</th>
                   <th></th>
                 </tr>
               </thead>
@@ -25,19 +28,25 @@
                 <tr *ngFor="let item of dataSource">
                   <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
                   <td>{{ item.nombre }}</td>
-                  <td>{{ item.descripcion }}</td>
-                  <td>{{ item.porcentaje | number:'1.2-2':'es-AR' }}%</td>
+                  <td class="text-center">{{ item.porcentaje | number:'1.2-2':'es-AR' }}%</td>
+                  <td class="text-center">{{ item.porcentaje_matricula | number:'1.2-2':'es-AR' }}%</td>
                   <td>
                     <div class="btn-group" dropdown placement="bottom right" container="body">
-                      <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                      <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
                         <span class="caret"></span>
                       </button>
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">Editar</a>
+                          <a class="dropdown-item" (click)="editar(item)" href="javascript:void(0);">
+                            <i class="fa fa-edit"></i>
+                            Editar
+                          </a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">Eliminar</a>
+                          <a class="dropdown-item" (click)="eliminar(item)" href="javascript:void(0);">
+                            <i class="fa fa-trash"></i>
+                            Eliminar
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -46,6 +55,13 @@
               </tbody>
             </table>
           </div>
+          <p>D/Cuota y D/Matricula es descuenta a cuota y descuento a matricula respectivamente</p>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-outline-info" type="button" (click)="exportar()" [disabled]="consultando">
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            EXPORTAR DATOS
+          </button>
         </div>
       </div>
     </div>

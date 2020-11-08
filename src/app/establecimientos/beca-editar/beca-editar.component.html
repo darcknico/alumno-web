@@ -15,19 +15,45 @@
                   required
                   formControlName="nombre"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.nombre.touched || f.nombre.dirty)?(f.nombre.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Nombre">
                 <span *ngIf="formulario.get('nombre').hasError('required')" class="help-block">
                   El nombre es requerido
                 </span>
               </div>
+            </div>
+            <div class="row">
               <div class="form-group col-sm-6">
-                <label class="control-label">Porcentaje (*)</label>
-                <input 
-                  formControlName="porcentaje"
+                <label class="control-label">Descuento a Cuota (*)</label>
+                <div class="input-group mb-2 mr-sm-2">
+                  <input 
+                    formControlName="porcentaje"
+                    type="number" 
+                    class="form-control text-right {{ (f.porcentaje.touched || f.porcentaje.dirty)?(f.porcentaje.invalid?'is-invalid':'is-valid'):''}}"
+                    placeholder="0.00">
+                  <div class="input-group-addon">
+                    <div class="input-group-text">%</div>
+                  </div>
+                </div>
+                <span *ngIf="formulario.get('porcentaje').hasError('required')" class="help-block">
+                  El descuento a cuota es requerido
+                </span>
+              </div>
+              <div class="form-group col-sm-6">
+                <label class="control-label">Descuento a Matricula (*)</label>
+                <div class="input-group mb-2 mr-sm-2">
+                  <input 
+                  formControlName="porcentaje_matricula"
                   type="number" 
-                  class="form-control"
+                  class="form-control text-right {{ (f.porcentaje_matricula.touched || f.porcentaje_matricula.dirty)?(f.porcentaje_matricula.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="0.00">
+                  <div class="input-group-addon">
+                    <div class="input-group-text">%</div>
+                  </div>
+                </div>
+                <span *ngIf="formulario.get('porcentaje_matricula').hasError('required')" class="help-block">
+                  El descuento a matricula es requerido
+                </span>
               </div>
             </div>
             <div class="row">
@@ -36,7 +62,7 @@
                 <input 
                   formControlName="descripcion"
                   type="text" 
-                  class="form-control"
+                  class="form-control {{ (f.descripcion.touched || f.descripcion.dirty)?(f.descripcion.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Descripcion">
               </div>
             </div>
@@ -54,6 +80,7 @@
             (click)="volver()">
             Volver
             </button>
+          <small *ngIf="!formulario.valid && formulario.touched">Existen campos invalidos, por favor revise.</small>
         </div>
       </div>  
     </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Inscripcion } from '../../../_models/inscripcion';
+import { Inscripcion, InscripcionEstado } from '../../../_models/inscripcion';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -9,6 +9,7 @@ import { TipoInscripcionAbandonoService } from '../../../_services/tipo_inscripc
 import { TipoInscripcionAbandono } from '../../../_models/tipo';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InscripcionAbandonoService } from '../../../_services/inscripcion_abandono.service';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-inscripcion-abandonado-modal',
@@ -18,9 +19,10 @@ import { InscripcionAbandonoService } from '../../../_services/inscripcion_aband
 export class InscripcionAbandonadoModalComponent implements OnInit {
 
   public onClose: Subject<boolean>;
-  item:Inscripcion;
+  inscripcion:Inscripcion;
   tipos:TipoInscripcionAbandono[];
   asociados:TipoInscripcionAbandono[] = [];
+  formulario:FormGroup;
 
   constructor(
     private service: InscripcionAbandonoService,
@@ -30,7 +32,13 @@ export class InscripcionAbandonadoModalComponent implements OnInit {
     private sanitizer : DomSanitizer,
     public bsModalRef: BsModalRef,
     private router: Router,
+    private fb: FormBuilder,
     ) { 
+    let hoy = moment();
+    this.formulario = this.fb.group({
+      fecha:[hoy.toDate(),Validators.required],
+      observaciones:[''],
+    });
       
   }
 
@@ -40,18 +48,28 @@ export class InscripcionAbandonadoModalComponent implements OnInit {
       this.tipos = response;
     });
   }
+  get f(){
+    return this.formulario.controls;
+  }
 
   onShow(item:Inscripcion){
-    this.item = item;
+    this.inscripcion = item;
   }
 
   continuar(){
     let tipo_abandonos = [];
     this.asociados.forEach(item=>{
       tipo_abandonos.push(item.id);
-    })
-    this.item.tipo_abandonos = tipo_abandonos;
-    this.service.register(this.item).subscribe(response=>{
+    });
+    let item = <InscripcionEstado>{};
+    item.id = this.inscripcion.id
+    item.id_inscripcion = this.inscripcion.id
+    item.id_tipo_inscripcion_estado = 2;
+    item.fecha = moment(this.f.fecha.value).format('YYYY-MM-DD');
+    item.observaciones = this.f.observaciones.value;
+    item.tipo_abandonos = tipo_abandonos;
+
+    this.service.register(item).subscribe(response=>{
       this.onClose.next(true);
       this.bsModalRef.hide();
     });

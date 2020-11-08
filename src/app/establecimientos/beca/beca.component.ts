@@ -5,6 +5,7 @@ import { DialogConfirmComponent } from '../../_generic/dialog-confirm/dialog-con
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { AuxiliarFunction } from '../../_helpers/auxiliar.function';
 
 @Component({
   selector: 'app-beca',
@@ -17,9 +18,10 @@ export class BecaComponent implements OnInit {
   dataSource:Beca[];
 
   id_sede:number;
-
+  consultando:boolean;
+  
   constructor(
-    private becaService:BecaService,
+    private service:BecaService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
@@ -28,7 +30,7 @@ export class BecaComponent implements OnInit {
   }
   ngOnInit() {
     this.id_sede = +localStorage.getItem('id_sede');
-    this.becaService.getAll().subscribe(response=>{
+    this.service.getAll().subscribe(response=>{
       this.dataSource = response;
     });
     this.dtOptions = {
@@ -38,7 +40,7 @@ export class BecaComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
       columnDefs: [ {
-        targets: [2,3],
+        targets: [4],
         orderable: false
         } ]
     };
@@ -57,7 +59,7 @@ export class BecaComponent implements OnInit {
     (<DialogConfirmComponent>modal.content).onShow("Eliminar beca","");
     (<DialogConfirmComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
-        this.becaService.delete(item.id).subscribe(response=>{
+        this.service.delete(item.id).subscribe(response=>{
           this.toastr.success('Modalidad beca', '');
           this.refrescar();
         });
@@ -67,8 +69,15 @@ export class BecaComponent implements OnInit {
 
   refrescar(){
     this.dataSource = null;
-    this.becaService.getAll().subscribe(response=>{
+    this.service.getAll().subscribe(response=>{
       this.dataSource = response;
+    });
+  }
+
+  exportar(){
+    this.consultando = true;
+    AuxiliarFunction.descargar(this.toastr,this.service.exportar()).then(()=>{
+      this.consultando = false;
     });
   }
 }

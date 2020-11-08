@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Inscripcion, TipoInscripcionEstado } from '../_models/inscripcion';
+import { Inscripcion, TipoInscripcionEstado, InscripcionEstado } from '../_models/inscripcion';
 import { ComisionAlumno } from '../_models/comision';
 import { MesaExamen, MesaExamenMateriaAlumno, MesaExamenMateria, AlumnoMateriaNota } from '../_models/mesa.examen';
 import { PlanPago } from '../_models/plan_pago';
@@ -76,7 +76,7 @@ export class InscripcionService {
         return this.http.delete(this.api + this.id_sede + '/inscripciones/' +id);
     }
 
-    estado(item:Inscripcion){
+    estado(item:(Inscripcion|InscripcionEstado)){
         return this.http.put<Inscripcion>(this.api + this.id_sede + '/inscripciones/' +item.id+'/estado',item);
     }
 

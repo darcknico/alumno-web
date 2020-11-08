@@ -17,6 +17,7 @@ export interface Sede{
     pago_numero:number;
     id_localidad:number;
     id_usuario:number;
+    mercadopago:boolean;
     
     estado:boolean;
     created_at:string;
