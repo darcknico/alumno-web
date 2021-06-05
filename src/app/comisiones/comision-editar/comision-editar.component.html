@@ -13,7 +13,7 @@
                 <label class="control-label">Año del curso (*)</label>
                 <input
                   formControlName="anio"
-                  type="number" 
+                  type="number"
                   class="form-control {{ f.anio.invalid?'is-invalid':'is-valid'}}"
                   placeholder="YYYY">
                 <div *ngIf= " (f.anio.touched || f.anio.dirty) && f.anio.invalid " class="invalid-feedback">
@@ -30,10 +30,10 @@
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Identificación (*)</label>
-                <input 
+                <input
                   required
                   formControlName="numero"
-                  type="number" 
+                  type="number"
                   class="form-control {{ (f.numero.touched || f.numero.dirty)?(f.numero.invalid?'is-invalid':'is-valid'):''}}"
                   placeholder="Numero de la comision">
                 <div *ngIf= " (f.numero.touched || f.numero.dirty) && f.numero.invalid " class="invalid-feedback">
@@ -119,16 +119,16 @@
                 <label class="control-label">Inicio de clases</label>
                 <input bsDatepicker
                   formControlName="clase_inicio"
-                  type="text" 
-                  class="form-control" 
+                  type="text"
+                  class="form-control"
                   placeholder="Fecha">
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Finalizacion de clases</label>
                 <input bsDatepicker
                   formControlName="clase_final"
-                  type="text" 
-                  class="form-control" 
+                  type="text"
+                  class="form-control"
                   placeholder="Fecha">
               </div>
               <div class="form-group col-sm-4">
@@ -176,18 +176,18 @@
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Apellido (*)</label>
-                <input 
+                <input
                   formControlName="responsable_apellido"
-                  type="text" 
+                  type="text"
                   class="form-control"
                   [readonly]="usuario_seleccionado"
                   placeholder="Apellido del responsable">
               </div>
               <div class="form-group col-sm-4">
                 <label class="control-label">Nombre (*)</label>
-                <input 
+                <input
                   formControlName="responsable_nombre"
-                  type="text" 
+                  type="text"
                   class="form-control"
                   [readonly]="usuario_seleccionado"
                   placeholder="Nombre del responsable">
@@ -264,6 +264,27 @@
                 </ng-select>
               </div>
             </div>
+            <div class="row">
+              <div class="col text-center">
+                <hr>
+                <label class="control-label"><b>Ajustes Adicionales</b></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 ">
+                <label class="control-label">Id Aula Virtual (id_carrera)-(id_materia)-(id_curso)</label>
+                <input
+                  formControlName="id_aula_virtual"
+                  type="text"
+                  class="form-control {{ f.id_aula_virtual.invalid?'is-invalid':'is-valid'}}"
+                  placeholder="123-123-1234">
+                <div *ngIf= " (f.id_aula_virtual.touched || f.id_aula_virtual.dirty) && f.id_aula_virtual.invalid " class="invalid-feedback">
+                  <span *ngIf="f.id_aula_virtual.hasError('maxLength') " class="help-block">
+                    Supero la cantidad maxima de caracteres posibles
+                  </span>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="card-footer">
@@ -286,8 +307,7 @@
             Gestionar Comision
             </button>
         </div>
-      </div>  
+      </div>
     </div>
   </div>
 </div>
-  

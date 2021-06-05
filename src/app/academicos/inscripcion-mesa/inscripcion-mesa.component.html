@@ -1,16 +1,16 @@
 <div class="animated fadeIn">
   <div class="row" >
     <div class="col-lg-6">
-      <app-componente-alumno-detalle 
+      <app-componente-alumno-detalle
         [alumno]="inscripcion.alumno"
         [collapsed]="true"
         *ngIf="inscripcion">
       </app-componente-alumno-detalle>
     </div>
     <div class="col-lg-6">
-      <app-componente-carrera-detalle 
-        [plan_estudio]="inscripcion.plan_estudio" 
-        [carrera]="inscripcion.carrera" 
+      <app-componente-carrera-detalle
+        [plan_estudio]="inscripcion.plan_estudio"
+        [carrera]="inscripcion.carrera"
         [collapsed]="true"
         *ngIf="inscripcion">
       </app-componente-carrera-detalle>
@@ -50,7 +50,7 @@
                   <th>Mesa</th>
                   <th>Materia</th>
                   <th>Libro</th>
-                  <th>Folio</th>
+                  <th>Folio L/P/R</th>
                   <th>Cond./Nota</th>
                   <th>Final</th>
                   <th>Observaciones</th>
@@ -63,7 +63,11 @@
                   <td>{{ item.mesa_examen_materia.mesa_examen.nombre }}</td>
                   <td>{{ item.mesa_examen_materia.materia.nombre }}</td>
                   <td>{{ item.mesa_examen_materia.libro }}</td>
-                  <td>{{ item.mesa_examen_materia.folio }}</td>
+                  <td>
+                    {{ item.mesa_examen_materia.folio_libre? item.mesa_examen_materia.folio_libre :'-' }}/
+                    {{ item.mesa_examen_materia.folio_promocion? item.mesa_examen_materia.folio_promocion :'-'}}/
+                    {{ item.mesa_examen_materia.folio_regular? item.mesa_examen_materia.folio_regular :'-' }}
+                  </td>
                   <td>
                     <ng-container *ngIf="item.condicion">
                       {{item.condicion.nombre}}
@@ -138,4 +142,3 @@
     </div>
   </div>
 </div>
-  

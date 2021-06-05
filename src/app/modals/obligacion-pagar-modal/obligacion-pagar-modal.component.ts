@@ -28,6 +28,7 @@ export class ObligacionPagarModalComponent implements OnInit {
   formulario: FormGroup;
   dtOptions: DataTables.Settings = {};
   editado:boolean=true;
+  descripcionDefault:string = 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY');
 
   isLoading:boolean = false;
   constructor(
@@ -39,11 +40,12 @@ export class ObligacionPagarModalComponent implements OnInit {
     private router: Router,
     ) {
     this.formulario = this.fb.group({
-      especial_covid:true,
+      especial_covid:false,
       especial_ahora_estudiantes:false,
+      especial_nov_dic_2020:false,
       monto: [ 0, Validators.required],
       fecha: [ moment().toDate(), Validators.required],
-      descripcion: 'Pago '+moment().format('DD')+' de '+moment().locale('es').format('MMMM')+' del año '+moment().format('YYYY'),
+      descripcion: [this.descripcionDefault,Validators.maxLength(255)],
       bonificar_intereses:false,
       bonificar_cuotas:true,
       id_forma_pago:[null,Validators.required],
@@ -80,18 +82,38 @@ export class ObligacionPagarModalComponent implements OnInit {
 
     this.f.especial_ahora_estudiantes.valueChanges.subscribe(val=>{
       if(val){
+        this.f.descripcion.setValue('Ahora estudiantes: '+this.descripcionDefault,{emitEvent:false});
         this.f.monto.setValue(3500,{emitEvent:false});
         this.f.especial_covid.setValue(false,{emitEvent:false});
-        this.f.id_forma_pago.setValue(3);
+        this.f.especial_nov_dic_2020.setValue(false,{emitEvent:false});
+        this.f.id_forma_pago.setValue(9);
         this.f.id_forma_pago.disable();
       } else {
         this.f.id_forma_pago.enable();
+        this.f.id_forma_pago.setValue(null,{emitEvent:false});
+        this.f.descripcion.setValue(this.descripcionDefault,{emitEvent:false});
       }
     });
     this.f.especial_covid.valueChanges.subscribe(val=>{
       if(val){
+        this.f.descripcion.setValue('COVID: '+this.descripcionDefault,{emitEvent:false});
         this.f.especial_ahora_estudiantes.setValue(false,{emitEvent:false});
+        this.f.especial_nov_dic_2020.setValue(false,{emitEvent:false});
         this.f.id_forma_pago.enable();
+      } else {
+        this.f.descripcion.setValue(this.descripcionDefault,{emitEvent:false});
+      }
+    });
+    this.f.especial_nov_dic_2020.valueChanges.subscribe(val=>{
+      if(val){
+        this.f.monto.setValue(3000,{emitEvent:false});
+        this.f.descripcion.setValue('Nov/Dic2020: '+this.descripcionDefault,{emitEvent:false});
+        this.f.especial_ahora_estudiantes.setValue(false,{emitEvent:false});
+        this.f.especial_covid.setValue(false,{emitEvent:false});
+        this.f.id_forma_pago.setValue(null,{emitEvent:false});
+        this.f.id_forma_pago.enable();
+      } else {
+        this.f.descripcion.setValue(this.descripcionDefault,{emitEvent:false});
       }
     });
   }
@@ -116,6 +138,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     item.bonificar_cuotas = this.f.bonificar_cuotas.value;
     item.especial_covid = this.f.especial_covid.value;
     item.especial_ahora_estudiantes = this.f.especial_ahora_estudiantes.value;
+    item.especial_nov_dic_2020 = this.f.especial_nov_dic_2020.value;
     this.isLoading = true;
     this.planPagoService.pagarPreparar(item).subscribe((response:any)=>{
       this.isLoading = false;
@@ -149,6 +172,7 @@ export class ObligacionPagarModalComponent implements OnInit {
     pago.numero_oficial = this.f.numero_oficial.value;
     pago.especial_covid = this.f.especial_covid.value;
     pago.especial_ahora_estudiantes = this.f.especial_ahora_estudiantes.value;
+    pago.especial_nov_dic_2020 = this.f.especial_nov_dic_2020.value;
 
     this.isLoading = true;
     this.movimientoService.ingreso(movimiento).subscribe(response=>{

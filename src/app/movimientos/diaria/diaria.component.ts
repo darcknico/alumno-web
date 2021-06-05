@@ -6,6 +6,7 @@ import { DialogDateComponent } from '../../_generic/dialog-date/dialog-date.comp
 import * as moment from 'moment';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { BlockUIService, BLOCKUI_DEFAULT } from 'ng-block-ui';
 
 @Component({
   selector: 'app-diaria',
@@ -24,13 +25,18 @@ export class DiariaComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
+    private block: BlockUIService,
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params=>{
       let id = params['id_diaria'];
+      this.block.start(BLOCKUI_DEFAULT);
       this.diariaService.getById(+id).subscribe(response=>{
         this.diaria = response;
+        this.block.stop(BLOCKUI_DEFAULT);
+      },()=>{
+        this.block.stop(BLOCKUI_DEFAULT);
       });
 
       this.diariaService.anterior(+id).subscribe(response=>{
@@ -56,8 +62,12 @@ export class DiariaComponent implements OnInit {
         if(!fecha.isValid()){
           return;
         }
-        this.diaria.fecha_fin = fecha.format('YYYY-MM-DD');
-        this.diariaService.update(this.diaria).subscribe(response=>{
+        let data = <Diaria>{
+          id: this.diaria.id,
+          fecha_inicio: this.diaria.fecha_inicio,
+          fecha_fin: fecha.format('YYYY-MM-DD'),
+        };
+        this.diariaService.update(data).subscribe(response=>{
           this.toastr.success('Diaria cerrada', '');
           this.router.navigate(['/movimientos/diarias']);
         });

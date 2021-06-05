@@ -126,14 +126,14 @@ export class ListadoComisionComponent implements OnInit {
         });
       },
       columns: [
-        { 
+        {
           data: 'created_at',
-          width: '5%', 
-        }, 
-        { 
+          width: '5%',
+        },
+        {
           data: 'anio',
-          width: '5%', 
-        }, 
+          width: '5%',
+        },
         { data: 'id_carrera' },
         { data: 'id_materia' },
         { data: 'numero' },
@@ -167,10 +167,10 @@ export class ListadoComisionComponent implements OnInit {
           });
       },
       columns: [
-        { 
+        {
           data: 'created_at',
-          width: '5%', 
-        }, 
+          width: '5%',
+        },
       ],
       columnDefs: [ {
         targets: 'no-sort',
@@ -206,10 +206,10 @@ export class ListadoComisionComponent implements OnInit {
           });
       },
       columns: [
-        { 
+        {
           data: 'created_at',
-          width: '5%', 
-        }, 
+          width: '5%',
+        },
       ],
       columnDefs: [ {
         targets: 'no-sort',
@@ -239,7 +239,7 @@ export class ListadoComisionComponent implements OnInit {
     (<ListadoComisionDocenteModalComponent>modal.content).onShow(item);
     (<ListadoComisionDocenteModalComponent>modal.content).onClose.subscribe(result => {
       if (result === true) {
-        
+
       }
     });
   }
@@ -272,6 +272,17 @@ export class ListadoComisionComponent implements OnInit {
   refrescar(): void {
     this.dtElements.first.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
+    });
+  }
+
+  exportar(){
+    let aviso = this.toastr.warning('Preparando archivo de descarga','',{
+      timeOut:15000,
+    });
+    this.comisionService.exportar(this.request).subscribe(data => {
+      this.toastr.remove(aviso.toastId);
+      this.toastr.success('Descarga lista');
+      saveAs(data,"alumnos-"+moment().format('DD.MM.YYYY')+".xlsx");
     });
   }
 

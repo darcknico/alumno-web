@@ -14,6 +14,7 @@ export interface Comision{
     id_carrera:number;
     id_materia:number;
     id_sede:number;
+    id_aula_virtual:string;
     anio:number;
     numero:number;
     alumnos_cantidad:number;
@@ -87,6 +88,6 @@ export interface ComisionHorario{
     updated_at:Date;
     comision:Comision;
     dia:Dia;
-    
+
     aula:Aula;
 }

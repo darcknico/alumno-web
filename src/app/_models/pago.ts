@@ -38,6 +38,7 @@ export interface Pago{
     bonificar_cuotas:boolean;
     especial_covid:boolean;
     especial_ahora_estudiantes:boolean;
+    especial_nov_dic_2020:boolean;
 }
 
 export interface TipoPago{

@@ -1,9 +1,14 @@
 # Changelog
 
+## [1.4.2] - 2020-11-09
+
+### Modificado
+- Formulario de nuevo pago. Vista Cuenta Corriente y Gestionar una Inscripción. Nueva opcion "Nov/Dic 2020"
+
 ## [1.4.1] - 2020-11-08
 
 ### Modificado
-- Formulario de nuevo pago. Vista Cuenta Corriente y Gestinar una Inscripción. Nueva opcion "Ahora Estudiantes"
+- Formulario de nuevo pago. Vista Cuenta Corriente y Gestionar una Inscripción. Nueva opcion "Ahora Estudiantes"
 
 ## [1.4.0] - 2020-09-04
 

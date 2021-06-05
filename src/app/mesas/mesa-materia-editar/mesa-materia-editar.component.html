@@ -58,25 +58,25 @@
               <u>Libro:</u> {{mesa_examen_materia.libro}}
             </div>
             <div class="form-group col-sm-5" >
-              <u>Folios:</u> 
+              <u>Folios:</u>
               <ng-container *ngIf="mesa_examen_materia.folio_libre">
                 Libres:<b>{{mesa_examen_materia.folio_libre}}</b>
               </ng-container>
-              <ng-container *ngIf="mesa_examen_materia.folio_libre">
+              <ng-container *ngIf="mesa_examen_materia.folio_promocion">
                 Promocionales:<b>{{mesa_examen_materia.folio_promocion}}</b>
               </ng-container>
-              <ng-container *ngIf="mesa_examen_materia.folio_libre">
+              <ng-container *ngIf="mesa_examen_materia.folio_regular">
                 Regulares:<b>{{mesa_examen_materia.folio_regular}}</b>
               </ng-container>
             </div>
           </div>
           <div class="row" *ngIf="mesa_examen_materia.observaciones">
             <div class="form-group col-sm-12">
-              <u>Observaciones:</u> {{mesa_examen_materia.observaciones}}               
+              <u>Observaciones:</u> {{mesa_examen_materia.observaciones}}
             </div>
           </div>
         </div>
-      </div>  
+      </div>
     </div>
     <div class="col-lg-6 ">
       <div class="card">

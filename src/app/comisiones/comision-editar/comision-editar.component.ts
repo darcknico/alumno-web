@@ -60,7 +60,7 @@ export class ComisionEditarComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService,
-  ) { 
+  ) {
     let hoy = moment();
     this.maxYear = moment().year() + 20;
     this.formulario = this.fb.group({
@@ -70,6 +70,7 @@ export class ComisionEditarComponent implements OnInit {
       id_plan_estudio:'',
       id_materia: ['', Validators.required],
       id_modalidad: [null, Validators.required],
+      id_aula_virtual:['',[Validators.maxLength(199)]],
       docentes:null,
       responsable_nombre: ['', Validators.required],
       responsable_apellido: ['', Validators.required],
@@ -168,6 +169,7 @@ export class ComisionEditarComponent implements OnInit {
         this.f.id_modalidad.setValue(response.id_modalidad);
         this.f.id_materia.setValue(response.id_materia);
         this.f.asistencia.setValue(response.asistencia);
+        this.f.id_aula_virtual.setValue(response.id_aula_virtual);
         let clase_inicio = moment(response.clase_inicio);
         if(clase_inicio.isValid()){
           this.f.clase_inicio.setValue(clase_inicio.toDate());
@@ -235,6 +237,7 @@ export class ComisionEditarComponent implements OnInit {
     item.id_modalidad = this.f.id_modalidad.value;
     item.docentes = this.f.docentes.value;
     item.asistencia = this.f.asistencia.value;
+    item.id_aula_virtual = this.f.id_aula_virtual.value;
     let clase_inicio = moment(this.f.clase_inicio.value);
     if(clase_inicio.isValid()){
       item.clase_inicio = clase_inicio.format('YYYY-MM-DD');

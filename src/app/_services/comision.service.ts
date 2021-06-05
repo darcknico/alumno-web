@@ -9,7 +9,7 @@ import { Examen } from '../_models/examen';
 import { SedeService } from './sede.service';
 import { AuxiliarFunction } from '../_helpers/auxiliar.function';
 import { SedeProvider } from '../_providers/sede.provider';
- 
+
 export interface FiltroComision {
     search:string;
     sort:string;
@@ -64,15 +64,22 @@ export class ComisionService {
 
     update(item: Comision) {
         return this.http.put<Comision>(
-            this.api + this.id_sede + '/comisiones/' + 
+            this.api + this.id_sede + '/comisiones/' +
             item.id, item);
     }
 
     delete(id: number) {
         return this.http.delete(
-            this.api + this.id_sede + '/comisiones/' + 
+            this.api + this.id_sede + '/comisiones/' +
             id);
     }
+
+    exportar(filtro:FiltroComision){
+      return this.http.get( [this.api+this.id_sede,'comisiones','exportar'].join('/'),{
+          responseType:'blob',
+          params:AuxiliarFunction.toParams(filtro),
+      });
+  }
 
     alumno_asociar(item: ComisionAlumno) {
         return this.http.post<ComisionAlumno>(
