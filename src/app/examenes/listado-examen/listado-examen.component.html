@@ -10,8 +10,8 @@
                 <div class="row">
                     <div class="form-group col-sm-3">
                         <label class="control-label">Departamento</label>
-                        <select 
-                            class="form-control" 
+                        <select
+                            class="form-control"
                             (change)="refrescar()"
                             [(ngModel)]="request.id_departamento"
                             >
@@ -42,6 +42,7 @@
                           <th>Comision</th>
                           <th>Tipo</th>
                           <th>Nombre</th>
+                          <th>Id Examen Virtual</th>
                           <th></th>
                         </tr>
                     </thead>
@@ -53,6 +54,7 @@
                         <td>Año:&nbsp;{{item.comision.anio}} Nº:&nbsp;{{item.comision.numero}}</td>
                         <td>{{ item.tipo.nombre}}</td>
                         <td>{{ item.nombre }}</td>
+                        <td>{{ item.id_examen_virtual }}</td>
                         <td>
                           <div class="btn-group" dropdown placement="bottom right" container="body">
                             <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
@@ -95,4 +97,3 @@
     </div>
     <!--/.row-->
 </div>
-  

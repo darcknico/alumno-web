@@ -19,7 +19,7 @@ import { CalendarEvent } from 'calendar-utils';
 export class ListadoExamenComponent implements OnInit {
 
   events: CalendarEvent[] = [];
-  
+
   comision:Comision;
 
   dtOptions: DataTables.Settings = {};
@@ -68,7 +68,8 @@ export class ListadoExamenComponent implements OnInit {
             color = ComisionExamenColors.practico;
           }
           this.events.push({
-            title:examen.nombre,
+            id: examen.id,
+            title:`#${examen.id} | ${examen.nombre || ''} | ${examen.id_examen_virtual || ''}`,
             start:moment(examen.fecha).toDate(),
             allDay:true,
             color:color,

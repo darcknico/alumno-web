@@ -31,6 +31,7 @@
                     <th>Fecha</th>
                     <th>Tipo</th>
                     <th>Nombre</th>
+                    <th>Id Examen Virtual</th>
                     <th>Observaciones</th>
                     <th></th>
                   </tr>
@@ -40,6 +41,7 @@
                     <td>{{ item.fecha | date:'dd/MM/yyyy' }}</td>
                     <td>{{ item.tipo.nombre }}</td>
                     <td>{{ item.nombre }}</td>
+                    <td>{{ item.id_examen_virtual }}</td>
                     <td>{{ item.observaciones }}</td>
                     <td>
                       <div class="btn-group" dropdown placement="top right" container="body" *ngIf="item.estado">

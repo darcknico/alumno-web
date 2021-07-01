@@ -9,6 +9,7 @@ export interface Examen{
     id_tipo_examen:number;
     nombre:string;
     observaciones:string;
+    id_examen_virtual:string;
     fecha:string;
     estado:boolean;
     id_usuario:number;

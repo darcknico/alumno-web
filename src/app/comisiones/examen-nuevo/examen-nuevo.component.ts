@@ -16,15 +16,15 @@ import { ComisionExamenColors } from '../../_helpers/colors';
   styleUrls: ['./examen-nuevo.component.scss']
 })
 export class ExamenNuevoComponent implements OnInit {
-  
+
   events: CalendarEvent[] = [];
-  
+
   id_comision_examen:number = null;
   comision:Comision;
   formulario: FormGroup;
   tipos:TipoExamen[];
   consultando = false;
-  
+
   filtro = <FiltroExamen>{};
   dataSource:Examen[];
   constructor(
@@ -39,8 +39,9 @@ export class ExamenNuevoComponent implements OnInit {
     this.formulario = this.fb.group({
       fecha: [hoy.toDate(), Validators.required],
       id_tipo_examen: [null,Validators.required],
-      nombre:'',
-      observaciones:'',
+      nombre:['',[Validators.maxLength(255)]],
+      observaciones:['',[Validators.maxLength(255)]],
+      id_examen_virtual:['',[Validators.maxLength(255)]],
     });
   }
 
@@ -60,6 +61,7 @@ export class ExamenNuevoComponent implements OnInit {
           this.f.id_tipo_examen.setValue(response.id_tipo_examen);
           this.f.nombre.setValue(response.nombre);
           this.f.observaciones.setValue(response.observaciones);
+          this.f.id_examen_virtual.setValue(response.id_examen_virtual);
         });
       }
       this.examenService.getAll(this.filtro).subscribe(response=>{
@@ -73,7 +75,8 @@ export class ExamenNuevoComponent implements OnInit {
             color = ComisionExamenColors.practico;
           }
           this.events.push({
-            title:examen.nombre,
+            id: examen.id,
+            title:`#${examen.id} | ${examen.nombre || ''} | ${examen.id_examen_virtual || ''}`,
             start:moment(examen.fecha).toDate(),
             allDay:true,
             color:color,
@@ -100,6 +103,7 @@ export class ExamenNuevoComponent implements OnInit {
     item.id_tipo_examen = this.f.id_tipo_examen.value;
     item.nombre = this.f.nombre.value;
     item.observaciones = this.f.observaciones.value;
+    item.id_examen_virtual = this.f.id_examen_virtual.value;
     item.id_comision = this.comision.id;
 
     this.consultando = true;
@@ -119,12 +123,12 @@ export class ExamenNuevoComponent implements OnInit {
         this.consultando = false;
       });
     }
-    
+
   }
 
   volver(){
     this.router.navigate(['/comisiones/'+this.comision.id+'/ver']);
   }
 
-  
+
 }
