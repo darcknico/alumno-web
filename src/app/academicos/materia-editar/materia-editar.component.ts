@@ -34,6 +34,8 @@ export class MateriaEditarComponent implements OnInit {
         horas: 0,
         id_tipo_materia_regimen: '',
         id_tipo_materia_lectivo: '',
+        id_aula_virtual: ['',[Validators.maxLength(255)]],
+        id_examen_virtual: ['',[Validators.maxLength(255)]],
       });
     }
 
@@ -52,6 +54,8 @@ export class MateriaEditarComponent implements OnInit {
         this.f.horas.setValue(response.horas);
         this.f.id_tipo_materia_regimen.setValue(response.id_tipo_materia_regimen);
         this.f.id_tipo_materia_lectivo.setValue(response.id_tipo_materia_lectivo);
+        this.f.id_aula_virtual.setValue(response.id_aula_virtual);
+        this.f.id_examen_virtual.setValue(response.id_examen_virtual);
       });
     }
 
@@ -63,7 +67,7 @@ export class MateriaEditarComponent implements OnInit {
     });
   }
   ngOnInit() {
-    
+
   }
 
   get f(){
@@ -82,6 +86,8 @@ export class MateriaEditarComponent implements OnInit {
     item.horas = this.f.horas.value;
     item.id_tipo_materia_lectivo = this.f.id_tipo_materia_lectivo.value;
     item.id_tipo_materia_regimen = this.f.id_tipo_materia_regimen.value;
+    item.id_aula_virtual = this.f.id_aula_virtual.value;
+    item.id_examen_virtual = this.f.id_examen_virtual.value;
     if(this.id>0){
       this.materiaService.update(item).subscribe(response=>{
         this.toastr.success('Materia Editada', '');

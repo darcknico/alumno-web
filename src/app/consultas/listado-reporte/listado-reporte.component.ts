@@ -27,11 +27,11 @@ export class ListadoReporteComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {
-    
+
   }
 
   ngOnInit() {
-    
+
     const that = this;
 
     this.dtOptions = {
@@ -60,22 +60,22 @@ export class ListadoReporteComponent implements OnInit {
           });
       },
       columns: [
-        { 
+        {
           data: 'created_at',
-        }, 
-        { data: 'nombre' }, 
-        { data: 'cantidad' }, 
+        },
+        { data: 'nombre' },
+        { data: 'cantidad' },
         { data: 'contador' },
         { data: 'terminado' },
       ],
       columnDefs: [ {
         targets: 'no-sort',
           orderable: false,
-          width: '5%', 
+          width: '5%',
         },
         {
           targets: 'option',
-          width: '5%', 
+          width: '5%',
         }
       ],
     };

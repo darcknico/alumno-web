@@ -1,16 +1,16 @@
 <div class="animated fadeIn">
   <div class="row" >
     <div class="col-lg-6">
-      <app-componente-alumno-detalle 
+      <app-componente-alumno-detalle
         [alumno]="inscripcion.alumno"
         [collapsed]="true"
         *ngIf="inscripcion">
       </app-componente-alumno-detalle>
     </div>
     <div class="col-lg-6">
-      <app-componente-carrera-detalle 
-        [plan_estudio]="inscripcion.plan_estudio" 
-        [carrera]="inscripcion.carrera" 
+      <app-componente-carrera-detalle
+        [plan_estudio]="inscripcion.plan_estudio"
+        [carrera]="inscripcion.carrera"
         [collapsed]="true"
         *ngIf="inscripcion">
       </app-componente-carrera-detalle>
@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <button 
+          <button
             class="btn btn-secondary btn-block-xs-only m-1"
             (click)="volver()">Volver
           </button>
@@ -110,7 +110,7 @@
                     <ng-template #sinComision>
                       N/A
                     </ng-template>
-                    
+
                   </td>
                   <td>
                     <button class="btn btn-sm btn-primary btn-block" (click)="seleccionar_mesa_examen_materia(item)">
@@ -130,7 +130,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <button 
+          <button
             class="btn btn-secondary btn-block-xs-only m-1"
             (click)="volver()">Volver
           </button>
@@ -223,12 +223,12 @@
           </form>
         </div>
         <div class="card-footer">
-          <button 
+          <button
             [disabled]="!formulario.valid"
             class="btn btn-success btn-block-xs-only m-1"
             (click)="continuar()">Confirmar inscripcion
           </button>
-          <button 
+          <button
             class="btn btn-secondary btn-block-xs-only m-1"
             (click)="volver()">Volver
           </button>
@@ -237,4 +237,3 @@
     </div>
   </div>
 </div>
-  

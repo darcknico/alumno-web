@@ -75,6 +75,11 @@
               <u>Observaciones:</u> {{mesa_examen_materia.observaciones}}
             </div>
           </div>
+          <div class="row" *ngIf="mesa_examen_materia.id_examen_virtual">
+            <div class="form-group col-sm-12">
+              <u>Examen Virtual Id:</u> {{mesa_examen_materia.id_examen_virtual}}
+            </div>
+          </div>
         </div>
       </div>
     </div>

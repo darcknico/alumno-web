@@ -9,11 +9,11 @@
       <div class="row">
         <div class="form-group col-sm-12">
           <label class="control-label">Nombre (*)</label>
-          <input 
+          <input
             required
             formControlName="nombre"
-            type="text" 
-            class="form-control"
+            type="text"
+            class="form-control {{ f.nombre.invalid?'is-invalid':'is-valid'}}"
             placeholder="Nombre">
           <span *ngIf="formulario.get('nombre').hasError('required')" class="help-block">
             El nombre es requerido
@@ -23,11 +23,11 @@
       <div class="row">
         <div class="form-group col-sm-4">
           <label class="control-label">Codigo (*)</label>
-          <input 
+          <input
             required
             formControlName="codigo"
-            type="text" 
-            class="form-control"
+            type="text"
+            class="form-control {{ f.codigo.invalid?'is-invalid':'is-valid'}}"
             placeholder="Codigo">
           <span *ngIf="formulario.get('codigo').hasError('required')" class="help-block">
             El Codigo es requerido
@@ -37,7 +37,7 @@
           <label class="control-label">Horas</label>
           <input
             formControlName="horas"
-            type="number" 
+            type="number"
             class="form-control"
             placeholder="Horas">
         </div>
@@ -45,7 +45,7 @@
       <div class="row">
         <div class="form-group col-sm-6">
           <label class="control-label">Regimen</label>
-          <select 
+          <select
             class="form-control"
             formControlName="id_tipo_materia_regimen">
             <option *ngFor="let item of tipos_regimen" [value]="item.id">{{item.nombre}}</option>
@@ -53,20 +53,38 @@
         </div>
         <div class="form-group col-sm-6">
           <label class="control-label">Lectivo (*)</label>
-          <select 
+          <select
             class="form-control"
             formControlName="id_tipo_materia_lectivo">
             <option *ngFor="let item of tipos_lectivo" [value]="item.id">{{item.nombre}}</option>
           </select>
         </div>
       </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label class="control-label">Aula Virtual Id</label>
+          <input
+            formControlName="id_aula_virtual"
+            type="text"
+            class="form-control {{ f.id_aula_virtual.invalid?'is-invalid':'is-valid'}}"
+            placeholder="">
+        </div>
+        <div class="form-group col-sm-6">
+          <label class="control-label">Examen Virtual Id</label>
+          <input
+            formControlName="id_examen_virtual"
+            type="text"
+            class="form-control {{ f.id_examen_virtual.invalid?'is-invalid':'is-valid'}}"
+            placeholder="">
+        </div>
+      </div>
     </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
-    <button 
+    <button
       [disabled]="!formulario.valid"
-      type="button" 
-      class="btn btn-primary" 
+      type="button"
+      class="btn btn-primary"
       (click)="confirmar()">Guardar</button>
   </div>

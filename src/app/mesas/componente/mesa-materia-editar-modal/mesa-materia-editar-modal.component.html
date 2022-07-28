@@ -63,8 +63,8 @@
           required
           [minDate]="fecha_inicio"
           formControlName="fecha"
-          type="text" 
-          class="form-control {{ (f.fecha.touched || f.fecha.dirty)?(f.fecha.invalid ?'is-invalid':'is-valid'):''}}" 
+          type="text"
+          class="form-control {{ (f.fecha.touched || f.fecha.dirty)?(f.fecha.invalid ?'is-invalid':'is-valid'):''}}"
           placeholder="Fecha">
         <div *ngIf= " (f.fecha.touched || f.fecha.dirty) && f.fecha.invalid " class="invalid-feedback">
           <span *ngIf="formulario.get('fecha').hasError('required')" class="help-block">
@@ -74,10 +74,10 @@
       </div>
       <div class="form-group col-sm-4" >
         <label class="control-label">Hora realizacion (*)</label>
-        <timepicker 
+        <timepicker
           required
           formControlName="hora"
-          [showMeridian]="false" 
+          [showMeridian]="false"
           [showSpinners]="false">
         </timepicker>
         <div *ngIf= " (f.hora.touched || f.hora.dirty) && f.hora.invalid " class="invalid-feedback">
@@ -91,8 +91,8 @@
         <input bsDatepicker
           [minDate]="fecha_inicio"
           formControlName="fecha_cierre"
-          type="text" 
-          class="form-control" 
+          type="text"
+          class="form-control"
           placeholder="Fecha">
       </div>
     </div>
@@ -101,39 +101,39 @@
         <label class="control-label">Ubicacion</label>
         <input
           formControlName="ubicacion"
-          type="text" 
-          class="form-control" 
+          type="text"
+          class="form-control"
           placeholder="Ubicacion">
       </div>
       <div class="form-group col-sm-3">
         <label class="control-label">Libro</label>
         <input
           formControlName="libro"
-          type="text" 
+          type="text"
           class="form-control">
       </div>
-      
+
     </div>
     <div class="row">
       <div class="form-group col-sm-3">
         <label class="control-label">Folio Libres</label>
         <input
           formControlName="folio_libre"
-          type="text" 
+          type="text"
           class="form-control">
       </div>
       <div class="form-group col-sm-3">
         <label class="control-label">Folio Promocionales</label>
         <input
           formControlName="folio_promocion"
-          type="text" 
+          type="text"
           class="form-control">
       </div>
       <div class="form-group col-sm-3">
         <label class="control-label">Folio Regulares</label>
         <input
           formControlName="folio_regular"
-          type="text" 
+          type="text"
           class="form-control">
       </div>
     </div>
@@ -142,17 +142,27 @@
         <label class="control-label">Observaciones</label>
         <input
           formControlName="observaciones"
-          type="text" 
+          type="text"
           class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label class="control-label">Examen Virtual Id</label>
+        <input
+          formControlName="id_examen_virtual"
+          type="text"
+          class="form-control {{ f.id_examen_virtual.invalid?'is-invalid':'is-valid'}}"
+          placeholder="">
       </div>
     </div>
   </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
-  <button 
+  <button
     [disabled]="!formulario.valid"
-    type="button" 
-    class="btn btn-primary" 
+    type="button"
+    class="btn btn-primary"
     (click)="confirmar()">Guardar</button>
 </div>

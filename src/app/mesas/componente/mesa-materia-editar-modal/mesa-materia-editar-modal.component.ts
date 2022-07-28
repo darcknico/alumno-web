@@ -61,6 +61,7 @@ export class MesaMateriaEditarModalComponent implements OnInit {
         id_carrera:'',
         id_plan_estudio:'',
         id_materia: ['', Validators.required],
+        id_examen_virtual: ['',[Validators.maxLength(255)]],
       });
     }
 
@@ -81,6 +82,7 @@ export class MesaMateriaEditarModalComponent implements OnInit {
       this.f.folio_promocion.setValue(item.folio_promocion);
       this.f.folio_regular.setValue(item.folio_regular);
       this.f.observaciones.setValue(item.observaciones);
+      this.f.id_examen_virtual.setValue(item.id_examen_virtual);
       this.carrera = item.carrera;
       this.materia = item.materia;
       this.f.id_materia.disable();
@@ -125,6 +127,7 @@ export class MesaMateriaEditarModalComponent implements OnInit {
     item.folio_promocion = this.f.folio_promocion.value;
     item.folio_regular = this.f.folio_regular.value;
     item.observaciones = this.f.observaciones.value;
+    item.id_examen_virtual = this.f.id_examen_virtual.value;
     this.consultando = true;
     if(this.id>0){
       this.service.update(item).subscribe(response=>{
@@ -146,7 +149,7 @@ export class MesaMateriaEditarModalComponent implements OnInit {
         this.consultando = false;
       });
     }
-    
+
   }
 
   seleccionar_carrera(carrera:Carrera){

@@ -42,6 +42,7 @@ export interface MesaExamenMateria{
     folio_promocion:string;
     folio_regular:string;
     observaciones:string;
+    id_examen_virtual:string;
     estado:boolean;
     created_at:Date;
     updated_at:Date;

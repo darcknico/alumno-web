@@ -12,11 +12,13 @@ export interface Materia{
     id_tipo_materia_lectivo:number;
     id_plan_estudio:number;
     id_usuario:number;
+    id_aula_virtual:string;
+    id_examen_virtual:string;
 
     estado:boolean;
     created_at:string;
     updated_at:string;
-    
+
     usuario:Usuario;
     plan_estudio:PlanEstudio;
     tipo_regimen:TipoMateriaRegimen;
